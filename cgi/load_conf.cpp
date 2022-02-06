@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 
         string name_exp = "([A-Za-z]+\\w*)";
         //string value_exp = "(((\\w+))|('(\\w+)')|(\\\"(\\w+)\\\"))";          
-        string value_exp = "(\\w+)|('(\\w+)')|(\\\"(\\w+)\\\")";
+        string value_exp = "((\\w+)|('(\\w+)')|(\\\"(\\w+)\\\"))";
         regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
                       
         auto begin = sregex_iterator(src.begin(), src.end(), src_exp);
@@ -27,41 +27,8 @@ int main(int argc, char* argv[])
 		for (sregex_iterator iter = begin; iter != end; ++iter)
 		{
             smatch match = *iter;
-            //std::ssub_match sub = match[1];
-            //cout << "Match: --> " << match.str() <<  "; Name: --> " << match[1].str() << "; Value: --> " << match[6].str() << endl;
-            cout << "Match: --> " << match.str() <<  "; Name: --> " << match[1].str() << "; Value: --> " << match[2].str() << endl;
-
-            for(int i = 0; i < 9; ++i)
-            {
-                cout << "sub" << "[" << i << "] = " << match[i].str() << endl; 
-            }
-
-            // string value;
-            // if(match[2].str().size() == 0)
-            // {
-            //     if(match[4].str().size() == 0)
-            //     {
-            //         if(match[6].str().size() == 0)
-            //         {
-            //             value = "";
-            //         }
-            //         else
-            //         {
-            //             value = match[6];
-            //         }
-            //     }
-            //     else
-            //     {
-            //         value = match[4];
-            //     }
-            // }
-            // else
-            // {
-            //     value = match[2];
-            // }
-            
-            string value = match[2].str() + match[4].str() + match[6].str();
-            cout << "Value: = " << value << endl;
+            string value = match[3].str() + match[5].str() + match[7].str();
+            cout << "Match: --> " << match.str() <<  "; Name: --> " << match[1].str() << "; Value: --> " << value << endl;
         }
     }
 }
