@@ -24,14 +24,14 @@ debug: all
 # compile & link for debug GDBversion variable
 debuggdb: CXXFLAGS += -DDEBUG -ggdb # compile & link
 
-all: main.o utility.o get.o sed.o
+all: main.o utility.o get.o sed.o find_tags.o load_conf.o dump.o dump_ifstream.o 
 	$(CXX) $(CXXFLAGS) main.o -o main.cgi
 	$(CXX) $(CXXFLAGS) get.o -o get.cgi
 	$(CXX) $(CXXFLAGS) sed.o -o sed.cgi
-	$(CXX) $(CXXFLAGS) find_tags.cpp utility.cpp -o find_tags.cgi
-	$(CXX) $(CXXFLAGS) load_conf.cpp utility.cpp -o load_conf.cgi
-	$(CXX) $(CXXFLAGS) dump.cpp utility.cpp -o dump.cgi
-	$(CXX) $(CXXFLAGS) dump_ifstream.cpp utility.cpp -o dump_ifstream.cgi
+	$(CXX) $(CXXFLAGS) find_tags.o utility.o -o find_tags.cgi
+	$(CXX) $(CXXFLAGS) load_conf.o utility.o -o load_conf.cgi
+	$(CXX) $(CXXFLAGS) dump.o utility.o -o dump.cgi
+	$(CXX) $(CXXFLAGS) dump_ifstream.o utility.o -o dump_ifstream.cgi
 
 main.o:
 	$(CXX) $(CXXFLAGS) -c main.cpp -o main.o
@@ -49,10 +49,10 @@ dump_ifstream.o:
 	$(CXX) $(CXXFLAGS) -c dump_ifstream.cpp -o dump_ifstream.o
 
 dump.o:
-	$(CXX) $(CXXFLAGS) -c find_tags.cpp -o find_tags.o
+	$(CXX) $(CXXFLAGS) -c dump.cpp -o dump.o
 
 find_tags.o:
-	$(CXX) $(CXXFLAGS) -c dump.cpp -o dump.o
+	$(CXX) $(CXXFLAGS) -c find_tags.cpp -o find_tags.o
 
 utility.o:
 	$(CXX) $(CXXFLAGS) -c utility.cpp -o utility.o
