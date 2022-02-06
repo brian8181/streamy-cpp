@@ -1,9 +1,9 @@
 # cgi scripts
 
-all: main.o get.o
-	g++ main.cpp -o main.cgi
+all: main.o get.o sed.o
+	g++ main.o -o main.cgi
 	g++ get.o -o get.cgi
-	g++ sed.cpp -o sed.cgi
+	g++ sed.o -o sed.cgi
 	g++ find_tags.cpp utility.cpp -o find_tags.cgi
 	g++ load_conf.cpp utility.cpp -o load_conf.cgi
 
@@ -15,6 +15,9 @@ main.o:
 
 get.o:
 	g++ -c get.cpp -o get.o
+
+sed.o:
+	g++ -c sed.cpp -o sed.o
 
 upload:
 	cp *.cgi /var/www/html/cgi
