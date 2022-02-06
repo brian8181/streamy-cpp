@@ -9,7 +9,6 @@
 using namespace std;
 
 string fstream_readlines(string path);
-// NOT WORKING!
 string ifstream_readlines(string path);
 map<string, string> create_map(string path);
 

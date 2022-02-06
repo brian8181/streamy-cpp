@@ -32,7 +32,7 @@ string ifstream_readlines(string path)
 {
     string src;
     ifstream file;
-    file.open(path);
+    //file.open(path);
     file.open(path, ios::in); //open a file to perform read operation using file object
 
     if (file.is_open())
