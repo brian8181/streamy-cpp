@@ -30,6 +30,7 @@ all: main.o get.o sed.o
 	$(CXX) $(CXXFLAGS) sed.o -o sed.cgi
 	$(CXX) $(CXXFLAGS) find_tags.cpp utility.cpp -o find_tags.cgi
 	$(CXX) $(CXXFLAGS) load_conf.cpp utility.cpp -o load_conf.cgi
+	$(CXX) $(CXXFLAGS) dump.cpp utility.cpp -o dump.cgi
 
 utility.o:
 	$(CXX) $(CXXFLAGS) -c utility.cpp -o utility.o

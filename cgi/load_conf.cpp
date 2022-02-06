@@ -16,7 +16,8 @@ int main(int argc, char* argv[])
         string src = fstream_readlines(path);
 
         string name_exp = "([A-Za-z]+\\w*)";
-        string value_exp = "(((\\w+))|('(\\w+)')|(\\\"(\\w+)\\\"))";
+        //string value_exp = "(((\\w+))|('(\\w+)')|(\\\"(\\w+)\\\"))";          
+        string value_exp = "(\\w+)|('(\\w+)')|(\\\"(\\w+)\\\")";
         regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
                       
         auto begin = sregex_iterator(src.begin(), src.end(), src_exp);
@@ -26,7 +27,7 @@ int main(int argc, char* argv[])
 		for (sregex_iterator iter = begin; iter != end; ++iter)
 		{
             smatch match = *iter;
-            std::ssub_match sub = match[1];
+            //std::ssub_match sub = match[1];
             //cout << "Match: --> " << match.str() <<  "; Name: --> " << match[1].str() << "; Value: --> " << match[6].str() << endl;
             cout << "Match: --> " << match.str() <<  "; Name: --> " << match[1].str() << "; Value: --> " << match[2].str() << endl;
 
