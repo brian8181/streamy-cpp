@@ -1,23 +1,47 @@
 # cgi scripts
 
+# Compiler settings - Can be customized.
+CXX = g++
+CXXFLAGS = -Wall -std=c++17
+
+# lib settings
+LDFLAGS = -static -lcppunit -L/usr/local/lib/
+INCLUDES = -I/usr/local/include/cppunit/
+# add addtional libs here
+
+# Makefile settings - Can be customized.
+APPNAME = smartycpp
+EXT = cpp
+ROOTDIR  = ..
+BUILDDIR = .
+SRCDIR = $(ROOTDIR)/src
+OBJDIR = .
+
+# compile & link for debug
+debug: CXXFLAGS += -DDEBUG -g
+debug: all
+
+# compile & link for debug GDBversion variable
+debuggdb: CXXFLAGS += -DDEBUG -ggdb # compile & link
+
 all: main.o get.o sed.o
-	g++ main.o -o main.cgi
-	g++ get.o -o get.cgi
-	g++ sed.o -o sed.cgi
-	g++ find_tags.cpp utility.cpp -o find_tags.cgi
-	g++ load_conf.cpp utility.cpp -o load_conf.cgi
+	$(CXX) $(CXXFLAGS) main.o -o main.cgi
+	$(CXX) $(CXXFLAGS) get.o -o get.cgi
+	$(CXX) $(CXXFLAGS) sed.o -o sed.cgi
+	$(CXX) $(CXXFLAGS) find_tags.cpp utility.cpp -o find_tags.cgi
+	$(CXX) $(CXXFLAGS) load_conf.cpp utility.cpp -o load_conf.cgi
 
 utility.o:
-	g++ -c utility.cpp -o utility.o
+	$(CXX) $(CXXFLAGS) -c utility.cpp -o utility.o
 
 main.o:
-	g++ -c main.cpp -o main.o
+	$(CXX) $(CXXFLAGS) -c main.cpp -o main.o
 
 get.o:
-	g++ -c get.cpp -o get.o
+	$(CXX) $(CXXFLAGS) -c get.cpp -o get.o
 
 sed.o:
-	g++ -c sed.cpp -o sed.o
+	$(CXX) $(CXXFLAGS) -c sed.cpp -o sed.o
 
 upload:
 	cp *.cgi /var/www/html/cgi
