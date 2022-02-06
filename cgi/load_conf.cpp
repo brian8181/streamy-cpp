@@ -35,6 +35,32 @@ int main(int argc, char* argv[])
             {
                 cout << "sub" << "[" << i << "] = " << match[i].str() << endl; 
             }
+
+            string value;
+            if(match[2].str().size() == 0)
+            {
+                if(match[4].str().size() == 0)
+                {
+                    if(match[6].str().size() == 0)
+                    {
+                        value = "";
+                    }
+                    else
+                    {
+                        value = match[6];
+                    }
+                }
+                else
+                {
+                    value = match[4];
+                }
+            }
+            else
+            {
+                value = match[2];
+            }
+            
+            cout << "Value: = " << value << endl;
         }
     }
 }
