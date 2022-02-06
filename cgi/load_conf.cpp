@@ -11,12 +11,10 @@ int main(int argc, char* argv[])
 {
     if(argc == 2)
     {
-        // todo: validate inputs !
         string path = argv[1];
         string src = fstream_readlines(path);
 
         string name_exp = "([A-Za-z]+\\w*)";
-        //string value_exp = "(((\\w+))|('(\\w+)')|(\\\"(\\w+)\\\"))";          
         string value_exp = "((\\w+)|('(\\w+)')|(\\\"(\\w+)\\\"))";
         regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
                       
@@ -24,8 +22,8 @@ int main(int argc, char* argv[])
         auto end = sregex_iterator(); 
         
         // for each match
-		for (sregex_iterator iter = begin; iter != end; ++iter)
-		{
+        for (sregex_iterator iter = begin; iter != end; ++iter)
+        {
             smatch match = *iter;
             string value = match[3].str() + match[5].str() + match[7].str();
             cout << "Match: --> " << match.str() <<  "; Name: --> " << match[1].str() << "; Value: --> " << value << endl;
