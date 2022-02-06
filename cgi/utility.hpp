@@ -10,6 +10,7 @@ using namespace std;
 
 string fstream_readlines(string path);
 string ifstream_readlines(string path);
+string fstream_get(string path);
 map<string, string> create_map(string path);
 
 #endif
