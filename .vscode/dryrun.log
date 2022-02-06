@@ -1,6 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/brian/src/smartycpp'
-make: Leaving directory '/home/brian/src/smartycpp'
- 
-make: *** No targets specified and no makefile found.  Stop.
- 
