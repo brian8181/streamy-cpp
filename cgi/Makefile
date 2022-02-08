@@ -2,7 +2,7 @@
 
 # Compiler settings - Can be customized.
 CXX = g++
-CXXFLAGS = -Wall -std=c++17
+CXXFLAGS = -std=c++17 -DDEBUG -g
 
 # lib settings
 LDFLAGS = -static -lcppunit -L/usr/local/lib/
@@ -18,16 +18,19 @@ SRCDIR = $(ROOTDIR)/cgi
 OBJDIR = $(ROOTDIR)/cgi
 
 # compile & link for debug
-debug: CXXFLAGS += -DDEBUG -g
+debug: 
+	#$(CXXFLAGS) += -DDEBUG -g
 debug: all
 
 # compile & link for debug GDBversion variable
-debuggdb: CXXFLAGS += -DDEBUG -ggdb # compile & link
+debuggdb: 
+	#$(CXXFLAGS) += -DDEBUG -ggdb # compile & link
 
-everything: all dump_get.o dump_fread.o dump_ifstream.o
+everything: all main.o dump_get.o dump_fread.o dump_ifstream.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/main.o -o $(BUILDDIR)/main.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_ifstream.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_ifstream.cgi
+	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_get.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_get.cgi
 
 all: utility.o get.o sed.o find_tags.o load_conf.o dump.o 
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/get.o -o $(BUILDDIR)/get.cgi
@@ -55,8 +58,10 @@ dump.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump.cpp -o $(BUILDDIR)/dump.o
 
 dump_fread.o:
-	$(CXX) $(CXXFLAGS) -c$(SRCDIR)/dump_fread.cpp -o $(BUILDDIR)/dump_fread.o
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump_fread.cpp -o $(BUILDDIR)/dump_fread.o
 
+dump_get.o:
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump_get.cpp -o $(BUILDDIR)/dump_get.o
 
 find_tags.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/find_tags.cpp -o $(BUILDDIR)/find_tags.o
