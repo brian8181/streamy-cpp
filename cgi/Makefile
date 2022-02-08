@@ -31,14 +31,17 @@ everything: all main.o dump_get.o dump_fread.o dump_ifstream.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_ifstream.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_ifstream.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_get.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_get.cgi
-
-all: utility.o get.o sed.o find_tags.o load_conf.o dump.o 
+	
+all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smartypp.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/get.o -o $(BUILDDIR)/get.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/sed.o -o $(BUILDDIR)/sed.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/find_tags.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/find_tags.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/load_conf.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/load_conf.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
-	
+
+smartypp.o:
+	$(CXX) $(CXXFLAGS) -c ../src/smartypp.cpp -o ../src/smartypp.o
+
 main.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.cpp -o $(BUILDDIR)/main.o
 

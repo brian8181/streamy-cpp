@@ -13,7 +13,7 @@ class smartypp
 public:
     smartypp();
     smartypp(std::string template_dir, std::string complie_dir, std::string config_dir, std::string cache_dir);
-    ~smartypp();
+    //~smartypp();
 
     bool assign(std::string name, std::string val);
     bool display(string tmpl);
