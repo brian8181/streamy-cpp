@@ -19,3 +19,8 @@ bool smartypp::assign(string name, string val)
 {
     return true;
 }
+
+bool smartypp::display(string tmpl)
+{
+    return true;
+}

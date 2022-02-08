@@ -51,3 +51,6 @@ Makefile
 .vscode/*.log
 cgi/*.cgi
 cgi/*.o
+src/*.o
+build/*.o
+*.o
