@@ -26,10 +26,9 @@ debug: all
 debuggdb: 
 	#$(CXXFLAGS) += -DDEBUG -ggdb # compile & link
 
-everything: all main.o dump_get.o dump_fread.o dump_ifstream.o
+everything: all main.o dump_get.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/main.o -o $(BUILDDIR)/main.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
-	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_ifstream.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_ifstream.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_get.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_get.cgi
 	
 all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smartypp.o
@@ -54,14 +53,8 @@ sed.o:
 load_conf.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/load_conf.cpp -o $(BUILDDIR)/load_conf.o
 
-dump_ifstream.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump_ifstream.cpp -o $(BUILDDIR)/dump_ifstream.o
-
 dump.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump.cpp -o $(BUILDDIR)/dump.o
-
-dump_fread.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump_fread.cpp -o $(BUILDDIR)/dump_fread.o
 
 dump_get.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump_get.cpp -o $(BUILDDIR)/dump_get.o
