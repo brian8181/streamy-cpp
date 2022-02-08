@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
     if(argc == 2)
     {
         string path = argv[1];
-        string src = fstream_get(path);
+        string src = fstream_read(path);
         cout << src << endl;
     }
 }
