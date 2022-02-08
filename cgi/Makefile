@@ -26,10 +26,11 @@ debug: all
 debuggdb: 
 	#$(CXXFLAGS) += -DDEBUG -ggdb # compile & link
 
-everything: all main.o dump_get.o
+world: all main.o dump_get.o dump_matches.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/main.o -o $(BUILDDIR)/main.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_get.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_get.cgi
+	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_matches.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_matches.cgi
 	
 all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smartypp.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/get.o -o $(BUILDDIR)/get.cgi
@@ -58,6 +59,9 @@ dump.o:
 
 dump_get.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump_get.cpp -o $(BUILDDIR)/dump_get.o
+
+dump_matches.o:
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump_matches.cpp -o $(BUILDDIR)/dump_matches.o
 
 find_tags.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/find_tags.cpp -o $(BUILDDIR)/find_tags.o
