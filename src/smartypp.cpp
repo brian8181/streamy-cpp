@@ -10,10 +10,10 @@ smartypp::smartypp(string template_dir, string complie_dir, string config_dir, s
 
 }
 
-// smartypp::~smartypp()
-// {
+smartypp::~smartypp()
+{
 
-// }
+}
 
 bool smartypp::assign(string name, string val)
 {
