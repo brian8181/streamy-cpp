@@ -13,7 +13,7 @@ INCLUDES = -I/usr/local/include/cppunit/
 APPNAME = smartycpp
 EXT = cpp
 ROOTDIR  = ..
-BUILDDIR = $(ROOTDIR)/cgi
+BUILDDIR = $(ROOTDIR)/build
 SRCDIR = $(ROOTDIR)/cgi
 OBJDIR = $(ROOTDIR)/cgi
 
@@ -74,4 +74,4 @@ upload:
 
 .PHONY: clean
 clean:
-	rm *.cgi *.o
+	rm $(BUILDDIR)/*.cgi $(BUILDDIR)/*.o

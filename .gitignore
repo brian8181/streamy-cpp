@@ -54,4 +54,5 @@ cgi/*.o
 src/*.o
 build/*.o
 *.o
+*.cgi
 a.out
