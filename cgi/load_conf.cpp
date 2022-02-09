@@ -9,7 +9,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    if(argc == 2)
+    if(1)
     {
         string path = argv[1];
         string src = fstream_readlines(path);
@@ -18,11 +18,10 @@ int main(int argc, char* argv[])
         string value_exp = "((\\w+)|('(\\w+)')|(\\\"(\\w+)\\\"))";
         regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
                       
-        auto begin = sregex_iterator(src.begin(), src.end(), src_exp, std::regex_constants::match_not_null);
+        auto begin = sregex_iterator(src.begin(), src.end(), src_exp);
         auto end = sregex_iterator(); 
         
-        // for each match
-        for (sregex_iterator iter = begin; iter != end; ++iter)
+        for (auto iter = begin; iter != end; ++iter)
         {
             smatch match = *iter;
             string value = match[3].str() + match[5].str() + match[7].str();

@@ -69,13 +69,6 @@ string fstream_read(string path)
     return str;
 }
 
-// map<string, string> create_map(string path)
-// {
-//     map<string, string> m;
-
-//     return m;
-// }
-
 bool load_config(string path, map<string, string>& config)
 {
     string src = fstream_readlines(path);
