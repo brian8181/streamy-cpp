@@ -5,21 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "dump",
+            "type": "cppdbg",
             "request": "launch",
-            "name": "MAKE",
-			"label": "MAKE DEBUGGDB",
-			"type": "node-terminal",
-            "program": "${workspaceFolder}/cgi/find_tags.cgi",
+            "program": "${fileDirname}/dump.cgi",
             "args": ["../test/file3"],
-            "stopAtEntry": false,
-            "command": "make -f ${workspaceFolder}/Makefile",
-            "cwd": "${workspaceFolder}/cgi",
-            
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"problemMatcher": []
-		}
-    ]
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "MAKE DEBUGGDB",
+            "miDebuggerPath": "/usr/bin/gdb"
+        }
+  ]
 }

@@ -97,7 +97,7 @@ bool load_config(string path, map<string, string>& config)
 void ParseCommand(string command)
 {
 
-    string command = "(config_load|include|insert)\\sfile='(.*)'";
+    //string command = "(config_load|include|insert)\\sfile='(.*)'";
     regex exp = regex(command);
 
     auto begin = sregex_iterator(command.begin(), command.end(), exp, std::regex_constants::match_not_null);
