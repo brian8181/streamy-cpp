@@ -26,13 +26,6 @@ int main(int argc, char* argv[])
             smatch match = *iter;
             string value = match[3].str() + match[5].str() + match[7].str();
             cout << "Match: --> " << match.str() <<  "; Name: --> " << match[1].str() << "; Value: --> " << value << endl;
-
-            for(int i = 0; i < 9; ++i)
-            {
-                cout << match[i].str() << endl;
-            }
         }
-
-       
     }
 }

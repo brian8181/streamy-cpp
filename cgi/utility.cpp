@@ -94,5 +94,25 @@ bool load_config(string path, map<string, string>& config)
     return true;
 }
 
+void ParseCommand(string command)
+{
+
+    string command = "(config_load|include|insert)\\sfile='(.*)'";
+    regex exp = regex(command);
+
+    auto begin = sregex_iterator(command.begin(), command.end(), exp, std::regex_constants::match_not_null);
+    auto end = sregex_iterator(); 
+
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+    }
+}
+
+
+// map sub matches
+void MapSubs()
+{
+    
+}
 
 

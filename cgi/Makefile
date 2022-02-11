@@ -70,8 +70,8 @@ utility.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/utility.cpp -o $(BUILDDIR)/utility.o
 
 upload:
-	cp *.cgi /var/www/html/cgi
-
+	cp -rf * /var/www/html/cgi
+	
 .PHONY: clean
 clean:
 	rm $(BUILDDIR)/*.cgi $(BUILDDIR)/*.o

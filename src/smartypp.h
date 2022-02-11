@@ -19,6 +19,7 @@ public:
 
 private:
 
+    map<string, string> config;
     map<string, string> symbols;
     map<string, std::map<string, string>> arrays;
 
