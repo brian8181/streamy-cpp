@@ -32,15 +32,16 @@ world: all main.o dump_get.o dump_matches.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_get.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_get.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_matches.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_matches.cgi
 	
-all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smartypp.o
+all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smarty.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/get.o -o $(BUILDDIR)/get.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/sed.o -o $(BUILDDIR)/sed.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/find_tags.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/find_tags.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/load_conf.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/load_conf.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
+	$(CXX) $(CXXFLAGS) $(SRCDIR)/smarty_test.cpp $(BUILDDIR)/smarty.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/smarty_test.cgi
 
-smartypp.o:
-	$(CXX) $(CXXFLAGS) -c $(ROOTDIR)/src/smartypp.cpp -o $(BUILDDIR)/smartypp.o
+smarty.o:
+	$(CXX) $(CXXFLAGS) -c $(ROOTDIR)/src/smarty.cpp -o $(BUILDDIR)/smarty.o
 	
 main.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.cpp -o $(BUILDDIR)/main.o
@@ -70,7 +71,7 @@ utility.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/utility.cpp -o $(BUILDDIR)/utility.o
 
 upload:
-	cp -rf * /var/www/html/cgi
+	cp -rf $(BUILDDIR)/*.cgi /var/www/html/cgi
 	
 .PHONY: clean
 clean:

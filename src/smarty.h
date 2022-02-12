@@ -1,18 +1,17 @@
-#ifndef _SMARTYPP_HPP
-#define _SMARTYPP_HPP
-
+#ifndef _SMARTY_HPP
+#define _SMARTY_HPP
 
 #include <string>
 #include <map>
 
 using namespace std;
 
-class smartypp
+class smarty
 {
 public:
-    smartypp();
-    smartypp(string template_dir, string complie_dir, string config_dir, string cache_dir);
-    ~smartypp();
+    smarty();
+    smarty(string template_dir, string complie_dir, string config_dir, string cache_dir);
+    ~smarty();
 
     bool assign(string name, string val);
     bool display(string tmpl);

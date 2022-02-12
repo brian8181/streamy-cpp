@@ -3,13 +3,13 @@
 #include <regex>
 #include <string>
 #include "utility.hpp"
-#include "../src/smartypp.h"
+#include "../src/smarty.h"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-    smartypp sm;
+    smarty sm;
 
     if(argc == 2)
     {
