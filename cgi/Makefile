@@ -12,7 +12,7 @@ INCLUDES = -I/usr/local/include/cppunit/
 # Makefile settings - Can be customized.
 APPNAME = smartycpp
 EXT = cpp
-ROOTDIR  = '/home/brian/src/smartycpp'
+ROOTDIR  = /home/brian/src/smartycpp
 BUILDDIR = $(ROOTDIR)/build
 SRCDIR = $(ROOTDIR)/cgi
 OBJDIR = $(ROOTDIR)/cgi
@@ -41,7 +41,7 @@ all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smartypp.o
 
 smartypp.o:
 	$(CXX) $(CXXFLAGS) -c $(ROOTDIR)/src/smartypp.cpp -o $(BUILDDIR)/smartypp.o
-
+	
 main.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.cpp -o $(BUILDDIR)/main.o
 
