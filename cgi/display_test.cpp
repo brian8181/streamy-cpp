@@ -3,6 +3,7 @@
 #include <regex>
 #include <string>
 #include <map>
+#include <list>
 #include "utility.hpp"
 #include "display_test.hpp"
 
@@ -24,6 +25,16 @@ int main(int argc, char* argv[])
 
         cout << "Tags: " << endl;
         find_tags(path);
+
+        cout << "Tags List: " << endl;
+        list<string> tags;
+        get_tags(path, tags);
+        list<string>::iterator begin = tags.begin();
+        list<string>::iterator end = tags.end();
+        for(list<string>::iterator iter = begin; iter != end; ++iter)
+        {
+            cout << iter->c_str() << endl;
+        }
         
         cout << "Display: " << endl;
         string src = display(path);

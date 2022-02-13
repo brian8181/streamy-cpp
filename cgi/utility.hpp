@@ -5,6 +5,7 @@
 #include <iterator>
 #include <fstream>
 #include <string>
+#include <list>
 
 using namespace std;
 
@@ -17,5 +18,6 @@ string fstream_read(string path);
 void assign(string name, string val, map<string, string>& symbols);
 string display(string name);
 void find_tags(string path);
+void get_tags(string path, list<string>& tags);
 
 #endif

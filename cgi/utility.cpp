@@ -135,3 +135,22 @@ void find_tags(string path)
         cout << match.str() <<  " --> " << sub.str() << endl;
     }
 }
+
+void get_tags(string path, list<string>& tags)
+{
+     string src = fstream_readlines(path);
+    regex src_epx = regex("\\{(.*)}", regex::ECMAScript);
+            
+    sregex_iterator begin = sregex_iterator(src.begin(), src.end(), src_epx, std::regex_constants::match_not_null);
+    auto end = sregex_iterator(); 
+    
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        cout << match.str() <<  " --> " << sub.str() << endl;
+
+        string tag = sub.str();
+        tags.push_back(tag);
+    }
+}
