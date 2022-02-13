@@ -121,7 +121,7 @@ void assign(string name, string val, map<string, string>& symbols)
     symbols.insert(p);
 }
 
-void display(string name)
+string display(string name)
 {
-    fstream_readlines(name);
+    return fstream_readlines(name);
 }

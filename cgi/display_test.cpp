@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
     if(argc == 2)
     {
         string path = argv[1];
-        string src = fstream_readlines(path);
+        string src = display(path);
         cout << src << endl;
     }
 }
