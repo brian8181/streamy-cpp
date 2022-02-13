@@ -9,12 +9,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    smarty sm;
-
-    if(argc == 2)
-    {
-        // string path = argv[1];
-        // string src = fstream_readlines(path);
-        // cout << src << endl;
-    }
+    smarty sm("test1", "test2", "test3", "test4");
+    sm.assign("x", "5");
+    sm.display("no_name");
 }

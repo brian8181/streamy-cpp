@@ -9,7 +9,6 @@ using namespace std;
 class smarty
 {
 public:
-    smarty();
     smarty(string template_dir, string complie_dir, string config_dir, string cache_dir);
     ~smarty();
 
