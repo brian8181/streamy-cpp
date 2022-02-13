@@ -16,5 +16,6 @@ string fstream_read(string path);
 
 void assign(string name, string val, map<string, string>& symbols);
 string display(string name);
+void find_tags(string path);
 
 #endif

@@ -18,7 +18,6 @@ int main(int argc, char* argv[])
         sregex_iterator begin = sregex_iterator(src.begin(), src.end(), src_epx, std::regex_constants::match_not_null);
         auto end = sregex_iterator(); 
         
-        // for each match
 		for (sregex_iterator iter = begin; iter != end; ++iter)
 		{
             smatch match = *iter;
