@@ -14,4 +14,7 @@ string fstream_get(string path);
 string fstream_read(string path);
 //bool load_config(string path, map<string, string>& config);
 
+void assign(string name, string val, map<string, string>& symbols);
+void display(string name);
+
 #endif
