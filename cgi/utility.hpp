@@ -20,4 +20,9 @@ string display(string name);
 void find_tags(string path);
 void get_tags(string path, list<string>& tags);
 
+
+std::string ltrim(const std::string &s);
+std::string rtrim(const std::string &s);
+std::string trim(const std::string &s);
+
 #endif

@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 		{
             smatch match = *iter;
             std::ssub_match sub = match[1];
-            cout << match.str() <<  " --> " << sub.str() << endl;
+            cout << match.str() <<  " --> " << trim(sub.str()) << endl;
         }
     }
 }
