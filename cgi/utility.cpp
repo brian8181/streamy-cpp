@@ -115,4 +115,15 @@ void MapSubs()
     
 }
 
+void assign(string name, string val, map<string, string>& symbols)
+{
+    pair<string, string> p(name, val);
+    map.insert(p);
+}
+
+void display(string name)
+{
+    fstream_readlines(name);
+}
+
 
