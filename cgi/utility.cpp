@@ -43,9 +43,7 @@ string ifstream_readlines(string path)
         }
         file.close(); //close the file object.
     }
-
     return src;
-
 }
 
 string fstream_read(string path)
@@ -65,7 +63,6 @@ string fstream_read(string path)
         }
         file.close(); //close the file object.
     }
-
     return str;
 }
 
@@ -79,8 +76,7 @@ bool load_config(string path, map<string, string>& config)
                     
     auto begin = sregex_iterator(src.begin(), src.end(), src_exp, std::regex_constants::match_not_null);
     auto end = sregex_iterator(); 
-    
-    // for each match
+
     for (sregex_iterator iter = begin; iter != end; ++iter)
     {
         smatch match = *iter;
@@ -90,7 +86,6 @@ bool load_config(string path, map<string, string>& config)
         pair<string, string> p(name, value);
         config.insert(p);
     }
-
     return true;
 }
 
@@ -107,7 +102,6 @@ void ParseCommand(string command)
     {
     }
 }
-
 
 // map sub matches
 void MapSubs()
