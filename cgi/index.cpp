@@ -17,7 +17,6 @@ int main(int argc, char* argv[])
         assign("page_title", "SmartyCPP Test Page", tags);
         assign("body", "The Body", tags);
         assign("admin_email", "admin@something.com", tags);
-        assign("body", "The Body", tags);
         assign("version", "0.1", tags);
         assign("version_date", "Feb, 14 2022", tags);
         display(path, tags);
