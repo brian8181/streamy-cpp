@@ -7,7 +7,7 @@ man1dir = $(mandir)/man1
 
 # Compiler settings - Can be customized.
 CXX = g++
-CXXFLAGS = -std=c++17 -DDEBUG -g
+CXXFLAGS = -std=c++17 -DDEBUG -ggdb
 
 # lib settings
 LDFLAGS = -static -lcppunit -L/usr/local/lib/
@@ -23,23 +23,23 @@ SRCDIR = $(ROOTDIR)/cgi
 OBJDIR = $(ROOTDIR)/cgi
 
 # compile & link for debug
-debug: 
-	#$(CXXFLAGS) += -DDEBUG -g
-debug: all
+# debug: 
+# 	#$(CXXFLAGS) += -DDEBUG -g
+# debug: all
 
-# compile & link for debug GDBversion variable
-debuggdb: 
-	#$(CXXFLAGS) += -DDEBUG -ggdb # compile & link
+# # compile & link for debug GDBversion variable
+# debuggdb: 
+# 	#$(CXXFLAGS) += -DDEBUG -ggdb # compile & link
 
-world: all main.o dump_get.o dump_matches.o
+world: all main.o dump_matches.o find_tags.o 
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/main.o -o $(BUILDDIR)/main.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_matches.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_matches.cgi
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/display_test.cpp $(BUILDDIR)/utility.o -o $(BUILDDIR)/display_test.cgi
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/replace_test.cpp $(BUILDDIR)/utility.o -o $(BUILDDIR)/replace_test.cgi
-	
-all: utility.o find_tags.o load_conf.o dump.o smarty_test.cgi index.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/find_tags.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/find_tags.cgi
+	
+all: utility.o load_conf.o dump.o smarty.o smarty_test.cgi index.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/load_conf.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/load_conf.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
 	

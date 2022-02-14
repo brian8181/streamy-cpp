@@ -1,7 +1,6 @@
 #include <string>
 #include <map>
 #include "utility.hpp"
-#include "index.hpp"
 
 using namespace std;
 
