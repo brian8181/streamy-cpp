@@ -139,7 +139,7 @@ void find_tags(string path)
 
 void get_tags(string path, list<string>& tags)
 {
-     string src = fstream_readlines(path);
+    string src = fstream_readlines(path);
     regex src_epx = regex("\\{(.*)}", regex::ECMAScript);
             
     sregex_iterator begin = sregex_iterator(src.begin(), src.end(), src_epx, std::regex_constants::match_not_null);
@@ -153,6 +153,13 @@ void get_tags(string path, list<string>& tags)
         string tag = trim(sub.str());
         tags.push_back(tag);
     }
+}
+
+void replace_tags(string path)
+{
+    string src = fstream_readlines(path);
+    regex pattern = regex("\\{(.*?)}", regex::ECMAScript);
+    std::regex_replace(std::ostreambuf_iterator<char>(std::cout), src.begin(), src.end(), pattern, "<!-- TEST -->");
 }
 
 const std::string WHITESPACE = " \n\r\t\f\v";

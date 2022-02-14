@@ -45,6 +45,7 @@ all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smarty.so smarty_test.
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/load_conf.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/load_conf.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/display_test.cpp $(BUILDDIR)/utility.o -o $(BUILDDIR)/display_test.cgi
+	$(CXX) $(CXXFLAGS) $(SRCDIR)/replace_test.cpp $(BUILDDIR)/utility.o -o $(BUILDDIR)/replace_test.cgi
 
 smarty_test.cgi: smarty.o
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/smarty_test.cpp $(BUILDDIR)/smarty.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/smarty_test.cgi
