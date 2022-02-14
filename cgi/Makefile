@@ -38,7 +38,7 @@ world: all main.o dump_get.o dump_matches.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_get.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_get.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_matches.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_matches.cgi
 	
-all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smarty.so smarty_test.cgi
+all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smarty_test.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/get.o -o $(BUILDDIR)/get.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/sed.o -o $(BUILDDIR)/sed.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/find_tags.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/find_tags.cgi
@@ -51,8 +51,8 @@ all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smarty.so smarty_test.
 smarty_test.cgi: smarty.o
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/smarty_test.cpp $(BUILDDIR)/smarty.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/smarty_test.cgi
 
-smarty.so: smarty.o
-	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/smarty.o -o $(BUILDDIR)/smarty.so
+# smarty.so: smarty.o
+# 	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/smarty.o -o $(BUILDDIR)/smarty.so
 
 smarty.o:
 	$(CXX) $(CXXFLAGS) -c $(ROOTDIR)/src/smarty.cpp -o $(BUILDDIR)/smarty.o
