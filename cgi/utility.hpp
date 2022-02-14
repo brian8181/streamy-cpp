@@ -16,7 +16,8 @@ string fstream_read(string path);
 //bool load_config(string path, map<string, string>& config);
 
 void assign(string name, string val, map<string, string>& symbols);
-string display(string name);
+void display(string path, const map<string, string>& tags);
+
 void find_tags(string path);
 void replace_tags(string path);
 string match_replace_tags(string path, const map<string, string>& tags);

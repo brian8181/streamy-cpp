@@ -110,11 +110,6 @@ void assign(string name, string val, map<string, string>& symbols)
     symbols.insert(p);
 }
 
-string display(string name)
-{
-    return fstream_readlines(name);
-}
-
 void find_tags(string path)
 {
     string src = fstream_readlines(path);
@@ -166,7 +161,39 @@ string match_replace_tags(string path, const map<string, string>& tags)
         }
         sbeg = send + match.length();
     }
+    output += src.substr(sbeg);
     return output;
+}
+
+void display(string path, const map<string, string>& tags)
+{
+    string src = fstream_readlines(path);
+    regex src_epx = regex("\\{\\$(.*?)\\}", regex::ECMAScript);
+            
+    sregex_iterator begin = sregex_iterator(src.begin(), src.end(), src_epx);
+    auto end = sregex_iterator(); 
+    
+    int sbeg = 0;
+    int send = 0;
+    string output;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        string tag = trim(sub.str());
+        
+        send = match.position();
+        int len = send-sbeg;
+        output += src.substr(sbeg, len);
+        map<string, string>::const_iterator it = tags.find(tag);
+        if(it != tags.end())
+        {
+            output += it->second;
+        }
+        sbeg = send + match.length();
+    }
+    output += src.substr(sbeg);
+    cout << output << endl;
 }
 
 const std::string WHITESPACE = " \n\r\t\f\v";
