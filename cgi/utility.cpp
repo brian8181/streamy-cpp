@@ -104,12 +104,6 @@ void ParseCommand(string command)
     }
 }
 
-// map sub matches
-void MapSubs()
-{
-    
-}
-
 void assign(string name, string val, map<string, string>& symbols)
 {
     pair<string, string> p(name, val);
@@ -137,7 +131,15 @@ void find_tags(string path)
     }
 }
 
-void get_tags(string path, const map<string, string>& tags)
+void replace_tags(string path)
+{
+    string src = fstream_readlines(path);
+    regex pattern = regex("\\{(.*?)\\}", regex::ECMAScript);
+    std::regex_replace(std::ostreambuf_iterator<char>(std::cout), src.begin(), src.end(), pattern, "<!-- TEST -->");
+}
+
+// closest to working
+string match_replace_tags(string path, const map<string, string>& tags)
 {
     string src = fstream_readlines(path);
     regex src_epx = regex("\\{\\$(.*?)\\}", regex::ECMAScript);
@@ -164,15 +166,7 @@ void get_tags(string path, const map<string, string>& tags)
         }
         sbeg = send + match.length();
     }
-
-    cout << output << endl;
-}
-
-void replace_tags(string path)
-{
-    string src = fstream_readlines(path);
-    regex pattern = regex("\\{(.*?)\\}", regex::ECMAScript);
-    std::regex_replace(std::ostreambuf_iterator<char>(std::cout), src.begin(), src.end(), pattern, "<!-- TEST -->");
+    return output;
 }
 
 const std::string WHITESPACE = " \n\r\t\f\v";

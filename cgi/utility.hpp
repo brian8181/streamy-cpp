@@ -18,8 +18,8 @@ string fstream_read(string path);
 void assign(string name, string val, map<string, string>& symbols);
 string display(string name);
 void find_tags(string path);
-void get_tags(string path, const map<string, string>& tags);
 void replace_tags(string path);
+string match_replace_tags(string path, const map<string, string>& tags);
 
 std::string ltrim(const std::string &s);
 std::string rtrim(const std::string &s);
