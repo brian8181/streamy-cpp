@@ -31,12 +31,9 @@ debug: all
 debuggdb: 
 	#$(CXXFLAGS) += -DDEBUG -ggdb # compile & link
 
-world: all main.o dump_get.o dump_matches.o get.o sed.o
+world: all main.o dump_get.o dump_matches.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/main.o -o $(BUILDDIR)/main.cgi
-	$(CXX) $(CXXFLAGS) $(BUILDDIR)/get.o -o $(BUILDDIR)/get.cgi
-	$(CXX) $(CXXFLAGS) $(BUILDDIR)/sed.o -o $(BUILDDIR)/sed.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
-	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_get.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_get.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_matches.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_matches.cgi
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/display_test.cpp $(BUILDDIR)/utility.o -o $(BUILDDIR)/display_test.cgi
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/replace_test.cpp $(BUILDDIR)/utility.o -o $(BUILDDIR)/replace_test.cgi
@@ -59,22 +56,13 @@ smarty.o:
 	$(CXX) $(CXXFLAGS) -c $(ROOTDIR)/src/smarty.cpp -o $(BUILDDIR)/smarty.o
 	
 main.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.cpp -o $(BUILDDIR)/main.o
-
-get.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/get.cpp -o $(BUILDDIR)/get.o
-
-sed.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/sed.cpp -o $(BUILDDIR)/sed.o
+	$(CXX) $(CXXFLAGS) -c $(ROOTDIR)/src/main.cpp -o $(BUILDDIR)/main.o
 
 load_conf.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/load_conf.cpp -o $(BUILDDIR)/load_conf.o
 
 dump.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump.cpp -o $(BUILDDIR)/dump.o
-
-dump_get.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump_get.cpp -o $(BUILDDIR)/dump_get.o
 
 dump_matches.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/dump_matches.cpp -o $(BUILDDIR)/dump_matches.o
