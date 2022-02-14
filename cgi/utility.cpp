@@ -124,7 +124,7 @@ string display(string name)
 void find_tags(string path)
 {
     string src = fstream_readlines(path);
-    regex src_epx = regex("\\{(.*)}", regex::ECMAScript);
+    regex src_epx = regex("\\{(.*?)\\}", regex::ECMAScript);
             
     sregex_iterator begin = sregex_iterator(src.begin(), src.end(), src_epx, std::regex_constants::match_not_null);
     auto end = sregex_iterator(); 
@@ -137,28 +137,41 @@ void find_tags(string path)
     }
 }
 
-void get_tags(string path, list<string>& tags)
+void get_tags(string path, const map<string, string>& tags)
 {
     string src = fstream_readlines(path);
-    regex src_epx = regex("\\{(.*)}", regex::ECMAScript);
+    regex src_epx = regex("\\{\\$(.*?)\\}", regex::ECMAScript);
             
-    sregex_iterator begin = sregex_iterator(src.begin(), src.end(), src_epx, std::regex_constants::match_not_null);
+    sregex_iterator begin = sregex_iterator(src.begin(), src.end(), src_epx);
     auto end = sregex_iterator(); 
     
+    int sbeg = 0;
+    int send = 0;
+    string output;
     for (sregex_iterator iter = begin; iter != end; ++iter)
     {
         smatch match = *iter;
         std::ssub_match sub = match[1];
-        //cout << match.str() <<  " --> " << sub.str() << endl;
         string tag = trim(sub.str());
-        tags.push_back(tag);
+        
+        send = match.position();
+        int len = send-sbeg;
+        output += src.substr(sbeg, len);
+        map<string, string>::const_iterator it = tags.find(tag);
+        if(it != tags.end())
+        {
+            output += it->second;
+        }
+        sbeg = send + match.length();
     }
+
+    cout << output << endl;
 }
 
 void replace_tags(string path)
 {
     string src = fstream_readlines(path);
-    regex pattern = regex("\\{(.*?)}", regex::ECMAScript);
+    regex pattern = regex("\\{(.*?)\\}", regex::ECMAScript);
     std::regex_replace(std::ostreambuf_iterator<char>(std::cout), src.begin(), src.end(), pattern, "<!-- TEST -->");
 }
 

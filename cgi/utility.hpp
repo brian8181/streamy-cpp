@@ -18,7 +18,7 @@ string fstream_read(string path);
 void assign(string name, string val, map<string, string>& symbols);
 string display(string name);
 void find_tags(string path);
-void get_tags(string path, list<string>& tags);
+void get_tags(string path, const map<string, string>& tags);
 void replace_tags(string path);
 
 std::string ltrim(const std::string &s);

@@ -23,13 +23,17 @@ int main(int argc, char* argv[])
     {
         string path = argv[1];
         cout << "Tags List: " << endl;
-        list<string> tags;
+        map<string, string> tags;
+        tags["AAA"] = "TEST_AAA";
+        tags["BBB"] = "TEST_BBB";
+        tags["CCC"] = "TEST_CCC";
+
         get_tags(path, tags);
-        list<string>::iterator begin = tags.begin();
-        list<string>::iterator end = tags.end();
-        for(list<string>::iterator iter = begin; iter != end; ++iter)
-        {
-            cout << iter->c_str() << endl;
-        }
+        // list<string>::iterator begin = tags.begin();
+        // list<string>::iterator end = tags.end();
+        // for(list<string>::iterator iter = begin; iter != end; ++iter)
+        // {
+        //     cout << iter->c_str() << endl;
+        // }
     }
 }
