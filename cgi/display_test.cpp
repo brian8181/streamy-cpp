@@ -22,10 +22,6 @@ int main(int argc, char* argv[])
     if(argc == 2)
     {
         string path = argv[1];
-
-        cout << "Tags: " << endl;
-        find_tags(path);
-
         cout << "Tags List: " << endl;
         list<string> tags;
         get_tags(path, tags);
@@ -35,9 +31,5 @@ int main(int argc, char* argv[])
         {
             cout << iter->c_str() << endl;
         }
-        
-        cout << "Display: " << endl;
-        string src = display(path);
-        cout << src << endl;
     }
 }

@@ -149,9 +149,8 @@ void get_tags(string path, list<string>& tags)
     {
         smatch match = *iter;
         std::ssub_match sub = match[1];
-        cout << match.str() <<  " --> " << sub.str() << endl;
-
-        string tag = sub.str();
+        //cout << match.str() <<  " --> " << sub.str() << endl;
+        string tag = trim(sub.str());
         tags.push_back(tag);
     }
 }
@@ -174,4 +173,29 @@ std::string trim(const std::string &s)
 {
     return rtrim(ltrim(s));
 }
+
+// std::string& ltrim(std::string &s)
+// {
+//     auto it = std::find_if(s.begin(), s.end(),
+//                     [](char c) {
+//                         return !std::isspace<char>(c, std::locale::classic());
+//                     });
+//     s.erase(s.begin(), it);
+//     return s;
+// }
+ 
+// std::string& rtrim(std::string &s)
+// {
+//     auto it = std::find_if(s.rbegin(), s.rend(),
+//                     [](char c) {
+//                         return !std::isspace<char>(c, std::locale::classic());
+//                     });
+//     s.erase(it.base(), s.end());
+//     return s;
+// }
+ 
+// std::string& trim(std::string &s)
+// {
+//     return ltrim(rtrim(s));
+// }
 

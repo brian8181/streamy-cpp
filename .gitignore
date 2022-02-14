@@ -53,6 +53,7 @@ cgi/*.cgi
 cgi/*.o
 src/*.o
 build/*.o
+build/*.so
 *.o
 *.cgi
 a.out

@@ -1,4 +1,10 @@
 # cgi scripts
+BUILD_VERSION = 0.1.0
+
+prefix = /usr/local
+prefix = /usr/local
+mandir = $(prefix)/share/man
+man1dir = $(mandir)/man1
 
 # Compiler settings - Can be customized.
 CXX = g++
@@ -32,14 +38,19 @@ world: all main.o dump_get.o dump_matches.o
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_get.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_get.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump_matches.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump_matches.cgi
 	
-all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smarty.o
+all: utility.o get.o sed.o find_tags.o load_conf.o dump.o smarty.so smarty_test.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/get.o -o $(BUILDDIR)/get.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/sed.o -o $(BUILDDIR)/sed.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/find_tags.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/find_tags.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/load_conf.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/load_conf.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
-	$(CXX) $(CXXFLAGS) $(SRCDIR)/smarty_test.cpp $(BUILDDIR)/smarty.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/smarty_test.cgi
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/display_test.cpp $(BUILDDIR)/utility.o -o $(BUILDDIR)/display_test.cgi
+
+smarty_test.cgi: smarty.o
+	$(CXX) $(CXXFLAGS) $(SRCDIR)/smarty_test.cpp $(BUILDDIR)/smarty.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/smarty_test.cgi
+
+smarty.so: smarty.o
+	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/smarty.o -o $(BUILDDIR)/smarty.so
 
 smarty.o:
 	$(CXX) $(CXXFLAGS) -c $(ROOTDIR)/src/smarty.cpp -o $(BUILDDIR)/smarty.o
@@ -71,6 +82,7 @@ find_tags.o:
 utility.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/utility.cpp -o $(BUILDDIR)/utility.o
 
+.PHONY: upload
 upload:
 	cp -rf $(BUILDDIR)/*.cgi /var/www/html/cgi
 	
