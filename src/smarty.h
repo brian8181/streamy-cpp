@@ -14,12 +14,13 @@ public:
     smarty(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir);
     ~smarty();
 
+    bool load_config(const string& path);
     bool assign(const string& name, const string& val);
     bool display(const string& tmpl);
 
 private:
 
-    string readlines(const string& path);
+    string readfile(const string& path);
     string ltrim(const string &s);
     string rtrim(const string &s);
     string trim(const string &s);

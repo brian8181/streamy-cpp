@@ -13,7 +13,27 @@ smarty::smarty(const string& template_dir, const string& complie_dir, const stri
 
 smarty::~smarty()
 {
+}
 
+bool smarty::load_config(const string& path)
+{
+    string src = readfile(path);
+    string name_exp = "([A-Za-z]+\\w*)";
+    string value_exp = "((\\w+)|('(\\w+)')|(\\\"(\\w+)\\\"))";
+    regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
+                    
+    auto begin = sregex_iterator(src.begin(), src.end(), src_exp);
+    auto end = sregex_iterator(); 
+
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        string name = match[1].str();
+        string value = match[3].str() + match[5].str() + match[7].str();
+        pair<string, string> p(name, value);
+        config.insert(p);
+    }
+    return true;
 }
 
 bool smarty::assign(const string& name, const string& val)
@@ -25,7 +45,7 @@ bool smarty::assign(const string& name, const string& val)
 
 bool smarty::display(const string& tmpl)
 {
-    string src = readlines(tmpl);
+    string src = readfile(tmpl);
     regex exp = regex("\\{\\$(.*?)\\}", regex::ECMAScript);
             
     sregex_iterator begin = sregex_iterator(src.begin(), src.end(), exp);
@@ -54,7 +74,7 @@ bool smarty::display(const string& tmpl)
     return true;
 }
 
-string smarty::readlines(const string& path)
+string smarty::readfile(const string& path)
 {
     string src;
     fstream file;
