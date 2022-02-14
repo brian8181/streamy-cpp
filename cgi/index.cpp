@@ -1,9 +1,5 @@
-#include <iostream>
-#include <iterator>
-#include <regex>
 #include <string>
 #include <map>
-#include <list>
 #include "utility.hpp"
 #include "index.hpp"
 
@@ -11,7 +7,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 { 
-        string path = "../test/templates/index_test.tpl";
+        string path = "./templates/index_test.tpl";
         map<string, string> tags;
         assign("headers", "", tags);
         assign("page_title", "SmartyCPP Test Page", tags);

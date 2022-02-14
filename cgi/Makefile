@@ -2,7 +2,6 @@
 BUILD_VERSION = 0.1.0
 
 prefix = /usr/local
-prefix = /usr/local
 mandir = $(prefix)/share/man
 man1dir = $(mandir)/man1
 

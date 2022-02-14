@@ -52,7 +52,7 @@ bool smarty::display(const string& tmpl)
     auto end = sregex_iterator(); 
     
     int beg_pos = 0;
-    string output;
+    string output = "content-type: text/html\n";
     for (sregex_iterator iter = begin; iter != end; ++iter)
     {
         smatch match = *iter;
