@@ -39,12 +39,15 @@ world: all main.o dump_matches.o find_tags.o
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/replace_test.cpp $(BUILDDIR)/utility.o -o $(BUILDDIR)/replace_test.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/find_tags.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/find_tags.cgi
 	
-all: utility.o load_conf.o dump.o smarty.o smarty_test.cgi index.cgi
+all: utility.o load_conf.o dump.o smarty.o smarty_test.cgi index.cgi index2.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/load_conf.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/load_conf.cgi
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/dump.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/dump.cgi
 	
 index.cgi:
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/index.cpp $(BUILDDIR)/utility.o -o $(BUILDDIR)/index.cgi
+
+index2.cgi:
+	$(CXX) $(CXXFLAGS) $(SRCDIR)/index2.cpp $(BUILDDIR)/smarty.o -o $(BUILDDIR)/index2.cgi
 
 smarty_test.cgi: smarty.o
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/smarty_test.cpp $(BUILDDIR)/smarty.o $(BUILDDIR)/utility.o -o $(BUILDDIR)/smarty_test.cgi

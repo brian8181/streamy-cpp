@@ -51,8 +51,8 @@ bool smarty::display(const string& tmpl)
     sregex_iterator begin = sregex_iterator(src.begin(), src.end(), exp);
     auto end = sregex_iterator(); 
     
+    string output;
     int beg_pos = 0;
-    string output = "content-type: text/html\n";
     for (sregex_iterator iter = begin; iter != end; ++iter)
     {
         smatch match = *iter;
