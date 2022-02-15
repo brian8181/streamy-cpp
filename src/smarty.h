@@ -21,6 +21,7 @@ public:
 private:
 
     string readfile(const string& path);
+    void ParseTag(string tag);
     string ltrim(const string &s);
     string rtrim(const string &s);
     string trim(const string &s);

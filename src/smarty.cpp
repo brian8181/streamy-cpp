@@ -74,6 +74,11 @@ bool smarty::display(const string& tmpl)
     return true;
 }
 
+void smarty::ParseTag(string tag)
+{
+
+}
+
 string smarty::readfile(const string& path)
 {
     string src;
