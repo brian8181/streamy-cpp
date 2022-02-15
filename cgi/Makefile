@@ -79,6 +79,7 @@ utility.o:
 .PHONY: upload
 upload:
 	cp -rf $(BUILDDIR)/*.cgi /var/www/html/cgi
+	cp -rf $(SRCDIR)/* /var/www/html/cgi
 	
 .PHONY: clean
 clean:
