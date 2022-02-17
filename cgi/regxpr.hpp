@@ -11,7 +11,6 @@ string punct = R"([-!"#%&'()*,./:;?@[\\\]_{}])"; //ascii
 string sybols = R"([$+<=>^`|~])"; //ascii
 string name_exp = "[A-Za-z]+\\w*";
 string var = "\\{\\s*\\$(" + name_exp + ")\\s*\\}";
-
 string command = "(config_load|include|insert)\\sfile='(.*)'";
 
 #endif
