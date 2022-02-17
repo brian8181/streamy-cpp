@@ -37,7 +37,7 @@ debug: all
 
 # compile & link for debug GDBversion variable
 debuggdb: CXXFLAGS += -DDEBUG -ggdb # compile & link
-all: $(APPNAME) bash_color_test $(APPNAME)_test
+all: $(APPNAME) bash_color_test $(APPNAME)_test smarty.a
 
 # link
 $(APPNAME): $(APPNAME).o main.o 
@@ -46,10 +46,19 @@ $(APPNAME): $(APPNAME).o main.o
 # compile only
 $(APPNAME).o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/$(APPNAME).$(EXT)  -o $(BUILDDIR)/$(APPNAME).o
-	
+
 main.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.$(EXT) -o $(BUILDDIR)/main.o
 	# $(CXX) $(CXXFLAGS) $(INCLUDES) $(BUILDDIR)/$(APPNAME).o $(LDFLAGS) -o $(BUILDDIR)/$(APPNAME)_test
+
+# smarty.so: smarty.o
+#  	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/smarty.o -o $(BUILDDIR)/smarty.so
+
+smarty.a: smarty.o
+	ar rvs smarty.a smarty.o
+
+smarty.o:
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/smarty.$(EXT) -o $(BUILDDIR)/smarty.o	
 
 # link
 $(APPNAME)_test: $(APPNAME)_test.o
@@ -88,6 +97,7 @@ install: man
 clean:
 	rm -f $(BUILDDIR)/$(APPNAME) $(BUILDDIR)/*.o $(BUILDDIR)/$(APPNAME)_test $(BUILDDIR)/bash_color_test
 	rm -f $(BUILDDIR)/*.xml $(BUILDDIR)/$(APPNAME).$(BUILD_VERSION).tar.gz
+	rm $(BUILDDIR)/smarty.a
 
 # delete all auto generated files
 .PHONY: distclean
