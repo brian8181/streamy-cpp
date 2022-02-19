@@ -22,7 +22,7 @@ bool smarty::load_config(const string& path)
     string value_exp = "((\\w+)|('(\\w+)')|(\\\"(\\w+)\\\"))";
     regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
                     
-    auto begin = sregex_iterator(src.begin(), src.end(), src_exp);
+    auto begin = sregex_iterator(src.begin(), src.end(), src_exp, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
 
     for (sregex_iterator iter = begin; iter != end; ++iter)

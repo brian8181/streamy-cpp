@@ -13,6 +13,15 @@
             }
         },
         {
+            "label": "MAKE find_tags",
+            "type": "shell",
+            "command": "make -f ${fileDirname}/Makefile find_tags.cgi",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
             "label": "echo",
             "type": "shell",
             "command": "echo ${workspaceFolder}"
