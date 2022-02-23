@@ -30,8 +30,9 @@ private:
     // std::string& rtrim(const std::string &s);
     // std::string& trim(const std::string &s);
 
+    map<string, string> smarty_vars;
     map<string, string> config;
-    map<string, string> symbols;
+    map<string, string> vars;
     map<string, std::map<string, string>> arrays;
 
     string template_dir;

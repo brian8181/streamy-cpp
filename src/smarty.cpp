@@ -3,7 +3,7 @@
 #include <fstream>
 #include "smarty.h"
 
-smarty::smarty(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir)
+smarty::smarty(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
     this->template_dir = template_dir;
     this->compile_dir = compile_dir;
@@ -39,7 +39,7 @@ bool smarty::load_config(const string& path)
 bool smarty::assign(const string& name, const string& val)
 {
     pair<string, string> p(name, val);
-    symbols.insert(p);
+    vars.insert(p);
     return true;
 }
 
@@ -48,7 +48,7 @@ bool smarty::display(const string& tmpl)
     string src = readfile(tmpl);
     regex exp = regex("\\{\\$(.*?)\\}", regex::ECMAScript);
             
-    sregex_iterator begin = sregex_iterator(src.begin(), src.end(), exp);
+    sregex_iterator begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
     
     string output;
@@ -61,8 +61,8 @@ bool smarty::display(const string& tmpl)
         
         int end_pos = match.position();
         output += src.substr(beg_pos, end_pos-beg_pos);
-        map<string, string>::const_iterator find_iter = symbols.find(tag);
-        if(find_iter != symbols.end())
+        map<string, string>::const_iterator find_iter = vars.find(tag);
+        if(find_iter != vars.end())
         {
             output += find_iter->second;
         }
@@ -82,7 +82,7 @@ void smarty::ParseTag(string tag)
 string smarty::readfile(const string& path)
 {
     string src;
-    fstream file;
+    ifstream file;
     file.open(path, ios::in); //open a file to perform read operation using file object
     if (file.is_open())
     {   

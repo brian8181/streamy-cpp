@@ -54,6 +54,11 @@ cgi/*.o
 src/*.o
 build/*.o
 build/*.so
+build/bash_color_test
+build/smarty.a
+build/smartycpp
+build/smartycpp_test
+
 *.o
 *.cgi
 a.out
