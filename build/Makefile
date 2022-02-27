@@ -17,7 +17,7 @@ man1dir = $(mandir)/man1
 # Compiler settings - Can be customized.
 CXX = g++
 #CXXFLAGS = -Wall -std=c++11
-CXXFLAGS = -Wall -std=c++11 -std=gnu++17 -DDEBUG -ggdb
+CXXFLAGS = -Wall -std=c++11 -std=gnu++17 -DDEBUG -ggdb -fPIC
 
 # lib settings
 LDFLAGS = -static -lcppunit -L/usr/local/lib/
@@ -38,7 +38,7 @@ debug: all
 
 # compile & link for debug GDBversion variable
 #debuggdb: CXXFLAGS += -DDEBUG -ggdb # compile & link
-all: $(APPNAME) bash_color_test $(APPNAME)_test smarty.a
+all: $(APPNAME) bash_color_test $(APPNAME)_test smarty.a smarty.so
 
 # link
 $(APPNAME): $(APPNAME).o main.o 
@@ -52,8 +52,8 @@ main.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.$(EXT) -o $(BUILDDIR)/main.o
 	# $(CXX) $(CXXFLAGS) $(INCLUDES) $(BUILDDIR)/$(APPNAME).o $(LDFLAGS) -o $(BUILDDIR)/$(APPNAME)_test
 
-# smarty.so: smarty.o
-#  	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/smarty.o -o $(BUILDDIR)/smarty.so
+smarty.so: smarty.o
+	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/smarty.o -o $(BUILDDIR)/smarty.so
 
 smarty.a: smarty.o
 	ar rvs smarty.a smarty.o
@@ -98,7 +98,7 @@ install: man
 clean:
 	rm -f $(BUILDDIR)/$(APPNAME) $(BUILDDIR)/*.o $(BUILDDIR)/$(APPNAME)_test $(BUILDDIR)/bash_color_test
 	rm -f $(BUILDDIR)/*.xml $(BUILDDIR)/$(APPNAME).$(BUILD_VERSION).tar.gz
-	rm $(BUILDDIR)/smarty.a
+	rm $(BUILDDIR)/smarty.a $(BUILDDIR)/smarty.so 
 
 # delete all auto generated files
 .PHONY: distclean
