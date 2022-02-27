@@ -1,7 +1,7 @@
 #include <iostream>
 #include <regex>
 #include <fstream>
-#include "smarty.h"
+#include "smarty.hpp"
 
 smarty::smarty(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
