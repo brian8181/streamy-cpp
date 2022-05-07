@@ -98,44 +98,45 @@ string smarty::readfile(const string& path)
     return src;
 }
 
-std::string smarty::ltrim(const std::string &s)
+// std::string smarty::ltrim(const std::string &s)
+// {
+//     size_t start = s.find_first_not_of(WHITESPACE);
+//     return (start == std::string::npos) ? "" : s.substr(start);
+// }
+
+// std::string smarty::rtrim(const std::string &s)
+// {
+//     size_t end = s.find_last_not_of(WHITESPACE);
+//     return (end == std::string::npos) ? "" : s.substr(0, end + 1);
+// }
+ 
+// std::string smarty::trim(const std::string &s)
+// {
+//     return rtrim(ltrim(s));
+// }
+
+
+std::string& ltrim(std::string &s)
 {
-    size_t start = s.find_first_not_of(WHITESPACE);
-    return (start == std::string::npos) ? "" : s.substr(start);
+    auto it = std::find_if(s.begin(), s.end(),
+                    [](char c) {
+                        return !std::isspace<char>(c, std::locale::classic());
+                    });
+    s.erase(s.begin(), it);
+    return s;
 }
 
-std::string smarty::rtrim(const std::string &s)
+std::string& rtrim(std::string &s)
 {
-    size_t end = s.find_last_not_of(WHITESPACE);
-    return (end == std::string::npos) ? "" : s.substr(0, end + 1);
-}
- 
-std::string smarty::trim(const std::string &s)
-{
-    return rtrim(ltrim(s));
+    auto it = std::find_if(s.rbegin(), s.rend(),
+                    [](char c) {
+                        return !std::isspace<char>(c, std::locale::classic());
+                    });
+    s.erase(it.base(), s.end());
+    return s;
 }
 
-// std::string& ltrim(std::string &s)
-// {
-//     auto it = std::find_if(s.begin(), s.end(),
-//                     [](char c) {
-//                         return !std::isspace<char>(c, std::locale::classic());
-//                     });
-//     s.erase(s.begin(), it);
-//     return s;
-// }
- 
-// std::string& rtrim(std::string &s)
-// {
-//     auto it = std::find_if(s.rbegin(), s.rend(),
-//                     [](char c) {
-//                         return !std::isspace<char>(c, std::locale::classic());
-//                     });
-//     s.erase(it.base(), s.end());
-//     return s;
-// }
- 
-// std::string& trim(std::string &s)
-// {
-//     return ltrim(rtrim(s));
-// }
+std::string& trim(std::string &s)
+{
+    return ltrim(rtrim(s));
+}

@@ -62,3 +62,6 @@ build/smartycpp_test
 *.o
 *.cgi
 a.out
+cleandist.sh
+src/.deps/*
+src/.libs/*

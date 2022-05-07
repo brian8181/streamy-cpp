@@ -6,7 +6,7 @@
 
 using namespace std;
 
-const string WHITESPACE = " \n\r\t\f\v";
+//const string WHITESPACE = " \n\r\t\f\v";
 
 class smarty
 {
@@ -22,18 +22,18 @@ private:
 
     string readfile(const string& path);
     void ParseTag(string tag);
-    string ltrim(const string &s);
-    string rtrim(const string &s);
-    string trim(const string &s);
 
-    // std::string& ltrim(const std::string &s);
-    // std::string& rtrim(const std::string &s);
-    // std::string& trim(const std::string &s);
+    // string ltrim(const string &s);
+    // string rtrim(const string &s);
+    // string trim(const string &s);
+    string& ltrim(const std::string &s);
+    string& rtrim(const std::string &s);
+    string& trim(const std::string &s);
 
-    map<string, string> smarty_vars;
-    map<string, string> config;
-    map<string, string> vars;
-    map<string, std::map<string, string>> arrays;
+    std::map<string, string> smarty_vars;
+    std::map<string, string> config;
+    std::map<string, string> vars;
+    std::map<string, std::map<string, string>> arrays;
 
     string template_dir;
     string compile_dir;

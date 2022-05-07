@@ -2,7 +2,6 @@
 #include <string>
 #include <regex>
 #include <getopt.h>
-#include "main.hpp"
 #include "smartycpp.hpp"
 
 using namespace std;
