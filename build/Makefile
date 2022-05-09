@@ -50,7 +50,7 @@ $(APPNAME).o:
 
 main.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.$(EXT) -o $(BUILDDIR)/main.o
-	# $(CXX) $(CXXFLAGS) $(INCLUDES) $(BUILDDIR)/$(APPNAME).o $(LDFLAGS) -o $(BUILDDIR)/$(APPNAME)_test
+	#$(CXX) $(CXXFLAGS) $(INCLUDES) $(BUILDDIR)/$(APPNAME).o $(LDFLAGS) -o $(BUILDDIR)/$(APPNAME)_test
 
 smarty.so: smarty.o
 	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/smarty.o -o $(BUILDDIR)/smarty.so
@@ -104,10 +104,10 @@ clean:
 .PHONY: distclean
 distclean: clean
 	rm -f $(SRCDIR)/config.* $(SRCDIR)/Makefile $(SRCDIR)/Makefile.in $(SRCDIR)/INSTALL $(SRCDIR)/configure 
-	# rm ../stamp-h1 ../aclocal.m4 ../compile ../install-sh ../libtool ../ltmain.sh ../stamp-h1 ../missing ../depcomp
-	# rm ../src/Makefile ../src/Makefile.in
-	# rm -rf ../autom4te.cache ../src/.deps ../src/.libs
-	# rm ../src/.o
+	#rm ../stamp-h1 ../aclocal.m4 ../compile ../install-sh ../libtool ../ltmain.sh ../stamp-h1 ../missing ../depcomp
+	#rm ../src/Makefile ../src/Makefile.in
+	#rm -rf ../autom4te.cache ../src/.deps ../src/.libs
+	#rm ../src/.o
 
 dist: 
 	git archive HEAD | gzip > $(BUILDDIR)/$(APPNAME).$(BUILD_VERSION).tar.gz

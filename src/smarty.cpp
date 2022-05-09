@@ -57,7 +57,7 @@ bool smarty::display(const string& tmpl)
     {
         smatch match = *iter;
         std::ssub_match sub = match[1];
-        string tag = trim(sub.str());
+        string& tag = trim(sub.str());
         
         int end_pos = match.position();
         output += src.substr(beg_pos, end_pos-beg_pos);
@@ -97,24 +97,6 @@ string smarty::readfile(const string& path)
     }
     return src;
 }
-
-// std::string smarty::ltrim(const std::string &s)
-// {
-//     size_t start = s.find_first_not_of(WHITESPACE);
-//     return (start == std::string::npos) ? "" : s.substr(start);
-// }
-
-// std::string smarty::rtrim(const std::string &s)
-// {
-//     size_t end = s.find_last_not_of(WHITESPACE);
-//     return (end == std::string::npos) ? "" : s.substr(0, end + 1);
-// }
- 
-// std::string smarty::trim(const std::string &s)
-// {
-//     return rtrim(ltrim(s));
-// }
-
 
 std::string& ltrim(std::string &s)
 {
