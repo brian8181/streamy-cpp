@@ -1,0 +1,83 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>$security_settings</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Smarty Manual">
+<link rel="up" href="api.variables.html" title="Chapter 12. Smarty Class Variables">
+<link rel="prev" href="variable.secure.dir.html" title="$secure_dir">
+<link rel="next" href="variable.trusted.dir.html" title="$trusted_dir">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">$security_settings</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="variable.secure.dir.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 12. Smarty Class Variables</th>
+<td width="20%" align="right"> <a accesskey="n" href="variable.trusted.dir.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" title="$security_settings">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="variable.security.settings"></a>$security_settings</h2></div></div></div>
+<p>
+       These are used to override or specify the security settings when
+<a class="link" href="variable.security.html" title="$security"><em class="parameter"><code>$security</code></em></a> is enabled.
+These are the possible settings:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>
+  <code class="constant">PHP_HANDLING</code> - boolean. If set to <code class="constant">TRUE</code>, the
+  <a class="link" href="variable.php.handling.html" title="$php_handling"><em class="parameter"><code>$php_handling</code></em></a>
+  setting is not checked for security.
+ </p></li>
+<li class="listitem"><p>
+  <code class="constant">IF_FUNCS</code> - array. The names of permitted PHP functions in
+  <a class="link" href="language.function.if.html" title="{if},{elseif},{else}"><code class="varname">{if}</code></a> statements.
+ </p></li>
+<li class="listitem"><p>
+  <code class="constant">INCLUDE_ANY</code> - boolean. If set to <code class="constant">TRUE</code>, any
+         template can be <a class="link" href="language.function.include.html" title="{include}">included</a>
+          from the file system, regardless of the
+  <a class="link" href="variable.secure.dir.html" title="$secure_dir"><em class="parameter"><code>$secure_dir</code></em></a> list.
+ </p></li>
+<li class="listitem"><p>
+  <code class="constant">PHP_TAGS</code> - boolean. If set to <code class="constant">TRUE</code>,
+  <a class="link" href="language.function.php.html" title="{php}"><code class="varname">{php}{/php}</code></a>
+  tags are permitted in the templates.
+ </p></li>
+<li class="listitem"><p>
+  <code class="constant">MODIFIER_FUNCS</code> - array. The names of permitted
+  PHP functions that can be used as variable modifiers.
+ </p></li>
+<li class="listitem"><p>
+  <code class="constant">ALLOW_CONSTANTS</code> - boolean. If set to <code class="constant">TRUE</code>, constants via
+  <a class="link" href="language.variables.smarty.html#language.variables.smarty.const" title="{$smarty.const}"><em class="parameter"><code>{$smarty.const.FOO}</code></em></a>
+  are allowed in the templates.
+ </p></li>
+</ul></div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="variable.secure.dir.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="api.variables.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="variable.trusted.dir.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">$secure_dir </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> $trusted_dir</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

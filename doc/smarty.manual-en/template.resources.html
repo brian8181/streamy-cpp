@@ -1,0 +1,278 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Resources</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Smarty Manual">
+<link rel="up" href="advanced.features.html" title="Chapter 15. Advanced Features">
+<link rel="prev" href="section.template.cache.handler.func.html" title="Cache Handler Function">
+<link rel="next" href="plugins.html" title="Chapter 16. Extending Smarty With Plugins">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Resources</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="section.template.cache.handler.func.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 15. Advanced Features</th>
+<td width="20%" align="right"> <a accesskey="n" href="plugins.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" title="Resources">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="template.resources"></a>Resources</h2></div></div></div>
+<p>
+  The templates may come from a variety of sources. When you
+  <a class="link" href="api.display.html" title="display()"><code class="varname">display()</code></a> or
+  <a class="link" href="api.fetch.html" title="fetch()"><code class="varname">fetch()</code></a>
+	   a template, or when you include a template from within another template,
+	   you supply a resource type, followed by the appropriate path and template
+   	name. If a resource is not explicitly given the value of <a class="link" href="variable.default.resource.type.html" title="$default_resource_type">
+    <em class="parameter"><code>$default_resource_type</code></em></a> is	assumed.
+   </p>
+<div class="sect2" title="Templates from $template_dir">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="templates.from.template.dir"></a>Templates from $template_dir</h3></div></div></div>
+<p>
+     Templates from the <a class="link" href="api.variables.html#variable.template.dir" title="$template_dir">
+     <em class="parameter"><code>$template_dir</code></em></a> do not require a template
+     resource, although you can use the <code class="literal">file:</code> resource
+     for consistancy. Just supply the path to the template you want to use
+     relative to the <a class="link" href="api.variables.html#variable.template.dir" title="$template_dir">
+     <em class="parameter"><code>$template_dir</code></em></a> root directory.
+    </p>
+<div class="example">
+<a name="id3121472"></a><p class="title"><b>Example 15.6. Using templates from the $template_dir</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+
+&lt;?php
+$smarty-&gt;display('index.tpl');
+$smarty-&gt;display('admin/menu.tpl');
+$smarty-&gt;display('file:admin/menu.tpl'); // same as one above
+?&gt;
+
+</pre>
+<p>From within a Smarty template</p>
+<pre class="programlisting">
+
+{include file='index.tpl'}
+{* below is same as above *}
+{include file='file:index.tpl'}
+
+</pre>
+</div>
+</div>
+<br class="example-break">
+</div>
+<div class="sect2" title="Templates from any directory">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="templates.from.any.dir"></a>Templates from any directory</h3></div></div></div>
+<p>
+     Templates outside of the <a class="link" href="api.variables.html#variable.template.dir" title="$template_dir">
+     <em class="parameter"><code>$template_dir</code></em></a>
+     require the <code class="literal">file:</code> template resource type, followed by
+     the absolute path to the template.
+    </p>
+<div class="example">
+<a name="id3122450"></a><p class="title"><b>Example 15.7. Using templates from any directory</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+
+&lt;?php
+$smarty-&gt;display('file:/export/templates/index.tpl');
+$smarty-&gt;display('file:/path/to/my/templates/menu.tpl');
+?&gt;
+
+     </pre>
+<p>
+      And from within a Smarty template:
+     </p>
+<pre class="programlisting">
+
+{include file='file:/usr/local/share/templates/navigation.tpl'}
+
+     </pre>
+</div>
+</div>
+<br class="example-break"><div class="sect3" title="Windows Filepaths">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="templates.windows.filepath"></a>Windows Filepaths</h4></div></div></div>
+<p>
+      If you are using a Windows machine, filepaths usually include a
+      drive letter (C:) at the beginning of the pathname. Be sure to use
+      <code class="literal">file:</code> in the path to avoid namespace conflicts and
+      get the desired results.
+     </p>
+<div class="example">
+<a name="id3122504"></a><p class="title"><b>Example 15.8. Using templates from windows file paths</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+
+&lt;?php
+$smarty-&gt;display('file:C:/export/templates/index.tpl');
+$smarty-&gt;display('file:F:/path/to/my/templates/menu.tpl');
+?&gt;
+
+     </pre>
+<p>
+      And from within Smarty template:
+     </p>
+<pre class="programlisting">
+
+{include file='file:D:/usr/local/share/templates/navigation.tpl'}
+
+</pre>
+</div>
+</div>
+<br class="example-break">
+</div>
+</div>
+<div class="sect2" title="Templates from other sources">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="templates.from.elsewhere"></a>Templates from other sources</h3></div></div></div>
+<p>
+     You can retrieve templates using whatever possible source you can
+     access with PHP: databases, sockets, LDAP, and so on. You do this
+     by writing resource plugin functions and registering them with
+     Smarty.
+    </p>
+<p>
+     See <a class="link" href="plugins.resources.html" title="Resources">resource plugins</a>
+     section for more information on the functions you are supposed
+     to provide.
+    </p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>
+      Note that you cannot override the built-in
+      <code class="literal">file:</code> resource, but you can provide a resource
+      that fetches templates from the file system in some other way by
+      registering under another resource name.
+     </p>
+</div>
+<div class="example">
+<a name="id3122584"></a><p class="title"><b>Example 15.9. Using custom resources</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+
+&lt;?php
+// put these function somewhere in your application
+function db_get_template ($tpl_name, &amp;$tpl_source, &amp;$smarty_obj)
+{
+    // do database call here to fetch your template,
+    // populating $tpl_source with actual template contents
+    $tpl_source = "This is the template text";
+    // return true on success, false to generate failure notification
+    return true;
+}
+
+function db_get_timestamp($tpl_name, &amp;$tpl_timestamp, &amp;$smarty_obj)
+{
+    // do database call here to populate $tpl_timestamp
+    // with unix epoch time value of last template modification.
+    // This is used to determine if recompile is necessary.
+    $tpl_timestamp = time(); // this example will always recompile!
+    // return true on success, false to generate failure notification
+    return true;
+}
+
+function db_get_secure($tpl_name, &amp;$smarty_obj)
+{
+    // assume all templates are secure
+    return true;
+}
+
+function db_get_trusted($tpl_name, &amp;$smarty_obj)
+{
+    // not used for templates
+}
+
+// register the resource name "db"
+$smarty-&gt;register_resource("db", array("db_get_template",
+                                       "db_get_timestamp",
+                                       "db_get_secure",
+                                       "db_get_trusted"));
+
+// using resource from php script
+$smarty-&gt;display("db:index.tpl");
+?&gt;
+
+     </pre>
+<p>
+      And from within Smarty template:
+     </p>
+<pre class="programlisting">
+
+{include file='db:/extras/navigation.tpl'}
+
+     </pre>
+</div>
+</div>
+<br class="example-break">
+</div>
+<div class="sect2" title="Default template handler function">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="default.template.handler.function"></a>Default template handler function</h3></div></div></div>
+<p>
+     You can specify a function that is used to retrieve template
+     contents in the event the template cannot be retrieved from its
+     resource. One use of this is to create templates that do not exist
+     on-the-fly.
+    </p>
+<div class="example">
+<a name="id3122674"></a><p class="title"><b>Example 15.10. Using the default template handler function</b></p>
+<div class="example-contents"><pre class="programlisting">
+
+&lt;?php
+// put this function somewhere in your application
+
+function make_template ($resource_type, $resource_name, &amp;$template_source, &amp;$template_timestamp,
+&amp;$smarty_obj)
+{
+	if( $resource_type == 'file' ) {
+		if ( ! is_readable ( $resource_name )) {
+			// create the template file, return contents.
+			$template_source = "This is a new template.";
+            require_once SMARTY_CORE_DIR . 'core.write_file.php';
+            smarty_core_write_file( array( 'filename'=&gt;$smarty_obj-&gt;template_dir . DIRECTORY_SEPARATOR . $resource_name, 'contents'=&gt;$template_source ), $smarty_obj ); 
+			return true;
+		}
+    } else {
+		// not a file
+		return false;
+    }
+}
+
+// set the default handler
+$smarty-&gt;default_template_handler_func = 'make_template';
+?&gt;
+
+     </pre></div>
+</div>
+<br class="example-break">
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="section.template.cache.handler.func.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="advanced.features.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="plugins.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Cache Handler Function </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Chapter 16. Extending Smarty With Plugins</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

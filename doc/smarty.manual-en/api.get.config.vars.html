@@ -1,0 +1,84 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>get_config_vars()</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Smarty Manual">
+<link rel="up" href="api.functions.html" title="Chapter 13. Smarty Class Methods()">
+<link rel="prev" href="api.fetch.html" title="fetch()">
+<link rel="next" href="api.get.registered.object.html" title="get_registered_object()">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">get_config_vars()</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="api.fetch.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 13. Smarty Class Methods()</th>
+<td width="20%" align="right"> <a accesskey="n" href="api.get.registered.object.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="refentry" title="get_config_vars()">
+<a name="api.get.config.vars"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>get_config_vars() — returns the given loaded config variable value</p>
+</div>
+<div class="refsect1" title="Description">
+<a name="id3101069"></a><h2>Description</h2>
+<code class="methodsynopsis"><span class="type">array </span><span class="methodname">get_config_vars</span>(<span class="methodparam"><span class="type">string </span><span class="parameter">varname</span></span>);</code><p>
+   If no parameter is given, an array of all loaded
+   <a class="link" href="language.config.variables.html" title="Variables loaded from config files">config variables</a>
+   is returned.
+  </p>
+<div class="example">
+<a name="id3100865"></a><p class="title"><b>Example 13.16. get_config_vars()</b></p>
+<div class="example-contents"><pre class="programlisting">
+
+&lt;?php
+
+// get loaded config template var #foo#
+$myVar = $smarty-&gt;get_config_vars('foo');
+
+// get all loaded config template vars
+$all_config_vars = $smarty-&gt;get_config_vars();
+
+// take a look at them
+print_r($all_config_vars);
+?&gt;
+
+   </pre></div>
+</div>
+<br class="example-break"><p>
+   See also
+  <a class="link" href="api.clear.config.html" title="clear_config()"><code class="varname">clear_config()</code></a>,
+   <a class="link" href="language.function.config.load.html" title="{config_load}"><code class="varname">{config_load}</code></a>,
+  <a class="link" href="api.config.load.html" title="config_load()"><code class="varname">config_load()</code></a>
+   and
+  <a class="link" href="api.get.template.vars.html" title="get_template_vars()"><code class="varname">get_template_vars()</code></a>.
+  </p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="api.fetch.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="api.functions.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="api.get.registered.object.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">fetch() </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> get_registered_object()</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
