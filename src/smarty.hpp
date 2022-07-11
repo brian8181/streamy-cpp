@@ -21,9 +21,9 @@ private:
     string readfile(const string& path);
     void ParseTag(string tag);
  
-    string& ltrim(const std::string &s);
-    string& rtrim(const std::string &s);
-    string& trim(const std::string &s);
+    string& ltrim(std::string &s);
+    string& rtrim(std::string &s);
+    string& trim(std::string &s);
 
     std::map<string, string> smarty_vars;
     std::map<string, string> config;
