@@ -1,0 +1,13 @@
+all: smarty-cpp
+
+smarty-cpp.tab.c smarty-cpp.tab.h:	smarty-cpp.y
+	bison -t -v -d smarty-cpp.y
+
+lex.yy.c: smarty-cpp.l smarty-cpp.tab.h
+	flex smarty-cpp.l
+
+smarty-cpp: lex.yy.c smarty-cpp.tab.c smarty-cpp.tab.h
+	gcc -o smarty-cpp smarty-cpp.tab.c lex.yy.c
+
+clean:
+	rm smarty-cpp smarty-cpp.tab.c lex.yy.c smarty-cpp.tab.h smarty-cpp.output

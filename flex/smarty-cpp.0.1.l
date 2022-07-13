@@ -5,19 +5,18 @@
 
 #define YY_DECL int yylex()
 
-#include "smarty-cpp.tab.h"
+#include "calc.tab.h"
 
 %}
 
 %%
 
 [ \t]	; // ignore all whitespace
-[abc]   ; // ignore a, b & c
-\{.*\}  { return T_QUIT; } // testing match TAGS
 [0-9]+\.[0-9]+ 	{yylval.fval = atof(yytext); return T_FLOAT;}
 [0-9]+		{yylval.ival = atoi(yytext); return T_INT;}
 \n		{return T_NEWLINE;}
 "+"		{return T_PLUS;}
+"-"		{return T_MINUS;}
 "*"		{return T_MULTIPLY;}
 "/"		{return T_DIVIDE;}
 "("		{return T_LEFT;}

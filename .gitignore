@@ -65,3 +65,8 @@ a.out
 cleandist.sh
 src/.deps/*
 src/.libs/*
+flex/lex.yy.c
+flex/smarty-cpp.output
+flex/smarty-cpp.tab.h
+flex/smarty-cpp.tab.c
+flex/smarty-cpp
