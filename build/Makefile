@@ -38,7 +38,7 @@ debug: all
 
 # compile & link for debug GDBversion variable
 #debuggdb: CXXFLAGS += -DDEBUG -ggdb # compile & link
-all: $(APPNAME) bash_color_test $(APPNAME)_test smarty.a smarty.so
+all: $(APPNAME) bash_color_test $(APPNAME)_test smarty.a smarty.so #smarty-parse
 
 # link
 $(APPNAME): $(APPNAME).o main.o 
@@ -74,6 +74,16 @@ bash_color_test: bash_color_test.o
 
 bash_color_test.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/bash_color_test.cpp -o $(BUILDDIR)/bash_color_test.o
+
+# flex & bison
+# smarty-cpp.tab.c smarty-cpp.tab.h:	smarty-cpp.y
+# 	bison -t -v -d smarty-cpp.y
+
+# lex.yy.c: smarty-cpp.l smarty-cpp.tab.h
+# 	flex smarty-cpp.l
+
+# smarty-parse: lex.yy.c smarty-cpp.tab.c smarty-cpp.tab.h
+# 	gcc -o smarty-parse smarty-cpp.tab.c lex.yy.c
 
 # install man pages
 .PHONY: man
