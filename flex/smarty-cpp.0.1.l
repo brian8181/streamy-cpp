@@ -11,6 +11,8 @@
 
 %%
 
+\{\s*\*[\w\s\p]*\*\s*\}  { printf("COMMENT"); return 0;};                // {*ABC*} 
+
 [ \t]	; // ignore all whitespace
 [0-9]+\.[0-9]+ 	{yylval.fval = atof(yytext); return T_FLOAT;}
 [0-9]+		{yylval.ival = atoi(yytext); return T_INT;}

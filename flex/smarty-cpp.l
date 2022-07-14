@@ -11,9 +11,9 @@
 
 %%
 
+\{\s*\$([A-Za-z]\w*)\s*\} { printf("VARIABLE\n"); return 0;};               // {$ABC}
 [ \t]	; // ignore all whitespace
-[abc]   ; // ignore a, b & c
-\{.*\}  { return T_QUIT; } // testing match TAGS
+[a-z][0-9]* ECHO;
 [0-9]+\.[0-9]+ 	{yylval.fval = atof(yytext); return T_FLOAT;}
 [0-9]+		{yylval.ival = atoi(yytext); return T_INT;}
 \n		{return T_NEWLINE;}

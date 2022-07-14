@@ -69,4 +69,4 @@ flex/lex.yy.c
 flex/smarty-cpp.output
 flex/smarty-cpp.tab.h
 flex/smarty-cpp.tab.c
-flex/smarty-cpp
+flex/smarty-cpp-parse
