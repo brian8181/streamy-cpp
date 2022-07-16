@@ -14,14 +14,14 @@ public:
 
     bool load_config(const string& path);
     bool assign(const string& name, const string& val);
-    bool _display(const string& tmpl);
+    bool escape(const string& tmpl);
     bool display(const string& tmpl);
-
+    
 private:
 
     string readfile(const string& path);
-    void ParseTag(string tag);
- 
+    string include(const string& tmpl);
+     
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);
     string& trim(std::string &s);

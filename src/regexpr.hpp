@@ -6,9 +6,10 @@
 
 using namespace std;
 
+const string ESCAPE = "\\{\\$?(.*?)\\}";
 const string COMMENT = ".*";
-string VARIABLE = "\\{\\$(.*?)\\}";
-const string INCLUDE = ".*";
+const string VARIABLE = "\\{\\$(.*?)\\}";
+const string INCLUDE = "\\{\\include file=\"(.*?)\"\\}";
 const string CONFIG = ".*";
 
 

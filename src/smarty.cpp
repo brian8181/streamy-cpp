@@ -37,44 +37,6 @@ bool smarty::load_config(const string& path)
     return true;
 }
 
-bool smarty::_display(const string& tmpl)
-{
-    string src = readfile(tmpl);
-    regex exp = regex(VARIABLE, regex::ECMAScript); // match
-            
-    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
-    
-    string output;
-    int beg_pos = 0;
-    for (sregex_iterator iter = begin; iter != end; ++iter)
-    {
-        smatch match = *iter;
-        std::ssub_match sub = match[1];
-        std::string s(sub.str());
-        string& tag = trim(s);
-        
-        int end_pos = match.position();
-        output += src.substr(beg_pos, end_pos-beg_pos);
-
-        string include_path = tag;
-        string include_src = readfile(include_path);
-
-
-        // map<string, string>::const_iterator find_iter = vars.find(tag);
-        // if(find_iter != vars.end())
-        // {
-        //     output += find_iter->second;
-        // }
-
-        output += include_src;
-        beg_pos = end_pos + match.length();
-    }
-    output += src.substr(beg_pos);
-
-    return true;
-}
-
 bool smarty::assign(const string& name, const string& val)
 {
     pair<string, string> p(name, val);
@@ -84,9 +46,11 @@ bool smarty::assign(const string& name, const string& val)
 
 bool smarty::display(const string& tmpl)
 {
-    string src = readfile(tmpl);
+    //string src = readfile(tmpl);
+    string path = tmpl;
+    string src = include(path);
+
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
-            
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
     
@@ -110,42 +74,70 @@ bool smarty::display(const string& tmpl)
     }
     output += src.substr(beg_pos);
 
-    // scan 2
-    // src = output;
-    // exp = regex(INCLUDE, regex::ECMAScript); // match
-    // begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-    // end = sregex_iterator(); 
+    cout << output << endl;
+    return true;
+}
+
+std::string smarty::include(const string& tmpl)
+{
+    string project_folder = "/home/brian/src/cgi_web";
+    string path = project_folder + "/www/templates/" + tmpl;
+    string src = readfile(path);
+    regex exp = regex(INCLUDE, regex::ECMAScript); // match
+            
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
     
-    // output;
-    // beg_pos = 0;
-    // for (sregex_iterator iter = begin; iter != end; ++iter)
-    // {
-    //     smatch match = *iter;
-    //     std::ssub_match sub = match[1];
-    //     std::string s(sub.str());
-    //     string& tag = trim(s);
+    string output;
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        std::string s(sub.str());
+        string& tag = trim(s);
         
-    //     int end_pos = match.position();
-    //     output += src.substr(beg_pos, end_pos-beg_pos);
-    //     map<string, string>::const_iterator find_iter = vars.find(tag);
-    //     if(find_iter != vars.end())
-    //     {
-    //         output += find_iter->second;
-    //     }
-    //     beg_pos = end_pos + match.length();
-    // }
-    // output += src.substr(beg_pos);
+        int end_pos = match.position();
+        output += src.substr(beg_pos, end_pos-beg_pos);
+        //output += "XYZ"; // testing!!
+        output += include(tag);
+        beg_pos = end_pos + match.length();
+    }
+    output += src.substr(beg_pos);
+
+    return output;
+}
+
+bool smarty::escape(const string& tmpl)
+{
+    string src = readfile(tmpl);
+    regex exp = regex(ESCAPE, regex::ECMAScript); // match
+            
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+    
+    string output;
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        std::string s(sub.str());
+        //string& tag = trim(s);
+        
+        int end_pos = match.position();
+        output += src.substr(beg_pos, end_pos-beg_pos);
+        output += "XYZ"; // testing!!
+      
+        beg_pos = end_pos + match.length();
+    }
+    output += src.substr(beg_pos);
 
     cout << output << endl;
     return true;
 }
 
-void smarty::ParseTag(string tag)
-{
-
-}
-
-string smarty::readfile(const string& path)
+std::string smarty::readfile(const string& path)
 {
     string src;
     ifstream file;
