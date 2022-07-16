@@ -13,8 +13,8 @@ public:
     ~smarty();
 
     bool load_config(const string& path);
-    bool include_file(const string& tmpl);
     bool assign(const string& name, const string& val);
+    bool _display(const string& tmpl);
     bool display(const string& tmpl);
 
 private:

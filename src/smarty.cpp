@@ -37,7 +37,7 @@ bool smarty::load_config(const string& path)
     return true;
 }
 
-bool smarty::_diaplay(const string& tmpl)
+bool smarty::_display(const string& tmpl)
 {
     string src = readfile(tmpl);
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
