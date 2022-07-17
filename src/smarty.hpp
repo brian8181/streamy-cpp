@@ -14,14 +14,16 @@ public:
 
     bool load_config(const string& path);
     bool assign(const string& name, const string& val);
-    bool escape(const string& tmpl);
+    //bool escape(const string& tmpl);
     bool display(const string& tmpl);
-    
+
 private:
 
     string readfile(const string& path);
     string include(const string& tmpl);
-     
+    //string lex(const string& tmpl);
+    string replace_tag(string& tmpl, const string& exp_str);
+
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);
     string& trim(std::string &s);
@@ -35,6 +37,7 @@ private:
     string compile_dir;
     string config_dir;
     string cache_dir;
+
 };
 
 #endif
