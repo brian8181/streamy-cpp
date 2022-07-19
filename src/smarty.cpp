@@ -56,7 +56,7 @@ bool smarty::assign(const string& name, const string& val)
 bool smarty::display(const string& tmpl)
 {
     string src = include(tmpl);
-    src = comment(src);
+    src = remove_comments(src);
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -174,7 +174,7 @@ string smarty::replace_tag(string& src, const string& exp_str)
 //     return output;
 // }
 
-string smarty::comment(const string& src)
+string smarty::remove_comments(const string& src)
 {
     regex exp = regex(COMMENT, regex::ECMAScript); // match
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
