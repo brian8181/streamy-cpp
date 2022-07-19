@@ -55,8 +55,8 @@ bool smarty::assign(const string& name, const string& val)
 
 bool smarty::display(const string& tmpl)
 {
-    string src1 = include(tmpl);
-    string src = comment(src1);
+    string src = include(tmpl);
+    src = comment(src);
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -81,6 +81,7 @@ bool smarty::display(const string& tmpl)
     }
     output += src.substr(beg_pos);
 
+    output = replace_tag(output, ESCAPE);
     cout << output << endl;
     return true;
 }
@@ -112,10 +113,10 @@ std::string smarty::include(const string& tmpl)
     return output;
 }
 
-string smarty::replace_tag(string& tmpl, const string& exp_str)
+string smarty::replace_tag(string& src, const string& exp_str)
 {
     string path = template_dir;
-    string src = readfile(path);
+    //string src = readfile(path);
     regex exp = regex(exp_str, regex::ECMAScript);
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -125,13 +126,13 @@ string smarty::replace_tag(string& tmpl, const string& exp_str)
     for (sregex_iterator iter = begin; iter != end; ++iter)
     {
         smatch match = *iter;
-        std::ssub_match sub = match[1];
-        std::string s(sub.str());
-        string& tag = trim(s);
+        // std::ssub_match sub = match[1];
+        // std::string s(sub.str());
+        // string& tag = trim(s);
         
         int end_pos = match.position();
         output += src.substr(beg_pos, end_pos-beg_pos);
-        output += include(tag);
+        output += "@* ESCAPE: " + match.str() + " *@"; //testing
         beg_pos = end_pos + match.length();
     }
     output += src.substr(beg_pos);
@@ -191,8 +192,6 @@ string smarty::comment(const string& src)
         beg_pos = end_pos + match.length();
     }
     output += src.substr(beg_pos);
-
-    //cout << output << endl;
     return output;
 }
 
