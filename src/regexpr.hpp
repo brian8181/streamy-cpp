@@ -10,7 +10,8 @@ const string ESCAPE = "\\{\\$?(.*?)\\}";
 const string ESCAPE2 = "\\{\\(.*)\\}";
 const string COMMENT = "\\n?\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}\\n?";
 const string CONFIG = "\\{\\s*#([A-Aa-z]\\w*)#\\s*\\}";
-const string VARIABLE = "\\{\\$(.*?)\\}";
+const string SYMBOL_NAME = "[A-za-z]+[A-Za-z0-9]*";
+const string VARIABLE = "\\{\\$(" + SYMBOL_NAME + ")\\}";
 const string VARIABLE2 = "\\$(.*?)";
 // todo default values ...
 const string INCLUDE = "\\{\\include file=\"(.*?)\"\\}";
@@ -26,5 +27,7 @@ const string LOAD_CONFIG_NAME = "([A-Za-z]+\\w*)";
 const string string_literal1 = "(\\\"[\\w\\.]*\\\")"; // "ABC"
 const string string_literal2 = "(\\'[\\w*\\.]*\\')";  // 'ABC'
 const string string_literal = string_literal1 + "|" + string_literal2;
+
+const string IF_STMT = "\\{if\\s+\\(.*?)\\}";
 
 #endif
