@@ -21,6 +21,7 @@ private:
 
     string readfile(const string& path);
     string include(const string& tmpl);
+    string comment(const string& tmpl);
     //string lex(const string& tmpl);
     string replace_tag(string& tmpl, const string& exp_str);
 

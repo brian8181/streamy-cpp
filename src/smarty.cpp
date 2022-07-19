@@ -55,7 +55,8 @@ bool smarty::assign(const string& name, const string& val)
 
 bool smarty::display(const string& tmpl)
 {
-    string src = include(tmpl);
+    string src1 = include(tmpl);
+    string src = comment(src1);
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -172,33 +173,28 @@ string smarty::replace_tag(string& tmpl, const string& exp_str)
 //     return output;
 // }
 
-// bool smarty::escape(const string& tmpl)
-// {
-//     string src = readfile(tmpl);
-//     regex exp = regex(ESCAPE, regex::ECMAScript); // match
+string smarty::comment(const string& src)
+{
+    regex exp = regex(COMMENT, regex::ECMAScript); // match
             
-//     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-//     auto end = sregex_iterator(); 
-//     sting output;
-//     int beg_pos = 0;
-//     for (sregex_iterator iter = begin; iter != end; ++iter)
-//     {
-//         smatch match = *iter;
-//         std::ssub_match sub = match[1];
-//         std::string s(sub.str());
-//         //string& tag = trim(s);
-        
-//         int end_pos = match.position();
-//         output += src.substr(beg_pos, end_pos-beg_pos);
-//         output += "XYZ"; // testing!! 
-      
-//         beg_pos = end_pos + match.length();
-//     }
-//     output += src.substr(beg_pos);
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+    string output;
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        std::string s(sub.str());
+        int end_pos = match.position();
+        output += src.substr(beg_pos, end_pos-beg_pos);
+        beg_pos = end_pos + match.length();
+    }
+    output += src.substr(beg_pos);
 
-//     cout << output << endl;
-//     return true;
-// }
+    //cout << output << endl;
+    return output;
+}
 
 std::string smarty::readfile(const string& path)
 {
