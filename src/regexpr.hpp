@@ -10,9 +10,9 @@ const string ESCAPE = "\\{\\$?(.*?)\\}";
 const string ESCAPE2 = "\\{\\(.*)\\}";
 const string COMMENT = "\\n?\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}\\n?";
 const string CONFIG = "\\{\\s*#([A-Aa-z]\\w*)#\\s*\\}";
-const string SYMBOL_NAME = "[A-za-z]+[A-Za-z0-9]*";
+const string SYMBOL_NAME = "[_.-~]*[A-Za-z][A-Za-z0-9_.-~]*";
 const string VARIABLE = "\\{\\$(" + SYMBOL_NAME + ")\\}";
-const string VARIABLE2 = "\\$(.*?)";
+const string VARIABLE2 = "\\$(" + SYMBOL_NAME + ")";
 // todo default values ...
 const string INCLUDE = "\\{\\include file=\"(.*?)\"\\}";
 const string CONFIG_LOAD = "\\{\\config_load file=\"(.*?)\"\\}";
