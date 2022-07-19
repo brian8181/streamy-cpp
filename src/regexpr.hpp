@@ -8,7 +8,7 @@ using namespace std;
 
 const string ESCAPE = "\\{\\$?(.*?)\\}";
 const string ESCAPE2 = "\\{\\(.*)\\}";
-const string COMMENT = "\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}";
+const string COMMENT = "\\n?\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}\\n?";
 const string CONFIG = "\\{\\s*#([A-Aa-z]\\w*)#\\s*\\}";
 const string VARIABLE = "\\{\\$(.*?)\\}";
 const string VARIABLE2 = "\\$(.*?)";

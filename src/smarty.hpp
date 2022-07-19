@@ -25,6 +25,7 @@ private:
     //string lex(const string& tmpl);
     string replace_tag(string& tmpl, const string& exp_str);
 
+    //string& trim(string& s, char chars[]);
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);
