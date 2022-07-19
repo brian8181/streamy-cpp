@@ -11,10 +11,10 @@ const string ESCAPE2 = "\\{\\(.*)\\}";
 const string COMMENT = "\\n?\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}\\n?";
 const string CONFIG = "\\{\\s*#([A-Aa-z]\\w*)#\\s*\\}";
 const string SYMBOL_NAME = "[_.-~]*[A-Za-z][A-Za-z0-9_.-~]*";
-const string VARIABLE = "\\{\\$(" + SYMBOL_NAME + ")\\}";
+const string VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
 const string VARIABLE2 = "\\$(" + SYMBOL_NAME + ")";
 // todo default values ...
-const string INCLUDE = "\\{\\include file=\"(.*?)\"\\}";
+const string INCLUDE = "\\{\\s*\\include file\\s*=\\s*\"(.*?)\"\\s*\\}";
 const string CONFIG_LOAD = "\\{\\config_load file=\"(.*?)\"\\}";
 //
 const string COMMENT_OR_VARIABLE = "((" + COMMENT + ")" +  "|" + "(" + VARIABLE + "))";
