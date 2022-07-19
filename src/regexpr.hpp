@@ -14,7 +14,11 @@ const string VARIABLE = "\\{\\$(.*?)\\}";
 const string VARIABLE2 = "\\$(.*?)";
 const string INCLUDE = "\\{\\include file=\"(.*?)\"\\}";
 const string CONFIG_LOAD = "\\{\\config_load file=\"(.*?)\"\\}";
-
+//
 const string COMMENT_OR_VARIABLE = "((" + COMMENT + ")" +  "|" + "(" + VARIABLE + "))";
+
+// from smarty::load_config
+const string LOAD_CONFIG_VALUE = "((\\w+)|('(\\w+)')|(\\\"(\\w+)\\\"))";
+const string LOAD_CONFIG_NAME = "([A-Za-z]+\\w*)";
 
 #endif

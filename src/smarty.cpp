@@ -6,11 +6,19 @@
 
 smarty::smarty(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
+    // todo trim foward slash trim ...
+    string s = "test/";
+    s = trim(s, '/');
 
     this->template_dir = template_dir;
     this->compile_dir = compile_dir;
     this->config_dir = config_dir;
     this->cache_dir = cache_dir;
+
+    trim(this->template_dir, '/');
+    trim(this->compile_dir, '/');
+    trim(this->config_dir, '/');
+    trim(this->cache_dir, '/');
 }
 
 smarty::~smarty()
@@ -20,8 +28,8 @@ smarty::~smarty()
 bool smarty::load_config(const string& path)
 {
     string src = readfile(path);
-    string name_exp = "([A-Za-z]+\\w*)";
-    string value_exp = "((\\w+)|('(\\w+)')|(\\\"(\\w+)\\\"))";
+    const string name_exp(LOAD_CONFIG_NAME);
+    const string value_exp(LOAD_CONFIG_VALUE);
     regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
                     
     auto begin = sregex_iterator(src.begin(), src.end(), src_exp, std::regex_constants::match_default);
@@ -48,11 +56,10 @@ bool smarty::assign(const string& name, const string& val)
 bool smarty::display(const string& tmpl)
 {
     string src = include(tmpl);
-
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
+
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
-
     string output;
     int beg_pos = 0;
     for (sregex_iterator iter = begin; iter != end; ++iter)
@@ -79,13 +86,12 @@ bool smarty::display(const string& tmpl)
 
 std::string smarty::include(const string& tmpl)
 {
-    string path = template_dir;
+    string path = template_dir + "/" + tmpl;
     string src = readfile(path);
     regex exp = regex(INCLUDE, regex::ECMAScript);
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
-
     string output;
     int beg_pos = 0;
     for (sregex_iterator iter = begin; iter != end; ++iter)
@@ -110,10 +116,9 @@ string smarty::replace_tag(string& tmpl, const string& exp_str)
     string path = template_dir;
     string src = readfile(path);
     regex exp = regex(exp_str, regex::ECMAScript);
-            
+
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
-    
     string output;
     int beg_pos = 0;
     for (sregex_iterator iter = begin; iter != end; ++iter)
@@ -138,10 +143,9 @@ string smarty::replace_tag(string& tmpl, const string& exp_str)
 //     string path = template_dir;
 //     string src = readfile(path);
 //     regex exp = regex(COMMENT_OR_VARIABLE, regex::ECMAScript); // match
-            
+
 //     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
 //     auto end = sregex_iterator(); 
-    
 //     string output;
 //     int beg_pos = 0;
 //     for (sregex_iterator iter = begin; iter != end; ++iter)
@@ -157,7 +161,7 @@ string smarty::replace_tag(string& tmpl, const string& exp_str)
 //         std::ssub_match sub = match[1];
 //         std::string s(sub.str());
 //         string& tag = trim(s);
-        
+
 //         int end_pos = match.position();
 //         output += src.substr(beg_pos, end_pos-beg_pos);
 //         //output += "XYZ"; // testing!!
@@ -165,7 +169,6 @@ string smarty::replace_tag(string& tmpl, const string& exp_str)
 //         beg_pos = end_pos + match.length();
 //     }
 //     output += src.substr(beg_pos);
-
 //     return output;
 // }
 
@@ -176,8 +179,7 @@ string smarty::replace_tag(string& tmpl, const string& exp_str)
             
 //     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
 //     auto end = sregex_iterator(); 
-    
-//     string output;
+//     sting output;
 //     int beg_pos = 0;
 //     for (sregex_iterator iter = begin; iter != end; ++iter)
 //     {
@@ -215,6 +217,14 @@ std::string smarty::readfile(const string& path)
         file.close(); //close the file object.
     }
     return src;
+}
+
+std::string& smarty::trim(string &s, char c)
+{
+    if(s.at(s.length()-1) == c)
+        s.pop_back();
+
+    return s;
 }
 
 std::string& smarty::ltrim(std::string &s)
