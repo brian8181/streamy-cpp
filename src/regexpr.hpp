@@ -11,7 +11,7 @@ const string ESCAPE = "\\{\\$?(.*?)\\}";
 const string ESCAPE2 = "\\{\\(.*)\\}";
 const string COMMENT = "\\n?\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}\\n?";
 const string CONFIG = "\\{\\s*#([A-Aa-z]\\w*)#\\s*\\}";
-const string SYMBOL_NAME = "[_.-~]*[A-Za-z][A-Za-z0-9_.-~]*";
+const string SYMBOL_NAME = "[_.~]*[A-Za-z][A-Za-z0-9_.-~]*";
 const string VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
 const string VARIABLE2 = "\\$(" + SYMBOL_NAME + ")";
 // todo default values ...
@@ -30,7 +30,6 @@ const string string_literal2 = "(\\'[\\w*\\.]*\\')";  // 'ABC'
 const string string_literal = string_literal1 + "|" + string_literal2;
 
 const string IF_STMT = "\\{if\\s+\\(.*?)\\}";
-
 const string ARRAY_DECL = "array\\(" + string_literal1 + "|" + string_literal1 + "\\)";
 
 #endif
