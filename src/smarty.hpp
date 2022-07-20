@@ -41,6 +41,9 @@ private:
     string config_dir;
     string cache_dir;
 
+    string left_delimiter = "{";
+    string right_delimiter = "}";
+
 };
 
 #endif

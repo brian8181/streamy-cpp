@@ -116,7 +116,6 @@ std::string smarty::include(const string& tmpl)
 string smarty::replace_tag(string& src, const string& exp_str)
 {
     string path = template_dir;
-    //string src = readfile(path);
     regex exp = regex(exp_str, regex::ECMAScript);
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -126,10 +125,6 @@ string smarty::replace_tag(string& src, const string& exp_str)
     for (sregex_iterator iter = begin; iter != end; ++iter)
     {
         smatch match = *iter;
-        // std::ssub_match sub = match[1];
-        // std::string s(sub.str());
-        // string& tag = trim(s);
-        
         int end_pos = match.position();
         output += src.substr(beg_pos, end_pos-beg_pos);
         output += "@* ESCAPE: " + match.str() + " *@"; //testing

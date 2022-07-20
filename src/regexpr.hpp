@@ -6,6 +6,7 @@
 
 using namespace std;
 
+const string COMMAND = "(config_load|include|insert|literal|strip|capture|section|assign|debug|eval|fetch|math)";
 const string ESCAPE = "\\{\\$?(.*?)\\}";
 const string ESCAPE2 = "\\{\\(.*)\\}";
 const string COMMENT = "\\n?\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}\\n?";
@@ -29,5 +30,7 @@ const string string_literal2 = "(\\'[\\w*\\.]*\\')";  // 'ABC'
 const string string_literal = string_literal1 + "|" + string_literal2;
 
 const string IF_STMT = "\\{if\\s+\\(.*?)\\}";
+
+const string ARRAY_DECL = "array\\(" + string_literal1 + "|" + string_literal1 + "\\)";
 
 #endif
