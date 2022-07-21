@@ -57,7 +57,7 @@ bool smarty::display(const string& tmpl)
 {
     string src = include(tmpl);
     src = remove_comments(src);
-    //src = if_sequence(src);
+    src = if_sequence(src);
     //src = variable(src);
 
     //REPLACE VARIABLES
@@ -179,10 +179,7 @@ string smarty::remove_comments(const string& src)
     {
         smatch match = *iter;
         int end_pos = match.position();
-        std::ssub_match sub = match[1];
-        std::string s(sub.str());
-        string& tag = trim(s);
-        
+        // remove comment
         output += src.substr(beg_pos, end_pos-beg_pos);
         beg_pos = end_pos + match.length();
     }
@@ -203,11 +200,12 @@ string smarty::if_sequence(const string& src)
     {
         smatch match = *iter;
         int end_pos = match.position();
-        std::ssub_match sub = match[1];
-        std::string s(sub.str());
-        string& tag = trim(s);
-        //HTML
-        output += tag;
+        // std::ssub_match sub = match[1];
+        // std::string s(sub.str());
+        // string& tag = trim(s);
+        // //HTML
+        // output += tag;
+        output += "@IF SEQUENCE@";
         output += src.substr(beg_pos, end_pos-beg_pos);
         beg_pos = end_pos + match.length();
     }
