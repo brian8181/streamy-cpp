@@ -58,9 +58,10 @@ bool smarty::display(const string& tmpl)
     string src = include(tmpl);
     src = remove_comments(src);
     //src = if_sequence(src);
+    //src = variable(src);
 
+    //REPLACE VARIABLES
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
-
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
     string output;
@@ -82,6 +83,7 @@ bool smarty::display(const string& tmpl)
         beg_pos = end_pos + match.length();
     }
     output += src.substr(beg_pos);
+    // END REPLACE
 
     output = replace_tag(output, ESCAPE);
     cout << output << endl;
@@ -108,6 +110,34 @@ std::string smarty::include(const string& tmpl)
         int end_pos = match.position();
         output += src.substr(beg_pos, end_pos-beg_pos);
         output += include(tag);
+        beg_pos = end_pos + match.length();
+    }
+    output += src.substr(beg_pos);
+
+    return output;
+}
+
+string smarty::variable(string& src)
+{
+    regex exp = regex(VARIABLE, regex::ECMAScript); // match
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+    string output;
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        std::string s(sub.str());
+        string& tag = trim(s);
+        
+        int end_pos = match.position();
+        output += src.substr(beg_pos, end_pos-beg_pos);
+        map<string, string>::const_iterator find_iter = vars.find(tag);
+        if(find_iter != vars.end())
+        {
+            output += find_iter->second;
+        }
         beg_pos = end_pos + match.length();
     }
     output += src.substr(beg_pos);

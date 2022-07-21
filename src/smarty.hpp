@@ -25,6 +25,7 @@ private:
 
     string readfile(const string& path);
     string include(const string& tmpl);
+    string variable(string& src);
     string remove_comments(const string& tmpl);
     string if_sequence(const string& src);
     // string lex(const string& tmpl);
