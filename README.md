@@ -1,3 +1,3 @@
 # smarty-cpp
 
-C plus plus, Temeplate Engine
+C++, Temeplate Engine
