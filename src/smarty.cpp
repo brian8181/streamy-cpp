@@ -57,6 +57,8 @@ bool smarty::display(const string& tmpl)
 {
     string src = include(tmpl);
     src = remove_comments(src);
+    //src = if_sequence(src);
+
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -135,40 +137,6 @@ string smarty::replace_tag(string& src, const string& exp_str)
     return output;
 }
 
-// std::string smarty::lex(const string& tmpl)
-// {
-//     string path = template_dir;
-//     string src = readfile(path);
-//     regex exp = regex(COMMENT_OR_VARIABLE, regex::ECMAScript); // match
-
-//     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-//     auto end = sregex_iterator(); 
-//     string output;
-//     int beg_pos = 0;
-//     for (sregex_iterator iter = begin; iter != end; ++iter)
-//     {
-//         smatch match = *iter;
-//         int len = match.length();
-//         for(int i = 0; i < len; ++i)
-//         {
-//             std::ssub_match sm = match[i];
-//             cout << sm.str() << endl;
-//         }
-
-//         std::ssub_match sub = match[1];
-//         std::string s(sub.str());
-//         string& tag = trim(s);
-
-//         int end_pos = match.position();
-//         output += src.substr(beg_pos, end_pos-beg_pos);
-//         //output += "XYZ"; // testing!!
-//         output += include(tag);
-//         beg_pos = end_pos + match.length();
-//     }
-//     output += src.substr(beg_pos);
-//     return output;
-// }
-
 string smarty::remove_comments(const string& src)
 {
     regex exp = regex(COMMENT, regex::ECMAScript); // match
@@ -181,6 +149,35 @@ string smarty::remove_comments(const string& src)
     {
         smatch match = *iter;
         int end_pos = match.position();
+        std::ssub_match sub = match[1];
+        std::string s(sub.str());
+        string& tag = trim(s);
+        
+        output += src.substr(beg_pos, end_pos-beg_pos);
+        beg_pos = end_pos + match.length();
+    }
+    output += src.substr(beg_pos);
+
+    return output;
+}
+
+string smarty::if_sequence(const string& src)
+{
+    regex exp = regex(IF_SEQUENCE, regex::ECMAScript); // match
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+
+    string output;
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        int end_pos = match.position();
+        std::ssub_match sub = match[1];
+        std::string s(sub.str());
+        string& tag = trim(s);
+        //HTML
+        output += tag;
         output += src.substr(beg_pos, end_pos-beg_pos);
         beg_pos = end_pos + match.length();
     }

@@ -42,6 +42,8 @@ const string IF_KEYWORD = "\\{if\\(" + VARIABLE + ")\\}";
 const string ENDIF_KEYWORD = "\\{/if\\s+}";
 const string HTML = IF_KEYWORD + "([\\w<=>]*)" + ENDIF_KEYWORD;
 const string ELSE_KEYWORD = "\\{if\\s+\\(.*?)\\}";
+
+const string IF_SEQUENCE = IF_KEYWORD + HTML + ENDIF_KEYWORD;
 const string ARRAY_KEYWORD = "array\\(" + string_literal1 + "|" + string_literal1 + "\\)";
 
 #endif

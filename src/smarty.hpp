@@ -14,11 +14,11 @@ public:
 
     bool load_config(const string& path);
     bool assign(const string& name, const string& val);
-    bool assign(const string& name, vector<string>& values);
-    bool assign(const string& name, vector<int>& values);
-    bool assign(const string& name, vector<bool>& values);
-    //bool assign<T>(const string& name, T val);
-    //bool escape(const string& tmpl);
+    // bool assign(const string& name, vector<string>& values);
+    // bool assign(const string& name, vector<int>& values);
+    // bool assign(const string& name, vector<bool>& values);
+    // bool assign<T>(const string& name, T val);
+    // bool escape(const string& tmpl);
     bool display(const string& tmpl);
 
 private:
@@ -26,10 +26,11 @@ private:
     string readfile(const string& path);
     string include(const string& tmpl);
     string remove_comments(const string& tmpl);
-    //string lex(const string& tmpl);
+    string if_sequence(const string& src);
+    // string lex(const string& tmpl);
     string replace_tag(string& tmpl, const string& exp_str);
 
-    //string& trim(string& s, char chars[]);
+    // string& trim(string& s, char chars[]);
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);
