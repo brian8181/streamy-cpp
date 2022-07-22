@@ -200,12 +200,13 @@ string smarty::if_sequence(const string& src)
     {
         smatch match = *iter;
         int end_pos = match.position();
-        // std::ssub_match sub = match[1];
-        // std::string s(sub.str());
-        // string& tag = trim(s);
-        // //HTML
-        // output += tag;
-        output += "@IF SEQUENCE@";
+        std::ssub_match sub = match[1];
+        std::string s(sub.str());
+        string& tag = trim(s);
+        //HTML
+        output += "@IF SEQUENCE@\n";
+        output += "@HTML@ " + tag + " @HTML@\n";
+        output += "@/IF_SEQUENCE@\n";
         output += src.substr(beg_pos, end_pos-beg_pos);
         beg_pos = end_pos + match.length();
     }
