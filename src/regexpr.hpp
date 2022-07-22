@@ -53,10 +53,8 @@ const string ENDIF_KEYWORD = "\\{/if\\}";
 const string HTML = IF_KEYWORD + "([\\w<=>]*)" + ENDIF_KEYWORD;
 const string ELSE_KEYWORD = "\\{if\\s+\\(.*?)\\}";
 
-const string ANYTHING = ".*";
-const string IF_SEQUENCE = IF_KEYWORD + ENDIF_KEYWORD;
-//const string IF_SEQUENCE = IF_KEYWORD + ANYTHING + ENDIF_KEYWORD;
-//const string IF_SEQUENCE = IF_KEYWORD + HTML + ENDIF_KEYWORD;
+const string ANYTHING = "[\\s\\r\\n]*[A-Za-z0-9]*[\\s\\r\\n]*";
+const string IF_SEQUENCE = IF_KEYWORD + ANYTHING + ENDIF_KEYWORD;
 const string ARRAY_KEYWORD = "array\\(" + string_literal1 + "|" + string_literal1 + "\\)";
 
 #endif
