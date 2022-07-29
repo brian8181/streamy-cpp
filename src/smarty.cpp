@@ -266,3 +266,35 @@ std::string& smarty::trim(std::string &s)
 {
     return ltrim(rtrim(s));
 }
+
+std::string smarty::lex(const string& tmpl)
+{
+    string path = template_dir + "/" + tmpl;
+    string src = readfile(path);
+    regex exp = regex(INCLUDE, regex::ECMAScript);
+
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+    string output;
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        std::string s(sub.str());
+        string& tag = trim(s);
+        
+        int end_pos = match.position();
+        output += src.substr(beg_pos, end_pos-beg_pos);
+        output += include(tag);
+        beg_pos = end_pos + match.length();
+    }
+    output += src.substr(beg_pos);
+
+    return output;
+}
+
+string smarty::get_conf(string s)
+{
+    return config[s];
+}

@@ -21,14 +21,15 @@ public:
     // bool escape(const string& tmpl);
     bool display(const string& tmpl);
 
-private:
+// testing make public
+//private:
 
     string readfile(const string& path);
     string include(const string& tmpl);
     string variable(string& src);
     string remove_comments(const string& tmpl);
     string if_sequence(const string& src);
-    // string lex(const string& tmpl);
+    string lex(const string& tmpl);
     string replace_tag(string& tmpl, const string& exp_str);
 
     // string& trim(string& s, char chars[]);
@@ -36,6 +37,9 @@ private:
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);
     string& trim(std::string &s);
+
+    //Test functons
+    string get_conf(string s);
 
     std::map<string, string> smarty_vars;
     std::map<string, string> config;
