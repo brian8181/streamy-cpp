@@ -31,7 +31,7 @@ bool smarty::load_config(const string& path)
     const string name_exp(LOAD_CONFIG_NAME);
     const string value_exp(LOAD_CONFIG_VALUE);
     regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
-                    
+
     auto begin = sregex_iterator(src.begin(), src.end(), src_exp, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
 
@@ -52,6 +52,13 @@ bool smarty::assign(const string& name, const string& val)
     vars.insert(p);
     return true;
 }
+
+// bool assign(const string& name, vector<string>& values)
+// {
+//     pair<string, vector<string>> p(name, values);
+//     var_arrays.insert(p);
+//     return true;
+// }
 
 bool smarty::display(const string& tmpl)
 {

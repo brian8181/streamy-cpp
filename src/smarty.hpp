@@ -44,6 +44,7 @@ public:
     std::map<string, string> smarty_vars;
     std::map<string, string> config;
     std::map<string, string> vars;
+    std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
 
     string template_dir;
