@@ -38,20 +38,22 @@ public:
     string& rtrim(std::string &s);
     string& trim(std::string &s);
 
-    //Test functons
+    // test functons
     string get_conf(string s);
 
+    // maps
     std::map<string, string> smarty_vars;
     std::map<string, string> config;
     std::map<string, string> vars;
-    std::map<string, vector<string>> var_arrays;
+    //std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
 
+    // config
     string template_dir;
     string compile_dir;
     string config_dir;
     string cache_dir;
-
+    // todo INACTIVE
     string left_delimiter = "{";
     string right_delimiter = "}";
 
