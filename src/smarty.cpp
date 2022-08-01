@@ -124,7 +124,7 @@ std::string smarty::include(const string& tmpl)
     return output;
 }
 
-string smarty::variable(string& src)
+string smarty::variable(const string& src)
 {
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
