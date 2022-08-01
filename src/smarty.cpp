@@ -121,6 +121,7 @@ std::string smarty::include(const string& tmpl)
     }
     output += src.substr(beg_pos);
 
+    //include(output);
     return output;
 }
 
