@@ -116,12 +116,12 @@ std::string smarty::include(const string& tmpl)
         
         int end_pos = match.position();
         output += src.substr(beg_pos, end_pos-beg_pos);
+        // call include recursively
         output += include(tag);
         beg_pos = end_pos + match.length();
     }
     output += src.substr(beg_pos);
 
-    //include(output);
     return output;
 }
 
