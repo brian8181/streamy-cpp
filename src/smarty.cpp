@@ -235,7 +235,8 @@ std::string smarty::readfile(const string& path)
         while(getline(file, tp))
         { 
             //read data from file object and put it into string.
-            src += tp += "\n";
+            //src += tp += "\n";
+            src += tp;
         }
         file.close(); //close the file object.
     }
