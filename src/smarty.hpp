@@ -25,6 +25,7 @@ public:
 //private:
 
     string readfile(const string& path);
+    string fread(string path);
     string include(const string& tmpl);
     string variable(const string& src);
     string remove_comments(const string& tmpl);

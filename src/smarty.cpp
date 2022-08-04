@@ -243,6 +243,14 @@ std::string smarty::readfile(const string& path)
     return src;
 }
 
+string smarty::fread(string path)
+{
+    std::ifstream in(path);
+    std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    return contents;
+}
+
+
 std::string& smarty::trim(string &s, char c)
 {
     if(s.at(s.length()-1) == c)
