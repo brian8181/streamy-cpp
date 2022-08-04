@@ -100,7 +100,8 @@ bool smarty::display(const string& tmpl)
 std::string smarty::include(const string& tmpl)
 {
     string path = template_dir + "/" + tmpl;
-    string src = readfile(path);
+    //string src = readfile(path);
+    string src = fread(path);
     regex exp = regex(INCLUDE, regex::ECMAScript);
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
