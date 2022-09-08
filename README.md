@@ -1,6 +1,6 @@
 # New Name?
 
-## Streamy fro now anyway ...
+## Streamy for now anyway ...
 
 chnaging name since smarty is a trademark. I am thinking up a new one.
 
