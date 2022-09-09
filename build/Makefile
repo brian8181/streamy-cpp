@@ -25,7 +25,7 @@ INCLUDES = -I/usr/local/include/cppunit/
 # add addtional libs here
 
 # Makefile settings - Can be customized.
-APPNAME = smartycpp
+APPNAME = streamycpp
 EXT = cpp
 ROOTDIR  = ..
 BUILDDIR = .
@@ -38,7 +38,7 @@ debug: all
 
 # compile & link for debug GDBversion variable
 #debuggdb: CXXFLAGS += -DDEBUG -ggdb # compile & link
-all: $(APPNAME) bash_color_test $(APPNAME)_test smarty.a smarty.so #smarty-parse
+all: $(APPNAME) bash_color_test $(APPNAME)_test streamy.a streamy.so #streamy-parse
 
 # link
 $(APPNAME): $(APPNAME).o main.o 
@@ -52,14 +52,14 @@ main.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.$(EXT) -o $(BUILDDIR)/main.o
 	#$(CXX) $(CXXFLAGS) $(INCLUDES) $(BUILDDIR)/$(APPNAME).o $(LDFLAGS) -o $(BUILDDIR)/$(APPNAME)_test
 
-smarty.so: smarty.o
-	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/smarty.o -o $(BUILDDIR)/smarty.so
+streamy.so: streamy.o
+	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy.so
 
-smarty.a: smarty.o
-	ar rvs smarty.a smarty.o
+streamy.a: streamy.o
+	ar rvs streamy.a streamy.o
 
-smarty.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/smarty.$(EXT) -o $(BUILDDIR)/smarty.o	
+streamy.o:
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/streamy.$(EXT) -o $(BUILDDIR)/streamy.o	
 
 # link
 $(APPNAME)_test: $(APPNAME)_test.o
@@ -76,14 +76,14 @@ bash_color_test.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/bash_color_test.cpp -o $(BUILDDIR)/bash_color_test.o
 
 # flex & bison
-# smarty-cpp.tab.c smarty-cpp.tab.h:	smarty-cpp.y
-# 	bison -t -v -d smarty-cpp.y
+# streamy-cpp.tab.c streamy-cpp.tab.h:	streamy-cpp.y
+# 	bison -t -v -d streamy-cpp.y
 
-# lex.yy.c: smarty-cpp.l smarty-cpp.tab.h
-# 	flex smarty-cpp.l
+# lex.yy.c: streamy-cpp.l streamy-cpp.tab.h
+# 	flex streamy-cpp.l
 
-# smarty-parse: lex.yy.c smarty-cpp.tab.c smarty-cpp.tab.h
-# 	gcc -o smarty-parse smarty-cpp.tab.c lex.yy.c
+# streamy-parse: lex.yy.c streamy-cpp.tab.c streamy-cpp.tab.h
+# 	gcc -o streamy-parse streamy-cpp.tab.c lex.yy.c
 
 # install man pages
 .PHONY: man
@@ -108,7 +108,7 @@ install: man
 clean:
 	rm -f $(BUILDDIR)/$(APPNAME) $(BUILDDIR)/*.o $(BUILDDIR)/$(APPNAME)_test $(BUILDDIR)/bash_color_test
 	rm -f $(BUILDDIR)/*.xml $(BUILDDIR)/$(APPNAME).$(BUILD_VERSION).tar.gz
-	rm $(BUILDDIR)/smarty.a $(BUILDDIR)/smarty.so 
+	rm $(BUILDDIR)/streamy.a $(BUILDDIR)/streamy.so 
 
 # delete all auto generated files
 .PHONY: distclean
