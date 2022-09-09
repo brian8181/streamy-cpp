@@ -55,9 +55,9 @@ src/*.o
 build/*.o
 build/*.so
 build/bash_color_test
-build/smarty.a
-build/smartycpp
-build/smartycpp_test
+build/streamy.a
+build/streamycpp
+build/streamycpp_test
 
 *.o
 *.cgi
@@ -66,7 +66,7 @@ cleandist.sh
 src/.deps/*
 src/.libs/*
 flex/lex.yy.c
-flex/smarty-cpp.output
-flex/smarty-cpp.tab.h
-flex/smarty-cpp.tab.c
-flex/smarty-cpp-parse
+flex/streamy-cpp.output
+flex/streamy-cpp.tab.h
+flex/streamy-cpp.tab.c
+flex/streamy-cpp-parse

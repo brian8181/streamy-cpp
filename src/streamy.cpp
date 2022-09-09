@@ -2,9 +2,9 @@
 #include <regex>
 #include <fstream>
 #include "regexpr.hpp"
-#include "smarty.hpp"
+#include "streamy.hpp"
 
-smarty::smarty(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
+streamy::streamy(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
     // todo trim foward slash trim ...
     string s = "test/";
@@ -21,11 +21,11 @@ smarty::smarty(const string& template_dir, const string& compile_dir, const stri
     trim(this->cache_dir, '/');
 }
 
-smarty::~smarty()
+streamy::~streamy()
 {
 }
 
-bool smarty::load_config(const string& path)
+bool streamy::load_config(const string& path)
 {
     string src = readfile(path);
     const string name_exp(LOAD_CONFIG_NAME);
@@ -46,7 +46,7 @@ bool smarty::load_config(const string& path)
     return true;
 }
 
-bool smarty::assign(const string& name, const string& val)
+bool streamy::assign(const string& name, const string& val)
 {
     pair<string, string> p(name, val);
     vars.insert(p);
@@ -60,7 +60,7 @@ bool smarty::assign(const string& name, const string& val)
 //     return true;
 // }
 
-bool smarty::display(const string& tmpl)
+bool streamy::display(const string& tmpl)
 {
     string src = include(tmpl);
     src = remove_comments(src);
@@ -97,7 +97,7 @@ bool smarty::display(const string& tmpl)
     return true;
 }
 
-std::string smarty::include(const string& tmpl)
+std::string streamy::include(const string& tmpl)
 {
     string path = template_dir + "/" + tmpl;
     //string src = readfile(path);
@@ -126,7 +126,7 @@ std::string smarty::include(const string& tmpl)
     return output;
 }
 
-string smarty::variable(const string& src)
+string streamy::variable(const string& src)
 {
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -154,7 +154,7 @@ string smarty::variable(const string& src)
     return output;
 }
 
-string smarty::replace_tag(string& src, const string& exp_str)
+string streamy::replace_tag(string& src, const string& exp_str)
 {
     string path = template_dir;
     regex exp = regex(exp_str, regex::ECMAScript);
@@ -176,7 +176,7 @@ string smarty::replace_tag(string& src, const string& exp_str)
     return output;
 }
 
-string smarty::remove_comments(const string& src)
+string streamy::remove_comments(const string& src)
 {
     regex exp = regex(COMMENT, regex::ECMAScript); // match
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -197,7 +197,7 @@ string smarty::remove_comments(const string& src)
     return output;
 }
 
-string smarty::if_sequence(const string& src)
+string streamy::if_sequence(const string& src)
 {
     regex exp = regex(IF_SEQUENCE, regex::ECMAScript); // match
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -224,7 +224,7 @@ string smarty::if_sequence(const string& src)
     return output;
 }
 
-std::string smarty::readfile(const string& path)
+std::string streamy::readfile(const string& path)
 {
     string src;
     ifstream file;
@@ -244,7 +244,7 @@ std::string smarty::readfile(const string& path)
     return src;
 }
 
-string smarty::fread(string path)
+string streamy::fread(string path)
 {
     std::ifstream in(path);
     std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
@@ -252,7 +252,7 @@ string smarty::fread(string path)
 }
 
 
-std::string& smarty::trim(string &s, char c)
+std::string& streamy::trim(string &s, char c)
 {
     if(s.at(s.length()-1) == c)
         s.pop_back();
@@ -260,7 +260,7 @@ std::string& smarty::trim(string &s, char c)
     return s;
 }
 
-std::string& smarty::ltrim(std::string &s)
+std::string& streamy::ltrim(std::string &s)
 {
     auto it = std::find_if(s.begin(), s.end(),
                     [](char c) {
@@ -270,7 +270,7 @@ std::string& smarty::ltrim(std::string &s)
     return s;
 }
 
-std::string& smarty::rtrim(std::string &s)
+std::string& streamy::rtrim(std::string &s)
 {
     auto it = std::find_if(s.rbegin(), s.rend(),
                     [](char c) {
@@ -280,12 +280,12 @@ std::string& smarty::rtrim(std::string &s)
     return s;
 }
 
-std::string& smarty::trim(std::string &s)
+std::string& streamy::trim(std::string &s)
 {
     return ltrim(rtrim(s));
 }
 
-std::string smarty::lex(const string& tmpl)
+std::string streamy::lex(const string& tmpl)
 {
     string path = template_dir + "/" + tmpl;
     string src = readfile(path);
@@ -312,7 +312,7 @@ std::string smarty::lex(const string& tmpl)
     return output;
 }
 
-string smarty::get_conf(string s)
+string streamy::get_conf(string s)
 {
     return config[s];
 }

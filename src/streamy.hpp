@@ -1,16 +1,16 @@
-#ifndef _SMARTY_HPP
-#define _SMARTY_HPP
+#ifndef _streamy_HPP
+#define _streamy_HPP
 
 #include <string>
 #include <map>
 
 using namespace std;
 
-class smarty
+class streamy
 {
 public:
-    smarty(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir);
-    ~smarty();
+    streamy(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir);
+    ~streamy();
 
     bool load_config(const string& path);
     bool assign(const string& name, const string& val);
@@ -43,7 +43,7 @@ public:
     string get_conf(string s);
 
     // maps
-    std::map<string, string> smarty_vars;
+    std::map<string, string> streamy_vars;
     std::map<string, string> config;
     std::map<string, string> vars;
     //std::map<string, vector<string>> var_arrays;

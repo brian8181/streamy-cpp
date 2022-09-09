@@ -1,12 +1,12 @@
-#ifndef _smartycpp_test_TEST_H
-#define _smartycpp_test_TEST_H
+#ifndef _streamycpp_test_TEST_H
+#define _streamycpp_test_TEST_H
 
 #include <cppunit/Test.h> 
 
-class smartycpp_testTest : public CppUnit::TestFixture
+class streamycpp_testTest : public CppUnit::TestFixture
 {
 private:
-    CPPUNIT_TEST_SUITE(smartycpp_testTest);
+    CPPUNIT_TEST_SUITE(streamycpp_testTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:

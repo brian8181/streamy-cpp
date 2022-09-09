@@ -1,5 +1,5 @@
-#ifndef _smartycpp_HPP
-#define _smartycpp_HPP
+#ifndef _streamycpp_HPP
+#define _streamycpp_HPP
 
 // constants
 

@@ -13,26 +13,26 @@
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/XmlOutputter.h>
 #include <netinet/in.h>
-#include "smartycpp_test.hpp"
+#include "streamycpp_test.hpp"
 #include "main.hpp"
 #include <string.h>
 
 using namespace CppUnit;
 using namespace std;
 
-void smartycpp_testTest::setUp()
+void streamycpp_testTest::setUp()
 {
 }
 
-void smartycpp_testTest::tearDown()
+void streamycpp_testTest::tearDown()
 {
 }
  
-void smartycpp_testTest::execute()
+void streamycpp_testTest::execute()
 {
 }
 
-void smartycpp_testTest::execute(int argc, char* argv[])
+void streamycpp_testTest::execute(int argc, char* argv[])
 {
 }
 
@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
     compileroutputter.write ();
 
     // Output XML for Jenkins CPPunit plugin
-    ofstream xmlFileOut("cppsmartycpp_testTestResults.xml");
+    ofstream xmlFileOut("cppstreamycpp_testTestResults.xml");
     XmlOutputter xmlOut(&collectedresults, xmlFileOut);
     xmlOut.write();
 

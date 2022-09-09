@@ -2,7 +2,7 @@
 #include <string>
 #include <regex>
 #include <getopt.h>
-#include "smartycpp.hpp"
+#include "streamycpp.hpp"
 
 using namespace std;
 
