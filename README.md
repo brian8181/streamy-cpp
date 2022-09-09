@@ -4,4 +4,4 @@ Streamy base on Smarty (for php) is a template engine for C++, facilitating the 
 
 ## Status
 
-Still in developement 
+Still in developement, proof of concept stage ...
