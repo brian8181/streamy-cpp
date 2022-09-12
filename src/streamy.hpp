@@ -2,6 +2,7 @@
 #define _streamy_HPP
 
 #include <string>
+#include <vector>
 #include <map>
 
 using namespace std;
@@ -15,15 +16,7 @@ public:
     bool load_config(const string& path);
     bool assign(const string& name, const string& val);
     template <class T> bool assign(const string& name, vector<T>& values);
-    // bool assign(const string& name, vector<string>& values);
-    // bool assign(const string& name, vector<int>& values);
-    // bool assign(const string& name, vector<bool>& values);
-    // bool assign<T>(const string& name, T val);
-    // bool escape(const string& tmpl);
     bool display(const string& tmpl);
-
-// testing make public
-//private:
 
     string readfile(const string& path);
     string fread(string path);
@@ -33,13 +26,10 @@ public:
     string if_sequence(const string& src);
     string lex(const string& tmpl);
     string replace_tag(string& tmpl, const string& exp_str);
-
-    // string& trim(string& s, char chars[]);
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);
     string& trim(std::string &s);
-
     // test functons
     string get_conf(string s);
 
@@ -47,9 +37,10 @@ public:
     std::map<string, string> streamy_vars;
     std::map<string, string> config;
     std::map<string, string> vars;
-    //std::map<string, vector<string>> var_arrays;
+    std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
 
+private:
     // config
     string template_dir;
     string compile_dir;
