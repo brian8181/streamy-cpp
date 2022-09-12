@@ -14,7 +14,7 @@ public:
 
     bool load_config(const string& path);
     bool assign(const string& name, const string& val);
-    template <class T> void assign(const string& name, vector<T>& values);
+    template <class T> bool assign(const string& name, vector<T>& values);
     // bool assign(const string& name, vector<string>& values);
     // bool assign(const string& name, vector<int>& values);
     // bool assign(const string& name, vector<bool>& values);

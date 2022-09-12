@@ -53,9 +53,11 @@ bool streamy::assign(const string& name, const string& val)
     return true;
 }
 
-template <class T> void streamy::assign(const string& name, vector<T>& values)
+template <class T> bool streamy::assign(const string& name, vector<T>& values)
 {
-
+    pair<string, vector<T>> p(name, values);
+    vars.insert(p);
+    return true;
 }
 
 bool streamy::display(const string& tmpl)
