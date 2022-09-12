@@ -58,13 +58,6 @@ template <class T> void streamy::assign(const string& name, vector<T>& values)
 
 }
 
-// bool assign(const string& name, vector<string>& values)
-// {
-//     pair<string, vector<string>> p(name, values);
-//     var_arrays.insert(p);
-//     return true;
-// }
-
 bool streamy::display(const string& tmpl)
 {
     string src = include(tmpl);

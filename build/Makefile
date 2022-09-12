@@ -38,7 +38,7 @@ debug: all
 
 # compile & link for debug GDBversion variable
 #debuggdb: CXXFLAGS += -DDEBUG -ggdb # compile & link
-all: $(APPNAME) bash_color_test $(APPNAME)_test streamy.a streamy.so #streamy-parse
+all: $(APPNAME) bash_color_test streamy.a streamy.so $(APPNAME)_test #streamy-parse
 
 # link
 $(APPNAME): $(APPNAME).o main.o 
@@ -76,8 +76,7 @@ bash_color_test.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/bash_color_test.cpp -o $(BUILDDIR)/bash_color_test.o
 
 # flex & bison
-# streamy-cpp.tab.c streamy-cpp.tab.h:	streamy-cpp.y
-# 	bison -t -v -d streamy-cpp.y
+# streamy-cpp.tab.c streamy-cpp.tab.$(APPNAME)_test
 
 # lex.yy.c: streamy-cpp.l streamy-cpp.tab.h
 # 	flex streamy-cpp.l
@@ -86,7 +85,7 @@ bash_color_test.o:
 # 	gcc -o streamy-parse streamy-cpp.tab.c lex.yy.c
 
 # install man pages
-.PHONY: man
+.PHONY: man$(APPNAME)_test
 man:
 	cp ../man/$(APPNAME).1 $(man1dir)
 	# gzip $(man1dir)/$(APPNAME).1
