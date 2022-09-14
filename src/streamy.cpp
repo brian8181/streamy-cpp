@@ -100,7 +100,6 @@ bool streamy::display(const string& tmpl)
 std::string streamy::include(const string& tmpl)
 {
     string path = template_dir + "/" + tmpl;
-    //string src = readfile(path);
     string src = fread(path);
     regex exp = regex(INCLUDE, regex::ECMAScript);
 
@@ -228,14 +227,13 @@ std::string streamy::readfile(const string& path)
 {
     string src;
     ifstream file;
-    file.open(path, ios::in); //open a file to perform read operation using file object
+    file.open(path, ios::in); //open a file
     if (file.is_open())
     {   
-        //checking whether the file is open
         string tp;
         while(getline(file, tp))
         { 
-            //read data from file object and put it into string.
+            //read data
             //src += tp += "\n";
             src += tp;
         }

@@ -16,13 +16,10 @@ man1dir = $(mandir)/man1
 
 # Compiler settings - Can be customized.
 CXX = g++
-#CXXFLAGS = -Wall -std=c++11
-CXXFLAGS = -Wall -std=c++11 -std=gnu++17 -DDEBUG -ggdb -fPIC
-
+CXXFLAGS = -Wall -std=c++11 -std=gnu++17 -fPIC
 # lib settings
 LDFLAGS = -static -lcppunit -L/usr/local/lib/
 INCLUDES = -I/usr/local/include/cppunit/
-# add addtional libs here
 
 # Makefile settings - Can be customized.
 APPNAME = streamycpp
@@ -32,25 +29,9 @@ BUILDDIR = .
 SRCDIR = $(ROOTDIR)/src
 OBJDIR = .
 
-# compile & link for debug
-#debug: CXXFLAGS += -DDEBUG -g
-debug: all
+debug: CXXFLAGS += -DDEBUG -ggdb
 
-# compile & link for debug GDBversion variable
-#debuggdb: CXXFLAGS += -DDEBUG -ggdb # compile & link
-all: $(APPNAME) bash_color_test streamy.a streamy.so $(APPNAME)_test #streamy-parse
-
-# link
-$(APPNAME): $(APPNAME).o main.o 
-	 $(CXX) $(CXXFLAGS) $(BUILDDIR)/$(APPNAME).o $(BUILDDIR)/main.o -o $(BUILDDIR)/$(APPNAME)
-
-# compile only
-$(APPNAME).o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/$(APPNAME).$(EXT)  -o $(BUILDDIR)/$(APPNAME).o
-
-main.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.$(EXT) -o $(BUILDDIR)/main.o
-	#$(CXX) $(CXXFLAGS) $(INCLUDES) $(BUILDDIR)/$(APPNAME).o $(LDFLAGS) -o $(BUILDDIR)/$(APPNAME)_test
+all: streamy.a streamy.so
 
 streamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy.so
@@ -60,29 +41,6 @@ streamy.a: streamy.o
 
 streamy.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/streamy.$(EXT) -o $(BUILDDIR)/streamy.o	
-
-# link
-$(APPNAME)_test: $(APPNAME)_test.o
-	$(CXX) $(CXXFLAGS) $(INCLUDES) $(BUILDDIR)/$(APPNAME)_test.o $(BUILDDIR)/$(APPNAME).o $(LDFLAGS) -o $(BUILDDIR)/$(APPNAME)_test
-
-# compile only
-$(APPNAME)_test.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/$(APPNAME)_test.cpp -o $(BUILDDIR)/$(APPNAME)_test.o
-
-bash_color_test: bash_color_test.o
-	$(CXX) $(CXXFLAGS) $(BUILDDIR)/bash_color_test.o -o $(BUILDDIR)/bash_color_test
-
-bash_color_test.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/bash_color_test.cpp -o $(BUILDDIR)/bash_color_test.o
-
-# flex & bison
-# streamy-cpp.tab.c streamy-cpp.tab.$(APPNAME)_test
-
-# lex.yy.c: streamy-cpp.l streamy-cpp.tab.h
-# 	flex streamy-cpp.l
-
-# streamy-parse: lex.yy.c streamy-cpp.tab.c streamy-cpp.tab.h
-# 	gcc -o streamy-parse streamy-cpp.tab.c lex.yy.c
 
 # install man pages
 .PHONY: man$(APPNAME)_test
@@ -96,18 +54,10 @@ unman:
 	rm $(man1dir)/$(APPNAME).1.gz
 	mandb
 
-# install 
-.PHONY: install
-install: man
-	cp $(BUILDDIR)/$(APPNAME) $(prefix)/bin/$(APPNAME)
-	rm $(prefix)/bin/$(APPNAME)
-
 # delete object files & app executable
 .PHONY: clean
 clean:
-	rm -f $(BUILDDIR)/$(APPNAME) $(BUILDDIR)/*.o $(BUILDDIR)/$(APPNAME)_test $(BUILDDIR)/bash_color_test
-	rm -f $(BUILDDIR)/*.xml $(BUILDDIR)/$(APPNAME).$(BUILD_VERSION).tar.gz
-	rm $(BUILDDIR)/streamy.a $(BUILDDIR)/streamy.so 
+	rm $(BUILDDIR)/streamy.o $(BUILDDIR)/streamy.a $(BUILDDIR)/streamy.so 
 
 # delete all auto generated files
 .PHONY: distclean
@@ -117,6 +67,3 @@ distclean: clean
 	#rm ../src/Makefile ../src/Makefile.in
 	#rm -rf ../autom4te.cache ../src/.deps ../src/.libs
 	#rm ../src/.o
-
-dist: 
-	git archive HEAD | gzip > $(BUILDDIR)/$(APPNAME).$(BUILD_VERSION).tar.gz
