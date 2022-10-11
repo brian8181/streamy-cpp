@@ -5,16 +5,15 @@ Nonterminals useless in grammar
 
 Rules useless in grammar
 
-   37 code: T_OPEN_CURLY
+   37 code: T_OPEN_CURLY IF_STATEMENT
    38     | code T_CLOSE_CURLY
    39     | VARIABLE
    40     | STRING_LITERAL
    41     | IF_STATEMENT
    42     | ELSE_STATEMENT
    43     | T_EQUAL
-   44     | T_OPEN_CURLY IF_STATEMENT code
-   45     | code VARIABLE T_EQUAL STRING_LITERAL code
-   46     | code ELSE_STATEMENT code
+   44     | code VARIABLE T_EQUAL STRING_LITERAL code
+   45     | code ELSE_STATEMENT code
 
 
 State 40 conflicts: 1 shift/reduce

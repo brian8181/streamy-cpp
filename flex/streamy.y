@@ -83,16 +83,16 @@ expression: T_INT				{ $$ = $1; }
 ;	
 
 code: 
-	T_OPEN_CURLY { printf(""); }
+	T_OPEN_CURLY IF_STATEMENT { printf("IFFFF"); }
 	
 	| code T_CLOSE_CURLY { printf("IF"); }
-	| VARIABLE { printf(""); }
+	| VARIABLE { printf($$); }
 	| STRING_LITERAL { printf(""); }
 	| IF_STATEMENT { printf(""); }
 	| ELSE_STATEMENT { printf(""); }
 	| T_EQUAL { printf(""); }
-	| T_OPEN_CURLY IF_STATEMENT code { printf(""); }
-	| code VARIABLE T_EQUAL STRING_LITERAL code { printf(""); }
+	
+	| code VARIABLE T_EQUAL STRING_LITERAL code { printf($1)); }
 	| code ELSE_STATEMENT code { printf(""); }
 
 ;

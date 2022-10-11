@@ -33,11 +33,16 @@ string string_literal2 = "(\\'[\\w*\\.]*\\')";                     // 'ABC'
 %%
 
 
+"{"		{printf("{\n"); return T_OPEN_CURLY;}
+"}"		{ printf("}\n"); return T_CLOSE_CURLY;}
+"if"		{ printf("if\n"); return IF_STATEMENT; }
+"else"		{ printf("else\n"); return ELSE_STATEMENT;}
+[a-z]{5,} { printf("TEXT %s\n", yytext); }
 
-[^}{]*[.]*"\{" { printf("TEXT %s\n", yytext); }
 
-"if"		{return IF_STATEMENT;}
-"else"		{return ELSE_STATEMENT;}
+
+
+
 '\{\s*\$([A-Za-z0-9]+\w*)\s*\}' { printf("VARIABLE\n"); return 0;};   
 '[A-Za-z]*' { printf("STRING_LITERAL\n"); return 0;} 
 
@@ -45,8 +50,6 @@ string string_literal2 = "(\\'[\\w*\\.]*\\')";                     // 'ABC'
 [0-9]+\.[0-9]+ 	{yylval.fval = atof(yytext); return T_FLOAT;}
 [0-9]+		{yylval.ival = atoi(yytext); return T_INT;}
 \n		{return T_NEWLINE;}
-"}"		{return T_CLOSE_CURLY;}
-"{"		{return T_OPEN_CURLY;}
 "+"		{return T_PLUS;}
 "*"		{return T_MULTIPLY;}
 "/"		{return T_DIVIDE;}
