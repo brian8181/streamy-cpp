@@ -3,6 +3,7 @@
 #include <fstream>
 #include "regexpr.hpp"
 #include "streamy.hpp"
+#include "base64.hpp"
 
 streamy::streamy(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {

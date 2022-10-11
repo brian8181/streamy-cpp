@@ -1,0 +1,15 @@
+all: streamy-cpp-parse streamy.l
+
+
+
+streamy-cpp.tab.c streamy-cpp.tab.h:	streamy-cpp.y
+	bison -t -v -d streamy-cpp.y
+
+lex.yy.c: streamy-cpp.l streamy-cpp.tab.h
+	flex streamy-cpp.l
+
+streamy-cpp-parse: lex.yy.c streamy-cpp.tab.c streamy-cpp.tab.h
+	gcc -o streamy-cpp-parse streamy-cpp.tab.c lex.yy.c
+
+clean:
+	rm streamy-cpp-parse streamy-cpp.tab.c lex.yy.c streamy-cpp.tab.h streamy-cpp.output
