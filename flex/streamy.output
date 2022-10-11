@@ -3,6 +3,13 @@ Nonterminals useless in grammar
     code
 
 
+Terminals unused in grammar
+
+    FOREACH_STATEMENT
+    T_POUND
+    T_ASTREIK
+
+
 Rules useless in grammar
 
    37 code: T_OPEN_CURLY IF_STATEMENT
@@ -85,30 +92,33 @@ Terminals, with rules where they appear
     test <const char*> (265) 27
     T_EQUAL (266) 28 36
     VARIABLE (267) 28 31 36
-    T_PLUS (268) 12 17 21 32
-    T_MINUS (269) 13 18 22 33
-    T_MULTIPLY (270) 14 19 23 34
-    T_DIVIDE (271) 15 20 24 25
-    T_LEFT (272) 16 35
-    T_RIGHT (273) 16 35
-    T_NEWLINE (274) 3 4 5 6
-    T_QUIT (275) 6
+    FOREACH_STATEMENT (268)
+    T_POUND (269)
+    T_ASTREIK (270)
+    T_PLUS (271) 12 17 21 32
+    T_MINUS (272) 13 18 22 33
+    T_MULTIPLY (273) 14 19 23 34
+    T_DIVIDE (274) 15 20 24 25
+    T_LEFT (275) 16 35
+    T_RIGHT (276) 16 35
+    T_NEWLINE (277) 3 4 5 6
+    T_QUIT (278) 6
 
 
 Nonterminals, with rules where they appear
 
-    $accept (21)
+    $accept (24)
         on left: 0
-    calculation (22)
+    calculation (25)
         on left: 1 2
         on right: 0 2
-    line (23)
+    line (26)
         on left: 3 4 5 6
         on right: 2
-    mixed_expression <fval> (24)
+    mixed_expression <fval> (27)
         on left: 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
         on right: 4 12 13 14 15 16 17 18 19 20 21 22 23 24 28
-    expression <ival> (25)
+    expression <ival> (28)
         on left: 29 30 31 32 33 34 35 36
         on right: 5 17 18 19 20 21 22 23 24 25 26 32 33 34 35
 

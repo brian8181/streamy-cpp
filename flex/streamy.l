@@ -32,21 +32,21 @@ string string_literal2 = "(\\'[\\w*\\.]*\\')";                     // 'ABC'
 
 %%
 
-
-"{"		{printf("{\n"); return T_OPEN_CURLY;}
-"}"		{ printf("}\n"); return T_CLOSE_CURLY;}
-"if"		{ printf("if\n"); return IF_STATEMENT; }
-"else"		{ printf("else\n"); return ELSE_STATEMENT;}
-[a-z]{5,} { printf("TEXT %s\n", yytext); }
-
-
-
-
-
-'\{\s*\$([A-Za-z0-9]+\w*)\s*\}' { printf("VARIABLE\n"); return 0;};   
-'[A-Za-z]*' { printf("STRING_LITERAL\n"); return 0;} 
-
 [ \t]	; // ignore all whitespace
+"="		{ printf("=\n"); return T_EQUAL; }
+"*"		{ printf("*\n"); return T_ASTREIK; }
+"#"		{ printf("*\n"); return T_POUND; }
+"{"		{ printf("{\n"); return T_OPEN_CURLY; }
+"}"		{ printf("}\n"); return T_CLOSE_CURLY; }
+"if"    { printf("if\n"); return IF_STATEMENT; }
+"else"	{ printf("else\n"); return ELSE_STATEMENT;}
+"foreach"	{ printf("foreach\n"); return FOREACH_STATEMENT; }
+[{]?[A-Za-z0-9\s]*[{] { printf("TEXT %s\n", yytext); }
+[$][A-Za-z][A-Za-z0-9]* { printf("VAR\n"); return 0;};   
+\"[A-Za-z]*\" { printf("STRING_LITERAL\n"); return 0;} 
+[1-9][0-9]* { printf("INT_LITERAL\n"); return 0;} 
+
+
 [0-9]+\.[0-9]+ 	{yylval.fval = atof(yytext); return T_FLOAT;}
 [0-9]+		{yylval.ival = atoi(yytext); return T_INT;}
 \n		{return T_NEWLINE;}
@@ -55,7 +55,6 @@ string string_literal2 = "(\\'[\\w*\\.]*\\')";                     // 'ABC'
 "/"		{return T_DIVIDE;}
 "("		{return T_LEFT;}
 ")"		{return T_RIGHT;}
-"="		{return T_EQUAL;}
 "exit"		{return T_QUIT;}
 "quit"		{return T_QUIT;}
 

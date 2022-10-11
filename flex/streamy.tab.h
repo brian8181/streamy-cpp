@@ -64,14 +64,17 @@ extern int yydebug;
     test = 265,                    /* test  */
     T_EQUAL = 266,                 /* T_EQUAL  */
     VARIABLE = 267,                /* VARIABLE  */
-    T_PLUS = 268,                  /* T_PLUS  */
-    T_MINUS = 269,                 /* T_MINUS  */
-    T_MULTIPLY = 270,              /* T_MULTIPLY  */
-    T_DIVIDE = 271,                /* T_DIVIDE  */
-    T_LEFT = 272,                  /* T_LEFT  */
-    T_RIGHT = 273,                 /* T_RIGHT  */
-    T_NEWLINE = 274,               /* T_NEWLINE  */
-    T_QUIT = 275                   /* T_QUIT  */
+    FOREACH_STATEMENT = 268,       /* FOREACH_STATEMENT  */
+    T_POUND = 269,                 /* T_POUND  */
+    T_ASTREIK = 270,               /* T_ASTREIK  */
+    T_PLUS = 271,                  /* T_PLUS  */
+    T_MINUS = 272,                 /* T_MINUS  */
+    T_MULTIPLY = 273,              /* T_MULTIPLY  */
+    T_DIVIDE = 274,                /* T_DIVIDE  */
+    T_LEFT = 275,                  /* T_LEFT  */
+    T_RIGHT = 276,                 /* T_RIGHT  */
+    T_NEWLINE = 277,               /* T_NEWLINE  */
+    T_QUIT = 278                   /* T_QUIT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -86,7 +89,7 @@ union YYSTYPE
 	float fval;
 	char* strval;
 
-#line 90 "streamy.tab.h"
+#line 93 "streamy.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
