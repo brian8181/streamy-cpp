@@ -56,25 +56,54 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     T_INT = 258,                   /* T_INT  */
     STRING_LITERAL = 259,          /* STRING_LITERAL  */
-    T_FLOAT = 260,                 /* T_FLOAT  */
-    T_CLOSE_CURLY = 261,           /* T_CLOSE_CURLY  */
-    T_OPEN_CURLY = 262,            /* T_OPEN_CURLY  */
-    IF_STATEMENT = 263,            /* IF_STATEMENT  */
-    ELSE_STATEMENT = 264,          /* ELSE_STATEMENT  */
-    test = 265,                    /* test  */
-    T_EQUAL = 266,                 /* T_EQUAL  */
-    VARIABLE = 267,                /* VARIABLE  */
-    FOREACH_STATEMENT = 268,       /* FOREACH_STATEMENT  */
-    T_POUND = 269,                 /* T_POUND  */
-    T_ASTREIK = 270,               /* T_ASTREIK  */
-    T_PLUS = 271,                  /* T_PLUS  */
-    T_MINUS = 272,                 /* T_MINUS  */
-    T_MULTIPLY = 273,              /* T_MULTIPLY  */
-    T_DIVIDE = 274,                /* T_DIVIDE  */
-    T_LEFT = 275,                  /* T_LEFT  */
-    T_RIGHT = 276,                 /* T_RIGHT  */
-    T_NEWLINE = 277,               /* T_NEWLINE  */
-    T_QUIT = 278                   /* T_QUIT  */
+    INT_LITERAL = 260,             /* INT_LITERAL  */
+    T_FLOAT = 261,                 /* T_FLOAT  */
+    TEXT = 262,                    /* TEXT  */
+    ESCAPE = 263,                  /* ESCAPE  */
+    T_CLOSE_BRACE = 264,           /* T_CLOSE_BRACE  */
+    T_OPEN_BRACE = 265,            /* T_OPEN_BRACE  */
+    T_CLOSE_CURLY = 266,           /* T_CLOSE_CURLY  */
+    T_OPEN_CURLY = 267,            /* T_OPEN_CURLY  */
+    IF_STATEMENT = 268,            /* IF_STATEMENT  */
+    ELSE_STATEMENT = 269,          /* ELSE_STATEMENT  */
+    test = 270,                    /* test  */
+    T_EQUAL = 271,                 /* T_EQUAL  */
+    VARIABLE = 272,                /* VARIABLE  */
+    FOREACH_STATEMENT = 273,       /* FOREACH_STATEMENT  */
+    T_POUND = 274,                 /* T_POUND  */
+    T_ASTREIK = 275,               /* T_ASTREIK  */
+    VBAR = 276,                    /* VBAR  */
+    AMPERSAND = 277,               /* AMPERSAND  */
+    AT_SIGN = 278,                 /* AT_SIGN  */
+    DASH = 279,                    /* DASH  */
+    UNDERSCORE = 280,              /* UNDERSCORE  */
+    DOT = 281,                     /* DOT  */
+    LESS_THAN = 282,               /* LESS_THAN  */
+    GREATER_THAN = 283,            /* GREATER_THAN  */
+    PERCENT = 284,                 /* PERCENT  */
+    CARROT = 285,                  /* CARROT  */
+    TILDE = 286,                   /* TILDE  */
+    QUESTION_MARK = 287,           /* QUESTION_MARK  */
+    EXCLAMATION = 288,             /* EXCLAMATION  */
+    ENDIF_STATEMENT = 289,         /* ENDIF_STATEMENT  */
+    ELSEIF_STATEMENT = 290,        /* ELSEIF_STATEMENT  */
+    KEYWORD = 291,                 /* KEYWORD  */
+    SINGLE_QUOTE = 292,            /* SINGLE_QUOTE  */
+    DOUBLE_QUOTE = 293,            /* DOUBLE_QUOTE  */
+    DOLLAR_SIGN = 294,             /* DOLLAR_SIGN  */
+    TICK_MARK = 295,               /* TICK_MARK  */
+    BACK_SLASH = 296,              /* BACK_SLASH  */
+    COLON = 297,                   /* COLON  */
+    SEMI_COLON = 298,              /* SEMI_COLON  */
+    COMMA = 299,                   /* COMMA  */
+    T_PLUS = 300,                  /* T_PLUS  */
+    T_MINUS = 301,                 /* T_MINUS  */
+    T_MULTIPLY = 302,              /* T_MULTIPLY  */
+    T_DIVIDE = 303,                /* T_DIVIDE  */
+    T_LEFT = 304,                  /* T_LEFT  */
+    T_RIGHT = 305,                 /* T_RIGHT  */
+    T_NEWLINE = 306,               /* T_NEWLINE  */
+    T_QUIT = 307                   /* T_QUIT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -89,7 +118,7 @@ union YYSTYPE
 	float fval;
 	char* strval;
 
-#line 93 "streamy.tab.h"
+#line 122 "streamy.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -112,30 +112,56 @@ enum yysymbol_kind_t
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
   YYSYMBOL_T_INT = 3,                      /* T_INT  */
   YYSYMBOL_STRING_LITERAL = 4,             /* STRING_LITERAL  */
-  YYSYMBOL_T_FLOAT = 5,                    /* T_FLOAT  */
-  YYSYMBOL_T_CLOSE_CURLY = 6,              /* T_CLOSE_CURLY  */
-  YYSYMBOL_T_OPEN_CURLY = 7,               /* T_OPEN_CURLY  */
-  YYSYMBOL_IF_STATEMENT = 8,               /* IF_STATEMENT  */
-  YYSYMBOL_ELSE_STATEMENT = 9,             /* ELSE_STATEMENT  */
-  YYSYMBOL_test = 10,                      /* test  */
-  YYSYMBOL_T_EQUAL = 11,                   /* T_EQUAL  */
-  YYSYMBOL_VARIABLE = 12,                  /* VARIABLE  */
-  YYSYMBOL_FOREACH_STATEMENT = 13,         /* FOREACH_STATEMENT  */
-  YYSYMBOL_T_POUND = 14,                   /* T_POUND  */
-  YYSYMBOL_T_ASTREIK = 15,                 /* T_ASTREIK  */
-  YYSYMBOL_T_PLUS = 16,                    /* T_PLUS  */
-  YYSYMBOL_T_MINUS = 17,                   /* T_MINUS  */
-  YYSYMBOL_T_MULTIPLY = 18,                /* T_MULTIPLY  */
-  YYSYMBOL_T_DIVIDE = 19,                  /* T_DIVIDE  */
-  YYSYMBOL_T_LEFT = 20,                    /* T_LEFT  */
-  YYSYMBOL_T_RIGHT = 21,                   /* T_RIGHT  */
-  YYSYMBOL_T_NEWLINE = 22,                 /* T_NEWLINE  */
-  YYSYMBOL_T_QUIT = 23,                    /* T_QUIT  */
-  YYSYMBOL_YYACCEPT = 24,                  /* $accept  */
-  YYSYMBOL_calculation = 25,               /* calculation  */
-  YYSYMBOL_line = 26,                      /* line  */
-  YYSYMBOL_mixed_expression = 27,          /* mixed_expression  */
-  YYSYMBOL_expression = 28                 /* expression  */
+  YYSYMBOL_INT_LITERAL = 5,                /* INT_LITERAL  */
+  YYSYMBOL_T_FLOAT = 6,                    /* T_FLOAT  */
+  YYSYMBOL_TEXT = 7,                       /* TEXT  */
+  YYSYMBOL_ESCAPE = 8,                     /* ESCAPE  */
+  YYSYMBOL_T_CLOSE_BRACE = 9,              /* T_CLOSE_BRACE  */
+  YYSYMBOL_T_OPEN_BRACE = 10,              /* T_OPEN_BRACE  */
+  YYSYMBOL_T_CLOSE_CURLY = 11,             /* T_CLOSE_CURLY  */
+  YYSYMBOL_T_OPEN_CURLY = 12,              /* T_OPEN_CURLY  */
+  YYSYMBOL_IF_STATEMENT = 13,              /* IF_STATEMENT  */
+  YYSYMBOL_ELSE_STATEMENT = 14,            /* ELSE_STATEMENT  */
+  YYSYMBOL_test = 15,                      /* test  */
+  YYSYMBOL_T_EQUAL = 16,                   /* T_EQUAL  */
+  YYSYMBOL_VARIABLE = 17,                  /* VARIABLE  */
+  YYSYMBOL_FOREACH_STATEMENT = 18,         /* FOREACH_STATEMENT  */
+  YYSYMBOL_T_POUND = 19,                   /* T_POUND  */
+  YYSYMBOL_T_ASTREIK = 20,                 /* T_ASTREIK  */
+  YYSYMBOL_VBAR = 21,                      /* VBAR  */
+  YYSYMBOL_AMPERSAND = 22,                 /* AMPERSAND  */
+  YYSYMBOL_AT_SIGN = 23,                   /* AT_SIGN  */
+  YYSYMBOL_DASH = 24,                      /* DASH  */
+  YYSYMBOL_UNDERSCORE = 25,                /* UNDERSCORE  */
+  YYSYMBOL_DOT = 26,                       /* DOT  */
+  YYSYMBOL_LESS_THAN = 27,                 /* LESS_THAN  */
+  YYSYMBOL_GREATER_THAN = 28,              /* GREATER_THAN  */
+  YYSYMBOL_PERCENT = 29,                   /* PERCENT  */
+  YYSYMBOL_CARROT = 30,                    /* CARROT  */
+  YYSYMBOL_TILDE = 31,                     /* TILDE  */
+  YYSYMBOL_QUESTION_MARK = 32,             /* QUESTION_MARK  */
+  YYSYMBOL_EXCLAMATION = 33,               /* EXCLAMATION  */
+  YYSYMBOL_ENDIF_STATEMENT = 34,           /* ENDIF_STATEMENT  */
+  YYSYMBOL_ELSEIF_STATEMENT = 35,          /* ELSEIF_STATEMENT  */
+  YYSYMBOL_KEYWORD = 36,                   /* KEYWORD  */
+  YYSYMBOL_SINGLE_QUOTE = 37,              /* SINGLE_QUOTE  */
+  YYSYMBOL_DOUBLE_QUOTE = 38,              /* DOUBLE_QUOTE  */
+  YYSYMBOL_DOLLAR_SIGN = 39,               /* DOLLAR_SIGN  */
+  YYSYMBOL_TICK_MARK = 40,                 /* TICK_MARK  */
+  YYSYMBOL_BACK_SLASH = 41,                /* BACK_SLASH  */
+  YYSYMBOL_COLON = 42,                     /* COLON  */
+  YYSYMBOL_SEMI_COLON = 43,                /* SEMI_COLON  */
+  YYSYMBOL_COMMA = 44,                     /* COMMA  */
+  YYSYMBOL_T_PLUS = 45,                    /* T_PLUS  */
+  YYSYMBOL_T_MINUS = 46,                   /* T_MINUS  */
+  YYSYMBOL_T_MULTIPLY = 47,                /* T_MULTIPLY  */
+  YYSYMBOL_T_DIVIDE = 48,                  /* T_DIVIDE  */
+  YYSYMBOL_T_LEFT = 49,                    /* T_LEFT  */
+  YYSYMBOL_T_RIGHT = 50,                   /* T_RIGHT  */
+  YYSYMBOL_T_NEWLINE = 51,                 /* T_NEWLINE  */
+  YYSYMBOL_T_QUIT = 52,                    /* T_QUIT  */
+  YYSYMBOL_YYACCEPT = 53,                  /* $accept  */
+  YYSYMBOL_text = 54                       /* text  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -455,21 +481,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  2
+#define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   108
+#define YYLAST   5
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  24
+#define YYNTOKENS  53
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  5
+#define YYNNTS  2
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  37
+#define YYNRULES  3
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  67
+#define YYNSTATES  6
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   278
+#define YYMAXUTOK   307
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -510,17 +536,17 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    51,    52
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    36,    36,    37,    40,    41,    42,    43,    48,    49,
-      50,    51,    52,    54,    55,    56,    57,    58,    59,    60,
-      61,    62,    63,    64,    65,    66,    67,    68,    69,    70,
-      73,    74,    75,    77,    78,    79,    80,    81
+       0,    42,    42,    43
 };
 #endif
 
@@ -537,11 +563,16 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "T_INT",
-  "STRING_LITERAL", "T_FLOAT", "T_CLOSE_CURLY", "T_OPEN_CURLY",
+  "STRING_LITERAL", "INT_LITERAL", "T_FLOAT", "TEXT", "ESCAPE",
+  "T_CLOSE_BRACE", "T_OPEN_BRACE", "T_CLOSE_CURLY", "T_OPEN_CURLY",
   "IF_STATEMENT", "ELSE_STATEMENT", "test", "T_EQUAL", "VARIABLE",
-  "FOREACH_STATEMENT", "T_POUND", "T_ASTREIK", "T_PLUS", "T_MINUS",
-  "T_MULTIPLY", "T_DIVIDE", "T_LEFT", "T_RIGHT", "T_NEWLINE", "T_QUIT",
-  "$accept", "calculation", "line", "mixed_expression", "expression", YY_NULLPTR
+  "FOREACH_STATEMENT", "T_POUND", "T_ASTREIK", "VBAR", "AMPERSAND",
+  "AT_SIGN", "DASH", "UNDERSCORE", "DOT", "LESS_THAN", "GREATER_THAN",
+  "PERCENT", "CARROT", "TILDE", "QUESTION_MARK", "EXCLAMATION",
+  "ENDIF_STATEMENT", "ELSEIF_STATEMENT", "KEYWORD", "SINGLE_QUOTE",
+  "DOUBLE_QUOTE", "DOLLAR_SIGN", "TICK_MARK", "BACK_SLASH", "COLON",
+  "SEMI_COLON", "COMMA", "T_PLUS", "T_MINUS", "T_MULTIPLY", "T_DIVIDE",
+  "T_LEFT", "T_RIGHT", "T_NEWLINE", "T_QUIT", "$accept", "text", YY_NULLPTR
 };
 
 static const char *
@@ -558,11 +589,14 @@ static const yytype_int16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278
+     275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
+     285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
+     295,   296,   297,   298,   299,   300,   301,   302,   303,   304,
+     305,   306,   307
 };
 #endif
 
-#define YYPACT_NINF (-16)
+#define YYPACT_NINF (-7)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -576,13 +610,7 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -16,    21,   -16,   -16,   -16,   -16,   -16,    -3,   -16,   -16,
-     -16,    -1,    55,   -16,   -11,   -16,    64,   -15,    65,    12,
-      71,    81,   -16,    24,    55,    55,    55,    55,   -16,    55,
-      55,    55,    55,   -16,    65,    78,   -16,   -16,   -16,    26,
-      16,   -10,    16,   -10,    29,   -16,    29,   -16,    16,   -10,
-      16,   -10,    29,   -16,    29,   -16,    87,   -16,    65,    65,
-      65,    28,    22,    22,   -16,    38,   -16
+      -6,    -7,     0,    -7,    -6,    -1
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -590,25 +618,19 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,    30,    31,     8,    10,     9,    11,    12,
-      28,    32,     0,     4,     0,     3,     0,     0,     0,     0,
-       0,     0,     7,     0,     0,     0,     0,     0,     5,     0,
-       0,     0,     0,     6,     0,     0,    37,    17,    36,     0,
-      13,    22,    14,    23,    15,    24,    16,    25,    18,    33,
-      19,    34,    20,    35,    21,    26,     0,    27,     0,     0,
-       0,     0,    33,    34,    35,     0,    29
+       0,     2,     0,     1,     0,     3
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -16,   -16,   -16,    25,   -12
+      -7,     1
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,    15,    16,    17
+       0,     2
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -616,63 +638,31 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      21,    29,    30,    31,    32,    18,    35,    33,    31,    32,
-      19,    22,    41,    43,    45,    47,    36,    49,    51,    53,
-      55,     2,    56,    23,     3,     4,     5,     6,     7,     8,
-       9,    10,    39,    11,    26,    27,    23,    20,    61,    65,
-      60,    12,    66,    13,    14,     0,    62,    63,    64,    40,
-      42,    44,    46,     0,    48,    50,    52,    54,     3,     4,
-       5,     6,     7,     8,     9,    10,     0,    11,     3,     4,
-       0,    23,     0,     0,     0,    12,     0,    11,    23,     0,
-      24,    25,    26,    27,    57,    34,    28,    24,    25,    26,
-      27,     0,    37,     0,    58,    59,    60,    29,    30,    31,
-      32,     0,    38,    58,    59,    60,     0,     0,    38
+       3,     1,     4,     4,     0,     5
 };
 
 static const yytype_int8 yycheck[] =
 {
-      12,    16,    17,    18,    19,     8,    18,    22,    18,    19,
-      11,    22,    24,    25,    26,    27,     4,    29,    30,    31,
-      32,     0,    34,     7,     3,     4,     5,     6,     7,     8,
-       9,    10,     8,    12,    18,    19,     7,    12,    12,    11,
-      18,    20,     4,    22,    23,    -1,    58,    59,    60,    24,
-      25,    26,    27,    -1,    29,    30,    31,    32,     3,     4,
-       5,     6,     7,     8,     9,    10,    -1,    12,     3,     4,
-      -1,     7,    -1,    -1,    -1,    20,    -1,    12,     7,    -1,
-      16,    17,    18,    19,     6,    20,    22,    16,    17,    18,
-      19,    -1,    21,    -1,    16,    17,    18,    16,    17,    18,
-      19,    -1,    21,    16,    17,    18,    -1,    -1,    21
+       0,     7,     3,     3,    -1,     4
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    25,     0,     3,     4,     5,     6,     7,     8,     9,
-      10,    12,    20,    22,    23,    26,    27,    28,     8,    11,
-      27,    28,    22,     7,    16,    17,    18,    19,    22,    16,
-      17,    18,    19,    22,    20,    28,     4,    21,    21,     8,
-      27,    28,    27,    28,    27,    28,    27,    28,    27,    28,
-      27,    28,    27,    28,    27,    28,    28,     6,    16,    17,
-      18,    12,    28,    28,    28,    11,     4
+       0,     7,    54,     0,     3,    54
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    24,    25,    25,    26,    26,    26,    26,    27,    27,
-      27,    27,    27,    27,    27,    27,    27,    27,    27,    27,
-      27,    27,    27,    27,    27,    27,    27,    27,    27,    27,
-      28,    28,    28,    28,    28,    28,    28,    28
+       0,    53,    54,    54
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     1,     2,     2,     2,     1,     1,
-       1,     1,     1,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     4,     1,     6,
-       1,     1,     1,     3,     3,     3,     3,     3
+       0,     2,     1,     3
 };
 
 
@@ -1139,206 +1129,14 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 5: /* line: mixed_expression T_NEWLINE  */
-#line 41 "streamy.y"
-                                     { printf("\tResult: %f\n", (yyvsp[-1].fval));}
-#line 1146 "streamy.tab.c"
-    break;
-
-  case 6: /* line: expression T_NEWLINE  */
+  case 2: /* text: TEXT  */
 #line 42 "streamy.y"
-                           { printf("\tResult: %i\n", (yyvsp[-1].ival)); }
-#line 1152 "streamy.tab.c"
-    break;
-
-  case 7: /* line: T_QUIT T_NEWLINE  */
-#line 43 "streamy.y"
-                       { printf("bye!\n"); exit(0); }
-#line 1158 "streamy.tab.c"
-    break;
-
-  case 8: /* mixed_expression: T_FLOAT  */
-#line 48 "streamy.y"
-                                                 { (yyval.fval) = (yyvsp[0].fval); }
-#line 1164 "streamy.tab.c"
-    break;
-
-  case 9: /* mixed_expression: T_OPEN_CURLY  */
-#line 49 "streamy.y"
-                         { (yyval.fval);}
-#line 1170 "streamy.tab.c"
-    break;
-
-  case 10: /* mixed_expression: T_CLOSE_CURLY  */
-#line 50 "streamy.y"
-                          { (yyval.fval);}
-#line 1176 "streamy.tab.c"
-    break;
-
-  case 11: /* mixed_expression: IF_STATEMENT  */
-#line 51 "streamy.y"
-                         { (yyval.fval); }
-#line 1182 "streamy.tab.c"
-    break;
-
-  case 12: /* mixed_expression: ELSE_STATEMENT  */
-#line 52 "streamy.y"
-                           { (yyval.fval);}
-#line 1188 "streamy.tab.c"
-    break;
-
-  case 13: /* mixed_expression: mixed_expression T_PLUS mixed_expression  */
-#line 54 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) + (yyvsp[0].fval); }
-#line 1194 "streamy.tab.c"
-    break;
-
-  case 14: /* mixed_expression: mixed_expression T_MINUS mixed_expression  */
-#line 55 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) - (yyvsp[0].fval); }
-#line 1200 "streamy.tab.c"
-    break;
-
-  case 15: /* mixed_expression: mixed_expression T_MULTIPLY mixed_expression  */
-#line 56 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) * (yyvsp[0].fval); }
-#line 1206 "streamy.tab.c"
-    break;
-
-  case 16: /* mixed_expression: mixed_expression T_DIVIDE mixed_expression  */
-#line 57 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) / (yyvsp[0].fval); }
-#line 1212 "streamy.tab.c"
-    break;
-
-  case 17: /* mixed_expression: T_LEFT mixed_expression T_RIGHT  */
-#line 58 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-1].fval); }
-#line 1218 "streamy.tab.c"
-    break;
-
-  case 18: /* mixed_expression: expression T_PLUS mixed_expression  */
-#line 59 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) + (yyvsp[0].fval); }
-#line 1224 "streamy.tab.c"
-    break;
-
-  case 19: /* mixed_expression: expression T_MINUS mixed_expression  */
-#line 60 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) - (yyvsp[0].fval); }
-#line 1230 "streamy.tab.c"
-    break;
-
-  case 20: /* mixed_expression: expression T_MULTIPLY mixed_expression  */
-#line 61 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) * (yyvsp[0].fval); }
-#line 1236 "streamy.tab.c"
-    break;
-
-  case 21: /* mixed_expression: expression T_DIVIDE mixed_expression  */
-#line 62 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) / (yyvsp[0].fval); }
-#line 1242 "streamy.tab.c"
-    break;
-
-  case 22: /* mixed_expression: mixed_expression T_PLUS expression  */
-#line 63 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) + (yyvsp[0].ival); }
-#line 1248 "streamy.tab.c"
-    break;
-
-  case 23: /* mixed_expression: mixed_expression T_MINUS expression  */
-#line 64 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) - (yyvsp[0].ival); }
-#line 1254 "streamy.tab.c"
-    break;
-
-  case 24: /* mixed_expression: mixed_expression T_MULTIPLY expression  */
-#line 65 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) * (yyvsp[0].ival); }
-#line 1260 "streamy.tab.c"
-    break;
-
-  case 25: /* mixed_expression: mixed_expression T_DIVIDE expression  */
-#line 66 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].fval) / (yyvsp[0].ival); }
-#line 1266 "streamy.tab.c"
-    break;
-
-  case 26: /* mixed_expression: expression T_DIVIDE expression  */
-#line 67 "streamy.y"
-                                                         { (yyval.fval) = (yyvsp[-2].ival) / (float)(yyvsp[0].ival); }
-#line 1272 "streamy.tab.c"
-    break;
-
-  case 27: /* mixed_expression: T_OPEN_CURLY IF_STATEMENT expression T_CLOSE_CURLY  */
-#line 68 "streamy.y"
-                                                               { printf(""); }
-#line 1278 "streamy.tab.c"
-    break;
-
-  case 28: /* mixed_expression: test  */
-#line 69 "streamy.y"
-                         { printf(""); }
-#line 1284 "streamy.tab.c"
-    break;
-
-  case 29: /* mixed_expression: mixed_expression T_OPEN_CURLY IF_STATEMENT VARIABLE T_EQUAL STRING_LITERAL  */
-#line 70 "streamy.y"
-                                                                                                { (yyval.fval) = (yyvsp[-5].fval); }
-#line 1290 "streamy.tab.c"
-    break;
-
-  case 30: /* expression: T_INT  */
-#line 73 "streamy.y"
-                                                { (yyval.ival) = (yyvsp[0].ival); }
-#line 1296 "streamy.tab.c"
-    break;
-
-  case 31: /* expression: STRING_LITERAL  */
-#line 74 "streamy.y"
-                         { (yyval.ival) = (yyvsp[0].ival); }
-#line 1302 "streamy.tab.c"
-    break;
-
-  case 32: /* expression: VARIABLE  */
-#line 75 "streamy.y"
-                   {}
-#line 1308 "streamy.tab.c"
-    break;
-
-  case 33: /* expression: expression T_PLUS expression  */
-#line 77 "streamy.y"
-                                                { (yyval.ival) = (yyvsp[-2].ival) + (yyvsp[0].ival); }
-#line 1314 "streamy.tab.c"
-    break;
-
-  case 34: /* expression: expression T_MINUS expression  */
-#line 78 "streamy.y"
-                                                { (yyval.ival) = (yyvsp[-2].ival) - (yyvsp[0].ival); }
-#line 1320 "streamy.tab.c"
-    break;
-
-  case 35: /* expression: expression T_MULTIPLY expression  */
-#line 79 "streamy.y"
-                                                { (yyval.ival) = (yyvsp[-2].ival) * (yyvsp[0].ival); }
-#line 1326 "streamy.tab.c"
-    break;
-
-  case 36: /* expression: T_LEFT expression T_RIGHT  */
-#line 80 "streamy.y"
-                                                { (yyval.ival) = (yyvsp[-1].ival); }
-#line 1332 "streamy.tab.c"
-    break;
-
-  case 37: /* expression: VARIABLE T_EQUAL STRING_LITERAL  */
-#line 81 "streamy.y"
-                                                        { printf(""); }
-#line 1338 "streamy.tab.c"
+             { printf("%s/n", (yyvsp[0].strval));  (yyval.strval) = (yyvsp[0].strval); }
+#line 1136 "streamy.tab.c"
     break;
 
 
-#line 1342 "streamy.tab.c"
+#line 1140 "streamy.tab.c"
 
       default: break;
     }
@@ -1532,7 +1330,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 102 "streamy.y"
+#line 122 "streamy.y"
 
 
 int main() {

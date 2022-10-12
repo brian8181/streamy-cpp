@@ -16,26 +16,46 @@ void yyerror(const char* s);
 	char* strval;
 }
 
-%token<ival> T_INT  STRING_LITERAL
+%token<ival> T_INT  STRING_LITERAL INT_LITERAL
 %token<fval> T_FLOAT
+%token<strval> TEXT ESCAPE  T_CLOSE_BRACE T_OPEN_BRACE
 %token T_CLOSE_CURLY T_OPEN_CURLY IF_STATEMENT ELSE_STATEMENT test T_EQUAL VARIABLE FOREACH_STATEMENT T_POUND T_ASTREIK
+%token VBAR AMPERSAND AT_SIGN DASH UNDERSCORE DOT LESS_THAN GREATER_THAN PERCENT CARROT TILDE QUESTION_MARK EXCLAMATION ENDIF_STATEMENT ELSEIF_STATEMENT KEYWORD SINGLE_QUOTE DOUBLE_QUOTE
+%token DOLLAR_SIGN TICK_MARK BACK_SLASH COLON SEMI_COLON COMMA
 %token T_PLUS T_MINUS T_MULTIPLY T_DIVIDE T_LEFT T_RIGHT 
 %token T_NEWLINE T_QUIT 
 %left T_PLUS T_MINUS 
 %left T_MULTIPLY T_DIVIDE
 
+
+%type<strval> text
+%type escaped
 %type<const char*> code
 %type<const char*> test
 %type<ival> expression
 %type<fval> mixed_expression
 
-%start calculation
-
+%start text
 %%
 
-calculation:
-	   | calculation line
+text:
+	TEXT { printf("%s/n", $1);  $$ = $1; }
+	| text T_INT text
+	
 ;
+
+escaped: { return 42; }
+	| T_OPEN_BRACE 
+	| T_CLOSE_BRACE 
+	| escaped T_CLOSE_BRACE 
+	| T_OPEN_BRACE escaped 
+	| T_OPEN_BRACE escaped T_CLOSE_BRACE
+;
+
+open_brace:
+	| T_OPEN_BRACE
+;
+
 
 line: T_NEWLINE
 	| mixed_expression T_NEWLINE { printf("\tResult: %f\n", $1);}
@@ -46,7 +66,7 @@ line: T_NEWLINE
 
 mixed_expression: 
 	  T_FLOAT                 		 { $$ = $1; }
-	  | T_OPEN_CURLY { $$;}
+	  | T_OPEN_CURLY { $$; }
 	  | T_CLOSE_CURLY { $$;}
 	  | IF_STATEMENT { $$; }
 	  | ELSE_STATEMENT { $$;}
