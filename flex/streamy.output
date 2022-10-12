@@ -10,9 +10,11 @@ Nonterminals useless in grammar
 
 Terminals unused in grammar
 
+    T_INT
     STRING_LITERAL
     INT_LITERAL
     T_FLOAT
+    TEXT
     ESCAPE
     T_CLOSE_BRACE
     T_OPEN_BRACE
@@ -21,11 +23,9 @@ Terminals unused in grammar
     IF_STATEMENT
     ELSE_STATEMENT
     test
-    T_EQUAL
     VARIABLE
     FOREACH_STATEMENT
     T_POUND
-    T_ASTREIK
     VBAR
     AMPERSAND
     AT_SIGN
@@ -62,84 +62,82 @@ Terminals unused in grammar
 
 Rules useless in grammar
 
-    3 escaped: %empty
-    4        | T_OPEN_BRACE
-    5        | T_CLOSE_BRACE
-    6        | escaped T_CLOSE_BRACE
-    7        | T_OPEN_BRACE escaped
-    8        | T_OPEN_BRACE escaped T_CLOSE_BRACE
+    4 escaped: %empty
+    5        | T_OPEN_BRACE
+    6        | T_CLOSE_BRACE
+    7        | escaped T_CLOSE_BRACE
+    8        | T_OPEN_BRACE escaped
+    9        | T_OPEN_BRACE escaped T_CLOSE_BRACE
 
-    9 open_brace: %empty
-   10           | T_OPEN_BRACE
+   10 open_brace: %empty
+   11           | T_OPEN_BRACE
 
-   11 line: T_NEWLINE
-   12     | mixed_expression T_NEWLINE
-   13     | expression T_NEWLINE
-   14     | T_QUIT T_NEWLINE
+   12 line: T_NEWLINE
+   13     | mixed_expression T_NEWLINE
+   14     | expression T_NEWLINE
+   15     | T_QUIT T_NEWLINE
 
-   15 mixed_expression: T_FLOAT
-   16                 | T_OPEN_CURLY
-   17                 | T_CLOSE_CURLY
-   18                 | IF_STATEMENT
-   19                 | ELSE_STATEMENT
-   20                 | mixed_expression T_PLUS mixed_expression
-   21                 | mixed_expression T_MINUS mixed_expression
-   22                 | mixed_expression T_MULTIPLY mixed_expression
-   23                 | mixed_expression T_DIVIDE mixed_expression
-   24                 | T_LEFT mixed_expression T_RIGHT
-   25                 | expression T_PLUS mixed_expression
-   26                 | expression T_MINUS mixed_expression
-   27                 | expression T_MULTIPLY mixed_expression
-   28                 | expression T_DIVIDE mixed_expression
-   29                 | mixed_expression T_PLUS expression
-   30                 | mixed_expression T_MINUS expression
-   31                 | mixed_expression T_MULTIPLY expression
-   32                 | mixed_expression T_DIVIDE expression
-   33                 | expression T_DIVIDE expression
-   34                 | T_OPEN_CURLY IF_STATEMENT expression T_CLOSE_CURLY
-   35                 | test
-   36                 | mixed_expression T_OPEN_CURLY IF_STATEMENT VARIABLE T_EQUAL STRING_LITERAL
+   16 mixed_expression: T_FLOAT
+   17                 | T_OPEN_CURLY
+   18                 | T_CLOSE_CURLY
+   19                 | IF_STATEMENT
+   20                 | ELSE_STATEMENT
+   21                 | mixed_expression T_PLUS mixed_expression
+   22                 | mixed_expression T_MINUS mixed_expression
+   23                 | mixed_expression T_MULTIPLY mixed_expression
+   24                 | mixed_expression T_DIVIDE mixed_expression
+   25                 | T_LEFT mixed_expression T_RIGHT
+   26                 | expression T_PLUS mixed_expression
+   27                 | expression T_MINUS mixed_expression
+   28                 | expression T_MULTIPLY mixed_expression
+   29                 | expression T_DIVIDE mixed_expression
+   30                 | mixed_expression T_PLUS expression
+   31                 | mixed_expression T_MINUS expression
+   32                 | mixed_expression T_MULTIPLY expression
+   33                 | mixed_expression T_DIVIDE expression
+   34                 | expression T_DIVIDE expression
+   35                 | T_OPEN_CURLY IF_STATEMENT expression T_CLOSE_CURLY
+   36                 | test
+   37                 | mixed_expression T_OPEN_CURLY IF_STATEMENT VARIABLE T_EQUAL STRING_LITERAL
 
-   37 expression: T_INT
-   38           | STRING_LITERAL
-   39           | VARIABLE
-   40           | expression T_PLUS expression
-   41           | expression T_MINUS expression
-   42           | expression T_MULTIPLY expression
-   43           | T_LEFT expression T_RIGHT
-   44           | VARIABLE T_EQUAL STRING_LITERAL
+   38 expression: T_INT
+   39           | STRING_LITERAL
+   40           | VARIABLE
+   41           | expression T_PLUS expression
+   42           | expression T_MINUS expression
+   43           | expression T_MULTIPLY expression
+   44           | T_LEFT expression T_RIGHT
+   45           | VARIABLE T_EQUAL STRING_LITERAL
 
-   45 code: T_OPEN_CURLY IF_STATEMENT
-   46     | code T_CLOSE_CURLY
-   47     | VARIABLE
-   48     | STRING_LITERAL
-   49     | IF_STATEMENT
-   50     | ELSE_STATEMENT
-   51     | T_EQUAL
-   52     | code VARIABLE T_EQUAL STRING_LITERAL code
-   53     | code ELSE_STATEMENT code
-
-
-State 5 conflicts: 1 shift/reduce
+   46 code: T_OPEN_CURLY IF_STATEMENT
+   47     | code T_CLOSE_CURLY
+   48     | VARIABLE
+   49     | STRING_LITERAL
+   50     | IF_STATEMENT
+   51     | ELSE_STATEMENT
+   52     | T_EQUAL
+   53     | code VARIABLE T_EQUAL STRING_LITERAL code
+   54     | code ELSE_STATEMENT code
 
 
 Grammar
 
     0 $accept: text $end
 
-    1 text: TEXT
-    2     | text T_INT text
+    1 text: %empty
+    2     | T_EQUAL
+    3     | T_ASTREIK
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    T_INT <ival> (258) 2
+    T_INT <ival> (258)
     STRING_LITERAL <ival> (259)
     INT_LITERAL <ival> (260)
     T_FLOAT <fval> (261)
-    TEXT <strval> (262) 1
+    TEXT <strval> (262)
     ESCAPE <strval> (263)
     T_CLOSE_BRACE <strval> (264)
     T_OPEN_BRACE <strval> (265)
@@ -148,11 +146,11 @@ Terminals, with rules where they appear
     IF_STATEMENT (268)
     ELSE_STATEMENT (269)
     test <const char*> (270)
-    T_EQUAL (271)
+    T_EQUAL (271) 2
     VARIABLE (272)
     FOREACH_STATEMENT (273)
     T_POUND (274)
-    T_ASTREIK (275)
+    T_ASTREIK (275) 3
     VBAR (276)
     AMPERSAND (277)
     AT_SIGN (278)
@@ -192,57 +190,45 @@ Nonterminals, with rules where they appear
     $accept (53)
         on left: 0
     text <strval> (54)
-        on left: 1 2
-        on right: 0 2
+        on left: 1 2 3
+        on right: 0
 
 
 State 0
 
     0 $accept: • text $end
 
-    TEXT  shift, and go to state 1
+    T_EQUAL    shift, and go to state 1
+    T_ASTREIK  shift, and go to state 2
 
-    text  go to state 2
+    $default  reduce using rule 1 (text)
+
+    text  go to state 3
 
 
 State 1
 
-    1 text: TEXT •
+    2 text: T_EQUAL •
 
-    $default  reduce using rule 1 (text)
+    $default  reduce using rule 2 (text)
 
 
 State 2
 
-    0 $accept: text • $end
-    2 text: text • T_INT text
+    3 text: T_ASTREIK •
 
-    $end   shift, and go to state 3
-    T_INT  shift, and go to state 4
+    $default  reduce using rule 3 (text)
 
 
 State 3
 
-    0 $accept: text $end •
+    0 $accept: text • $end
 
-    $default  accept
+    $end  shift, and go to state 4
 
 
 State 4
 
-    2 text: text T_INT • text
+    0 $accept: text $end •
 
-    TEXT  shift, and go to state 1
-
-    text  go to state 5
-
-
-State 5
-
-    2 text: text • T_INT text
-    2     | text T_INT text •
-
-    T_INT  shift, and go to state 4
-
-    T_INT     [reduce using rule 2 (text)]
-    $default  reduce using rule 2 (text)
+    $default  accept

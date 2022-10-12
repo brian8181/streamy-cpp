@@ -27,22 +27,22 @@ string string_literal2 = "(\\'[\\w*\\.]*\\')";                     // 'ABC'
 %%
 
 [ \t]	; // ignore all whitespace
-"="		{ printf("=\n"); return T_EQUAL; }
-"*"		{ printf("*\n"); return T_ASTREIK; }
+"="		{ return T_EQUAL; }
+"*"		{ return T_ASTREIK; }
 "+"		{ return T_PLUS;}
 "*"		{ return T_MULTIPLY; }
 "/"		{ return T_DIVIDE; }
 "("		{ return T_LEFT; }
 ")"		{ return T_RIGHT; }
 "'"		{ return SINGLE_QUOTE; }
-"\""		{ return DOUBLE_QUOTE; }
+"\""	{ return DOUBLE_QUOTE; }
 ","		{ return COMMA; }
 ":"		{ return COLON; }
 ";"		{ return SEMI_COLON; }
-"\\"		{ return BACK_SLASH; }
+"\\"	{ return BACK_SLASH; }
 "`"		{ return TICK_MARK; }
 "$"		{ return DOLLAR_SIGN; }
-"#"		{ printf("*\n"); return T_POUND; }
+"#"		{ return T_POUND; }
 "{"		{ printf("{\n"); return T_OPEN_CURLY; }
 "}"		{ printf("}\n"); return T_CLOSE_CURLY; }
 "["		{ printf("[\n"); return T_OPEN_BRACE; }

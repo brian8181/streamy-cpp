@@ -481,18 +481,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  3
+#define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   5
+#define YYLAST   4
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  53
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  2
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  3
+#define YYNRULES  4
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  6
+#define YYNSTATES  5
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   307
@@ -546,7 +546,7 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    42,    42,    43
+       0,    41,    41,    42,    43
 };
 #endif
 
@@ -596,7 +596,7 @@ static const yytype_int16 yytoknum[] =
 };
 #endif
 
-#define YYPACT_NINF (-7)
+#define YYPACT_NINF (-17)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -610,7 +610,7 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -6,    -7,     0,    -7,    -6,    -1
+     -16,   -17,   -17,     1,   -17
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -618,19 +618,19 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     2,     0,     1,     0,     3
+       2,     3,     4,     0,     1
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -7,     1
+     -17,   -17
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2
+       0,     3
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -638,31 +638,31 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       3,     1,     4,     4,     0,     5
+       1,     4,     0,     0,     2
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     7,     3,     3,    -1,     4
+      16,     0,    -1,    -1,    20
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     7,    54,     0,     3,    54
+       0,    16,    20,    54,     0
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    53,    54,    54
+       0,    53,    54,    54,    54
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     3
+       0,     2,     0,     1,     1
 };
 
 
@@ -1129,14 +1129,20 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* text: TEXT  */
+  case 3: /* text: T_EQUAL  */
 #line 42 "streamy.y"
-             { printf("%s/n", (yyvsp[0].strval));  (yyval.strval) = (yyvsp[0].strval); }
+                  { printf("=", (yyval.strval)); return 0; }
 #line 1136 "streamy.tab.c"
     break;
 
+  case 4: /* text: T_ASTREIK  */
+#line 43 "streamy.y"
+                    { printf("*", (yyval.strval)); return 0; }
+#line 1142 "streamy.tab.c"
+    break;
 
-#line 1140 "streamy.tab.c"
+
+#line 1146 "streamy.tab.c"
 
       default: break;
     }
@@ -1330,7 +1336,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 122 "streamy.y"
+#line 121 "streamy.y"
 
 
 int main() {

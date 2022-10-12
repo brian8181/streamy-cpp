@@ -39,9 +39,8 @@ void yyerror(const char* s);
 %%
 
 text:
-	TEXT { printf("%s/n", $1);  $$ = $1; }
-	| text T_INT text
-	
+	| T_EQUAL { printf("=", $$); return 0; }
+	| T_ASTREIK { printf("*", $$); return 0; }
 ;
 
 escaped: { return 42; }
