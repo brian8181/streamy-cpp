@@ -65,7 +65,7 @@ union YYSTYPE
 {
 #line 13 "yac.y"
 
-	int ival;
+	char const*  str;   
 
 #line 71 "yac.tab.h"
 

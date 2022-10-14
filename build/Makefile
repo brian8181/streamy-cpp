@@ -57,7 +57,9 @@ unman:
 # delete object files & app executable
 .PHONY: clean
 clean:
-	rm $(BUILDDIR)/streamy.o $(BUILDDIR)/streamy.a $(BUILDDIR)/streamy.so 
+	@if [ -f $(BUILDDIR)/streamy.o -a -f $(BUILDDIR)/streamy.o ]; then\
+		rm $(BUILDDIR)/streamy.[ao];\
+	fi
 
 # delete all auto generated files
 .PHONY: distclean

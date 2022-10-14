@@ -22,7 +22,9 @@ void yyerror(const char* str);
 
 %%
 
-number: digit number { $$ = $1; }
+number:
+  | digit 
+
 stmt:
   | stmt number stmt
 
