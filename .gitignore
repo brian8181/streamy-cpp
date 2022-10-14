@@ -66,7 +66,7 @@ cleandist.sh
 src/.deps/*
 src/.libs/*
 flex/lex.yy.c
-flex/streamy-cpp.output
-flex/streamy-cpp.tab.h
-flex/streamy-cpp.tab.c
-flex/streamy-cpp-parse
+flex/streamy*.output
+flex/streamy*.tab.h
+flex/streamy*.tab.c
+flex/streamy*.parse
