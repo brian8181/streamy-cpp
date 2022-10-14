@@ -9,6 +9,6 @@
 
 %%
 
-[0-9] { return DIGIT; }
+[0-9] { return digit; }
 
 %%

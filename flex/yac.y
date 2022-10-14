@@ -4,6 +4,9 @@
 int yywrap( );
 void yyerror(const char* str);
 
+/* the result variable */
+double result = 0;
+
 %}
 
 
@@ -11,12 +14,14 @@ void yyerror(const char* str);
 	int ival;
 }
 
-%token<ival> DIGIT
+%token<ival> digit
+
+/* declare non-terminals */
+%type <value> stmt
 
 %%
 
-digit: DIGIT 
-;
+stmt: digit {result = $1; printf($1); return "FU";}
 
 
 %%
