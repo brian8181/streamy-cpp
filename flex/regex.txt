@@ -1,3 +1,0 @@
-[a-z][0-9]* ECHO;
-\{\s*\*[\w\s\p]*\*\s*\}  { printf("COMMENT"); return 0;};                // {*ABC*} 
-
