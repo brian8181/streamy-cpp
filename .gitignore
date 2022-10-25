@@ -65,8 +65,8 @@ a.out
 cleandist.sh
 src/.deps/*
 src/.libs/*
-flex/lex.yy.c
-flex/streamy*.output
-flex/streamy*.tab.h
-flex/streamy*.tab.c
-flex/streamy*.parse
+lex.yy.c
+*.output
+*.tab.h
+*.tab.c
+*.parse
