@@ -1,45 +1,30 @@
 %{
 #include <stdio.h>
 
-int yywrap( );
-void yyerror(const char* str);
-
-/* the result variable */
-//int result = 0;
-
 %}
 
 
 %union {
+  int nval;
 	char const*  str;   
 }
 
-%token <int> digit
+%token digit
+%token add
 
 /* declare non-terminals */
-%type stmt
-%type <int> number
+
+%type term
+%type exp
 
 %%
+term: 
+  | exp
+;
 
-number: digit number { $$ = $1; }
-stmt:
-  | stmt number stmt
+exp: digit
+  | exp add exp
+;
 
 
 %%
-
-int yywrap( ) {
-  return 1;
-}
-
-void yyerror(const char* str) {
-  fprintf(stderr, "Compiler error: '%s'.\n", str);
-}
-
-int main(int argc, char **argv)
-{
-    yyparse( );
-    //printf("The answer is %lf\n", result);
-    return 0;
-}
