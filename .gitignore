@@ -70,3 +70,7 @@ flex/streamy*.output
 flex/streamy*.tab.h
 flex/streamy*.tab.c
 flex/streamy*.parse
+
+# build output
+build
+!build/Makefile
