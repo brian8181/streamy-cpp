@@ -47,54 +47,39 @@ const unsigned int T_CLOSE_BRACE = 21;
 // \"[A-Za-z]*\" { printf("STRING_LITERAL\n"); return STRING_LITERAL;} 
 // [1-9][0-9]* { printf("INT_LITERAL\n"); return INT_LITERAL;} 
 
-#include "streamy.tab.h"
 
 %}
+
+DIGIT    [0-9]
+
 %%
 
-
-
-
-
-[ \t]	; // ignore all whitespace
+{DIGIT}+    { printf( "An integer: %s (%d)\n", yytext, atoi( yytext ) ); }
 "="		{ printf("EQUAL"); }
-"*"		{ printf("ASTERISK"); return ASTERISK; }
-"+"		{ printf("EQUAL"); return T_PLUS;}
-"*"		{ printf("EQUAL"); return T_MULTIPLY; }
-"/"		{ return T_DIVIDE; }
-"("		{ return T_LEFT; }
-")"		{ return T_RIGHT; }
-"'"		{ return SINGLE_QUOTE; }
-"\""	{ return DOUBLE_QUOTE; }
-","		{ return COMMA; }
-":"		{ return COLON; }
-";"		{ return SEMI_COLON; }
-"\\"	{ return BACK_SLASH; }
-"`"		{ return TICK_MARK; }
-"$"		{ return DOLLAR_SIGN; }
-"#"		{ return T_POUND; }
+"+"		{ printf("PLUS"); return T_PLUS;}
+"*"		{ printf("MULTIPLY"); return T_MULTIPLY; }
 "{"		{ printf("T_OPEN_CURLY\n"); return T_OPEN_CURLY; }
 "}"		{ printf("T_CLOSE_CURLY\n"); return T_CLOSE_CURLY; }
 "["		{ printf("T_OPEN_BRACE\n"); return T_OPEN_BRACE; }
 "]"		{ printf("T_CLOSE_BRACE\n"); return T_CLOSE_BRACE; }
+[ \t\n]+          /* eat up whitespace */
+.   printf( "Unrecognized character: %s\n", yytext );
 
 %%
 
 
-int yywrap(void) {
-    return 0;
-}
-
-int yyerror(char *s) {
-    //printf(stderr, "%s\n", s);
-    return 0;
-}
-
-int main(void) {
-    while(yyparse())
-    {
-        printf("\n");
-    }
+int main( int argc, char **argv ) 
+{
+    /* skip over program name */
+    ++argv, --argc;  
     
-    return 0;
+    if ( argc > 0 )
+    {
+        yyin = fopen( argv[0], "r" );
+    } 
+    else 
+    {
+        yyin = stdin;
+    }
+    yylex();
 }
