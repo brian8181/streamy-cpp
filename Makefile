@@ -24,14 +24,17 @@ INCLUDES = -I/usr/local/include/cppunit/
 # Makefile settings - Can be customized.
 APPNAME = streamycpp
 EXT = cpp
-ROOTDIR  = ..
-BUILDDIR = .
+ROOTDIR  = .
+BUILDDIR = ./build
 SRCDIR = $(ROOTDIR)/src
-OBJDIR = .
+OBJDIR = ./build
 
 debug: CXXFLAGS += -DDEBUG -ggdb
 
 all: streamy.a streamy.so
+
+steamy: streamy.o
+	$(CXX) $(CXXFLAGS) $(SRCDIR)/streamy.cpp -o $(BUILDDIR)/streamy
 
 streamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy.so
@@ -42,28 +45,7 @@ streamy.a: streamy.o
 streamy.o:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/streamy.$(EXT) -o $(BUILDDIR)/streamy.o	
 
-# install man pages
-.PHONY: man$(APPNAME)_test
-man:
-	cp ../man/$(APPNAME).1 $(man1dir)
-	# gzip $(man1dir)/$(APPNAME).1
-	mandb
-
-.PHONY: unman
-unman:
-	rm $(man1dir)/$(APPNAME).1.gz
-	mandb
-
 # delete object files & app executable
 .PHONY: clean
 clean:
-	-rm -f $(BUILDDIR)/streamy.[ao];\
-	
-# delete all auto generated files
-.PHONY: distclean
-distclean: clean
-	rm -f $(SRCDIR)/config.* $(SRCDIR)/Makefile $(SRCDIR)/Makefile.in $(SRCDIR)/INSTALL $(SRCDIR)/configure 
-	#rm ../stamp-h1 ../aclocal.m4 ../compile ../install-sh ../libtool ../ltmain.sh ../stamp-h1 ../missing ../depcomp
-	#rm ../src/Makefile ../src/Makefile.in
-	#rm -rf ../autom4te.cache ../src/.deps ../src/.libs
-	#rm ../src/.o
+	-rm ./build/*	
