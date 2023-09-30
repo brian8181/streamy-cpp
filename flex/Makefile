@@ -9,7 +9,7 @@ YACC     = bison -d -y
 
 BUILD=./build
 
-all: streamy streamy-cpp
+all: streamy streamy-cpp poc1
 
 streamy-cpp: streamy-cpp.yy.c
 	gcc $(BUILD)/streamy-cpp.yy.c -ll -o $(BUILD)/streamy-cpp
