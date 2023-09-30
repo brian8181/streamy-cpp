@@ -9,17 +9,17 @@
 MAKE_TEMPLATE = 1.3;
 BUILD_VERSION = 0.1.0
 
-prefix = /usr/local
-prefix = /usr/local
-mandir = $(prefix)/share/man
-man1dir = $(mandir)/man1
+# prefix = /usr/local
+# prefix = /usr/local
+# mandir = $(prefix)/share/man
+# man1dir = $(mandir)/man1
 
 # Compiler settings - Can be customized.
 CXX = g++
-CXXFLAGS = -Wall -std=c++11 -std=gnu++17 -fPIC
+CXXFLAGS = -std=c++11
 # lib settings
-LDFLAGS = -static -lcppunit -L/usr/local/lib/
-INCLUDES = -I/usr/local/include/cppunit/
+# LDFLAGS = -static -lcppunit -L/usr/local/lib/
+# INCLUDES = -I/usr/local/include/cppunit/
 
 # Makefile settings - Can be customized.
 APPNAME = streamycpp
@@ -29,21 +29,21 @@ BUILDDIR = ./build
 SRCDIR = $(ROOTDIR)/src
 OBJDIR = ./build
 
-debug: CXXFLAGS += -DDEBUG -ggdb
+#debug: CXXFLAGS += -DDEBUG -ggdb
 
-all: streamy.a streamy.so
+all: streamy
 
 steamy: streamy.o
-	$(CXX) $(CXXFLAGS) $(SRCDIR)/streamy.cpp -o $(BUILDDIR)/streamy
+	$(CXX) $(CXXFLAGS) $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy
 
-streamy.so: streamy.o
-	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy.so
+# streamy.so: streamy.o
+# 	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy.so
 
-streamy.a: streamy.o
-	ar rvs streamy.a streamy.o
+# streamy.a: streamy.o
+# 	ar rvs $(BUILDDIR)/streamy.a $(BUILDDIR)/streamy.o
 
 streamy.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/streamy.$(EXT) -o $(BUILDDIR)/streamy.o	
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/streamy.cpp -o $(BUILDDIR)/streamy.o	
 
 # delete object files & app executable
 .PHONY: clean
