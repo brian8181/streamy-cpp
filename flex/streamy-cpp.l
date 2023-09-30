@@ -7,6 +7,7 @@
 
 DIGIT    [0-9]
 ID       [a-z][a-z0-9]*
+COMMAND = "(config_load|include|insert|literal|strip|capture|section|assign|debug|eval|fetch|math)";
 
 %%
 
@@ -15,7 +16,7 @@ ID       [a-z][a-z0-9]*
 if|then|begin|end|else|foreach    { printf( "A keyword: %s\n", yytext ); }
 {ID}    printf( "An identifier: %s\n", yytext );
 "{"[^{}\n]*"}"     printf( "An tag: %s\n", yytext );
-[ \t\n]+          /* eat up whitespace */
+{COMMAND} =         { printf( "A keyword: %s\n", yytext ); }
 .   printf( "Unrecognized character: %s\n", yytext );
 
 %%

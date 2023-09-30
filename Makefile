@@ -31,7 +31,7 @@ OBJDIR = ./build
 
 debug: CXXFLAGS += -DDEBUG -ggdb
 
-all: streamy.a streamy.so
+all: streamy
 
 steamy: streamy.o
 	$(CXX) $(CXXFLAGS) $(SRCDIR)/streamy.cpp -o $(BUILDDIR)/streamy
@@ -40,10 +40,10 @@ streamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy.so
 
 streamy.a: streamy.o
-	ar rvs streamy.a streamy.o
+	ar rvs streamy.a $(BUILDDIR)\streamy.o
 
 streamy.o:
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/streamy.$(EXT) -o $(BUILDDIR)/streamy.o	
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/streamy.cpp -o $(BUILDDIR)/streamy.o	
 
 # delete object files & app executable
 .PHONY: clean
