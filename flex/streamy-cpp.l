@@ -17,6 +17,7 @@ if|then|begin|end|else|foreach    { printf( "A keyword: %s\n", yytext ); }
 {ID}    printf( "An identifier: %s\n", yytext );
 "{"[^{}\n]*"}"     printf( "An tag: %s\n", yytext );
 {COMMAND}       { printf( "A keyword: %s\n", yytext ); }
+[ \t\n]+          /* eat up whitespace */
 .   printf( "Unrecognized character: %s\n", yytext );
 
 %%
