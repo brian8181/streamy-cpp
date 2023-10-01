@@ -8,8 +8,10 @@
 OPEN_PAREN "{"
 CLOSE_PAREN "}"
 DIGIT    [0-9]
-VARIABLE    ([a-z][a-z0-9](\[{DIGIT}+\])?)+(\.[a-z][a-z0-9]+)*
-ARRARY ""
+ALPHA_NUMERIC [a-z0-9]
+VARIABLE    [a-z]+[a-z0-9]*(\[{DIGIT}+\])?(\.[a-z][a-z0-9]+)*
+INDIRECT_SELECTOR "->"
+ARRARY "\[{DIGIT}+\]""
 NUMBER  [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E(+|-)?[0-9]+)?
 COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|eval|fetch|math)"
 COMMENT "\\{\\*a*\\*\\}"
@@ -32,6 +34,7 @@ LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
 {DIGIT}+    { printf( "An integer: %s (%d)\n", yytext, atoi( yytext ) ); }
 {DIGIT}+"."{DIGIT}*     { printf( "A float: %s (%g)\n", yytext, atof( yytext ) ); }
 "$"{VARIABLE}    printf( "VARIABLE: %s\n", yytext );
+"$"{VARIABLE}{INDIRECT_SELECTOR}{ALPHA_NUMERIC}*   printf( "IDIRECT_SELECTION: %s\n", yytext );
 {FILE_NAME} printf( "File name: %s\n", yytext );
 {TEXT}*  printf( "\nText/Html %s\n\n", yytext ); 
 {COMMENT}   printf( "COMMENT: %s\n", yytext );

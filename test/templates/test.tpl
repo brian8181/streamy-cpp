@@ -8,6 +8,8 @@
 {$testing2}
 {$test.foo.bar}
 {$test[2]}
+{$test[2].bar}
+{$test->bar}
 {if $flag}
     //do this
     {elseif $flag2}
