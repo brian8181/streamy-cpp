@@ -8,6 +8,7 @@
 DIGIT    [0-9]
 ID       [a-z][a-z0-9]*
 COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|eval|fetch|math)";
+COMMENT "\\{\\*a*\\*\\}"
 
 %%
 
@@ -15,6 +16,7 @@ COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|
 {DIGIT}+"."{DIGIT}*     { printf( "A float: %s (%g)\n", yytext, atof( yytext ) ); }
 if|then|begin|end|else|foreach    { printf( "A keyword: %s\n", yytext ); }
 {ID}    printf( "An identifier: %s\n", yytext );
+{COMMENT}   printf( "COMMENT: %s\n", yytext );
 "{""*".*"*""}"     printf( "An comment: %s\n", yytext );
 "{""$".*"}"     printf( "An variable: %s\n", yytext );
 {COMMAND}       { printf( "A keyword: %s\n", yytext ); }

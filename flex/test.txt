@@ -6,3 +6,9 @@ if ( 3 =  2)
 {3}
 {* test *}
 {$test}
+*abc*
+{*abc*}
+{*xyyz*}
+{* tehe *}
+{*x*}
+{*aaa*}
