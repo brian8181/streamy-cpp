@@ -17,6 +17,10 @@ BUILD_VERSION = 0.1.0
 # Compiler settings - Can be customized.
 CXX = g++
 CXXFLAGS = -std=c++11
+CC       = gcc -g
+LEX      = flex -i -I 
+YACC     = bison -d -y
+
 # lib settings
 # LDFLAGS = -static -lcppunit -L/usr/local/lib/
 # INCLUDES = -I/usr/local/include/cppunit/
@@ -26,14 +30,14 @@ APPNAME = streamycpp
 EXT = cpp
 ROOTDIR  = .
 BUILDDIR = ./build
-SRCDIR = $(ROOTDIR)/src
+SRCDIR = ./src
 OBJDIR = ./build
 
 #debug: CXXFLAGS += -DDEBUG -ggdb
 
-all: streamy streamy.so streamy.a
+all: streamy streamy.so streamy.a streamy-cpp
 
-streamy: streamy.o
+streamy: streamy.o streamy.yy.c 
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.cpp -o $(BUILDDIR)/main.o	
 	$(CXX) $(CXXFLAGS) $(BUILDDIR)/main.o $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy
 
@@ -46,6 +50,15 @@ streamy.a: streamy.o
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRCDIR)/streamy.cpp -o $(BUILDDIR)/streamy.o	
 
+streamy-cpp: streamy-cpp.yy.c
+	gcc $(BUILDDIR)/streamy-cpp.yy.c -ll -o $(BUILDDIR)/streamy-cpp
+
+streamy-cpp.yy.c:
+	flex -o $(BUILDDIR)/streamy-cpp.yy.c $(SRCDIR)/streamy-cpp.l
+
+streamy.yy.c:
+	flex -o $(BUILDDIR)/streamy.yy.c $(SRCDIR)/streamy.l
+
 # delete object files & app executable
 .PHONY: clean
 clean:
@@ -56,16 +69,12 @@ clean:
 # Fri Sep 29 11:01:50 AM CDT 2023
 # Version 0.0.1
 
-# CC       = gcc -g
-# LEX      = flex -i -I 
-# YACC     = bison -d -y
 
 # BUILD=./build
 
 # all: streamy streamy-cpp poc1
 
-# streamy-cpp: streamy-cpp.yy.c
-# 	gcc $(BUILD)/streamy-cpp.yy.c -ll -o $(BUILD)/streamy-cpp
+
 
 # poc1: poc1.yy.c
 # 	gcc $(BUILD)/poc1.yy.c -ll -o $(BUILD)/poc1
@@ -73,14 +82,7 @@ clean:
 # poc1.yy.c:
 # 	$(LEX) -o $(BUILD)/poc1.yy.c poc1.l
 
-# streamy: streamy.yy.c
-# 	gcc $(BUILD)/streamy.yy.c -ll -o $(BUILD)/streamy
 
-# streamy-cpp.yy.c:
-# 	flex -o ./build/streamy-cpp.yy.c streamy-cpp.l
-
-# streamy.yy.c:
-# 	flex -o $(BUILD)/streamy.yy.c streamy.l
 
 # eof:	eof_rules.l
 # 	$(LEX)  eof_rules.l
