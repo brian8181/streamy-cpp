@@ -14,12 +14,14 @@ COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|
 COMMENT "\\{\\*a*\\*\\}"
 CONFIG  "config_load "[ \t]*"file='".*"'"
 INCLUDE  "include "[ \t]*"file='".*"'"
+INSERT  "insert "[ \t]*"file='".*"'"
 GLOBAL  "\{\#".*"\#\}"
 FILE_NAME [a-zA-Z.]+[a-zA-Z0-9.]*[a-zA-Z0-9]+
 TEXT [a-zA-Z0-9 <>=#$_'"\\/\t\n]
 IF "\{if $"{VARIABLE}"\}"
 END_IF "\{/if\}"
 ELSE "\{else\}"
+ELSE_IF "\{elseif $"{VARIABLE}"\}"
 LITERAL "\{literal\}"
 END_LITERAL "\{/literal\}"
 LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
@@ -40,6 +42,7 @@ LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
 {GLOBAL}    printf( "Global: %s\n", yytext );
 {IF}    printf( "IF: %s\n", yytext );
 {ELSE}    printf( "ELSE: %s\n", yytext );
+{ELSE_IF}    printf( "ELSE_IF: %s\n", yytext );
 {END_IF}    printf( "END_IF: %s\n", yytext );
 {COMMAND}       printf( "A keyword: %s\n", yytext ); 
 
