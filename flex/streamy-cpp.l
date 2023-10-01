@@ -12,6 +12,10 @@ COMMENT "\\{\\*a*\\*\\}"
 CONFIG  "\{config_load "[ \t]*"file='".*"'\}"
 INCLUDE  "\{include "[ \t]*"file='".*"'\}"
 FILE_NAME [a-zA-Z]+[a-zA-Z0-9.]*[a-zA-Z0-9]+
+TEXT [a-zA-Z0-9. \t\n]+
+IF "\{if $"{ID}"\}"
+END_IF "\{/if\}"
+ELSE else
 
 %%
 
@@ -25,6 +29,9 @@ if|then|begin|end|else|foreach    { printf( "A keyword: %s\n", yytext ); }
 "{""$".*\|?"}"     printf( "An variable: %s\n", yytext );
 {CONFIG}    printf( "Load config: %s\n", yytext );
 {INCLUDE}    printf( "Include: %s\n", yytext );
+{IF}    printf( "if: %s\n", yytext );
+{END_IF}    printf( "end if: %s\n", yytext );
+{ELSE}  printf( "else: %s\n", yytext );
 {COMMAND}       printf( "A keyword: %s\n", yytext ); 
 [ \t\n]+          /* eat up whitespace */
 .   printf( "Unrecognized character: %s\n", yytext );

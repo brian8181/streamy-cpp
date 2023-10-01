@@ -18,3 +18,8 @@ if ( 3 =  2)
 name1
 name2
 name3.txt
+
+{if $test}
+gfdfh
+{else}
+{/if}
