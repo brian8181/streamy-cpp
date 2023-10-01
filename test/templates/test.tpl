@@ -6,6 +6,8 @@
 <title>{#pageTitle#}</title>
 {$testing}
 {$testing2}
+{$test.foo.bar}
+{$test[2]}
 {if $flag}
     //do this
     {elseif $flag2}

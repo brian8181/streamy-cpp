@@ -8,7 +8,8 @@
 OPEN_PAREN "{"
 CLOSE_PAREN "}"
 DIGIT    [0-9]
-VARIABLE    [a-z][a-z0-9]*
+VARIABLE    ([a-z][a-z0-9](\[{DIGIT}+\])?)+(\.[a-z][a-z0-9]+)*
+ARRARY ""
 NUMBER  [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E(+|-)?[0-9]+)?
 COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|eval|fetch|math)"
 COMMENT "\\{\\*a*\\*\\}"
