@@ -7,16 +7,20 @@
 
 DIGIT    [0-9]
 ID       [a-z][a-z0-9]*
+NUMBER  [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E(+|-)?[0-9]+)?
 COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|eval|fetch|math)"
 COMMENT "\\{\\*a*\\*\\}"
 CONFIG  "\{config_load "[ \t]*"file='".*"'\}"
 INCLUDE  "\{include "[ \t]*"file='".*"'\}"
 GLOBAL  "\{\#".*"\#\}"
 FILE_NAME [a-zA-Z]+[a-zA-Z0-9.]*[a-zA-Z0-9]+
-TEXT [a-zA-Z0-9 =#$_'"<>\\/\t\n]+
+TEXT [a-zA-Z0-9 =#$_'"<>\\/\t\n]
 IF "\{if $"{ID}"\}"
 END_IF "\{/if\}"
 ELSE else
+LITERAL "\{literal\}"
+END_LITERAL "\{/literal\}"
+LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
 
 %%
 
@@ -33,8 +37,9 @@ ELSE else
 {IF}    printf( "if: %s\n", yytext );
 {END_IF}    printf( "end if: %s\n", yytext );
 {ELSE}  printf( "else: %s\n", yytext );
+{LITERAL}{TEXT}*{END_LITERAL} printf( "Literal %s\n", yytext ); 
 {COMMAND}       printf( "A keyword: %s\n", yytext ); 
-{TEXT}  printf( "Text/Html %s\n", yytext ); 
+{TEXT}*  printf( "Text/Html %s\n", yytext ); 
 [ \t\n]+          /* eat up whitespace */
 .   printf( "Unrecognized character: %s\n", yytext );
 
