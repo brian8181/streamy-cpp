@@ -11,6 +11,7 @@ COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|
 COMMENT "\\{\\*a*\\*\\}"
 CONFIG  "\{config_load "[ \t]*"file='".*"'\}"
 INCLUDE  "\{include "[ \t]*"file='".*"'\}"
+GLOBAL  "\{\#".*"\#\}"
 VALUE  "\{".*"\}"
 FILE_NAME [a-zA-Z]+[a-zA-Z0-9.]*[a-zA-Z0-9]+
 TEXT [^{}][a-zA-Z0-9. <>\\/\t\n]+
@@ -30,6 +31,7 @@ if|then|begin|end|else|foreach    { printf( "A keyword: %s\n", yytext ); }
 "{""$".*\|?"}"     printf( "An variable: %s\n", yytext );
 {CONFIG}    printf( "Load config: %s\n", yytext );
 {INCLUDE}    printf( "Include: %s\n", yytext );
+{GLOBAL}    printf( "Global: %s\n", yytext );
 {VALUE}    printf( "Value: %s\n", yytext );
 {IF}    printf( "if: %s\n", yytext );
 {END_IF}    printf( "end if: %s\n", yytext );
