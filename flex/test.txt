@@ -6,6 +6,7 @@ if ( 3 =  2)
 {3}
 {* test *}
 {$test}
+{$test|cat}
 *abc*
 {*abc*}
 {*xyyz*}
