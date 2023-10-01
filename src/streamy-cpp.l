@@ -5,12 +5,16 @@
 #include <math.h>
 %}
 
-OPEN_PAREN "{"
-CLOSE_PAREN "}"
+OPEN_CURLY "{"
+CLOSE_CURLY "}"
+OPEN_PAREN "("
+CLOSE_PAREN ")"
 DIGIT    [0-9]
 ALPHA_NUMERIC [a-z0-9]
 VARIABLE    [a-z]+[a-z0-9]*(\[{DIGIT}+\])?(\.[a-z][a-z0-9]+)*
 INDIRECT_SELECTOR "->"
+FUNC_PARAMS "(\${VARIABLE}+(, \${VARIABLE})*)"
+FUNC = "\${VARIABLE}{FUNC_PARMS}"
 ARRARY "\[{DIGIT}+\]""
 NUMBER  [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E(+|-)?[0-9]+)?
 COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|eval|fetch|math)"
@@ -34,12 +38,15 @@ LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
 {DIGIT}+    { printf( "An integer: %s (%d)\n", yytext, atoi( yytext ) ); }
 {DIGIT}+"."{DIGIT}*     { printf( "A float: %s (%g)\n", yytext, atof( yytext ) ); }
 "$"{VARIABLE}    printf( "VARIABLE: %s\n", yytext );
-"$"{VARIABLE}{INDIRECT_SELECTOR}{ALPHA_NUMERIC}*   printf( "IDIRECT_SELECTION: %s\n", yytext );
+"$"{VARIABLE}{INDIRECT_SELECTOR}{ALPHA_NUMERIC}*    printf( "IDIRECT_SELECTION: %s\n", yytext );
+{FUNC_PARAMS}   printf( "IDIRECT_SELECTION: %s\n", yytext );
 {FILE_NAME} printf( "File name: %s\n", yytext );
 {TEXT}*  printf( "\nText/Html %s\n\n", yytext ); 
 {COMMENT}   printf( "COMMENT: %s\n", yytext );
+{OPEN_CURLY}    printf( "OPEN_CURLY: %s\n", yytext );
+{CLOSE_CURLY}   printf( "CLOSE_CURLY: %s\n", yytext );
 {OPEN_PAREN}    printf( "OPEN_PAREN: %s\n", yytext );
-{CLOSE_PAREN}   printf( "CLOSE_PAREN: %s\n", yytext );
+{CLOSE_PAREN}    printf( "CLOSE_PAREN: %s\n", yytext );
 "\*".*"\*"        printf( "COMMENT: %s\n", yytext );
 {CONFIG}    printf( "LOAD_CONFIG: %s\n", yytext );
 {INCLUDE}    printf( "INCLUDE: %s\n", yytext );
@@ -49,7 +56,6 @@ LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
 {ELSE_IF}    printf( "ELSE_IF: %s\n", yytext );
 {END_IF}    printf( "END_IF: %s\n", yytext );
 {COMMAND}       printf( "A keyword: %s\n", yytext ); 
-
 .   printf( "Unrecognized character: %s\n", yytext );
 
 %%

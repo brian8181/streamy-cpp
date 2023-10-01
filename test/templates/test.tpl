@@ -10,6 +10,7 @@
 {$test[2]}
 {$test[2].bar}
 {$test->bar}
+{$test($test)}
 {if $flag}
     //do this
     {elseif $flag2}
