@@ -18,6 +18,13 @@
     {else}
     // do this
 {/if}
+
+{foreach}
+    // foreach body
+    {foreachelse}
+    // foreachelse body
+{/foreach}
+
 <body bgcolor="{#bodyBgColor#}">
 <table border="{#tableBorderSize#}" bgcolor="{#tableBgColor#}">
 <tr bgcolor="{#rowBgColor#}">
