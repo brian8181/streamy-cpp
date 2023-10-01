@@ -15,7 +15,8 @@ COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|
 {DIGIT}+"."{DIGIT}*     { printf( "A float: %s (%g)\n", yytext, atof( yytext ) ); }
 if|then|begin|end|else|foreach    { printf( "A keyword: %s\n", yytext ); }
 {ID}    printf( "An identifier: %s\n", yytext );
-"{"[^{}\n]*"}"     printf( "An tag: %s\n", yytext );
+"{""*".*"*""}"     printf( "An comment: %s\n", yytext );
+"{""$".*"}"     printf( "An variable: %s\n", yytext );
 {COMMAND}       { printf( "A keyword: %s\n", yytext ); }
 [ \t\n]+          /* eat up whitespace */
 .   printf( "Unrecognized character: %s\n", yytext );
