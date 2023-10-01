@@ -13,3 +13,8 @@ if ( 3 =  2)
 {* tehe *}
 {*x*}
 {*aaa*}
+{config_load file='colors.conf'}
+{include file='header.tpl'}
+name1
+name2
+name3.txt
