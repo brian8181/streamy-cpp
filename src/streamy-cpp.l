@@ -11,6 +11,7 @@ OPEN_PAREN "("
 CLOSE_PAREN ")"
 DIGIT    [0-9]
 ALPHA_NUMERIC [a-z0-9]
+PUNCT [*&^%$#@_]
 VARIABLE    [a-z]+[a-z0-9]*(\[{DIGIT}+\])?(\.[a-z][a-z0-9]+)*
 INDIRECT_SELECTOR "->"
 FUNC_PARAMS "(\${VARIABLE}+(, \${VARIABLE})*)"
@@ -25,16 +26,17 @@ INSERT  "insert "[ \t]*"file='".*"'"
 GLOBAL  "\{\#".*"\#\}"
 FILE_NAME [a-zA-Z.]+[a-zA-Z0-9.]*[a-zA-Z0-9]+
 TEXT [a-zA-Z0-9 <>=#$_'"\\/\t\n]
-IF "\{if $"{VARIABLE}"\}"
+IF "\{if (\${VARIABLE})|({STRING_LITERAL})\}"
 END_IF "\{/if\}"
 ELSE "\{else\}"
 ELSE_IF "\{elseif $"{VARIABLE}"\}"
-FOREACH "\{foreach\}"
+FOREACH "\{foreach from=${VARIABLE} item={VARIABLE} (name={ALPHA_NUMERIC}+)? (key={ALPHA_NUMERIC}+)?\}"
 FOREACHELSE "\{foreachelse\}"
 END_FOREACH "\{/foreach\}"
 LITERAL "\{literal\}"
 END_LITERAL "\{/literal\}"
 LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
+STRING_LITERAL \"{ALPHA_NUMERIC}+\"
 
 %%
 
@@ -44,6 +46,7 @@ LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
 "$"{VARIABLE}{INDIRECT_SELECTOR}{ALPHA_NUMERIC}*    printf( "IDIRECT_SELECTION: %s\n", yytext );
 {FUNC_PARAMS}   printf( "IDIRECT_SELECTION: %s\n", yytext );
 {FILE_NAME} printf( "File name: %s\n", yytext );
+{FOREACH}   printf( "FOREACH: %s\n", yytext );
 {TEXT}*  printf( "\nText/Html %s\n\n", yytext ); 
 {COMMENT}   printf( "COMMENT: %s\n", yytext );
 {OPEN_CURLY}    printf( "OPEN_CURLY: %s\n", yytext );
@@ -58,7 +61,7 @@ LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
 {ELSE}    printf( "ELSE: %s\n", yytext );
 {ELSE_IF}    printf( "ELSE_IF: %s\n", yytext );
 {END_IF}    printf( "END_IF: %s\n", yytext );
-{FOREACH}   printf( "FOREACH: %s\n", yytext );
+
 {FOREACHELSE}   printf( "FOREACHELSE: %s\n", yytext );
 {END_FOREACH}   printf( "END_FOREACH: %s\n", yytext );
 {COMMAND}       printf( "A keyword: %s\n", yytext ); 

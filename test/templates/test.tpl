@@ -11,6 +11,7 @@
 {$test[2].bar}
 {$test->bar}
 {$test($test)}
+{if "test"}
 {if $flag}
     //do this
     {elseif $flag2}
@@ -19,7 +20,7 @@
     // do this
 {/if}
 
-{foreach}
+{foreach from=$foo item=bar}
     // foreach body
     {foreachelse}
     // foreachelse body
