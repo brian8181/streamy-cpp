@@ -48,8 +48,8 @@ RHS "(VARIABLE|STRING_LITERAL)"
 
 %%
 
-{DIGIT}+    { printf( "An integer: %s (%d)\n", yytext, atoi( yytext ) ); }
-{DIGIT}+"."{DIGIT}*     { printf( "A float: %s (%g)\n", yytext, atof( yytext ) ); }
+{DIGIT}+    printf( "An integer: %s (%d)\n", yytext, atoi( yytext ) ); 
+{DIGIT}+"."{DIGIT}* printf( "A float: %s (%g)\n", yytext, atof( yytext ) );
 "$"{VARIABLE}("|"(cat|lower))?":"{VARIABLE}   printf( "VARIABLE_WITH_MOD: %s\n", yytext );
 "$"{VARIABLE}{INDIRECT_SELECTOR}{ALPHA_NUMERIC}*    printf( "IDIRECT_SELECTION: %s\n", yytext );
 "$"{VARIABLE} printf( "VARIABLE: %s\n", yytext );
@@ -72,7 +72,7 @@ RHS "(VARIABLE|STRING_LITERAL)"
 {END_IF}    printf( "END_IF: %s\n", yytext );
 {FOREACHELSE}   printf( "FOREACHELSE: %s\n", yytext );
 {END_FOREACH}   printf( "END_FOREACH: %s\n", yytext );
-{VAR_CMDS}       printf( "A keyword: %s\n", yytext ); 
+{VAR_CMDS}       printf( "A keyword: %s\n", yytext );
 .   printf( "Unrecognized character: %s\n", yytext );
 
 %%
