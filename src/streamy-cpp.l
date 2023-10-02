@@ -9,15 +9,17 @@ OPEN_CURLY "{"
 CLOSE_CURLY "}"
 OPEN_PAREN "("
 CLOSE_PAREN ")"
+NUMBER [-+]?([0-9]*\.?[0-9]+|[0-9]+\.[0-9]*)
+FORTRAN_PATTERN  [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E(+|-)?[0-9]+)?
 DIGIT    [0-9]
 ALPHA_NUMERIC [a-z0-9]
 PUNCT [*&^%$#@_]
-VARIABLE    [a-z]+[a-z0-9]*(\[{DIGIT}+\])?(\.[a-z][a-z0-9]+)*
+VARIABLE    [a-z]+[a-z0-9]*(\[{DIGIT}+\])?(\.[a-z][a-z0-9]+)* 
 INDIRECT_SELECTOR "->"
 FUNC_PARAMS "(\${VARIABLE}+(, \${VARIABLE})*)"
 FUNC = "\${VARIABLE}{FUNC_PARMS}"
 ARRARY "\[{DIGIT}+\]""
-NUMBER  [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E(+|-)?[0-9]+)?
+
 COMMAND "(config_load|include|insert|literal|strip|capture|section|assign|debug|eval|fetch|math)"
 COMMENT "\\{\\*a*\\*\\}"
 CONFIG  "config_load "[ \t]*"file='".*"'"

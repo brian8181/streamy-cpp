@@ -59,6 +59,9 @@ streamy-cpp.yy.c:
 streamy.yy.c:
 	flex -o $(BUILDDIR)/streamy.yy.c $(SRCDIR)/streamy.l
 
+bison_incl_skel:
+	$(YACC) $(SRCDIR)/bison_incl_skel.y
+
 # delete object files & app executable
 .PHONY: clean
 clean:
