@@ -44,8 +44,11 @@ $(APPNAME).a: $(APPNAME).o
 $(APPNAME).o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o	
 
-streamy-cpp: streamy-cpp.yy.c
-	$(CXX) $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp
+streamy-cpp: streamy-cpp.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -o $(BUILD)/streamy-cpp
+
+streamy-cpp.o: streamy-cpp.yy.c
+	$(CXX) $(CXXFLAGS) -c $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp.yy.o
 
 streamy-cpp.yy.c:
 	flex -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
