@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS = -std=c++11 -DDEBUG -ggdb
 CC       = gcc -g
 LEX      = flex -i -I 
-YACC     = bison -d -y
+YACC     = bison -d
 
 # lib settings
 LDFLAGS = -static -lcppunit -L/usr/local/lib/
@@ -17,10 +17,19 @@ BUILD = ./build
 SRC = ./src
 OBJ = ./build
 
-all: $(APPNAME) $(APPNAME).so $(APPNAME).a streamy-cpp y.tab.c
+#all:: $(APPNAME) 
+all:: $(APPNAME).so $(APPNAME).a streamy-cpp y.tab.c stream_app
 
-$(APPNAME): streamy.o streamy.yy.c 
-	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(BUILD)/main.o	
+stream_app: main.o stream_app.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/stream_app.o -o $(BUILD)/stream_app
+
+main.o: stream_app.o
+	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
+
+stream_app.o:
+	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
+
+$(APPNAME): main.o streamy.o streamy.yy.c 
 	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -o $(BUILD)/streamy
 
 $(APPNAME).so: $(APPNAME).o
@@ -33,7 +42,7 @@ $(APPNAME).o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o	
 
 streamy-cpp: streamy-cpp.yy.c
-	gcc $(BUILD)/streamy-cpp.yy.c -ll -o $(BUILD)/streamy-cpp
+	$(CXX) $(BUILD)/streamy-cpp.yy.c -ll -o $(BUILD)/streamy-cpp
 
 streamy-cpp.yy.c:
 	flex -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
@@ -45,7 +54,7 @@ bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
 
 y.tab.c y.tab.h:
-	bison -d $(SRC)/streamy-cpp.y
+	$(YACC) $(SRC)/streamy-cpp.y
 	mv ./streamy-cpp.tab.* $(BUILD)/.
 
 # delete object files & app executable
