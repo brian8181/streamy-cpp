@@ -49,8 +49,7 @@ STRING_LITERAL \"{ALPHA_NUMERIC}+\"
 {DIGIT}+    { printf( "An integer: %s (%d)\n", yytext, atoi( yytext ) ); }
 {DIGIT}+"."{DIGIT}*     { printf( "A float: %s (%g)\n", yytext, atof( yytext ) ); }
 "$"{VARIABLE}("|"(cat|lower))?   printf( "VARIABLE_WITH_MOD: %s\n", yytext );
-"$"{VARIABLE}{INDIRECT_SELECTOR}{ALPHA_NUMERIC}*    printf( "IDIRECT_SELECTION: %s\n", yytext );
-"$"{VARIABLE} printf( "VARIABLE: %s\n", yytext );
+"$"{VARIABLE}{INDIRECT_SELECTOR}{ALPHA_NUMERIC}*    printf( "INDIRECT_SELECTION: %s\n", yytext );
 {FUNC_PARAMS}   printf( "IDIRECT_SELECTION: %s\n", yytext );
 {FILE_NAME} printf( "File name: %s\n", yytext );
 {FOREACH}   printf( "FOREACH: %s\n", yytext );
@@ -68,7 +67,6 @@ STRING_LITERAL \"{ALPHA_NUMERIC}+\"
 {ELSE}    printf( "ELSE: %s\n", yytext );
 {ELSE_IF}    printf( "ELSE_IF: %s\n", yytext );
 {END_IF}    printf( "END_IF: %s\n", yytext );
-
 {FOREACHELSE}   printf( "FOREACHELSE: %s\n", yytext );
 {END_FOREACH}   printf( "END_FOREACH: %s\n", yytext );
 {VAR_CMDS}       printf( "A keyword: %s\n", yytext ); 

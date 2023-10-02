@@ -18,7 +18,10 @@ SRC = ./src
 OBJ = ./build
 
 #all:: $(APPNAME) 
-all:: $(APPNAME).so $(APPNAME).a streamy-cpp y.tab.c stream_app
+all:: stream_app.o
+#all:: streamy-cpp
+all:: y.tab.c
+all:: $(APPNAME).so $(APPNAME).a 
 
 stream_app: main.o stream_app.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/stream_app.o -o $(BUILD)/stream_app
@@ -42,7 +45,7 @@ $(APPNAME).o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o	
 
 streamy-cpp: streamy-cpp.yy.c
-	$(CXX) $(BUILD)/streamy-cpp.yy.c -ll -o $(BUILD)/streamy-cpp
+	$(CXX) $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp
 
 streamy-cpp.yy.c:
 	flex -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
