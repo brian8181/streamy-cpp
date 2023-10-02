@@ -20,6 +20,7 @@ FUNC_PARAMS "(\${VARIABLE}+(, \${VARIABLE})*)"
 FUNC = "\${VARIABLE}{FUNC_PARMS}"
 ARRAY "\[{DIGIT}+\]""
 
+
 VAR_CMDS1 "capitalize|cat|count_chacters|count_words|date_format|escape|indent|lower";
 VAR_CMDS2 "rplace|spacify|strip|strip_tags|truncate|upper|wordwrap|strip|capture"
 VAR_CMDS3 "section|assign|debug|eval|fetch|math|textformat|nl2br|regex_replace"
@@ -43,12 +44,13 @@ LITERAL "\{literal\}"
 END_LITERAL "\{/literal\}"
 LIT L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\"
 STRING_LITERAL \"{ALPHA_NUMERIC}+\"
+RHS "(VARIABLE|STRING_LITERAL)"
 
 %%
 
 {DIGIT}+    { printf( "An integer: %s (%d)\n", yytext, atoi( yytext ) ); }
 {DIGIT}+"."{DIGIT}*     { printf( "A float: %s (%g)\n", yytext, atof( yytext ) ); }
-"$"{VARIABLE}("|"(cat|lower))?   printf( "VARIABLE_WITH_MOD: %s\n", yytext );
+"$"{VARIABLE}("|"(cat|lower))?":"{VARIABLE}   printf( "VARIABLE_WITH_MOD: %s\n", yytext );
 "$"{VARIABLE}{INDIRECT_SELECTOR}{ALPHA_NUMERIC}*    printf( "IDIRECT_SELECTION: %s\n", yytext );
 "$"{VARIABLE} printf( "VARIABLE: %s\n", yytext );
 {FUNC_PARAMS}   printf( "IDIRECT_SELECTION: %s\n", yytext );
@@ -68,7 +70,6 @@ STRING_LITERAL \"{ALPHA_NUMERIC}+\"
 {ELSE}    printf( "ELSE: %s\n", yytext );
 {ELSE_IF}    printf( "ELSE_IF: %s\n", yytext );
 {END_IF}    printf( "END_IF: %s\n", yytext );
-
 {FOREACHELSE}   printf( "FOREACHELSE: %s\n", yytext );
 {END_FOREACH}   printf( "END_FOREACH: %s\n", yytext );
 {VAR_CMDS}       printf( "A keyword: %s\n", yytext ); 
