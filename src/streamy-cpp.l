@@ -9,6 +9,7 @@ OPEN_CURLY       "{"
 CLOSE_CURLY      "}"
 OPEN_PAREN       "("
 CLOSE_PAREN      ")"
+ASTRIC           "*"
 NUMBER           [-+]?([0-9]*\.?[0-9]+|[0-9]+\.[0-9]*)
 FORTRAN_PATTERN  [-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E(+|-)?[0-9]+)?
 DIGIT            [0-9]

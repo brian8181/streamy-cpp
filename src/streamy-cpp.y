@@ -7,6 +7,12 @@
 %}
 
 %token NUM
+%token VAR
+%token OPEN_PAREN
+%token CLOSE_PAREN
+%token ASTERIC
+%token TEXT
+%token FUNC
 
 %% 
 
@@ -18,13 +24,22 @@ input:
 	
 line: 
 	'\n'
-	| exp '\n' { printf ("%.10g\n", $1); }
+	| expr '\n' { printf ("%.10g\n", $1); }
 	;
 
-exp: 
+expr: 
 	NUM
-	| exp exp '+' { $$ = $1 + $2; }
-	;
+		| expr expr '+' { $$ = $1 + $2; }
+	VAR 
+		| expr expr '-'  { $$ = $1 + $2; }
+	FUNC
+		| function
+		;
+
+function:
+		TEXT
+		| expr expr "*" { $$ = $1 * $2 }
+		;
 
 %%
 
