@@ -33,7 +33,7 @@ stream_app.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
 
 $(APPNAME): main.o streamy.o streamy.yy.c 
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -o $(BUILD)/streamy
+	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -ll -o $(BUILD)/streamy
 
 $(APPNAME).so: $(APPNAME).o
 	$(CXX) $(CXXFLAGS) --shared $(OBJ)/$(APPNAME).o -o $(BUILD)/$(APPNAME).so
