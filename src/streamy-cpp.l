@@ -23,7 +23,7 @@ ARRAY "\[{DIGIT}+\]""
 VAR_CMDS1 "capitalize|cat|count_chacters|count_words|date_format|escape|indent|lower";
 VAR_CMDS2 "rplace|spacify|strip|strip_tags|truncate|upper|wordwrap|strip|capture"
 VAR_CMDS3 "section|assign|debug|eval|fetch|math|textformat|nl2br|regex_replace"
-VAR_CMDS "VAR_CMDS1|VAR_CMDS2|VAR_CMDS3"
+VAR_CMDS "(VAR_CMDS1|VAR_CMDS2|VAR_CMDS3)"
 
 COMMENT "\\{\\*a*\\*\\}"
 CONFIG  "config_load "[ \t]*"file='".*"'"
@@ -48,8 +48,9 @@ STRING_LITERAL \"{ALPHA_NUMERIC}+\"
 
 {DIGIT}+    { printf( "An integer: %s (%d)\n", yytext, atoi( yytext ) ); }
 {DIGIT}+"."{DIGIT}*     { printf( "A float: %s (%g)\n", yytext, atof( yytext ) ); }
-"$"{VARIABLE}(VAR_CMDS)? printf( "VARIABLE: %s\n", yytext );
+"$"{VARIABLE}("|"(cat|lower))?   printf( "VARIABLE_WITH_MOD: %s\n", yytext );
 "$"{VARIABLE}{INDIRECT_SELECTOR}{ALPHA_NUMERIC}*    printf( "IDIRECT_SELECTION: %s\n", yytext );
+"$"{VARIABLE} printf( "VARIABLE: %s\n", yytext );
 {FUNC_PARAMS}   printf( "IDIRECT_SELECTION: %s\n", yytext );
 {FILE_NAME} printf( "File name: %s\n", yytext );
 {FOREACH}   printf( "FOREACH: %s\n", yytext );

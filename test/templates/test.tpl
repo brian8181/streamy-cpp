@@ -11,6 +11,8 @@
 {$test[2].bar}
 {$test->bar}
 {$test($test)}
+{$name|cat}
+{$path|lower}
 {if "test"}
 {if $flag}
     //do this
