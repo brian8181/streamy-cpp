@@ -1,27 +1,69 @@
+/* Reverse Polish Notation calculator. */
 %{
-
-#include <stdio.h>
-#include <stdlib.h>
-
+	#include <stdio.h>
+	#include <math.h>
+	int yylex (void);
+	void yyerror (char const *);
 %}
 
+%token NUM
 
-%token INTEGER
-%token OP
-%token NEWLINE
+%% 
 
+input:
+	%empty
+	| ";"
+	| input line
+	;
+	
+line: 
+	'\n'
+	| exp '\n' { printf ("%.10g\n", $1); }
+	;
+
+exp: 
+	NUM
+	| exp exp '+' { $$ = $1 + $2; }
+	;
 
 %%
 
-program:
-	program expr '\n'
-	|
-;
+#include <ctype.h>
+#include <stdlib.h>
 
-expr: 
-	INTEGER { $$ = $1; }
-	| expr '+' expr { $$ = $1 + $3; }
-	| expr '-' expr { $$ = $1 - $3; }
-;
-%%
+int yylex (void)
+{
+	int c = getchar ();
+
+	while (c == ’ ’ || c == ’\t’)
+		c = getchar ();
+
+	if (c == ’.’ || isdigit (c))
+	{
+		ungetc (c, stdin);
+		if (scanf ("%lf", &yylval) != 1)
+			abort ();
+		return NUM;
+	}
+	else if (c == EOF)
+	(
+		return YYEOF;
+	}
+	else
+	{
+		return c;
+	}
+}
+
+int main (void)
+{
+	return yyparse ();
+}
+
+#include <stdio.h>
+/* Called by yyparse on error. */
+void yyerror (char const *s)
+{
+	fprintf (stderr, "%s\n", s);
+}	
 

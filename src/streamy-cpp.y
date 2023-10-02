@@ -1,53 +1,69 @@
-%option noyywrap
-
+/* Reverse Polish Notation calculator. */
 %{
-
-#include <stdio.h>
-#include <stdlib.h>
-
-extern int yylex();
-extern int yyparse();
-extern FILE* yyin;
-
-void yyerror(const char* s);
+	#include <stdio.h>
+	#include <math.h>
+	int yylex (void);
+	void yyerror (char const *);
 %}
 
-%union {
-	int ival;
-	float fval;
-}
+%token NUM
 
-%token<ival> T_INT
-%token<fval> T_FLOAT
-%token T_PLUS T_MINUS T_MULTIPLY T_DIVIDE T_LEFT T_RIGHT
-%token T_NEWLINE T_QUIT
-%left T_PLUS T_MINUS
-%left T_MULTIPLY T_DIVIDE
+%% 
 
-%type<ival> expression
-%type<fval> mixed_expression
+input:
+	%empty
+	| ";"
+	| input line
+	;
+	
+line: 
+	'\n'
+	| exp '\n' { printf ("%.10g\n", $1); }
+	;
 
-%start calculation
-
-%%
-
-calculation:
-	   | calculation line
-;
+exp: 
+	NUM
+	| exp exp '+' { $$ = $1 + $2; }
+	;
 
 %%
 
-int main() {
-	yyin = stdin;
+#include <ctype.h>
+#include <stdlib.h>
 
-	do {
-		yyparse();
-	} while(!feof(yyin));
+int yylex (void)
+{
+	int c = getchar ();
 
-	return 0;
+	while (c == ’ ’ || c == ’\t’)
+		c = getchar ();
+
+	if (c == ’.’ || isdigit (c))
+	{
+		ungetc (c, stdin);
+		if (scanf ("%lf", &yylval) != 1)
+			abort ();
+		return NUM;
+	}
+	else if (c == EOF)
+	(
+		return YYEOF;
+	}
+	else
+	{
+		return c;
+	}
 }
 
-void yyerror(const char* s) {
-	fprintf(stderr, "Parse error: %s\n", s);
-	exit(1);
+int main (void)
+{
+	return yyparse ();
 }
+
+#include <stdio.h>
+/* Called by yyparse on error. */
+void yyerror (char const *s)
+{
+	fprintf (stderr, "%s\n", s);
+}	
+

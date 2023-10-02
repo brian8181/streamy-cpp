@@ -13,12 +13,11 @@ INCLUDES = -I/usr/local/include/cppunit/
 
 # Makefile settings - Can be customized.
 APPNAME = streamy
-EXT = cpp
 BUILD = ./build
 SRC = ./src
 OBJ = ./build
 
-all: $(APPNAME) $(APPNAME).so $(APPNAME).a streamy-cpp
+all: $(APPNAME) $(APPNAME).so $(APPNAME).a streamy-cpp y.tab.c
 
 $(APPNAME): streamy.o streamy.yy.c 
 	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(BUILD)/main.o	
@@ -44,6 +43,10 @@ $(APPNAME).yy.c:
 
 bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
+
+y.tab.c y.tab.h:
+	bison -d $(SRC)/streamy-cpp.y
+	mv ./streamy-cpp.tab.* $(BUILD)/.
 
 # delete object files & app executable
 .PHONY: clean

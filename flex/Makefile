@@ -33,6 +33,9 @@ eof:	eof_rules.l
 	$(LEX)  eof_rules.l
 	$(CC)   lex.yy.c -o eof -ll
 
+b2: 
+	$(YACC) b2.y
+
 .PHONY: clean
 clean:
 	-rm $(BUILD)/*
