@@ -19,7 +19,7 @@ OBJ = ./build
 
 #all:: $(APPNAME) 
 all:: stream_app.o
-#all:: streamy-cpp
+all:: streamy-cpp
 all:: y.tab.c
 all:: $(APPNAME).so $(APPNAME).a 
 
@@ -45,7 +45,7 @@ $(APPNAME).o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o	
 
 streamy-cpp: streamy-cpp.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -o $(BUILD)/streamy-cpp
+	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -ll -o $(BUILD)/streamy-cpp
 
 streamy-cpp.o: streamy-cpp.yy.c
 	$(CXX) $(CXXFLAGS) -c $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp.yy.o
