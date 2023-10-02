@@ -1,93 +1,69 @@
-# MAKE TEMPLATE 06-02-2020 1
-# MAKE TEMPLATE 03-11-2021 1.1
-# MAKE TEMPLATE 05-22-2021 1.2
-# MAKE TEMPLATE 07-07-2021 1.3
-
-# RUN BEFORE autoreconf -ivfm
-# RUN BEFORE autoreconf -i
-
-MAKE_TEMPLATE = 1.3;
-BUILD_VERSION = 0.1.0
-
-# prefix = /usr/local
-# prefix = /usr/local
-# mandir = $(prefix)/share/man
-# man1dir = $(mandir)/man1
+# Sun Oct  1 07:32:29 PM CDT 2023
 
 # Compiler settings - Can be customized.
 CXX = g++
-CXXFLAGS = -std=c++11
+CXXFLAGS = -std=c++11 -DDEBUG -ggdb
 CC       = gcc -g
 LEX      = flex -i -I 
-YACC     = bison -d -y
+YACC     = bison -d
 
 # lib settings
-# LDFLAGS = -static -lcppunit -L/usr/local/lib/
-# INCLUDES = -I/usr/local/include/cppunit/
+LDFLAGS = -static -lcppunit -L/usr/local/lib/
+INCLUDES = -I/usr/local/include/cppunit/
 
 # Makefile settings - Can be customized.
-APPNAME = streamycpp
-EXT = cpp
-ROOTDIR  = .
-BUILDDIR = ./build
-SRCDIR = ./src
-OBJDIR = ./build
+APPNAME = streamy
+BUILD = ./build
+SRC = ./src
+OBJ = ./build
 
-#debug: CXXFLAGS += -DDEBUG -ggdb
+#all:: $(APPNAME) 
+all:: stream_app.o
+all:: streamy-cpp
+all:: y.tab.c
+all:: $(APPNAME).so $(APPNAME).a 
 
-all: streamy streamy.so streamy.a streamy-cpp
+stream_app: main.o stream_app.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/stream_app.o -o $(BUILD)/stream_app
 
-streamy: streamy.o streamy.yy.c 
-	$(CXX) $(CXXFLAGS) -c $(SRCDIR)/main.cpp -o $(BUILDDIR)/main.o	
-	$(CXX) $(CXXFLAGS) $(BUILDDIR)/main.o $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy
+main.o: stream_app.o
+	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
 
-streamy.so: streamy.o
-	$(CXX) $(CXXFLAGS) --shared $(BUILDDIR)/streamy.o -o $(BUILDDIR)/streamy.so
+stream_app.o:
+	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
 
-streamy.a: streamy.o
-	ar rvs $(BUILDDIR)/streamy.a $(BUILDDIR)/streamy.o
+$(APPNAME): main.o streamy.o streamy.yy.c 
+	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -ll -o $(BUILD)/streamy
 
-streamy.o:
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRCDIR)/streamy.cpp -o $(BUILDDIR)/streamy.o	
+$(APPNAME).so: $(APPNAME).o
+	$(CXX) $(CXXFLAGS) --shared $(OBJ)/$(APPNAME).o -o $(BUILD)/$(APPNAME).so
 
-streamy-cpp: streamy-cpp.yy.c
-	gcc $(BUILDDIR)/streamy-cpp.yy.c -ll -o $(BUILDDIR)/streamy-cpp
+$(APPNAME).a: $(APPNAME).o
+	ar rvs $(BUILD)/$(APPNAME).a $(OBJ)/$(APPNAME).o
+
+$(APPNAME).o:
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o	
+
+streamy-cpp: streamy-cpp.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -ll -o $(BUILD)/streamy-cpp
+
+streamy-cpp.o: streamy-cpp.yy.c
+	$(CXX) $(CXXFLAGS) -c $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp.yy.o
 
 streamy-cpp.yy.c:
-	flex -o $(BUILDDIR)/streamy-cpp.yy.c $(SRCDIR)/streamy-cpp.l
+	flex -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
 
-streamy.yy.c:
-	flex -o $(BUILDDIR)/streamy.yy.c $(SRCDIR)/streamy.l
+$(APPNAME).yy.c:
+	flex -o $(BUILD)/$(APPNAME).yy.c $(SRC)/$(APPNAME).l
+
+bison_incl_skel:
+	$(YACC) $(SRC)/bison_incl_skel.y
+
+y.tab.c y.tab.h:
+	$(YACC) $(SRC)/streamy-cpp.y
+	mv ./streamy-cpp.tab.* $(BUILD)/.
 
 # delete object files & app executable
 .PHONY: clean
 clean:
 	-rm ./build/*	
-
-
-# Streamy-cpp Make
-# Fri Sep 29 11:01:50 AM CDT 2023
-# Version 0.0.1
-
-
-# BUILD=./build
-
-# all: streamy streamy-cpp poc1
-
-
-
-# poc1: poc1.yy.c
-# 	gcc $(BUILD)/poc1.yy.c -ll -o $(BUILD)/poc1
-
-# poc1.yy.c:
-# 	$(LEX) -o $(BUILD)/poc1.yy.c poc1.l
-
-
-
-# eof:	eof_rules.l
-# 	$(LEX)  eof_rules.l
-# 	$(CC)   lex.yy.c -o eof -ll
-
-# .PHONY: clean
-# clean:
-# 	-rm $(BUILD)/*
