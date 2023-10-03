@@ -20,6 +20,7 @@ OBJ = ./build
 #all:: $(APPNAME) 
 all:: stream_app
 all:: streamy-cpp
+all:: tokenizer
 
 $(APPNAME): main.o streamy.o streamy.yy.c 
 	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -ll -o $(BUILD)/streamy
@@ -58,10 +59,10 @@ bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
 
 tokenizer: tokenizer.yy.c
-	$(CXX) $(CXXFLAGS) $(OBJ)/tokenizer.yy.o -ll -o $(BUILD)/tokenizer
+	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -ll -o $(BUILD)/tokenizer
 
 tokenizer.yy.c:
-	flex -o $(BUILD)/tokinzer.yy.c $(SRC)/tokinzer.l
+	flex -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
 y.tab.c y.tab.h:
 	$(YACC) $(SRC)/streamy-cpp.y
