@@ -22,8 +22,17 @@ all:: stream_app
 all:: streamy-cpp
 all:: tokenizer
 
-$(APPNAME): main.o streamy.o streamy.yy.c 
+$(APPNAME): app.o main.o streamy.o streamy.yy.c 
 	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -ll -o $(BUILD)/streamy
+
+$(APPNAME).o:
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o
+
+app.o:
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
+
+main.o:
+	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
 
 $(APPNAME).yy.c:
 	flex -o $(BUILD)/$(APPNAME).yy.c $(SRC)/$(APPNAME).l
@@ -33,12 +42,6 @@ $(APPNAME).so: $(APPNAME).o
 
 $(APPNAME).a: $(APPNAME).o
 	ar rvs $(BUILD)/$(APPNAME).a $(OBJ)/$(APPNAME).o
-
-$(APPNAME).o:
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o	
-
-main.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
 
 stream_app: main.o stream_app.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/stream_app.o -o $(BUILD)/stream_app
