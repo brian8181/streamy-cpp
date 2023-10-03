@@ -19,19 +19,8 @@ SRC = ./src
 OBJ = ./build
 
 #all:: $(APPNAME) 
-all:: stream_app.o
+all:: stream_app
 all:: streamy-cpp
-all:: y.tab.c
-all:: $(APPNAME).so $(APPNAME).a 
-
-stream_app: main.o stream_app.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/stream_app.o -o $(BUILD)/stream_app
-
-main.o: stream_app.o
-	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
-
-stream_app.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
 
 $(APPNAME): main.o streamy.o streamy.yy.c 
 	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -ll -o $(BUILD)/streamy
@@ -44,6 +33,15 @@ $(APPNAME).a: $(APPNAME).o
 
 $(APPNAME).o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o	
+
+main.o:
+	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
+
+stream_app: main.o stream_app.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/stream_app.o -o $(BUILD)/stream_app
+
+stream_app.o:
+	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
 
 streamy-cpp: streamy-cpp.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -ll -o $(BUILD)/streamy-cpp
@@ -60,11 +58,17 @@ $(APPNAME).yy.c:
 bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
 
+tokenizer: tokenizer.yy.c
+	$(CXX) $(CXXFLAGS) $(OBJ)/tokenizer.yy.o -ll -o $(BUILD)/tokenizer
+
+tokenizer.yy.c:
+	flex -o $(BUILD)/tokinzer.yy.c $(SRC)/tokinzer.l
+
+# streamy.yy.c:
+# 	flex -o $(BUILD)/streamy.yy.c streamy.l
+
 y.tab.c y.tab.h:
 	$(YACC) $(SRC)/streamy-cpp.y
 	mv ./streamy-cpp.tab.* $(BUILD)/.
 
-# delete object files & app executable
-.PHONY: clean
-clean:
-	-rm ./build/*	
+$(APPNAME).yy.c:
