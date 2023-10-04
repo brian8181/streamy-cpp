@@ -5,6 +5,7 @@
 %}
 
 DIGIT            [0-9]
+NUMBER           [0-9]+
 OPEN_CURLY       "{"
 CLOSE_CURLY      "}"
 OPEN_BRACE       "["
@@ -49,6 +50,7 @@ TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
 {BACKWARD_SLASH}            printf( "BACKWARD_SLASH: %s\n", yytext );
 {BAR}                       printf( "BAR: %s\n", yytext );
 {VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
+{NUMBER}                    printf( "NUMBER: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n", yytext );
 [ \t\n]                     {};
 .                           printf( "Unrecognized character: %s\n", yytext );

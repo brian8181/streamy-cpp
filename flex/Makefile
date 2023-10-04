@@ -4,12 +4,14 @@
 # Version 0.0.1
 
 CC       = gcc -g
-LEX      = flex -i -I 
+#LEX      = flex -i -I 
+LEX      = flex
 YACC     = bison -d -y
 
+SRC = .
 BUILD=./build
 
-all: streamy streamy-cpp
+all: streamy streamy-cpp tokenizer
 
 streamy-cpp: streamy-cpp.yy.c
 	gcc $(BUILD)/streamy-cpp.yy.c -ll -o $(BUILD)/streamy-cpp
@@ -22,6 +24,12 @@ streamy-cpp.yy.c:
 
 streamy.yy.c:
 	flex -o $(BUILD)/streamy.yy.c streamy.l
+
+tokenizer: tokenizer.yy.c
+	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -ll -o $(BUILD)/tokenizer
+
+tokenizer.yy.c:
+	flex -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
 eof:	eof_rules.l
 	$(LEX)  eof_rules.l
