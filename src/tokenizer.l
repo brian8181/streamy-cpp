@@ -36,7 +36,7 @@ AT_SYMBOL        "@"
 EXCLAMATION      "!"
 PERCENT          "%"
 COMMA            ","
-QUESTION_MARK    "?"
+QUESTION         "?"
 VARIABLE         "$"[a-zA-Z]+[a-zA-Z0-9]*
 TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
 
@@ -60,9 +60,20 @@ TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
 {FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
 {BACKWARD_SLASH}            printf( "BACKWARD_SLASH: %s\n", yytext );
 {BAR}                       printf( "BAR: %s\n", yytext );
+{UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
+{SEMI_COLON}                printf( "SEMI_COLON: %s\n", yytext );
+{COLON}                     printf( "COLON: %s\n", yytext );
+{AMPERSAND}                 printf( "AMPERSAND: %s\n", yytext );
+{TILDE}                     printf( "TILDE: %s\n", yytext );
+{TICK_MARK}                 printf( "TICK_MARK: %s\n", yytext );
+{AT_SYMBOL}                 printf( "AT_SYMBOL: %s\n", yytext );
+{EXCLAMATION}               printf( "EXCLAMATION: %s\n", yytext );
+{PERCENT}                   printf( "PERCENT: %s\n", yytext );
+{COMMA}                     printf( "COMMA: %s\n", yytext );
+{QUESTION}                  printf( "QUESTION: %s\n", yytext );
 {VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
 {NUMBER}                    printf( "NUMBER: %s\n", yytext );
-{TEXT}                      printf( "TEXT: %s\n", yytext );
+{TEXT}                      printf( "TEXT: %s\n",  yytext );
 [ \t\n]                     {};
 .                           printf( "Unrecognized character: %s\n", yytext );
 
