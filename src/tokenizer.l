@@ -4,21 +4,54 @@
 #include <math.h>
 %}
 
+DIGIT            [0-9]
 OPEN_CURLY       "{"
 CLOSE_CURLY      "}"
+OPEN_BRACE       "["
+CLOSE_BRACE      "]"
 OPEN_PAREN       "("
 CLOSE_PAREN      ")"
-VARIABLE         "$"[a-zA-Z_]+[a-zA-Z0-9_]*
+LESS_THAN        "<"
+GREATER_THAN     ">"
+SINGLE_QUOTE     "'"
+DOUBLE_QUOTE     "\""
+EQUAL            "="
+DOT              "."
+PLUS             "+"
+MINUS            "-"
+MULTIPLY         "*"
+FOREWARD_SLASH    "/"
+BACKWARD_SLASH   "\\"
+BAR              "|"
+HASH             "#"
+UNDERSCORE       "-"
+VARIABLE         "$"[a-zA-Z]+[a-zA-Z0-9]*
+TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
 
 %%
 
-{OPEN_CURLY}                                        printf( "OPEN_CURLY: %s\n", yytext );
-{CLOSE_CURLY}                                       printf( "CLOSE_CURLY: %s\n", yytext );
-{OPEN_PAREN}                                        printf( "OPEN_PAREN: %s\n", yytext );
-{CLOSE_PAREN}                                       printf( "CLOSE_PAREN: %s\n", yytext );
-{VARIABLE}                                          printf( "VARIABLE: %s\n", yytext );
-[ \t\n]                                             { printf( "WHITESPACE: %s\n", yytext ); };
-.                                                   printf( "Unrecognized character: %s\n", yytext );
+{OPEN_CURLY}                printf( "OPEN_CURLY: %s\n", yytext );
+{CLOSE_CURLY}               printf( "CLOSE_CURLY: %s\n", yytext );
+{OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
+{CLOSE_BRACE}               printf( "CLOSE_BRACE: %s\n", yytext );
+{OPEN_PAREN}                printf( "OPEN_PAREN: %s\n", yytext );
+{CLOSE_PAREN}               printf( "CLOSE_PAREN: %s\n", yytext );
+{LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
+{GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
+{SINGLE_QUOTE}              printf( "SINGLE_QOUTE: %s\n", yytext );
+{DOUBLE_QUOTE}              printf( "DOUBLE_QOUTE: %s\n", yytext );
+{EQUAL}                     printf( "EQUAL: %s\n", yytext );
+{DOT}                       printf( "DOT: %s\n", yytext );
+{PLUS}                      printf( "PLUS: %s\n", yytext );
+{MINUS}                     printf( "MINUS: %s\n", yytext );
+{MULTIPLY}                  printf( "MULTIPLY: %s\n", yytext );
+{FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
+{BACKWARD_SLASH}            printf( "BACKWARD_SLASH: %s\n", yytext );
+{BAR}                       printf( "BAR: %s\n", yytext );
+{VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
+{TEXT}                      printf( "TEXT: %s\n", yytext );
+[ \t\n]                     {};
+.                           printf( "Unrecognized character: %s\n", yytext );
 
 %%
 
