@@ -17,7 +17,8 @@ VARIABLE         "$"[a-zA-Z_]+[a-zA-Z0-9_]*
 {OPEN_PAREN}                                        printf( "OPEN_PAREN: %s\n", yytext );
 {CLOSE_PAREN}                                       printf( "CLOSE_PAREN: %s\n", yytext );
 {VARIABLE}                                          printf( "VARIABLE: %s\n", yytext );
-([^{}])+?                                           printf(  "TEXT: %s\n", yytext );
+[ \t\n]                                             { printf( "WHITESPACE: %s\n", yytext ); };
+.                                                   printf( "Unrecognized character: %s\n", yytext );
 
 %%
 
