@@ -14,22 +14,22 @@ BUILD=./build
 all: streamy streamy-cpp tokenizer
 
 streamy-cpp: streamy-cpp.yy.c
-	gcc $(BUILD)/streamy-cpp.yy.c -ll -o $(BUILD)/streamy-cpp
+	$(CC) $(BUILD)/streamy-cpp.yy.c -ll -o $(BUILD)/streamy-cpp
 
 streamy: streamy.yy.c
-	gcc $(BUILD)/streamy.yy.c -ll -o $(BUILD)/streamy
+	%(CC) $(BUILD)/streamy.yy.c -ll -o $(BUILD)/streamy
 
 streamy-cpp.yy.c:
-	flex -o ./build/streamy-cpp.yy.c streamy-cpp.l
+	$(LEX) -o ./build/streamy-cpp.yy.c streamy-cpp.l
 
 streamy.yy.c:
-	flex -o $(BUILD)/streamy.yy.c streamy.l
+	$(LEX) -o $(BUILD)/streamy.yy.c streamy.l
 
 tokenizer: tokenizer.yy.c
 	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -ll -o $(BUILD)/tokenizer
 
 tokenizer.yy.c:
-	flex -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
+	$(LEX) -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
 eof:	eof_rules.l
 	$(LEX)  eof_rules.l

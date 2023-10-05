@@ -2,7 +2,7 @@
 # Tue Oct  3 07:03:38 AM CDT 2023
 # RTFM (Read the fucking manual)
 
-CXX = g++
+CXX = g++ -g
 CXXFLAGS = -std=c++11 -DDEBUG -ggdb
 CC       = gcc -g
 #LEX      = flex -i -I 
