@@ -4,41 +4,41 @@
 #include <math.h>
 %}
 
-DIGIT            [0-9]
-NUMBER           [0-9]+
-OPEN_CURLY       "{"
-CLOSE_CURLY      "}"
-OPEN_BRACE       "["
-CLOSE_BRACE      "]"
-OPEN_PAREN       "("
-CLOSE_PAREN      ")"
-LESS_THAN        "<"
-GREATER_THAN     ">"
-SINGLE_QUOTE     "'"
-DOUBLE_QUOTE     "\""
-EQUAL            "="
-DOT              "."
-PLUS             "+"
-MINUS            "-"
-MULTIPLY         "*"
-EXPONET          "^"
-FOREWARD_SLASH    "/"
-BACKWARD_SLASH   "\\"
-BAR              "|"
-HASH             "#"
-UNDERSCORE       "_"
-SEMI_COLON       ";"
-COLON            ":"
-AMPERSAND        "&"
-TILDE            "~"
-TICK_MARK        "`"
-AT_SYMBOL        "@"
-EXCLAMATION      "!"
-PERCENT          "%"
-COMMA            ","
-QUESTION         "?"
-VARIABLE         "$"[a-zA-Z]+[a-zA-Z0-9]*
-TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
+DIGIT                      [0-9]
+NUMBER                     [0-9]+
+OPEN_CURLY                 "{"
+CLOSE_CURLY                "}"
+OPEN_BRACE                 "["
+CLOSE_BRACE                "]"
+OPEN_PAREN                 "("
+CLOSE_PAREN                ")"
+LESS_THAN                  "<"
+GREATER_THAN               ">"
+SINGLE_QUOTE               "'"
+DOUBLE_QUOTE               "\""
+EQUAL                      "="
+DOT                        "."
+PLUS                       "+"
+MINUS                      "-"
+MULTIPLY                   "*"
+EXPONET                    "^"
+FOREWARD_SLASH             "/"
+BACKWARD_SLASH             "\\"
+BAR                         "|"
+HASH                        "#"
+UNDERSCORE                  "_"
+SEMI_COLON                  ";"
+COLON                       ":"
+AMPERSAND                   "&"
+TILDE                       "~"
+TICK_MARK                   "`"
+AT_SYMBOL                   "@"
+EXCLAMATION                 "!"
+PERCENT                     "%"
+COMMA                       ","
+QUESTION                    "?"
+VARIABLE                    "$"[a-zA-Z]+[a-zA-Z0-9]*
+TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 
 %%
 
@@ -60,7 +60,7 @@ TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
 {FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
 {BACKWARD_SLASH}            printf( "BACKWARD_SLASH: %s\n", yytext );
 {BAR}                       printf( "BAR: %s\n", yytext );
-{HASH}                       printf( "HASH: %s\n", yytext );
+{HASH}                      printf( "HASH: %s\n", yytext );
 {UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
 {SEMI_COLON}                printf( "SEMI_COLON: %s\n", yytext );
 {COLON}                     printf( "COLON: %s\n", yytext );
