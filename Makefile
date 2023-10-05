@@ -5,7 +5,8 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -DDEBUG -ggdb
 CC       = gcc -g
-LEX      = flex -i -I 
+#LEX      = flex -i -I 
+LEX      = flex
 YACC     = bison -d   
 
 # cppunit not used ! remove ?
@@ -35,7 +36,7 @@ main.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
 
 $(APPNAME).yy.c:
-	flex -o $(BUILD)/$(APPNAME).yy.c $(SRC)/$(APPNAME).l
+	$(LEX) -o $(BUILD)/$(APPNAME).yy.c $(SRC)/$(APPNAME).l
 
 $(APPNAME).so: $(APPNAME).o
 	$(CXX) $(CXXFLAGS) --shared $(OBJ)/$(APPNAME).o -o $(BUILD)/$(APPNAME).so
@@ -56,7 +57,7 @@ streamy-cpp.o: streamy-cpp.yy.c
 	$(CXX) $(CXXFLAGS) -c $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp.yy.o
 
 streamy-cpp.yy.c:
-	flex -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
+	$(LEX) -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
 
 bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
@@ -65,7 +66,7 @@ tokenizer: tokenizer.yy.c
 	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -ll -o $(BUILD)/tokenizer
 
 tokenizer.yy.c:
-	flex -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
+	$(LEX) -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
 y.tab.c y.tab.h:
 	$(YACC) $(SRC)/streamy-cpp.y
