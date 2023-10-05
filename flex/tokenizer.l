@@ -26,7 +26,7 @@ FOREWARD_SLASH    "/"
 BACKWARD_SLASH   "\\"
 BAR              "|"
 HASH             "#"
-UNDERSCORE       "_"
+UNDERSCORE       "-"
 SEMI_COLON       ";"
 COLON            ":"
 AMPERSAND        "&"
@@ -37,12 +37,6 @@ EXCLAMATION      "!"
 PERCENT          "%"
 COMMA            ","
 QUESTION         "?"
-DOLLAR_SIGN      "$"
-IF               "if"
-ELSE             "else"
-ELSE_IF          "elseif"
-FOREACH          "foreach"
-FOREACHELSE      "foreachelse"
 VARIABLE         "$"[a-zA-Z]+[a-zA-Z0-9]*
 TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
 
@@ -66,7 +60,7 @@ TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
 {FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
 {BACKWARD_SLASH}            printf( "BACKWARD_SLASH: %s\n", yytext );
 {BAR}                       printf( "BAR: %s\n", yytext );
-{HASH}                      printf( "HASH: %s\n", yytext );
+{HASH}                       printf( "HASH: %s\n", yytext );
 {UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
 {SEMI_COLON}                printf( "SEMI_COLON: %s\n", yytext );
 {COLON}                     printf( "COLON: %s\n", yytext );
@@ -78,11 +72,7 @@ TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
 {PERCENT}                   printf( "PERCENT: %s\n", yytext );
 {COMMA}                     printf( "COMMA: %s\n", yytext );
 {QUESTION}                  printf( "QUESTION: %s\n", yytext );
-{DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
-{IF}                        printf( "IF: %s\n", yytext );
-{ELSE}                      printf( "ELSE: %s\n", yytext );
-{ELSE_IF}                   printf( "ELSE_IF: %s\n", yytext );
-{FOREACHELSE}               printf( "FOREACHELSE: %s\n", yytext );
+{VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
 {NUMBER}                    printf( "NUMBER: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
 [ \t\n]                     {};
