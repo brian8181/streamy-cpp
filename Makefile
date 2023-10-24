@@ -1,10 +1,11 @@
 # CHANGE DATE: 
 # Tue Oct  3 07:03:38 AM CDT 2023
-# RTFM (Read the fucking manual)
+# Tue Oct 24 08:40:27 AM CDT 2023
 
-CXX = g++ -g
-CXXFLAGS = -std=c++11 -DDEBUG -ggdb
-CC       = gcc -g
+CXX = g++
+CXXFLAGS = -g -std=c++11 -DDEBUG
+CCFLAGS  = -g
+CC       = gcc $(CCFLAGS)
 #LEX      = flex -i -I 
 LEX      = flex
 YACC     = bison -d   
@@ -14,19 +15,19 @@ LDFLAGS = -static -lcppunit -L/usr/local/lib/
 INCLUDES = -I/usr/local/include/cppunit/
 
 APPNAME = streamy
-BUILD = ./build
 SRC = ./src
+BUILD = ./build
 OBJ = ./build
 
-#all:: $(APPNAME) 
+all:: streamy streamy.so streamy.a
 all:: stream_app
-all:: streamy-cpp
+all:: streamy-cpp 
 all:: tokenizer
 
-$(APPNAME): app.o main.o streamy.o streamy.yy.c 
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -ll -o $(BUILD)/streamy
+streamy: app.o main.o streamy.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o -o $(BUILD)/streamy
 
-$(APPNAME).o:
+streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o
 
 app.o:
@@ -35,13 +36,13 @@ app.o:
 main.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
 
-$(APPNAME).yy.c:
+streamy.yy.c:
 	$(LEX) -o $(BUILD)/$(APPNAME).yy.c $(SRC)/$(APPNAME).l
 
-$(APPNAME).so: $(APPNAME).o
+streamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) --shared $(OBJ)/$(APPNAME).o -o $(BUILD)/$(APPNAME).so
 
-$(APPNAME).a: $(APPNAME).o
+streamy.a: streamy.o
 	ar rvs $(BUILD)/$(APPNAME).a $(OBJ)/$(APPNAME).o
 
 stream_app: main.o stream_app.o
@@ -59,7 +60,7 @@ streamy-cpp.o: streamy-cpp.yy.c
 streamy-cpp.yy.c:
 	$(LEX) -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
 
-bison_incl_skel:
+bison_incl_skel:"../../streamy-cpp/src/streamy.hpp"
 	$(YACC) $(SRC)/bison_incl_skel.y
 
 tokenizer: tokenizer.yy.c
