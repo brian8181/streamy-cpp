@@ -3,3 +3,4 @@
 
 build/*
 flex/build/*
+.vscode/*.log
