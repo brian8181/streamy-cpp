@@ -10,55 +10,31 @@ CC       = gcc $(CCFLAGS)
 LEX      = flex
 YACC     = bison -d   
 
-# cppunit not used ! remove ?
-LDFLAGS = -static -lcppunit -L/usr/local/lib/
-INCLUDES = -I/usr/local/include/cppunit/
-
 APPNAME = streamy
 SRC = src
 BLD = build
 OBJ = build
 
-all: streamy streamy.so streamy.a stream_app streamy-cpp tokenizer
-
-streamy: app.o main.o streamy.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o -o $(BLD)/streamy
+all: streamy_test streamy.so streamy.a streamy_lex tokenizer
 
 streamy.o:
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o
-
-app.o:
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
-
-main.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
-
-streamy.yy.c:
-	$(LEX) -o $(BLD)/$(APPNAME).yy.c $(SRC)/$(APPNAME).l
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
 streamy.so: streamy.o
-	$(CXX) $(CXXFLAGS) --shared $(OBJ)/$(APPNAME).o -o $(BLD)/$(APPNAME).so
+	$(CXX) $(CXXFLAGS) --shared $(OBJ)/streamy.o -o $(BLD)/streamy.so
 
 streamy.a: streamy.o
-	ar rvs $(BLD)/$(APPNAME).a $(OBJ)/$(APPNAME).o
+	ar rvs $(BLD)/streamy.a $(OBJ)/streamy.o
 
-stream_app: main.o stream_app.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/stream_app.o -o $(BLD)/stream_app
+streamy_test: streamy.o
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
+	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o -o $(BLD)/streamy_test
 
-stream_app.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
-
-streamy-cpp: streamy-cpp.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -ll -o $(BLD)/streamy-cpp
-
-streamy-cpp.o: streamy-cpp.yy.c
-	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy-cpp.yy.c -o $(BLD)/streamy-cpp.yy.o
-
-streamy-cpp.yy.c:
-	$(LEX) -o $(BLD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
-
-bison_incl_skel:"../../streamy-cpp/src/streamy.hpp"
-	$(YACC) $(SRC)/bison_incl_skel.y
+streamy_lex:
+	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
+	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy.yy.c -o $(BLD)/streamy_lex.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/streamy_lex.o -ll -o $(BLD)/streamy_lex
 
 tokenizer: tokenizer.yy.c
 	$(CXX) $(CXXFLAGS) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
