@@ -3,7 +3,7 @@
 # Tue Oct 24 08:40:27 AM CDT 2023
 
 CXX = g++
-CXXFLAGS = -g -std=c++11 -DDEBUG
+CXXFLAGS = -g -Wall -std=c++11 -DDEBUG
 CCFLAGS  = -g
 CC       = gcc $(CCFLAGS)
 #LEX      = flex -i -I 
@@ -15,7 +15,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: streamy_test streamy.so streamy.a streamy_lex tokenizer
+all: streamy.so streamy.a streamy_test streamy_lex tokenizer
 
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
@@ -41,6 +41,14 @@ tokenizer: tokenizer.yy.c
 
 tokenizer.yy.c:
 	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
+
+test1:
+	g++ -std=c++14 -Wall -I/usr/local/include $(SRC)/010-TestCase.cpp -o $(BLD)/test1 
+
+020-TestCase:
+	g++ -std=c++14 -fPIC -Wall -I/usr/local/include -c $(SRC)/020-TestCase-1.cpp -o $(BLD)/020-TestCase-1.o
+	g++ -std=c++14 -fPIC -Wall -I/usr/local/include -c $(SRC)/020-TestCase-2.cpp -o $(BLD)/020-TestCase-2.o
+	g++ -std=c++14 -Wall -I/usr/local/include -o $(BLD)/020-TestCase $(BLD)/020-TestCase-1.o $(SRC)/020-TestCase-2.cpp && $(BLD)/020-TestCase --success
 
 y.tab.c y.tab.h:
 	$(YACC) $(SRC)/streamy-cpp.y
