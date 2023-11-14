@@ -34,8 +34,8 @@ streamy_test: streamy.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o -o $(BLD)/streamy_test
 
 streamy_static: libstreamy.a
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_static.cpp -o $(OBJ)/streamy_static.o
-	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_static.o -lstreamy -L$(BLD) -o $(BLD)/streamy_static
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_static.cpp -o $(OBJ)/streamy_static.o
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o -lstreamy -L$(BLD) -o $(BLD)/streamy_static
 
 streamy_lex:
 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
