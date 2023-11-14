@@ -15,7 +15,9 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: streamy.so streamy.a streamy_test streamy_lex tokenizer
+all: streamy.so streamy.a streamy_test streamy_static
+
+yacc_lex: streamy_lex tokenizer
 
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
@@ -30,6 +32,10 @@ streamy_test: streamy.o
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
 	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o -o $(BLD)/streamy_test
+
+streamy_static: streamy.a
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_static.cpp -o $(OBJ)/streamy_static.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/streamy_static.o -L../build -o $(BLD)/streamy_static
 
 streamy_lex:
 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
