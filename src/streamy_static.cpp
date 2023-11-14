@@ -24,6 +24,10 @@
 #include <sys/select.h>     /* for pselect   */
 #include <string>
 #include <getopt.h>
+#include <filesystem>
+#include "streamy.hpp"
+
+using namespace std;
 
 int stdin_ready (int filedes)
 {
@@ -39,6 +43,24 @@ int stdin_ready (int filedes)
 
 int parse_options(int argc, char* argv[])
 {
+	// filesystem::path fs_path(argv[0]);
+    // string project_path = fs_path.parent_path();
+
+	string project_path = "";
+    const string template_name = project_path + "/default.tpl";
+    const string project_folder = project_path + "/cgi_web";
+    const string conf_path = project_path + "/test/conf_test.txt";
+
+    streamy sm(project_folder + "/www/templates", project_folder + "/www/compile", project_folder + "/www/config", project_folder + "/www/cache");
+    sm.load_config(conf_path);
+    sm.assign("headers", "HEADERS");
+    sm.assign("page_title", "streamyCPP Test Page");
+    sm.assign("body", "The Body");
+    sm.assign("admin_email", "admin@something.com");
+    sm.assign("version", "0.1");
+    sm.assign("version_date", "Feb, 14 2022");
+    sm.display("default.tpl");
+
 	return 0;
 }
 
