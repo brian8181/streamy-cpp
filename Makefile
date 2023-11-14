@@ -15,27 +15,27 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: streamy.so streamy.a streamy_test streamy_static
+all: libstreamy.so libstreamy.a streamy_test streamy_static
 
 yacc_lex: streamy_lex tokenizer
 
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
-streamy.so: streamy.o
-	$(CXX) $(CXXFLAGS) --shared $(OBJ)/streamy.o -o $(BLD)/streamy.so
+libstreamy.so: streamy.o
+	$(CXX) $(CXXFLAGS) --shared $(OBJ)/streamy.o -o $(BLD)/libstreamy.so
 
-streamy.a: streamy.o
-	ar rvs $(BLD)/streamy.a $(OBJ)/streamy.o
+libstreamy.a: streamy.o
+	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
 
 streamy_test: streamy.o
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
 	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o -o $(BLD)/streamy_test
 
-streamy_static: streamy.a
+streamy_static: libstreamy.a
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_static.cpp -o $(OBJ)/streamy_static.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/streamy_static.o -L../build -o $(BLD)/streamy_static
+	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_static.o -L../build -o $(BLD)/streamy_static
 
 streamy_lex:
 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
