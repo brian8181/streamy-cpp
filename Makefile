@@ -15,7 +15,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a streamy_test streamy_static
+all: streamy_test streamy_static
 
 yacc_lex: streamy_lex tokenizer
 
@@ -33,7 +33,7 @@ streamy_test: streamy.o
 	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o -o $(BLD)/streamy_test
 
-streamy_static: libstreamy.a
+streamy_static: libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_static.cpp -o $(OBJ)/streamy_static.o
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o -lstreamy -L$(BLD) -o $(BLD)/streamy_static
 
@@ -59,6 +59,16 @@ test1:
 y.tab.c y.tab.h:
 	$(YACC) $(SRC)/streamy-cpp.y
 	mv ./streamy-cpp.tab.* $(BLD)/.
+
+.PHONY: install
+install:
+	cp -rf  $(BLD)/libstreamy.a /usr/lib/libstreamy.a
+	cp -rf  $(BLD)/libstreamy.so /usr/lib/libstreamy.so
+
+
+.PHONY: uninstall
+uninstall:
+	rm -rf /usr/lib/libstreamy.a
 
 .PHONY: clean
 clean:
