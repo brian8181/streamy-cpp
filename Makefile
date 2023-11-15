@@ -28,6 +28,7 @@ libstreamy.so: streamy.o
 
 libstreamy.a: streamy.o
 	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
+	chmod 755 $(BLD)/libstreamy.a
 
 streamy_test: streamy.o
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
@@ -36,8 +37,8 @@ streamy_test: streamy.o
 
 streamy_static: libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_static.cpp -o $(OBJ)/streamy_static.o
-#$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_static
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o  $(OBJ)/streamy.o -o $(BLD)/streamy_static
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_static_so
+#$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o --static -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_static_a
 
 streamy_lex:
 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
@@ -66,6 +67,7 @@ y.tab.c y.tab.h:
 install:
 	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
 	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
+	chmod 755  $(PREFIX)/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
 
 
 .PHONY: uninstall
