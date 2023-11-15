@@ -49,7 +49,6 @@ private:
     // todo INACTIVE
     string left_delimiter = "{";
     string right_delimiter = "}";
-
 };
 
 #endif

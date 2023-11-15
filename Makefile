@@ -16,7 +16,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: streamy_test streamy_app
+all: libstreamy.so libstreamy.a streamy_test streamy_app
 
 yacc_lex: streamy_lex tokenizer
 

@@ -258,30 +258,65 @@ std::string& streamy::trim(string &s, char c)
     return s;
 }
 
-std::string& streamy::ltrim(std::string &s)
+string& streamy::ltrim(std::string &s)
 {
-    auto it = std::find_if(s.begin(), s.end(),
-                    [](char c) {
-                        return !std::isspace<char>(c, std::locale::classic());
-                    });
-    s.erase(s.begin(), it);
+    int len = s.size();
+    int i;
+    for(i = 0; i < len; ++i)
+    {
+        if(!std::isspace(s[i]))
+            break;
+    }
+    string::iterator beg = s.begin(); 
+    s.erase(beg, beg+i);
     return s;
 }
 
-std::string& streamy::rtrim(std::string &s)
+string& streamy::rtrim(std::string &s)
 {
-    auto it = std::find_if(s.rbegin(), s.rend(),
-                    [](char c) {
-                        return !std::isspace<char>(c, std::locale::classic());
-                    });
-    s.erase(it.base(), s.end());
+    int len = s.size();
+    int i = len;
+    for(;i > 0; --i)
+    {
+        if(!std::isspace(s[i-1]))
+            break;
+    }
+    string::iterator end = s.end(); 
+    s.erase(end-(len-i), end);
     return s;
 }
 
-std::string& streamy::trim(std::string &s)
+string& streamy::trim(std::string &s)
 {
-    return ltrim(rtrim(s));
+    rtrim(s);
+    ltrim(s);
+    return s;
 }
+
+// std::string& streamy::ltrim(std::string &s)
+// {
+//     auto it = std::find_if(s.begin(), s.end(),
+//                     [](char c) {
+//                         return !std::isspace<char>(c, std::locale::classic());
+//                     });
+//     s.erase(s.begin(), it);
+//     return s;
+// }
+
+// std::string& streamy::rtrim(std::string &s)
+// {
+//     auto it = std::find_if(s.rbegin(), s.rend(),
+//                     [](char c) {
+//                         return !std::isspace<char>(c, std::locale::classic());
+//                     });
+//     s.erase(it.base(), s.end());
+//     return s;
+// }
+
+// std::string& streamy::trim(std::string &s)
+// {
+//     return ltrim(rtrim(s));
+// }
 
 std::string streamy::lex(const string& tmpl)
 {
