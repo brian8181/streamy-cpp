@@ -7,7 +7,6 @@
 
 streamy::streamy(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
-    // todo trim foward slash trim ...
     string s = "test/";
     s = trim(s, '/');
 
