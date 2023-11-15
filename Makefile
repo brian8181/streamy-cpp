@@ -2,6 +2,7 @@
 # Tue Oct  3 07:03:38 AM CDT 2023
 # Tue Oct 24 08:40:27 AM CDT 2023
 
+PREFIX = /usr
 CXX = g++
 CXXFLAGS = -g -Wall -std=c++11 -DDEBUG
 CCFLAGS  = -g
@@ -35,7 +36,8 @@ streamy_test: streamy.o
 
 streamy_static: libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_static.cpp -o $(OBJ)/streamy_static.o
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o -lstreamy -L$(BLD) -o $(BLD)/streamy_static
+#$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_static
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o  $(OBJ)/streamy.o -o $(BLD)/streamy_static
 
 streamy_lex:
 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
@@ -62,13 +64,13 @@ y.tab.c y.tab.h:
 
 .PHONY: install
 install:
-	cp -rf  $(BLD)/libstreamy.a /usr/lib/libstreamy.a
-	cp -rf  $(BLD)/libstreamy.so /usr/lib/libstreamy.so
+	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
+	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
 
 
 .PHONY: uninstall
 uninstall:
-	rm -rf /usr/lib/libstreamy.a
+	rm -rf /usr/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
 
 .PHONY: clean
 clean:
