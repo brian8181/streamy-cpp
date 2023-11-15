@@ -24,7 +24,8 @@ streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
 libstreamy.so: streamy.o
-	$(CXX) $(CXXFLAGS) --shared $(OBJ)/streamy.o -o $(BLD)/libstreamy.so
+	$(CXX) $(CXXFLAGS) -fPIC --shared $(OBJ)/streamy.o -o $(BLD)/libstreamy.so
+	chmod 755 $(BLD)/libstreamy.so
 
 libstreamy.a: streamy.o
 	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
@@ -38,7 +39,7 @@ streamy_test: streamy.o
 streamy_static: libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_static.cpp -o $(OBJ)/streamy_static.o
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_static_so
-#$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o --static -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_static_a
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_static.o $(BLD)/libstreamy.a -o $(BLD)/streamy_static_a
 
 streamy_lex:
 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
