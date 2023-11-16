@@ -18,7 +18,7 @@ $web_home = "/index.php";
 $db_name = "music";
 $db_address = "localhost";
 $db_user_name = "web";
-$db_password = "sas*.0125";
+$db_password = "";
 
 ////  Customization /////////////////////////////
 $site_name = "Music Web";
