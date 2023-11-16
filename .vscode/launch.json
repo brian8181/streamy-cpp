@@ -24,6 +24,27 @@
             ],
             "preLaunchTask": "MAKE DEBUGGDB",
             "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "dubug app",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/streamy_app_a",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "MAKE DEBUGGDB",
+            "miDebuggerPath": "/usr/bin/gdb"
         }
   ]
 }

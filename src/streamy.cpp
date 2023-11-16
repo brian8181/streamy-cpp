@@ -283,31 +283,6 @@ string& streamy::trim(std::string &s)
     return s;
 }
 
-// std::string& streamy::ltrim(std::string &s)
-// {
-//     auto it = std::find_if(s.begin(), s.end(),
-//                     [](char c) {
-//                         return !std::isspace<char>(c, std::locale::classic());
-//                     });
-//     s.erase(s.begin(), it);
-//     return s;
-// }
-
-// std::string& streamy::rtrim(std::string &s)
-// {
-//     auto it = std::find_if(s.rbegin(), s.rend(),
-//                     [](char c) {
-//                         return !std::isspace<char>(c, std::locale::classic());
-//                     });
-//     s.erase(it.base(), s.end());
-//     return s;
-// }
-
-// std::string& streamy::trim(std::string &s)
-// {
-//     return ltrim(rtrim(s));
-// }
-
 std::string streamy::lex(const string& tmpl)
 {
     string path = template_dir + "/" + tmpl;

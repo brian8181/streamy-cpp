@@ -3,7 +3,7 @@
         {
             "label": "MAKE DEBUGGDB",
             "type": "shell",
-            "command": "make -f ${fileDirname}/Makefile",
+            "command": "make -f ${workspaceFolder}/Makefile",
             "problemMatcher": [
                 "$gcc"
             ],
