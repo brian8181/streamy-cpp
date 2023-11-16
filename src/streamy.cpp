@@ -27,7 +27,7 @@ streamy::~streamy()
 
 bool streamy::load_config(const string& path)
 {
-    string src = readfile(path);
+    string src = read_stream(path);
     const string name_exp(LOAD_CONFIG_NAME);
     const string value_exp(LOAD_CONFIG_VALUE);
     regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
@@ -100,7 +100,7 @@ bool streamy::display(const string& tmpl)
 std::string streamy::include(const string& tmpl)
 {
     string path = template_dir + "/" + tmpl;
-    string src = fread(path);
+    string src = read_stream(path);
     regex exp = regex(INCLUDE, regex::ECMAScript);
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -223,7 +223,7 @@ string streamy::if_sequence(const string& src)
     return output;
 }
 
-std::string streamy::readfile(const string& path)
+std::string streamy::read_stream(const string& path)
 {
     string src;
     ifstream file;
@@ -233,22 +233,12 @@ std::string streamy::readfile(const string& path)
         string tp;
         while(getline(file, tp))
         { 
-            //read data
-            //src += tp += "\n";
             src += tp;
         }
         file.close(); //close the file object.
     }
     return src;
 }
-
-string streamy::fread(string path)
-{
-    std::ifstream in(path);
-    std::string contents((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-    return contents;
-}
-
 
 std::string& streamy::trim(string &s, char c)
 {
@@ -321,7 +311,7 @@ string& streamy::trim(std::string &s)
 std::string streamy::lex(const string& tmpl)
 {
     string path = template_dir + "/" + tmpl;
-    string src = readfile(path);
+    string src = read_stream(path);
     regex exp = regex(INCLUDE, regex::ECMAScript);
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);

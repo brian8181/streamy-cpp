@@ -50,6 +50,11 @@ int parse_options(int argc, char* argv[])
     const string project_folder = project_path + "/cgi_web";
     const string conf_path = project_path + "/test/conf_test.txt";
 
+	
+	#ifdef DEBUG
+	cout << "Testing streamy display ..." <<  endl;
+	#endif
+
     streamy sm(project_folder + "/www/templates", project_folder + "/www/compile", project_folder + "/www/config", project_folder + "/www/cache");
     sm.load_config(conf_path);
     sm.assign("headers", "HEADERS");
@@ -59,6 +64,10 @@ int parse_options(int argc, char* argv[])
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
     sm.display("default.tpl");
+
+	#ifdef DEBUG
+	cout << "End display ..." <<  endl;
+	#endif
 
 	return 0;
 }
