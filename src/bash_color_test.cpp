@@ -11,6 +11,5 @@ int main(int argc, char* argv[])
     cout << FMT_FG_GREEN << "Hello World!"  << FMT_RESET << endl;
     cout << FMT_FG_YELLOW << "Hello World!"  << FMT_RESET << endl;
     cout << FMT_FG_MAGENTA << "Hello World!"  << FMT_RESET << endl;
-
     return 0;
 }

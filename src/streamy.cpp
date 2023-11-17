@@ -89,9 +89,6 @@ bool streamy::display(const string& tmpl)
         }
         beg_pos = end_pos + match.length();
     }
-    output += src.substr(beg_pos);
-    // END REPLACE
-
     output = replace_tag(output, ESCAPE);
     cout << output << endl;
     return true;

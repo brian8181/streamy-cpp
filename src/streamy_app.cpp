@@ -49,12 +49,11 @@ int parse_options(int argc, char* argv[])
 	const string template_name = project_path + "/default.tpl";
     const string project_folder = project_path + "/cgi_web";
     const string conf_path = project_path + "/test/conf_test.txt";
-
 	
 	#ifdef DEBUG
 	cout << "Testing streamy display ..." <<  endl;
 	#endif
-
+	
     streamy sm(project_folder + "/www/templates", project_folder + "/www/compile", project_folder + "/www/config", project_folder + "/www/cache");
     sm.load_config(conf_path);
     sm.assign("headers", "HEADERS");

@@ -43,7 +43,6 @@ const string string_literal = string_literal1 + "|" + string_literal2;
 const string ABC = "\\$[A-Za-z0-9]+";
 const string ABC2 = "\\$\\w+";
 
-
 //const string TEST = "[-._~]*[A-Za-z][-.~A-Za-z0-9]*";
 //const string TEST = "\\b[-._~]*[A-Za-z][-.~A-Za-z0-9]*\\b";
 //BAD const string TEST = "\\b[-._~]*[A-Za-z][-._~A-Za-z0-9]*\\b";

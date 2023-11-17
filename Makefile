@@ -45,7 +45,6 @@ streamy_lex: streamy.o libstreamy.a libstreamy.so
 #$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_lex.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_lex_so
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_lex.o $(BLD)/libstreamy.a -o $(BLD)/streamy_lex_a
 
-
 streamy_lexer:
 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
 	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy.yy.c -o $(BLD)/streamy_lexer.o
@@ -74,7 +73,6 @@ install:
 	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
 	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
 	chmod 755  $(PREFIX)/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
-
 
 .PHONY: uninstall
 uninstall:

@@ -12,14 +12,24 @@ int main(int argc, char *argv[])
     try
     {
         std::filesystem::path path(argv[0]);
-        string project_folder = path.string();
-        string config_path = project_folder + "test/config";
+        string project_folder = path.parent_path().parent_path();
+        string config_path = project_folder + "/test/config/config";
 
         streamy sm(project_folder + "/www/templates", project_folder + "/www/compile", project_folder + "/www/config", project_folder + "/www/cache");
         sm.load_config(config_path);
+
+        cout << "******* Display Configuration ******" << endl;
+        std::map<string, string>::iterator end = sm.config.end();
+        for(std::map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
+        {
+            cout << "key: " << iter->first << " , value: " << iter->second << endl;
+        }
+
         string tmpl = "test.tpl";
         string _out;
         sm.lex(tmpl, _out);
+
+        cout << "******* Display template stream ******" << endl;
         cout << _out << endl;
     }
     catch (const std::exception &e)
