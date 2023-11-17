@@ -50,8 +50,8 @@ streamy_lex: streamy.o libstreamy.a libstreamy.so
 
 streamy_lexer:
 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
-	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy.yy.c -o $(BLD)/streamy_lex.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/streamy_lex.o -ll -o $(BLD)/streamy_lexer
+	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy.yy.c -o $(BLD)/streamy_lexer.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/streamy_lexer.o -ll -o $(BLD)/streamy_lexer
 
 tokenizer: tokenizer.yy.c
 	$(CXX) $(CXXFLAGS) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
