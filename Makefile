@@ -1,13 +1,11 @@
 # CHANGE DATE: 
 # Tue Oct  3 07:03:38 AM CDT 2023
 # Tue Oct 24 08:40:27 AM CDT 2023
+# Thu Nov 16 06:31:21 PM CST 2023
 
 PREFIX = /usr
 CXX = g++
 CXXFLAGS = -g -Wall -std=c++11 -DDEBUG
-CCFLAGS  = -g
-CC       = gcc $(CCFLAGS)
-#LEX      = flex -i -I 
 LEX      = flex
 YACC     = bison -d   
 
