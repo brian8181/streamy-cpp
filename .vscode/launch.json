@@ -8,8 +8,8 @@
             "name": "dubug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}.cgi",
-            "args": ["${workspaceFolder}/test/file3"],
+            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -26,7 +26,7 @@
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
-            "name": "dubug app",
+            "name": "debug app",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/streamy_app_a",

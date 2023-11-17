@@ -283,31 +283,34 @@ string& streamy::trim(std::string &s)
     return s;
 }
 
-std::string streamy::lex(const string& tmpl)
+string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
 {
-    string path = template_dir + "/" + tmpl;
-    string src = read_stream(path);
-    regex exp = regex(INCLUDE, regex::ECMAScript);
+    #ifdef DEBUG
+    cout << "Lexing..." << endl;
+    #endif
 
-    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
-    string output;
-    int beg_pos = 0;
-    for (sregex_iterator iter = begin; iter != end; ++iter)
+    string s = tmpl;
+    const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,]*\\}";
+    regex exp = regex(ESCAPE, regex::ECMAScript); // match
+    smatch match;
+    stringstream strm_str; 
+
+    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        smatch match = *iter;
-        std::ssub_match sub = match[1];
-        std::string s(sub.str());
-        string& tag = trim(s);
-        
-        int end_pos = match.position();
-        output += src.substr(beg_pos, end_pos-beg_pos);
-        output += include(tag);
-        beg_pos = end_pos + match.length();
+        std::string fmt_match_beg = match.format("TEXT: $`");
+        std::string fmt_match = match.format("TAG $&");
+        s = match.format("$'");
+        strm_str << fmt_match_beg << endl;
+        strm_str << fmt_match << endl;
     }
-    output += src.substr(beg_pos);
+    strm_str << s << endl;
 
-    return output;
+    #ifdef DEBUG
+    cout << "End Lexing..." << endl;
+    #endif
+    s_out = strm_str.str();
+
+    return s_out;
 }
 
 string streamy::get_conf(string s)

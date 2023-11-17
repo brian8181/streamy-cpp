@@ -18,14 +18,12 @@ public:
     template <class T> bool assign(const string& name, vector<T>& values);
     bool display(const string& tmpl);
 
-    //string readfile(const string& path);
     string read_stream(const string& path);
-    //string fread(string path);
     string include(const string& tmpl);
     string variable(const string& src);
     string remove_comments(const string& tmpl);
     string if_sequence(const string& src);
-    string lex(const string& tmpl);
+    string& lex(const string& tmpl, /*out*/ string& s_out);
     string replace_tag(string& tmpl, const string& exp_str);
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
