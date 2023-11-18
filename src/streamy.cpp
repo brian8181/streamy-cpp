@@ -285,7 +285,8 @@ string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
     cout << "Lexing..." << endl;
     #endif
 
-    string s = tmpl;
+    string full_path = this->template_dir + "/" + tmpl;
+    string s = read_stream(full_path);
     const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,]*\\}";
     regex exp = regex(ESCAPE, regex::ECMAScript); // match
     smatch match;

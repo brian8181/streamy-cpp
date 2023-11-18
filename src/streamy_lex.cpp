@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
         string project_folder = path.parent_path().parent_path();
         string config_path = project_folder + "/test/config/config";
 
-        streamy sm(project_folder + "/www/templates", project_folder + "/www/compile", project_folder + "/www/config", project_folder + "/www/cache");
+        streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
         sm.load_config(config_path);
         cout << "******* Display Configuration ******" << endl;
 
