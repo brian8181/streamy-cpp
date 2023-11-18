@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
         streamy sm(project_folder + "/www/templates", project_folder + "/www/compile", project_folder + "/www/config", project_folder + "/www/cache");
         sm.load_config(config_path);
         cout << "******* Display Configuration ******" << endl;
-        
+
         std::map<string, string>::iterator end = sm.config.end();
         for (std::map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
         {
@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
         string tmpl = "test.tpl";
         string _out;
         sm.lex(tmpl, _out);
+        cout << "******* Display template stream ******" << endl;
+        cout << _out << endl;
     }
     catch (const std::exception &e)
     {
