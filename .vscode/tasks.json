@@ -29,7 +29,7 @@
         {
             "label": "streamy_lex",
             "type": "shell",
-            "command": "make -f ${fileDirname}/Makefile find_tags.cgi",
+            "command": "make -f ${fileDirname}/Makefile streamy_lex",
             "problemMatcher": [
                 "$gcc"
             ],

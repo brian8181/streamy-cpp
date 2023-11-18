@@ -28,8 +28,6 @@ streamy::~streamy()
 bool streamy::load_config(const string& path)
 {
     string src = read_stream(path);
-    const string name_exp(LOAD_CONFIG_PAIR);
-    
     regex rgx = regex(LOAD_CONFIG_PAIR); 
 
     auto begin = sregex_iterator(src.begin(), src.end(), rgx, std::regex_constants::match_default);
@@ -39,7 +37,7 @@ bool streamy::load_config(const string& path)
     {
         smatch match = *iter;
         string name = match[1].str();
-        string value = match[3].str() + match[5].str() + match[7].str();
+        string value = match[2].str();
         pair<string, string> p(name, value);
         config.insert(p);
     }
