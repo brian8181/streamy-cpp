@@ -28,11 +28,11 @@ streamy::~streamy()
 bool streamy::load_config(const string& path)
 {
     string src = read_stream(path);
-    const string name_exp(LOAD_CONFIG_NAME);
-    const string value_exp(LOAD_CONFIG_VALUE);
-    regex src_exp = regex(name_exp + "\\s+=\\s+" + value_exp); 
+    const string name_exp(LOAD_CONFIG_PAIR);
+    
+    regex rgx = regex(LOAD_CONFIG_PAIR); 
 
-    auto begin = sregex_iterator(src.begin(), src.end(), src_exp, std::regex_constants::match_default);
+    auto begin = sregex_iterator(src.begin(), src.end(), rgx, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
 
     for (sregex_iterator iter = begin; iter != end; ++iter)

@@ -24,6 +24,7 @@ public:
     string remove_comments(const string& tmpl);
     string if_sequence(const string& src);
     string& lex(const string& tmpl, /*out*/ string& s_out);
+    
     string replace_tag(string& tmpl, const string& exp_str);
     string& trim(string &s, char c);
     string& ltrim(std::string &s);

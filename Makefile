@@ -16,7 +16,7 @@ OBJ = build
 
 all: libstreamy.so libstreamy.a streamy_test streamy_app streamy_lex
 
-yacc_lex: streamy_lex tokenizer
+yacc_lex: streamy_lexer tokenizer
 
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o

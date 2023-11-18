@@ -25,6 +25,20 @@
             "label": "echo",
             "type": "shell",
             "command": "echo ${workspaceFolder}"
+        },
+        {
+            "label": "streamy_lex",
+            "type": "shell",
+            "command": "make -f ${fileDirname}/Makefile find_tags.cgi",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo ${workspaceFolder}"
         }
     ],
     "version": "2.0.0"
