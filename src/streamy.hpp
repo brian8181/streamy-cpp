@@ -21,7 +21,7 @@ public:
 
     bool load_config(const string& path);
     bool assign(const string& name, const string& val);
-    bool assign(const string& name, const vector<string>& vec);
+    //bool assign(string& name, const vector<string>& vec);
     //template <class T> bool assign(const string& name, vector<T>& values);
     bool display(const string& tmpl);
      // maps

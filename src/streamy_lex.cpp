@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
             cout << "key: " << iter->first << " , value: " << iter->second << endl;
         }              
 
-        vector names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David"};
-        //sm.assign("Names", names);  
+       //vector names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David"};
+       //sm.assign("Names", names);  
     }
     catch (const std::exception &e)
     {

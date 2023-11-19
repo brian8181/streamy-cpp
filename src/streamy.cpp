@@ -47,12 +47,12 @@ bool streamy::assign(const string& name, const string& val)
     return true;
 }
 
-bool streamy::assign(const string& name, const vector<string>& vec)
-{
-    pair<string, vector<string>> p(name, vec);
-    //arrays.insert(p);
-    return true;
-}
+// bool streamy::assign(string& name, const vector<string>& vec)
+// {
+//     //pair<string&, vector<const string>> p(name, vec);
+//     //var_arrays.insert(p);
+//     return true;
+// }
 
 // template <class T> bool streamy::assign(const string& name, vector<T>& values)
 // {
