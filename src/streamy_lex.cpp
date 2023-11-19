@@ -46,8 +46,23 @@ int main(int argc, char *argv[])
             cout << "key: " << iter->first << " , value: " << iter->second << endl;
         }              
 
-       //vector names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David"};
-       //sm.assign("Names", names);  
+        vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David"};
+        string name1 = "names_one";
+        sm.assign(name1, names);  
+        vector<string> names2 = {"Christina", "Roger", "Brent", "Sahra", "Tim", "Tom", "Jack", "Dian", "Ian"};
+        string name2 = "names_two";
+        sm.assign(name2, names2);
+
+        std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
+        for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
+        {
+            cout << "key: " << iter->first << endl; // << iter->second << endl;
+            vector<string>::iterator end = iter->second.end();
+            for(vector<string>::iterator iter2 = iter->second.begin(); iter2 != end; ++iter2)
+            {
+                cout << "value: " <<  *iter2 << endl;
+            }
+        }              
     }
     catch (const std::exception &e)
     {

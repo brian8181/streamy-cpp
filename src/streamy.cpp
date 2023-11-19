@@ -49,8 +49,8 @@ bool streamy::assign(const string& name, const string& val)
 
 bool streamy::assign(const string& name, const vector<string>& vec)
 {
-    //pair<string&, vector<const string>> p;
-    //var_arrays.insert(p);
+    pair<string, vector<string>> p(name, vec);
+    var_arrays.insert(p);
     return true;
 }
 
