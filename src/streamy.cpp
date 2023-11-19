@@ -281,10 +281,6 @@ string& streamy::trim(std::string &s)
 
 string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
 {
-    #ifdef DEBUG
-    cout << "Lexing..." << endl;
-    #endif
-
     string full_path = this->template_dir + "/" + tmpl;
     string s = read_stream(full_path);
     const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,]*\\}";
@@ -300,13 +296,9 @@ string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
         strm_str << fmt_match_beg << endl;
         strm_str << fmt_match << endl;
     }
+    
     strm_str << s << endl;
-
-    #ifdef DEBUG
-    cout << "End Lexing..." << endl;
-    #endif
     s_out = strm_str.str();
-
     return s_out;
 }
 
