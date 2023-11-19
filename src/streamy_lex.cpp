@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
             cout << "key: " << iter->first << " , value: " << iter->second << endl;
         }              
 
+        cout << "******* Display Arrays ******" << endl;
         vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David"};
         string name1 = "names_one";
         sm.assign(name1, names);  

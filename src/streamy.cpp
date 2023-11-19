@@ -54,12 +54,10 @@ bool streamy::assign(const string& name, const vector<string>& vec)
     return true;
 }
 
-// template <class T> bool streamy::assign(const string& name, vector<T>& values)
-// {
-//     pair<string, vector<T>> p(name, values);
-//     vars.insert(p);
-//     return true;
-// }
+bool streamy::assign(const string& name, const map<string, string>& map)
+{
+    return true;
+}
 
 bool streamy::display(const string& tmpl)
 {

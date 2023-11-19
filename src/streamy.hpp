@@ -22,8 +22,9 @@ public:
     bool load_config(const string& path);
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
-    //template <class T> bool assign(const string& name, vector<T>& values);
+    bool assign(const string& name, const map<string, string>& map);
     bool display(const string& tmpl);
+
      // maps
     std::map<string, string> streamy_vars;
     std::map<string, string> config;
@@ -37,6 +38,7 @@ private:
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);
     string& trim(std::string &s);
+    
     // config
     string template_dir;
     string compile_dir;
