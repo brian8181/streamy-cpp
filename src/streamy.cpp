@@ -21,10 +21,6 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
     trim(this->cache_dir, '/');
 }
 
-streamy::~streamy()
-{
-}
-
 bool streamy::load_config(const string& path)
 {
     string src = read_stream(path);
@@ -296,7 +292,7 @@ string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
         strm_str << fmt_match_beg << endl;
         strm_str << fmt_match << endl;
     }
-    
+
     strm_str << s << endl;
     s_out = strm_str.str();
     return s_out;
