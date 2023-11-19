@@ -30,6 +30,24 @@ int main(int argc, char *argv[])
         sm.lex(tmpl, _out);
         cout << "******* Display template stream ******" << endl;
         cout << _out << endl;
+
+        sm.assign("headers", "HEADERS");
+        sm.assign("page_title", "streamyCPP Test Page");
+        sm.assign("body", "The Body");
+        sm.assign("admin_email", "admin@something.com");
+        sm.assign("version", "0.1");
+        sm.assign("version_date", "Feb, 14 2022");
+        sm.display("default.tpl");
+
+        cout << "******* Display Variables ******" << endl;
+        std::map<string, string>::iterator vend = sm.vars.end();
+        for (std::map<string, string>::iterator iter = sm.vars.begin(); iter != vend; ++iter)
+        {
+            cout << "key: " << iter->first << " , value: " << iter->second << endl;
+        }              
+
+        vector names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David"};
+        //sm.assign("Names", names);  
     }
     catch (const std::exception &e)
     {

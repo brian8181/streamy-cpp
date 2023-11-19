@@ -21,7 +21,8 @@ public:
 
     bool load_config(const string& path);
     bool assign(const string& name, const string& val);
-    template <class T> bool assign(const string& name, vector<T>& values);
+    bool assign(const string& name, const vector<string>& vec);
+    //template <class T> bool assign(const string& name, vector<T>& values);
     bool display(const string& tmpl);
      // maps
     std::map<string, string> streamy_vars;
@@ -42,6 +43,7 @@ private:
     string config_dir;
     string cache_dir;
 
+// ** TESTING **//
 public:
     string& lex(const string& tmpl, /*out*/ string& s_out);
     string include(const string& tmpl);

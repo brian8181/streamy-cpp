@@ -47,12 +47,19 @@ bool streamy::assign(const string& name, const string& val)
     return true;
 }
 
-template <class T> bool streamy::assign(const string& name, vector<T>& values)
+bool streamy::assign(const string& name, const vector<string>& vec)
 {
-    pair<string, vector<T>> p(name, values);
-    vars.insert(p);
+    pair<string, vector<string>> p(name, vec);
+    //arrays.insert(p);
     return true;
 }
+
+// template <class T> bool streamy::assign(const string& name, vector<T>& values)
+// {
+//     pair<string, vector<T>> p(name, values);
+//     vars.insert(p);
+//     return true;
+// }
 
 bool streamy::display(const string& tmpl)
 {
@@ -86,6 +93,94 @@ bool streamy::display(const string& tmpl)
     output = replace_tag(output, ESCAPE);
     cout << output << endl;
     return true;
+}
+
+std::string streamy::read_stream(const string& path)
+{
+    string src;
+    ifstream file;
+    file.open(path, ios::in); //open a file
+    if (file.is_open())
+    {   
+        string tp;
+        while(getline(file, tp))
+        { 
+            src += tp;
+        }
+        file.close(); //close the file object.
+    }
+    return src;
+}
+
+std::string& streamy::trim(string &s, char c)
+{
+    if(s.at(s.length()-1) == c)
+        s.pop_back();
+
+    return s;
+}
+
+string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
+{
+    string full_path = this->template_dir + "/" + tmpl;
+    string s = read_stream(full_path);
+    const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,]*\\}";
+    regex exp = regex(ESCAPE, regex::ECMAScript); // match
+    smatch match;
+    stringstream strm_str; 
+
+    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
+    {
+        std::string fmt_match_beg = match.format("TEXT: $`");
+        std::string fmt_match = match.format("TAG $&");
+        s = match.format("$'");
+        strm_str << fmt_match_beg << endl;
+        strm_str << fmt_match << endl;
+    }
+
+    strm_str << s << endl;
+    s_out = strm_str.str();
+    return s_out;
+}
+
+string& streamy::ltrim(std::string &s)
+{
+    int len = s.size();
+    int i;
+    for(i = 0; i < len; ++i)
+    {
+        if(!std::isspace(s[i]))
+            break;
+    }
+    string::iterator beg = s.begin(); 
+    s.erase(beg, beg+i);
+    return s;
+}
+
+string& streamy::rtrim(std::string &s)
+{
+    int len = s.size();
+    int i = len;
+    for(;i > 0; --i)
+    {
+        if(!std::isspace(s[i-1]))
+            break;
+    }
+    string::iterator end = s.end(); 
+    s.erase(end-(len-i), end);
+    return s;
+}
+
+string& streamy::trim(std::string &s)
+{
+    rtrim(s);
+    ltrim(s);
+    return s;
+}
+
+string streamy::get_conf(string s)
+{
+    return config[s];
 }
 
 std::string streamy::include(const string& tmpl)
@@ -213,92 +308,4 @@ string streamy::if_sequence(const string& src)
     output += src.substr(beg_pos);
 
     return output;
-}
-
-std::string streamy::read_stream(const string& path)
-{
-    string src;
-    ifstream file;
-    file.open(path, ios::in); //open a file
-    if (file.is_open())
-    {   
-        string tp;
-        while(getline(file, tp))
-        { 
-            src += tp;
-        }
-        file.close(); //close the file object.
-    }
-    return src;
-}
-
-std::string& streamy::trim(string &s, char c)
-{
-    if(s.at(s.length()-1) == c)
-        s.pop_back();
-
-    return s;
-}
-
-string& streamy::ltrim(std::string &s)
-{
-    int len = s.size();
-    int i;
-    for(i = 0; i < len; ++i)
-    {
-        if(!std::isspace(s[i]))
-            break;
-    }
-    string::iterator beg = s.begin(); 
-    s.erase(beg, beg+i);
-    return s;
-}
-
-string& streamy::rtrim(std::string &s)
-{
-    int len = s.size();
-    int i = len;
-    for(;i > 0; --i)
-    {
-        if(!std::isspace(s[i-1]))
-            break;
-    }
-    string::iterator end = s.end(); 
-    s.erase(end-(len-i), end);
-    return s;
-}
-
-string& streamy::trim(std::string &s)
-{
-    rtrim(s);
-    ltrim(s);
-    return s;
-}
-
-string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
-{
-    string full_path = this->template_dir + "/" + tmpl;
-    string s = read_stream(full_path);
-    const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,]*\\}";
-    regex exp = regex(ESCAPE, regex::ECMAScript); // match
-    smatch match;
-    stringstream strm_str; 
-
-    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
-    {
-        std::string fmt_match_beg = match.format("TEXT: $`");
-        std::string fmt_match = match.format("TAG $&");
-        s = match.format("$'");
-        strm_str << fmt_match_beg << endl;
-        strm_str << fmt_match << endl;
-    }
-
-    strm_str << s << endl;
-    s_out = strm_str.str();
-    return s_out;
-}
-
-string streamy::get_conf(string s)
-{
-    return config[s];
 }
