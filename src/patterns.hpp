@@ -1,5 +1,5 @@
-#ifndef _REGEXPR_HPP
-#define _REGEXPR_HPP
+#ifndef _PATTERNS_HPP
+#define _PATTERNS_HPP
 
 #include <string>
 #include <map>
