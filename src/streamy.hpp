@@ -7,7 +7,8 @@
 
 using namespace std;
 
-const string ESCAPE = "\\{\\$?(.*?)\\}";
+//const string ESCAPE = "\\{\\$?(.*?)\\}";
+const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,]*\\}";
 const string SYMBOL_NAME = "\\b[_.~]*[A-Za-z][A-Za-z0-9_.-~]*\\b";
 const string LOAD_CONFIG_PAIR = "([A-Za-z][A-Za-z0-9]*)=([A-Za-z0-9]*);";
 const string INCLUDE = "\\{\\s*\\include file\\s*=\\s*\"(.*?)\"\\s*\\}";
@@ -24,6 +25,8 @@ public:
     bool assign(const string& name, const vector<string>& vec);
     bool assign(const string& name, const map<string, string>& map);
     bool display(const string& tmpl);
+    string& lex(const string& tmpl, /*out*/ string& s_out);
+    string& include_file(const string& tmpl, string& s_out);
 
      // maps
     std::map<string, string> streamy_vars;
@@ -34,11 +37,12 @@ public:
    
 private:
     string read_stream(const string& path);
+    
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);
     string& trim(std::string &s);
-    
+
     // config
     string template_dir;
     string compile_dir;
@@ -47,8 +51,6 @@ private:
 
 // ** TESTING **//
 public:
-    string& lex(const string& tmpl, /*out*/ string& s_out);
-    string include(const string& tmpl);
     string variable(const string& src);
     string remove_comments(const string& tmpl);
     string if_sequence(const string& src);

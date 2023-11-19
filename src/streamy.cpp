@@ -61,7 +61,8 @@ bool streamy::assign(const string& name, const map<string, string>& map)
 
 bool streamy::display(const string& tmpl)
 {
-    string src = include(tmpl);
+    string src;
+    src = include_file(tmpl, src);
     src = remove_comments(src);
     src = if_sequence(src);
     //src = variable(src);
@@ -110,19 +111,36 @@ std::string streamy::read_stream(const string& path)
     return src;
 }
 
-std::string& streamy::trim(string &s, char c)
+string& streamy::include_file(const string& tmpl, string& s_out)
 {
-    if(s.at(s.length()-1) == c)
-        s.pop_back();
+    string path = template_dir + "/" + tmpl;
+    string src = read_stream(path);
+    regex exp = regex(INCLUDE, regex::ECMAScript);
 
-    return s;
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        string s(sub.str());
+        string& tag = trim(s);
+        
+        int end_pos = match.position();
+        s_out += src.substr(beg_pos, end_pos-beg_pos);
+        // call include recursively
+        s_out += include_file(tag, s_out);
+        beg_pos = end_pos + match.length();
+    }
+    s_out += src.substr(beg_pos);
+    return s_out;
 }
 
 string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
 {
     string full_path = this->template_dir + "/" + tmpl;
     string s = read_stream(full_path);
-    const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,]*\\}";
     regex exp = regex(ESCAPE, regex::ECMAScript); // match
     smatch match;
     stringstream strm_str; 
@@ -139,6 +157,14 @@ string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
     strm_str << s << endl;
     s_out = strm_str.str();
     return s_out;
+}
+
+std::string& streamy::trim(string &s, char c)
+{
+    if(s.at(s.length()-1) == c)
+        s.pop_back();
+
+    return s;
 }
 
 string& streamy::ltrim(std::string &s)
@@ -179,34 +205,6 @@ string& streamy::trim(std::string &s)
 string streamy::get_conf(string s)
 {
     return config[s];
-}
-
-std::string streamy::include(const string& tmpl)
-{
-    string path = template_dir + "/" + tmpl;
-    string src = read_stream(path);
-    regex exp = regex(INCLUDE, regex::ECMAScript);
-
-    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
-    string output;
-    int beg_pos = 0;
-    for (sregex_iterator iter = begin; iter != end; ++iter)
-    {
-        smatch match = *iter;
-        std::ssub_match sub = match[1];
-        std::string s(sub.str());
-        string& tag = trim(s);
-        
-        int end_pos = match.position();
-        output += src.substr(beg_pos, end_pos-beg_pos);
-        // call include recursively
-        output += include(tag);
-        beg_pos = end_pos + match.length();
-    }
-    output += src.substr(beg_pos);
-
-    return output;
 }
 
 string streamy::variable(const string& src)
