@@ -48,11 +48,11 @@ int main(int argc, char *argv[])
 
         cout << "******* Display Arrays ******" << endl;
         vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David"};
-        string name1 = "names_one";
-        sm.assign(name1, names);  
+        //string name1 = "names_one";
+        sm.assign("names_one", names);  
         vector<string> names2 = {"Christina", "Roger", "Brent", "Sahra", "Tim", "Tom", "Jack", "Dian", "Ian"};
-        string name2 = "names_two";
-        sm.assign(name2, names2);
+        //string name2 = "names_two";
+        sm.assign("names_two", names2);
 
         std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
         for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
@@ -63,7 +63,12 @@ int main(int argc, char *argv[])
             {
                 cout << "value: " <<  *iter2 << endl;
             }
-        }              
+        }
+
+        cout << "******* Test Include ******" << endl;
+        string include;
+        include = sm.include_file("test_include.tpl", include);
+        cout << include << endl;    
     }
     catch (const std::exception &e)
     {
