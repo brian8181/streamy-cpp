@@ -30,17 +30,17 @@
 
 using namespace std;
 
-int stdin_ready (int filedes)
-{
-	fd_set set;
-	// declare/initialize zero timeout 
-	struct timespec timeout = { .tv_sec = 0 };
-	// initialize the file descriptor set
-	FD_ZERO(&set);
-	FD_SET(filedes, &set);
-	// check stdin_ready is ready on filedes 
-	return pselect(filedes + 1, &set, NULL, NULL, &timeout, NULL);
-}
+// int stdin_ready (int filedes)
+// {
+// 	fd_set set;
+// 	// declare/initialize zero timeout 
+// 	struct timespec timeout = { .tv_sec = 0 };
+// 	// initialize the file descriptor set
+// 	FD_ZERO(&set);
+// 	FD_SET(filedes, &set);
+// 	// check stdin_ready is ready on filedes 
+// 	return pselect(filedes + 1, &set, NULL, NULL, &timeout, NULL);
+// }
 
 int parse_options(int argc, char* argv[])
 {
@@ -72,11 +72,11 @@ int parse_options(int argc, char* argv[])
 		cout << "key: " << iter->first << " , value: " << iter->second << endl;
 	}              
 
-	// cout << "******* Display Arrays ******" << endl;
+	cout << "******* Display Arrays ******" << endl;
 	vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David", "Shelly"};
-	// sm.assign("names_one", names);  
+	sm.assign("names_one", names);  
 	vector<string> names2 = {"Christina", "Roger", "Brent", "Shara", "Tim", "Tom", "Jack", "Dian", "Ian", "Jill"};
-	// sm.assign("names_two", names2);
+	sm.assign("names_two", names2);
 
 	// std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
 	// for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
