@@ -27,7 +27,7 @@ public:
     bool display(const string& tmpl);
     string& lex(const string& tmpl, /*out*/ string& s_out);
     string& include_file(const string& tmpl, string& s_out);
-    string& include_f(const string& tmpl, /*out*/ string& s_out);
+    string& include(const string& tmpl, /*out*/ string& s_out);
 
      // maps
     std::map<string, string> streamy_vars;

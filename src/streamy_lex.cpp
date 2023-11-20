@@ -47,11 +47,9 @@ int main(int argc, char *argv[])
         }              
 
         cout << "******* Display Arrays ******" << endl;
-        vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David"};
-        //string name1 = "names_one";
+        vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David", "Shelly"};
         sm.assign("names_one", names);  
-        vector<string> names2 = {"Christina", "Roger", "Brent", "Sahra", "Tim", "Tom", "Jack", "Dian", "Ian"};
-        //string name2 = "names_two";
+        vector<string> names2 = {"Christina", "Roger", "Brent", "Shara", "Tim", "Tom", "Jack", "Dian", "Ian", "Jill"};
         sm.assign("names_two", names2);
 
         std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
@@ -67,8 +65,13 @@ int main(int argc, char *argv[])
 
         cout << "******* Test Include ******" << endl;
         string include;
-        sm.include_f("test_include.tpl", include);
+        sm.include("test_include.tpl", include);
         cout << include << endl;    
+
+        // cout << "******* Test Include File ******" << endl;
+        // string include_file;
+        // sm.include_file("test_include.tpl", include_file);
+        // cout << include_file << endl;    
     }
     catch (const std::exception &e)
     {

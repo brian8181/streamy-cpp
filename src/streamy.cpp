@@ -137,7 +137,7 @@ string& streamy::include_file(const string& tmpl, string& s_out)
     return s_out;
 }
 
-string& streamy::include_f(const string& tmpl, /*out*/ string& s_out)
+string& streamy::include(const string& tmpl, /*out*/ string& s_out)
 {
     string full_path = this->template_dir + "/" + tmpl;
     string s = read_stream(full_path);
@@ -150,8 +150,9 @@ string& streamy::include_f(const string& tmpl, /*out*/ string& s_out)
         std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
         s = match.format("$'");
+        std::ssub_match sub = match[1];
         strm_str << fmt_match_beg;
-        strm_str << "[*FILE HERE: " << fmt_match << " *]" << endl;
+        strm_str << "[*FILE HERE: " << fmt_match << " file=" << sub.str() << " *]" << endl;
     }
 
     strm_str << s;

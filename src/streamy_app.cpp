@@ -54,7 +54,7 @@ int parse_options(int argc, char* argv[])
 	cout << "Testing streamy display ..." <<  endl;
 	#endif
 	
-    streamy sm(project_folder + "/www/templates", project_folder + "/www/compile", project_folder + "/www/config", project_folder + "/www/cache");
+    streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/testcache");
     sm.load_config(conf_path);
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "streamyCPP Test Page");
@@ -63,6 +63,30 @@ int parse_options(int argc, char* argv[])
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
     sm.display("default.tpl");
+
+	cout << "******* Display Variables ******" << endl;
+	std::map<string, string>::iterator vend = sm.vars.end();
+	for (std::map<string, string>::iterator iter = sm.vars.begin(); iter != vend; ++iter)
+	{
+		cout << "key: " << iter->first << " , value: " << iter->second << endl;
+	}              
+
+	// cout << "******* Display Arrays ******" << endl;
+	// vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David", "Shelly"};
+	// sm.assign("names_one", names);  
+	// vector<string> names2 = {"Christina", "Roger", "Brent", "Shara", "Tim", "Tom", "Jack", "Dian", "Ian", "Jill"};
+	// sm.assign("names_two", names2);
+
+	// std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
+	// for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
+	// {
+	// 	cout << "key: " << iter->first << endl; // << iter->second << endl;
+	// 	vector<string>::iterator end = iter->second.end();
+	// 	for(vector<string>::iterator iter2 = iter->second.begin(); iter2 != end; ++iter2)
+	// 	{
+	// 		cout << "value: " <<  *iter2 << endl;
+	// 	}
+	// }
 
 	#ifdef DEBUG
 	cout << "End display ..." <<  endl;
