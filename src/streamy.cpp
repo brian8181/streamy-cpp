@@ -137,6 +137,28 @@ string& streamy::include_file(const string& tmpl, string& s_out)
     return s_out;
 }
 
+string& streamy::include_f(const string& tmpl, /*out*/ string& s_out)
+{
+    string full_path = this->template_dir + "/" + tmpl;
+    string s = read_stream(full_path);
+    regex exp = regex(INCLUDE, regex::ECMAScript); // match
+    smatch match;
+    stringstream strm_str; 
+
+    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
+    {
+        std::string fmt_match_beg = match.format("$`");
+        std::string fmt_match = match.format("`$");
+        s = match.format("$'");
+        strm_str << fmt_match_beg;
+        strm_str << "[*FILE HERE*] " << s << endl;
+    }
+
+    strm_str << s;
+    s_out = strm_str.str();
+    return s_out;
+}
+
 string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
 {
     string full_path = this->template_dir + "/" + tmpl;

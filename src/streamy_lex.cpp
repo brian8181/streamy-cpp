@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
         cout << "******* Test Include ******" << endl;
         string include;
-        include = sm.include_file("test_include.tpl", include);
+        sm.include_f("test_include.tpl", include);
         cout << include << endl;    
     }
     catch (const std::exception &e)
