@@ -18,29 +18,25 @@
 // Version:    3.6.7
 
 #include <iostream>
-#include <cstring>
-#include <string>
-#include <unistd.h>         /* for STDIN_FILENO */
-#include <sys/select.h>     /* for pselect   */
 #include <string>
 #include <getopt.h>
+#include "bash_color.h"
+#include "streamy_app.hpp"
 #include <vector>
 #include <filesystem>
 #include "streamy.hpp"
 
 using namespace std;
 
-// int stdin_ready (int filedes)
-// {
-// 	fd_set set;
-// 	// declare/initialize zero timeout 
-// 	struct timespec timeout = { .tv_sec = 0 };
-// 	// initialize the file descriptor set
-// 	FD_ZERO(&set);
-// 	FD_SET(filedes, &set);
-// 	// check stdin_ready is ready on filedes 
-// 	return pselect(filedes + 1, &set, NULL, NULL, &timeout, NULL);
-// }
+void print_help()
+{
+
+}
+
+void print_match_header(const string& pattern, const string& src, const bool single_flag, const bool pretty_flag)
+{
+	
+}
 
 int parse_options(int argc, char* argv[])
 {
