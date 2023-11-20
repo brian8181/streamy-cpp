@@ -148,10 +148,10 @@ string& streamy::include_f(const string& tmpl, /*out*/ string& s_out)
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
         std::string fmt_match_beg = match.format("$`");
-        std::string fmt_match = match.format("`$");
+        std::string fmt_match = match.format("$&");
         s = match.format("$'");
         strm_str << fmt_match_beg;
-        strm_str << "[*FILE HERE*] " << s << endl;
+        strm_str << "[*FILE HERE: " << fmt_match << " *]" << endl;
     }
 
     strm_str << s;
