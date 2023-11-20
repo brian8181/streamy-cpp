@@ -303,7 +303,7 @@ string streamy::remove_comments(const string& src)
 
 string streamy::if_sequence(const string& src)
 {
-    string IF_SEQUENCE;
+    string IF_SEQUENCE; // TODO!
     regex exp = regex(IF_SEQUENCE, regex::ECMAScript); // match
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
