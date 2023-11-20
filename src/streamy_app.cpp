@@ -24,6 +24,7 @@
 #include <sys/select.h>     /* for pselect   */
 #include <string>
 #include <getopt.h>
+#include <vector>
 #include <filesystem>
 #include "streamy.hpp"
 
@@ -72,9 +73,9 @@ int parse_options(int argc, char* argv[])
 	}              
 
 	// cout << "******* Display Arrays ******" << endl;
-	// vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David", "Shelly"};
+	vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David", "Shelly"};
 	// sm.assign("names_one", names);  
-	// vector<string> names2 = {"Christina", "Roger", "Brent", "Shara", "Tim", "Tom", "Jack", "Dian", "Ian", "Jill"};
+	vector<string> names2 = {"Christina", "Roger", "Brent", "Shara", "Tim", "Tom", "Jack", "Dian", "Ian", "Jill"};
 	// sm.assign("names_two", names2);
 
 	// std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
