@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a streamy_test streamy_lex app bash_color_test
+all: libstreamy.so libstreamy.a streamy_test streamy_lex streamy_app app bash_color_test
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -34,11 +34,11 @@ streamy_test: streamy.o
 	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o -o $(BLD)/streamy_test
 
-streamy_app: libstreamy.a libstreamy.so
-#$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/main.cpp -o $(OBJ)/main.o
+streamy_app: streamy.o libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_app.cpp -o $(OBJ)/streamy_app.o
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/main.o $(OBJ)/streamy_app.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_app_so
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/main.o $(OBJ)/streamy_app.o $(BLD)/libstreamy.a -o $(BLD)/streamy_app_a
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_app.o $(OBJ)/streamy.o -o $(BLD)/streamy_app
+# $(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_app.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_app_so
+# $(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_app.o $(BLD)/libstreamy.a -o $(BLD)/streamy_app_a
 
 streamy_lex: libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
