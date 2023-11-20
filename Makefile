@@ -51,6 +51,12 @@ streamy_lexer:
 	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy.yy.c -o $(BLD)/streamy_lexer.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/streamy_lexer.o -ll -o $(BLD)/streamy_lexer
 
+main.o:
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/main.cpp -o $(OBJ)/main.o
+
+app.o:
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
+
 tokenizer: tokenizer.yy.c
 	$(CXX) $(CXXFLAGS) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
 
