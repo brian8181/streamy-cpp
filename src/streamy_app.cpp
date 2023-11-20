@@ -17,6 +17,9 @@
 // Build Date: Sun Oct  1 09:39:08 PM CDT 2023
 // Version:    3.6.7
 
+#include <cstring>
+#include <unistd.h>         /* for STDIN_FILENO */
+#include <sys/select.h>     /* for pselect   */
 #include <iostream>
 #include <string>
 #include <getopt.h>
@@ -28,6 +31,18 @@
 
 using namespace std;
 
+int stdin_ready (int filedes)
+{
+	fd_set set;
+	// declare/initialize zero timeout 
+	struct timespec timeout = { .tv_sec = 0 };
+	// initialize the file descriptor set
+	FD_ZERO(&set);
+	FD_SET(filedes, &set);
+	// check stdin_ready is ready on filedes 
+	return pselect(filedes + 1, &set, NULL, NULL, &timeout, NULL);
+}
+
 void print_help()
 {
 
@@ -35,7 +50,7 @@ void print_help()
 
 void print_match_header(const string& pattern, const string& src, const bool single_flag, const bool pretty_flag)
 {
-	
+
 }
 
 int parse_options(int argc, char* argv[])
@@ -74,16 +89,16 @@ int parse_options(int argc, char* argv[])
 	vector<string> names2 = {"Christina", "Roger", "Brent", "Shara", "Tim", "Tom", "Jack", "Dian", "Ian", "Jill"};
 	sm.assign("names_two", names2);
 
-	// std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
-	// for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
-	// {
-	// 	cout << "key: " << iter->first << endl; // << iter->second << endl;
-	// 	vector<string>::iterator end = iter->second.end();
-	// 	for(vector<string>::iterator iter2 = iter->second.begin(); iter2 != end; ++iter2)
-	// 	{
-	// 		cout << "value: " <<  *iter2 << endl;
-	// 	}
-	// }
+	std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
+	for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
+	{
+		cout << "key: " << iter->first << endl; // << iter->second << endl;
+		vector<string>::iterator end = iter->second.end();
+		for(vector<string>::iterator iter2 = iter->second.begin(); iter2 != end; ++iter2)
+		{
+			cout << "value: " <<  *iter2 << endl;
+		}
+	}
 
 	#ifdef DEBUG
 	cout << "End display ..." <<  endl;
@@ -114,4 +129,3 @@ int main(int argc, char* argv[])
 	 	std::cout << ex.what() << std::endl;
 	}
 }
-
