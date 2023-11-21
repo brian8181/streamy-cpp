@@ -296,7 +296,7 @@ string streamy::replace_tag(string& src, const string& exp_str)
     return output;
 }
 
-string& streamy::remove_comments(const string& tmpl, /*out*/ string& s_out)
+string& streamy::remove_file_comments(const string& tmpl, /*out*/ string& s_out)
 {
     string full_path = this->template_dir + "/" + tmpl;
     string src = read_stream(full_path);
