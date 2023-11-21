@@ -13,20 +13,19 @@
 
 // License:    GPL
 // Author:     Brian K Preston
-// File Name:  no file name
+// File Name:  streamy_app.cpp
 // Build Date: Sun Oct  1 09:39:08 PM CDT 2023
 // Version:    3.6.7
 
+#include <iostream>
+#include <vector>
+#include <filesystem>
 #include <cstring>
 #include <unistd.h>         /* for STDIN_FILENO */
 #include <sys/select.h>     /* for pselect   */
-#include <iostream>
-#include <string>
 #include <getopt.h>
 #include "bash_color.h"
 #include "streamy_app.hpp"
-#include <vector>
-#include <filesystem>
 #include "streamy.hpp"
 
 using namespace std;

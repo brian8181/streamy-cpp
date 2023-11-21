@@ -13,12 +13,12 @@
 
 // License:    GPL
 // Author:     Brian K Preston
-// File Name:  no file name
+// File Name:  app.hpp
 // Build Date: Sun Oct  1 09:39:08 PM CDT 2023
 // Version:    3.6.7
 
-#ifndef _tmp_HPP
-#define _tmp_HPP
+#ifndef _APP_HPP
+#define _APP_HPP
 
 #include <string>
 
