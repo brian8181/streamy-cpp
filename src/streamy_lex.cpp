@@ -10,8 +10,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-   
-    std::filesystem::path path(argv[0]);
+    filesystem::path path(argv[0]);
     string project_folder = path.parent_path().parent_path();
     string config_path = project_folder + "/test/config/config";
 
@@ -19,8 +18,8 @@ int main(int argc, char *argv[])
     sm.load_config(config_path);
 
     cout << "******* Display Configuration ******" << endl;
-    std::map<string, string>::iterator end = sm.config.end();
-    for (std::map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
+    map<string, string>::iterator end = sm.config.end();
+    for (map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
     {
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }
@@ -40,8 +39,8 @@ int main(int argc, char *argv[])
     sm.display("default.tpl");
 
     cout << "******* Display Variables ******" << endl;
-    std::map<string, string>::iterator vend = sm.vars.end();
-    for (std::map<string, string>::iterator iter = sm.vars.begin(); iter != vend; ++iter)
+    map<string, string>::iterator vend = sm.vars.end();
+    for (map<string, string>::iterator iter = sm.vars.begin(); iter != vend; ++iter)
     {
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }              
@@ -54,8 +53,8 @@ int main(int argc, char *argv[])
     sm.assign("citys", citys);
 
     cout << "******* Display Arrays ******" << endl;
-    std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
-    for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
+    map<string, vector<string>>::iterator avend = sm.var_arrays.end();
+    for (map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
     {
         cout << "key: " << iter->first << endl;
         int len = iter->second.size();
