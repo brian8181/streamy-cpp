@@ -37,6 +37,7 @@ public:
    
 private:
     string read_stream(const string& path);
+    string& read_stream(const string& path, string& /* out */ out);
     
     string& trim(string &s, char c);
     string& ltrim(std::string &s);

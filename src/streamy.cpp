@@ -111,6 +111,22 @@ std::string streamy::read_stream(const string& path)
     return src;
 }
 
+string& streamy::read_stream(const string& path, string& /* out */ out)
+{
+    ifstream file;
+    file.open(path, ios::in); //open a file
+    if (file.is_open())
+    {   
+        string tp;
+        while(getline(file, tp))
+        { 
+            out += tp;
+        }
+        file.close(); //close the file object.
+    }
+    return out;
+}
+
 string& streamy::include_file(const string& tmpl, string& s_out)
 {
     string path = template_dir + "/" + tmpl;
