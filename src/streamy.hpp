@@ -53,7 +53,7 @@ private:
 public:
     string variable(const string& src);
     string remove_comments(const string& tmpl);
-    string if_sequence(const string& src);
+    //string if_sequence(const string& src);
     string replace_tag(string& tmpl, const string& exp_str);
      // test functons
     string get_conf(string s);

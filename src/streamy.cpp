@@ -64,7 +64,7 @@ bool streamy::display(const string& tmpl)
     string src;
     src = include_file(tmpl, src);
     src = remove_comments(src);
-    src = if_sequence(src);
+    //src = if_sequence(src);
     //src = variable(src);
 
     //REPLACE VARIABLES
@@ -301,30 +301,30 @@ string streamy::remove_comments(const string& src)
     return output;
 }
 
-string streamy::if_sequence(const string& src)
-{
-    string IF_SEQUENCE; // TODO!
-    regex exp = regex(IF_SEQUENCE, regex::ECMAScript); // match
-    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
+// string streamy::if_sequence(const string& src)
+// {
+//     string IF_SEQUENCE; // TODO!
+//     regex exp = regex(IF_SEQUENCE, regex::ECMAScript); // match
+//     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+//     auto end = sregex_iterator(); 
 
-    string output;
-    int beg_pos = 0;
-    for (sregex_iterator iter = begin; iter != end; ++iter)
-    {
-        smatch match = *iter;
-        int end_pos = match.position();
-        std::ssub_match sub = match[1];
-        std::string s(sub.str());
-        string& tag = trim(s);
-        //HTML
-        output += "@IF SEQUENCE@\n";
-        output += "@HTML@ " + tag + " @HTML@\n";
-        output += "@/IF_SEQUENCE@\n";
-        output += src.substr(beg_pos, end_pos-beg_pos);
-        beg_pos = end_pos + match.length();
-    }
-    output += src.substr(beg_pos);
+//     string output;
+//     int beg_pos = 0;
+//     for (sregex_iterator iter = begin; iter != end; ++iter)
+//     {
+//         smatch match = *iter;
+//         int end_pos = match.position();
+//         std::ssub_match sub = match[1];
+//         std::string s(sub.str());
+//         string& tag = trim(s);
+//         //HTML
+//         output += "@IF SEQUENCE@\n";
+//         output += "@HTML@ " + tag + " @HTML@\n";
+//         output += "@/IF_SEQUENCE@\n";
+//         output += src.substr(beg_pos, end_pos-beg_pos);
+//         beg_pos = end_pos + match.length();
+//     }
+//     output += src.substr(beg_pos);
 
-    return output;
-}
+//     return output;
+// }

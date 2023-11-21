@@ -41,13 +41,13 @@ int stdin_ready (int filedes)
 	return pselect(filedes + 1, &set, NULL, NULL, &timeout, NULL);
 }
 
-void print_help()
-{
-}
+// void print_help()
+// {
+// }
 
-void print_match_header(const string& pattern, const string& src, const bool single_flag, const bool pretty_flag)
-{
-}
+// void print_match_header(const string& pattern, const string& src, const bool single_flag, const bool pretty_flag)
+// {
+// }
 
 int parse_options(int argc, char* argv[])
 {
