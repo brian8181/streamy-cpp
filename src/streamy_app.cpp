@@ -23,7 +23,6 @@
 #include <cstring>
 #include <unistd.h>         /* for STDIN_FILENO */
 #include <sys/select.h>     /* for pselect   */
-#include <getopt.h>
 #include "bash_color.h"
 #include "streamy_app.hpp"
 #include "streamy.hpp"
@@ -44,12 +43,10 @@ int stdin_ready (int filedes)
 
 void print_help()
 {
-
 }
 
 void print_match_header(const string& pattern, const string& src, const bool single_flag, const bool pretty_flag)
 {
-
 }
 
 int parse_options(int argc, char* argv[])
@@ -67,6 +64,14 @@ int parse_options(int argc, char* argv[])
 	
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/testcache");
     sm.load_config(conf_path);
+
+	cout << "******* Display Configuration ******" << endl;
+    map<string, string>::iterator end = sm.config.end();
+    for (map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
+    {
+        cout << "key: " << iter->first << " , value: " << iter->second << endl;
+    }
+
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "streamyCPP Test Page");
     sm.assign("body", "The Body");
@@ -82,12 +87,12 @@ int parse_options(int argc, char* argv[])
 		cout << "key: " << iter->first << " , value: " << iter->second << endl;
 	}              
 
-	cout << "******* Display Arrays ******" << endl;
 	vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David", "Shelly"};
 	// sm.assign("names_one", names);  
 	vector<string> names2 = {"Christina", "Roger", "Brent", "Shara", "Tim", "Tom", "Jack", "Dian", "Ian", "Jill"};
 	// sm.assign("names_two", names2);
 
+	cout << "******* Display Arrays ******" << endl;
 	std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
 	for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
 	{
