@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
     cout << include_file << endl;    
       
     cout << "******* Test Comments  ******" << endl;
-    string comments = sm.remove_comments("test_comments.tpl");
-    cout << comments << endl;
+    //string comments = sm.remove_comments("test_comments.tpl", s_out);
+    //cout << comments << endl;
 
     return 0;
 }

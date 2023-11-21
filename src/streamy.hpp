@@ -52,7 +52,7 @@ private:
 // ** TESTING **//
 public:
     string variable(const string& src);
-    string remove_comments(const string& tmpl);
+    string& remove_comments(const string& tmpl, /*out*/ string& s_out);
     //string if_sequence(const string& src);
     string replace_tag(string& tmpl, const string& exp_str);
      // test functons
