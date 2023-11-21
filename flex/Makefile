@@ -1,12 +1,12 @@
 
-# Streamy-cpp Make
+# streamy-cpp make
 # Fri Sep 29 11:01:50 AM CDT 2023
 # Version 0.0.1
 
-CC       = gcc -g
-#LEX      = flex -i -I 
-LEX      = flex
-YACC     = bison -d -y
+CC = gcc -g
+#LEX = flex -i -I 
+LEX = flex
+YACC = bison -d -y
 
 SRC = .
 BUILD=./build
