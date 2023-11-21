@@ -1,3 +1,0 @@
-ABC
-{* testing comments *}
-DEF
