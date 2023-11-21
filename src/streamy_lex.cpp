@@ -69,10 +69,10 @@ int main(int argc, char *argv[])
     sm.include("test_include.tpl", include);
     cout << include << endl;    
 
-    // cout << "******* Test Include File ******" << endl;
-    // string include_file;
-    // sm.include_file("test_include.tpl", include_file);
-    // cout << include_file << endl;    
+    cout << "******* Test Include File ******" << endl;
+    string include_file;
+    sm.include_file("test_include.tpl", include_file);
+    cout << include_file << endl;    
       
     cout << "******* Test Comments  ******" << endl;
     string comments = sm.remove_comments("test_comments.tpl");
