@@ -17,18 +17,18 @@ int main(int argc, char *argv[])
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     sm.load_config(config_path);
-    cout << "******* Display Configuration ******" << endl;
 
+    cout << "******* Display Configuration ******" << endl;
     std::map<string, string>::iterator end = sm.config.end();
     for (std::map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
     {
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }
 
+    cout << "******* Display template stream ******" << endl;
     string tmpl = "test.tpl";
     string _out;
     sm.lex(tmpl, _out);
-    cout << "******* Display template stream ******" << endl;
     cout << _out << endl;
 
     sm.assign("headers", "HEADERS");
@@ -45,8 +45,7 @@ int main(int argc, char *argv[])
     {
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }              
-
-    cout << "******* Display Arrays ******" << endl;
+   
     vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David", "Shelly"};
     sm.assign("names_one", names);  
     vector<string> names2 = {"Christina", "Roger", "Brent", "Shara", "Tim", "Tom", "Jack", "Dian", "Ian", "Jill"};
@@ -54,6 +53,7 @@ int main(int argc, char *argv[])
     vector<string> citys = {"Mesquite", "Dallas", "Addison", "New York", "London", "Barcelona", "Madrid", "Paris", "Las Angelels", "Las Vegas", "Garland", "Richardson", "Plano"};
     sm.assign("citys", citys);
 
+    cout << "******* Display Arrays ******" << endl;
     std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
     for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
     {
@@ -74,6 +74,10 @@ int main(int argc, char *argv[])
     // string include_file;
     // sm.include_file("test_include.tpl", include_file);
     // cout << include_file << endl;    
-  
+      
+    cout << "******* Test Comments  ******" << endl;
+    string comments = sm.remove_comments("test_comments.tpl");
+    cout << comments << endl;
+
     return 0;
 }

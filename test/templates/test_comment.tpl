@@ -1,0 +1,3 @@
+ABC
+{* testing comments *}
+DEF
