@@ -75,20 +75,18 @@ int main(int argc, char *argv[])
     sm.include_file("test_include.tpl", include_file);
     cout << include_file << endl;    
       
-    cout << "******* Test File Comments  ******" << endl;
+    cout << "******* Test Remove File Comments  ******" << endl;
     string comments;
     comments = sm.remove_file_comments("test_comments.tpl", comments);
     cout << comments << endl;
 
-    cout << "******* Test Comments  ******" << endl;
-    string full_path = sm.template_dir + "/" + "test_comments.tpl";
-    //string full_path = "/home/brian/src/straemy-cpp/test/templates/test_comments.tpl";
-    string output;
-    output = ifs_read_all(full_path);
-    //cout << output << endl;
-    string c2;
-    c2 = sm.remove_comments(output, c2);
-    cout << c2 << endl;
+    cout << "******* Test Remove Comments  ******" << endl;
+    string full_path = "/home/brian/src/streamy-cpp/test/templates/test_comments.tpl";
+    string file;
+    file = ifs_read_all(full_path);
+    string c;
+    c = sm.remove_comments(file, c);
+    cout << c << endl;
 
     return 0;
 }
