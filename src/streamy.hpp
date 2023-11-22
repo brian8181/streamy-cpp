@@ -34,8 +34,7 @@ public:
     std::map<string, string> vars;
     std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
-   
-private:
+
     string read_stream(const string& path);
     string& read_stream(const string& path, string& /* out */ out);
     

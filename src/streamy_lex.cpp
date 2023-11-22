@@ -80,10 +80,15 @@ int main(int argc, char *argv[])
     comments = sm.remove_file_comments("test_comments.tpl", comments);
     cout << comments << endl;
 
-    cout << "******* Test File Comments  ******" << endl;
-    // string full_path = this->template_dir + "/" + tmpl;
-    // string src = read_stream(full_path);
-
+    cout << "******* Test Comments  ******" << endl;
+    string full_path = sm.template_dir + "/" + "test_comments.tpl";
+    //string full_path = "/home/brian/src/straemy-cpp/test/templates/test_comments.tpl";
+    string output;
+    output = ifs_read_all(full_path);
+    //cout << output << endl;
+    string c2;
+    c2 = sm.remove_comments(output, c2);
+    cout << c2 << endl;
 
     return 0;
 }
