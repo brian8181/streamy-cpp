@@ -24,7 +24,7 @@ public:
     bool assign(const string& name, const vector<string>& vec);
     bool assign(const string& name, const map<string, string>& map);
     bool display(const string& tmpl);
-    string& lex(const string& tmpl, /*out*/ string& s_out);
+    string& lex_file(const string& tmpl, /*out*/ string& s_out);
     string& include_file(const string& tmpl, string& s_out);
     string& include(const string& tmpl, /*out*/ string& s_out);
 
@@ -51,13 +51,12 @@ public:
 
 // ** TESTING **//
 public:
-    string variable(const string& src);
+    string get_conf(string s);
     string& remove_file_comments(const string& tmpl, /*out*/ string& s_out);
     string& remove_comments(const string& tmpl, /*out*/ string& s_out);
-    //string if_sequence(const string& src);
     string replace_tag(string& tmpl, const string& exp_str);
-     // test functons
-    string get_conf(string s);
+    string variable(const string& src);
+     //string if_sequence(const string& src);
     // todo INACTIVE
     string left_delimiter = "{";
     string right_delimiter = "}";

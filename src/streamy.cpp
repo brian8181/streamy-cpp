@@ -176,7 +176,7 @@ string& streamy::include(const string& tmpl, /*out*/ string& s_out)
     return s_out;
 }
 
-string& streamy::lex(const string& tmpl, /*out*/ string& s_out)
+string& streamy::lex_file(const string& tmpl, /*out*/ string& s_out)
 {
     string full_path = this->template_dir + "/" + tmpl;
     string s = read_stream(full_path);
@@ -246,6 +246,49 @@ string streamy::get_conf(string s)
     return config[s];
 }
 
+string& streamy::remove_file_comments(const string& tmpl, /*out*/ string& s_out)
+{
+    string full_path = this->template_dir + "/" + tmpl;
+    string src = read_stream(full_path);
+
+    regex exp = regex(COMMENT, regex::ECMAScript); // match
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        int end_pos = match.position();
+        // remove comment
+        s_out += src.substr(beg_pos, end_pos-beg_pos);
+        beg_pos = end_pos + match.length();
+    }
+    s_out += src.substr(beg_pos);
+
+    return s_out;
+}
+
+string& streamy::remove_comments(const string& src, /*out*/ string& s_out)
+{
+    regex exp = regex(COMMENT, regex::ECMAScript); // match
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        int end_pos = match.position();
+        // remove comment
+        s_out += src.substr(beg_pos, end_pos-beg_pos);
+        beg_pos = end_pos + match.length();
+    }
+    s_out += src.substr(beg_pos);
+
+    return s_out;
+}
+
 string streamy::variable(const string& src)
 {
     regex exp = regex(VARIABLE, regex::ECMAScript); // match
@@ -295,50 +338,6 @@ string streamy::replace_tag(string& src, const string& exp_str)
 
     return output;
 }
-
-string& streamy::remove_file_comments(const string& tmpl, /*out*/ string& s_out)
-{
-    string full_path = this->template_dir + "/" + tmpl;
-    string src = read_stream(full_path);
-
-    regex exp = regex(COMMENT, regex::ECMAScript); // match
-    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
-
-    int beg_pos = 0;
-    for (sregex_iterator iter = begin; iter != end; ++iter)
-    {
-        smatch match = *iter;
-        int end_pos = match.position();
-        // remove comment
-        s_out += src.substr(beg_pos, end_pos-beg_pos);
-        beg_pos = end_pos + match.length();
-    }
-    s_out += src.substr(beg_pos);
-
-    return s_out;
-}
-
-string& streamy::remove_comments(const string& src, /*out*/ string& s_out)
-{
-    regex exp = regex(COMMENT, regex::ECMAScript); // match
-    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
-
-    int beg_pos = 0;
-    for (sregex_iterator iter = begin; iter != end; ++iter)
-    {
-        smatch match = *iter;
-        int end_pos = match.position();
-        // remove comment
-        s_out += src.substr(beg_pos, end_pos-beg_pos);
-        beg_pos = end_pos + match.length();
-    }
-    s_out += src.substr(beg_pos);
-
-    return s_out;
-}
-
 
 // string streamy::if_sequence(const string& src)
 // {

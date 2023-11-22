@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     cout << "******* Display template stream ******" << endl;
     string tmpl = "test.tpl";
     string _out;
-    sm.lex(tmpl, _out);
+    sm.lex_file(tmpl, _out);
     cout << _out << endl;
 
     sm.assign("headers", "HEADERS");
