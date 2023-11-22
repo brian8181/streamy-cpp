@@ -54,6 +54,7 @@ private:
 public:
     string variable(const string& src);
     string& remove_file_comments(const string& tmpl, /*out*/ string& s_out);
+    string& remove_comments(const string& tmpl, /*out*/ string& s_out);
     //string if_sequence(const string& src);
     string replace_tag(string& tmpl, const string& exp_str);
      // test functons

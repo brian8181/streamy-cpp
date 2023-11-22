@@ -4,6 +4,7 @@
 #include <fstream>
 #include <filesystem>
 #include <regex>
+#include "fileio.hpp"
 #include "streamy.hpp"
 
 using namespace std;
@@ -74,10 +75,15 @@ int main(int argc, char *argv[])
     sm.include_file("test_include.tpl", include_file);
     cout << include_file << endl;    
       
-    cout << "******* Test Comments  ******" << endl;
+    cout << "******* Test File Comments  ******" << endl;
     string comments;
     comments = sm.remove_file_comments("test_comments.tpl", comments);
     cout << comments << endl;
+
+    cout << "******* Test File Comments  ******" << endl;
+    // string full_path = this->template_dir + "/" + tmpl;
+    // string src = read_stream(full_path);
+
 
     return 0;
 }
