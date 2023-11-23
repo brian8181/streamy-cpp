@@ -23,8 +23,10 @@
 #include <cstring>
 #include <unistd.h>         /* for STDIN_FILENO */
 #include <sys/select.h>     /* for pselect   */
+#include <regex>
 #include "bash_color.h"
 #include "streamy_app.hpp"
+
 #include "streamy.hpp"
 
 using namespace std;
@@ -88,9 +90,9 @@ int parse_options(int argc, char* argv[])
 	}              
 
 	vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David", "Shelly"};
-	// sm.assign("names_one", names);  
+	sm.assign("names_one", names);  
 	vector<string> names2 = {"Christina", "Roger", "Brent", "Shara", "Tim", "Tom", "Jack", "Dian", "Ian", "Jill"};
-	// sm.assign("names_two", names2);
+	sm.assign("names_two", names2);
 
 	cout << "******* Display Arrays ******" << endl;
 	std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
