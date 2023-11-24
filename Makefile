@@ -80,16 +80,13 @@ y.tab.c y.tab.h:
 	$(YACC) $(SRC)/streamy-cpp.y
 	mv ./streamy-cpp.tab.* $(BLD)/.
 
-.PHONY: install
 install:
 	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
 	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
 	chmod 755  $(PREFIX)/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
 
-.PHONY: uninstall
 uninstall:
 	rm -rf /usr/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
 
-.PHONY: clean
 clean:
 	-rm $(BLD)/*
