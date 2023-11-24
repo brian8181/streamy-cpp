@@ -1,7 +1,6 @@
 #include <iostream>
 #include <regex>
 #include <fstream>
-#include "fileio.hpp"
 #include "patterns.hpp"
 #include "streamy.hpp"
 #include "base64.hpp"
@@ -95,6 +94,14 @@ bool streamy::display(const string& tmpl)
     return true;
 }
 
+string& streamy::ifs_read_all(const string& path, /* out */string& out)
+{
+    std::ifstream ifstrm(path);
+    std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
+    out = output;
+    return out;
+}
+
 std::string streamy::read_stream(const string& path)
 {
     string src;
@@ -183,7 +190,7 @@ string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
     // string s = read_stream(full_path);
     string s;
     string out;
-    s = ifs_read_all(full_path);
+    s = ifs_read_all(full_path, s);
     regex exp = regex(ESCAPE, regex::ECMAScript); // match
     smatch match;
     stringstream strm_str; 

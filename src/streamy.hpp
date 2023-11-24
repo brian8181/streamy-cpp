@@ -35,6 +35,7 @@ public:
     std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
 
+    string& ifs_read_all(const string& path, /* out */string& out);
     string read_stream(const string& path);
     string& read_stream(const string& path, string& /* out */ out);
     

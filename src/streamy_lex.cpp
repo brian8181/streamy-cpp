@@ -83,10 +83,9 @@ int main(int argc, char *argv[])
     cout << "******* Test Remove Comments  ******" << endl;
     string full_path = "/home/brian/src/streamy-cpp/test/templates/test_comments.tpl";
     string file;
-    file = ifs_read_all(full_path);
+    file = ifs_read_all(full_path, file);
     string c;
     c = sm.remove_comments(file, c);
     cout << c << endl;
-
     return 0;
 }
