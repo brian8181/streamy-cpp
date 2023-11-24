@@ -1,6 +1,7 @@
 #include <iostream>
 #include <regex>
 #include <fstream>
+#include "fileio.hpp"
 #include "patterns.hpp"
 #include "streamy.hpp"
 #include "base64.hpp"
@@ -176,10 +177,13 @@ string& streamy::include(const string& tmpl, /*out*/ string& s_out)
     return s_out;
 }
 
-string& streamy::lex_file(const string& tmpl, /*out*/ string& s_out)
+string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
 {
     string full_path = this->template_dir + "/" + tmpl;
-    string s = read_stream(full_path);
+    // string s = read_stream(full_path);
+    string s;
+    string out;
+    s = ifs_read_all(full_path);
     regex exp = regex(ESCAPE, regex::ECMAScript); // match
     smatch match;
     stringstream strm_str; 

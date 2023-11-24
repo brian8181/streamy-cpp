@@ -26,7 +26,7 @@
 #include <regex>
 #include "bash_color.h"
 #include "streamy_app.hpp"
-
+#include "fileio.hpp"
 #include "streamy.hpp"
 
 using namespace std;
