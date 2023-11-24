@@ -94,7 +94,7 @@ bool streamy::display(const string& tmpl)
     return true;
 }
 
-string& streamy::ifs_read_all(const string& path, /* out */string& out)
+string& streamy::read_stream(const string& path, /* out */string& out)
 {
     std::ifstream ifstrm(path);
     std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
@@ -119,21 +119,21 @@ std::string streamy::read_stream(const string& path)
     return src;
 }
 
-string& streamy::read_stream(const string& path, string& /* out */ out)
-{
-    ifstream file;
-    file.open(path, ios::in); //open a file
-    if (file.is_open())
-    {   
-        string tp;
-        while(getline(file, tp))
-        { 
-            out += tp;
-        }
-        file.close(); //close the file object.
-    }
-    return out;
-}
+// string& streamy::read_stream(const string& path, string& /* out */ out)
+// {
+//     ifstream file;
+//     file.open(path, ios::in); //open a file
+//     if (file.is_open())
+//     {   
+//         string tp;
+//         while(getline(file, tp))
+//         { 
+//             out += tp;
+//         }
+//         file.close(); //close the file object.
+//     }
+//     return out;
+// }
 
 string& streamy::include_file(const string& tmpl, string& s_out)
 {
@@ -190,7 +190,7 @@ string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
     // string s = read_stream(full_path);
     string s;
     string out;
-    s = ifs_read_all(full_path, s);
+    s = read_stream(full_path, s);
     regex exp = regex(ESCAPE, regex::ECMAScript); // match
     smatch match;
     stringstream strm_str; 
