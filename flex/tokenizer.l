@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 %{
 
 %}
@@ -38,7 +37,6 @@ COMMA                       ","
 QUESTION                    "?"
 VARIABLE                    "$"[a-zA-Z]+[a-zA-Z0-9]*
 TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
-=======
 
 %{
 /* need this for the call to atof() below */
@@ -80,7 +78,6 @@ COMMA            ","
 QUESTION         "?"
 VARIABLE         "$"[a-zA-Z]+[a-zA-Z0-9]*
 TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
->>>>>>> step_one_lexer
 
 %%
 
@@ -102,11 +99,7 @@ TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
 {FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
 {BACKWARD_SLASH}            printf( "BACKWARD_SLASH: %s\n", yytext );
 {BAR}                       printf( "BAR: %s\n", yytext );
-<<<<<<< HEAD
 {HASH}                      printf( "HASH: %s\n", yytext );
-=======
-{HASH}                       printf( "HASH: %s\n", yytext );
->>>>>>> step_one_lexer
 {UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
 {SEMI_COLON}                printf( "SEMI_COLON: %s\n", yytext );
 {COLON}                     printf( "COLON: %s\n", yytext );

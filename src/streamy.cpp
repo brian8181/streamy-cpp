@@ -1,3 +1,9 @@
+// License:    GPL
+// Author:     Brian K Preston
+// File Name:  streamy.cpp
+// Build Date: Sun Oct  1 09:39:08 PM CDT 2023
+// Version:    3.6.7
+
 #include <iostream>
 #include <regex>
 #include <fstream>
@@ -216,11 +222,6 @@ string& streamy::trim(std::string &s)
     rtrim(s);
     ltrim(s);
     return s;
-}
-
-string streamy::get_conf(string s)
-{
-    return config[s];
 }
 
 string& streamy::remove_file_comments(const string& tmpl, /*out*/ string& s_out)

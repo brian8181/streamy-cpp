@@ -1,50 +1,29 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # GNU Make 4.3
- 
 # Built for x86_64-redhat-linux-gnu
- 
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
- 
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
- 
 # This is free software: you are free to change and redistribute it.
- 
 # There is NO WARRANTY, to the extent permitted by law.
- 
 
- 
-# Make data base, printed on Thu Oct 12 02:49:56 2023
- 
+# Make data base, printed on Sat Nov 25 06:09:29 2023
 
 # Variables
- 
 
- 
-# makefile (from 'Makefile', line 19)
- 
-OBJ = ./build
- 
 # environment
- 
 GDK_BACKEND = x11
- 
 # environment
- 
 LC_ALL = C
 # environment
 NO_AT_BRIDGE = 1
-# makefile (from 'Makefile', line 18)
-SRC = ./src
-# environment
-LMOD_SETTARG_FULL_SUPPORT = no
 # environment
 VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # environment
-VSCODE_CWD = /home/bkp/src
+VSCODE_CWD = /home/brian/src
+# environment
+GDM_LANG = en_US.utf8
 # default
 MAKE_COMMAND := make
-# environment
-LMOD_ROOT = /usr/share/lmod
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # environment
@@ -52,121 +31,97 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
 .VARIABLES := 
 # environment
-PWD = /home/bkp/src/streamy-cpp
+PWD = /home/brian/src/streamy-cpp
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
-HOSTNAME = alpha
+HOSTNAME = gamma
 # environment
-MAIL = /var/spool/mail/bkp
+MAIL = /var/spool/mail/brian
 # environment
-XDG_DATA_DIRS = /home/bkp/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/
+XDG_DATA_DIRS = /home/brian/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/usr/share
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # automatic
 %F = $(notdir $%)
 # environment
-VSCODE_CODE_CACHE_PATH = /home/bkp/.config/Code/CachedData/74f6148eb9ea00507ec113ec51c489d6ffb4b771
+VSCODE_CODE_CACHE_PATH = /home/brian/.config/Code/CachedData/1a5daa3a0231a0fbba4f14db7ec463cf99d7768e
+# environment
+XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
 # environment
 SSH_ASKPASS = /usr/libexec/openssh/gnome-ssh-askpass
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/lightdm/bkp/xauthority
+GUESTFISH_OUTPUT = \e[0m
+# environment
+XAUTHORITY = /run/lightdm/brian/xauthority
 # default
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # environment
-LMOD_CMD = /usr/share/lmod/lmod/libexec/lmod
+GUESTFISH_INIT = \e[1;34m
 # makefile
 MAKEFLAGS = pqrR
 # makefile
-CURDIR := /home/bkp/src/streamy-cpp
-# environment
-define BASH_FUNC_module%%
-() {  if [ -z "${LMOD_SH_DBG_ON+x}" ]; then
- case "$-" in 
- *v*x*)
- __lmod_sh_dbg='vx'
- ;;
- *v*)
- __lmod_sh_dbg='v'
- ;;
- *x*)
- __lmod_sh_dbg='x'
- ;;
- esac;
- fi;
- if [ -n "${__lmod_sh_dbg:-}" ]; then
- set +$__lmod_sh_dbg;
- echo "Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output" 1>&2;
- fi;
- eval "$($LMOD_CMD shell "$@")" && eval "$(${LMOD_SETTARG_CMD:-:} -s sh)";
- __lmod_my_status=$?;
- if [ -n "${__lmod_sh_dbg:-}" ]; then
- echo "Shell debugging restarted" 1>&2;
- set -$__lmod_sh_dbg;
- fi;
- unset __lmod_sh_dbg;
- return $__lmod_my_status
-}
-endef
+CURDIR := /home/brian/src/streamy-cpp
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
-LMOD_DIR = /usr/share/lmod/lmod/libexec
-# environment
 LESSOPEN = ||/usr/bin/lesspipe.sh %s
+# environment
+VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
 MFLAGS = -pqrR
+# environment
+SSH_AUTH_SOCK = /tmp/ssh-XXXXXXyNlY19/agent.1388
 # default
 .SHELLFLAGS := -c
 # environment
 HISTSIZE = 1000
+# environment
+XDG_CONFIG_DIRS = /etc/xdg
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
+# environment
+XDG_SESSION_DESKTOP = xfce
 # makefile (from 'Makefile', line 1)
 MAKEFILE_LIST := Makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 5440
-# makefile (from 'Makefile', line 16)
-APPNAME = streamy
+VSCODE_PID = 10515
+# environment
+XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
-# makefile (from 'Makefile', line 14)
-INCLUDES = -I/usr/local/include/cppunit/
+# environment
+SESSION_MANAGER = local/unix:@/tmp/.ICE-unix/1388,unix/unix:/tmp/.ICE-unix/1388
 # automatic
 *F = $(notdir $*)
 # environment
-MANPATH = /usr/share/lmod/lmod/share/man:
-# environment
-MODULEPATH = /etc/modulefiles:/usr/share/modulefiles:/usr/share/modulefiles/Linux:/usr/share/modulefiles/Core:/usr/share/lmod/lmod/modulefiles/Core
-# environment
 CHROME_DESKTOP = code-url-handler.desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1002/bus
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","osLocale":"en-us","availableLanguages":{},"_languagePackSupport":true}
-# environment
-define BASH_FUNC_ml%%
-() {  eval "$($LMOD_DIR/ml_cmd "$@")"
-}
-endef
 # default
 MAKE_HOST := x86_64-redhat-linux-gnu
+# environment
+IMSETTINGS_INTEGRATE_DESKTOP = yes
 # makefile
 SHELL = /bin/sh
 # default
 MAKECMDGOALS := all
 # environment
-DOTNET_BUNDLE_EXTRACT_BASE_DIR = /home/bkp/.cache/dotnet_bundle_extract
+XMODIFIERS = @im=none
+# environment
+DOTNET_BUNDLE_EXTRACT_BASE_DIR = /home/brian/.cache/dotnet_bundle_extract
 # environment
 SHLVL = 0
 # environment
@@ -174,79 +129,83 @@ MAKELEVEL := 0
 # default
 MAKE = $(MAKE_COMMAND)
 # environment
-PATH = /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/home/bkp/.dotnet/tools:/home/bkp/bin
+IMSETTINGS_MODULE = none
+# environment
+PATH = /usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/home/brian/.dotnet/tools:/home/brian/bin
 # environment
 MOZ_GMP_PATH = /usr/lib64/mozilla/plugins/gmp-gmpopenh264/system-installed
 # default
 MAKEFILES := 
-# environment
-MODULESHOME = /usr/share/lmod/lmod
 # automatic
 ^F = $(notdir $^)
-# environment
-LMOD_sys = Linux
-# environment
-INVOCATION_ID = e4803d3f05514243b54bda0905f039d1
+# makefile (from 'Makefile', line 7)
+PREFIX = build
 # automatic
 ?F = $(notdir $?)
+# environment
+GUESTFISH_PS1 = \[\e[1;32m\]><fs>\[\e[0;31m\] 
+# environment
+XDG_SEAT = seat0
+# environment
+GTK_IM_MODULE = gtk-im-context-simple
+# environment
+XDG_CURRENT_DESKTOP = XFCE
 # environment
 KDEDIRS = /usr
 # automatic
 +F = $(notdir $+)
 # environment
-ORIGINAL_XDG_CURRENT_DESKTOP = undefined
-# 'override' directive
+XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
+# environment
+DESKTOP_SESSION = xfce
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = XFCE
+# environment
 GNUMAKEFLAGS := 
 # environment
-LOGNAME = bkp
-# makefile (from 'Makefile', line 10)
-YACC = bison -d   
+LOGNAME = brian
 # environment
 GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # environment
-BASH_ENV = /usr/share/lmod/lmod/init/bash
+XDG_VTNR = 1
 # makefile
-.DEFAULT_GOAL := all
-# environment
-SYSTEMD_EXEC_PID = 5237
-# environment
-MODULEPATH_ROOT = /usr/share/modulefiles
+.DEFAULT_GOAL := 
 # environment
 HISTCONTROL = ignoreboth
 # environment
-EDITOR = /usr/local/bin/nvim
+EDITOR = /usr/bin/vi
 # environment
 DISPLAY = :0
 # environment
-USER = bkp
+USER = brian
 # default
 MAKE_VERSION := 4.3
-# makefile (from 'Makefile', line 17)
-BUILD = ./build
-# makefile (from 'Makefile', line 13)
-LDFLAGS = -static -lcppunit -L/usr/local/lib/
-# environment
-MANAGERPID = 4626
 # environment
 DEBUGINFOD_URLS = https://debuginfod.fedoraproject.org/ 
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5440
+GIO_LAUNCHED_DESKTOP_FILE_PID = 10515
+# environment
+SSH_AGENT_PID = 1602
 # environment
 _ = /usr/bin/make
 # environment
-XDG_RUNTIME_DIR = /run/user/1002
+XDG_RUNTIME_DIR = /run/user/1000
 # environment
-JOURNAL_STREAM = 8:70963
+XDG_SESSION_CLASS = user
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
-HOME = /home/bkp
+HOME = /home/brian
+# environment
+QT_IM_MODULE = xim
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK = /run/user/1002/vscode-dcd18289-1.80-main.sock
-# makefile (from 'Makefile', line 9)
-LEX = flex
+VSCODE_IPC_HOOK = /run/user/1000/vscode-b296f0cc-1.84-main.sock
+# environment
+TERM = dumb
+# environment
+XDG_SESSION_ID = 2
 # default
 .RECIPEPREFIX := 
 # automatic
@@ -254,21 +213,21 @@ LEX = flex
 # default
 SUFFIXES := 
 # environment
-LMOD_PKG = /usr/share/lmod/lmod
-# makefile (from 'Makefile', line 6)
-CXXFLAGS = -std=c++11 -DDEBUG -ggdb
+GUESTFISH_RESTORE = \e[0m
+# environment
+XDG_GREETER_DATA_DIR = /var/lib/lightdm-data/brian
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink guile load
-# makefile (from 'Makefile', line 5)
+# makefile (from 'Makefile', line 8)
 CXX = g++
-# makefile (from 'Makefile', line 7)
-CC = gcc -g
+# environment
+XDG_MENU_PREFIX = xfce-
 # environment
 DOTNET_ROOT = /usr/lib64/dotnet
 # environment
-LMOD_VERSION = 8.7.31
+GDMSESSION = xfce
 # variable set hash-table stats:
-# Load=106/1024=10%, Rehash=0, Collisions=8/150=5%
+# Load=108/1024=11%, Rehash=0, Collisions=7/121=6%
 
 # Pattern-specific Variable Values
 
@@ -276,7 +235,7 @@ LMOD_VERSION = 8.7.31
 
 # Directories
 
-# . (device 37, inode 1905662): 18 files, no impossibilities.
+# . (device 42, inode 826006): 18 files, no impossibilities.
 
 # 18 files, no impossibilities in 1 directories.
 
@@ -286,103 +245,11 @@ LMOD_VERSION = 8.7.31
 
 # Files
 
-stream_app: main.o stream_app.o
-#  Implicit rule search has not been done.
-#  File does not exist.
-#  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/7=0%
-#  recipe to execute (from 'Makefile', line 48):
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/stream_app.o -o $(BUILD)/stream_app
-
-tokenizer: tokenizer.yy.c
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 66):
-	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -o $(BUILD)/tokenizer
-
-stream_app.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 51):
-	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
-
-bison_incl_skel:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 63):
-	$(YACC) $(SRC)/bison_incl_skel.y
-
-streamy-cpp.o: streamy-cpp.yy.c
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 57):
-	$(CXX) $(CXXFLAGS) -c $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp.yy.o
-
-streamy.so: streamy.o
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 42):
-	$(CXX) $(CXXFLAGS) --shared $(OBJ)/$(APPNAME).o -o $(BUILD)/$(APPNAME).so
-
-y.tab.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
- 
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 72):
-	$(YACC) $(SRC)/streamy-cpp.y
-	mv ./streamy-cpp.tab.* $(BUILD)/.
-
-streamy: app.o main.o streamy.o streamy.yy.c
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 27):
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -o $(BUILD)/streamy
-
 # Not a target:
 Makefile:
-#  Implicit rule search has been done.
-#  Last modified 2023-10-05 22:53:30.856051483
-#  File has been updated.
-#  Successfully updated.
-
-clean:
-#  Phony target (prerequisite of .PHONY).
-#  Implicit rule search has not been done.
-#  File does not exist.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 77):
-	-rm $(BUILD)/*
-
-streamy-cpp.yy.c:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 60):
-	$(LEX) -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
-
-y.tab.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 72):
-	$(YACC) $(SRC)/streamy-cpp.y
-	mv ./streamy-cpp.tab.* $(BUILD)/.
-
-streamy.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 30):
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o
 
 # Not a target:
 .DEFAULT:
@@ -390,112 +257,29 @@ streamy.o:
 #  Modification time never checked.
 #  File has not been updated.
 
-all:: stream_app
-#  Command line target.
-#  Implicit rule search has been done.
-#  File does not exist.
-#  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/7=0%
-
-all:: streamy-cpp
-#  Implicit rule search has not been done.
-#  File does not exist.
-#  File has not been updated.
-
-all:: tokenizer
-#  Implicit rule search has not been done.
-#  File does not exist.
-#  File has not been updated.
-
-streamy.a: streamy.o
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 45):
-	ar rvs $(BUILD)/$(APPNAME).a $(OBJ)/$(APPNAME).o
-
-main.o:
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: ''
-#  File does not exist.
-#  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := main.o
-# automatic
-# * := 
-# automatic
-# < := 
-# automatic
-# + := 
-# automatic
-# % := 
-# automatic
-# ^ := 
-# automatic
-# ? := 
-# automatic
-# | := 
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/15=7%
-#  recipe to execute (from 'Makefile', line 36):
-	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
-
-tokenizer.yy.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 69):
-	$(LEX) -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
-
-streamy-cpp: streamy-cpp.o
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 54):
-	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -o $(BUILD)/streamy-cpp
-
 # Not a target:
-.SUFFIXES:
+all:
+#  Command line target.
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-
-.PHONY: clean
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-streamy.yy.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 39):
-	$(LEX) -o $(BUILD)/$(APPNAME).yy.c $(SRC)/$(APPNAME).l
-
-app.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 33):
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
 
 # files hash-table stats:
-# Load=23/1024=2%, Rehash=0, Collisions=0/67=0%
+# Load=4/1024=0%, Rehash=0, Collisions=0/5=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 42 / storage = 371 B / avg = 8 B
-# current buf: size = 8162 B / used = 371 B / count = 42 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 23 / storage = 169 B / avg = 7 B
+# current buf: size = 8162 B / used = 169 B / count = 23 / avg = 7 B
 
-# strcache performance: lookups = 87 / hit rate = 51%
+# strcache performance: lookups = 27 / hit rate = 14%
 # hash-table stats:
-# Load=42/8192=1%, Rehash=0, Collisions=0/87=0%
-# Finished Make data base on Thu Oct 12 02:49:56 2023
+# Load=23/8192=0%, Rehash=0, Collisions=0/27=0%
+# Finished Make data base on Sat Nov 25 06:09:29 2023
 
  
+Makefile:9: *** missing separator.  Stop.
+

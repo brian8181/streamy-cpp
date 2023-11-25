@@ -1,4 +1,8 @@
-// Mon Oct 30 11:55:47 AM CDT 2023
+// License:    GPL
+// Author:     Brian K Preston
+// File Name:  fileio.cpp
+// Build Date: Sat Nov 25 06:03:48 AM CST 2023
+// Version:    3.6.7
 
 #include <iostream>
 #include <fstream>

@@ -1,3 +1,9 @@
+// License:    GPL
+// Author:     Brian K Preston
+// File Name:  streamy.hpp
+// Build Date: Sun Oct  1 09:39:08 PM CDT 2023
+// Version:    3.6.7
+
 #ifndef _streamy_HPP
 #define _streamy_HPP
 
@@ -48,15 +54,11 @@ public:
     string config_dir;
     string cache_dir;
 
-// ** TESTING **//
 public:
-    string get_conf(string s);
     string& remove_file_comments(const string& tmpl, /*out*/ string& s_out);
     string& remove_comments(const string& tmpl, /*out*/ string& s_out);
     string replace_tag(string& tmpl, const string& exp_str);
     string variable(const string& src);
-     //string if_sequence(const string& src);
-    // todo INACTIVE
     string left_delimiter = "{";
     string right_delimiter = "}";
 };

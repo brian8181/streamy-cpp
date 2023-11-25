@@ -1,4 +1,3 @@
-
 # streamy-cpp make
 # Fri Sep 29 11:01:50 AM CDT 2023
 # Version 0.0.1
@@ -16,13 +15,13 @@ BUILD=./build
 all: streamy-cpp tokenizer
 
 streamy-cpp: streamy-cpp.yy.c
-	$(CXX) $(CXXFLAGS) $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp
+	$(CXX) $(CXXFLAGS) $(SRC)/stream_app.o $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp
 
 streamy-cpp.yy.c:
-	$(LEX) -o ./build/streamy-cpp.yy.c streamy-cpp.l
+	$(LEX) -o $(BUILD)/streamy-cpp.yy.c streamy-cpp.l
 
 tokenizer: tokenizer.yy.c
-	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -I/usr/include -o $(BUILD)/tokenizer
+	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c $(BUILD)/streamy-cpp.yy.c -I/usr/include -o $(BUILD)/tokenizer
 
 # eof: eof_rules.l
 # 	$(LEX)  eof_rules.l
@@ -31,9 +30,6 @@ tokenizer: tokenizer.yy.c
 test: 
 	$(YACC) -dv -o $(BUILD)/test.tab.c $(SRC)/test.y
 	$(LEX) -i -I -o $(BUILD)/stream_t1.yy.c $(SRC)/streamy.l
-
-
-b2: 
 	$(YACC) b2.y
 
 clean:
