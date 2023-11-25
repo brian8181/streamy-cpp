@@ -1,0 +1,13 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/bkp/src/streamy-cpp'
+g++ -std=c++11 -DDEBUG -ggdb -c ./src/main.cpp -o ./build/main.o
+g++ -std=c++11 -DDEBUG -ggdb -c ./src/app.cpp -o ./build/stream_app.o
+g++ -std=c++11 -DDEBUG -ggdb ./build/main.o ./build/stream_app.o -o ./build/stream_app
+flex -o ./build/streamy-cpp.yy.c ./src/streamy-cpp.l
+g++ -std=c++11 -DDEBUG -ggdb -c ./build/streamy-cpp.yy.c -o ./build/streamy-cpp.yy.o
+ 
+g++ -std=c++11 -DDEBUG -ggdb ./build/streamy-cpp.yy.o -o ./build/streamy-cpp
+flex -o ./build/tokenizer.yy.c ./src/tokenizer.l
+g++ -std=c++11 -DDEBUG -ggdb ./build/tokenizer.yy.c -o ./build/tokenizer
+make: Leaving directory '/home/bkp/src/streamy-cpp'
+ 

@@ -6,10 +6,10 @@
 CC       = gcc -g
 #LEX      = flex -i -I 
 LEX      = flex
-YACC     = bison -d -y
+YACC     = bison
 
 SRC = .
-BUILD=./build
+BUILD= ./build
 
 all: streamy streamy-cpp tokenizer
 
@@ -31,13 +31,17 @@ tokenizer: tokenizer.yy.c
 tokenizer.yy.c:
 	flex -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
-eof:	eof_rules.l
+eof: eof_rules.l
 	$(LEX)  eof_rules.l
 	$(CC)   lex.yy.c -o eof -ll
+
+test: 
+	$(YACC) -dv -o $(BUILD)/test.tab.c $(SRC)/test.y
+	$(LEX) -i -I -o $(BUILD)/stream_t1.yy.c $(SRC)/streamy.l
+
 
 b2: 
 	$(YACC) b2.y
 
-.PHONY: clean
 clean:
-	-rm $(BUILD)/*
+	-rm -rf $(BUILD)/*

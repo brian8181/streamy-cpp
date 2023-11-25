@@ -23,8 +23,12 @@ all:: stream_app
 all:: streamy-cpp
 all:: tokenizer
 
+
+test:
+	$(CXX) $(CXXFLAGS) -c $(SRC)/%.cpp
+
 $(APPNAME): app.o main.o streamy.o streamy.yy.c 
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -ll -o $(BUILD)/streamy
+	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -o $(BUILD)/streamy
 
 $(APPNAME).o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/$(APPNAME).cpp -o $(OBJ)/$(APPNAME).o
@@ -33,7 +37,7 @@ app.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
 
 main.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/main.o
+	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/$@
 
 $(APPNAME).yy.c:
 	$(LEX) -o $(BUILD)/$(APPNAME).yy.c $(SRC)/$(APPNAME).l
@@ -45,13 +49,13 @@ $(APPNAME).a: $(APPNAME).o
 	ar rvs $(BUILD)/$(APPNAME).a $(OBJ)/$(APPNAME).o
 
 stream_app: main.o stream_app.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/stream_app.o -o $(BUILD)/stream_app
+	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/$@.o -o $(BUILD)/$@
 
 stream_app.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
 
 streamy-cpp: streamy-cpp.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -ll -o $(BUILD)/streamy-cpp
+	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -o $(BUILD)/streamy-cpp
 
 streamy-cpp.o: streamy-cpp.yy.c
 	$(CXX) $(CXXFLAGS) -c $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp.yy.o
@@ -63,7 +67,7 @@ bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
 
 tokenizer: tokenizer.yy.c
-	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -ll -o $(BUILD)/tokenizer
+	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -o $(BUILD)/tokenizer
 
 tokenizer.yy.c:
 	$(LEX) -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
