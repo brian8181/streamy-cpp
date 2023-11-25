@@ -76,6 +76,10 @@ test1:
 	g++ -std=c++14 -fPIC -Wall -I/usr/local/include -c $(SRC)/020-TestCase-2.cpp -o $(BLD)/020-TestCase-2.o
 	g++ -std=c++14 -Wall -I/usr/local/include -o $(BLD)/020-TestCase $(BLD)/020-TestCase-1.o $(SRC)/020-TestCase-2.cpp && $(BLD)/020-TestCase --success
 
+*.o: fileio.o libstreamy
+	$(CXX) $(CXXFLAGS) $% -o $@
+	echo $^
+
 y.tab.c y.tab.h:
 	$(YACC) $(SRC)/streamy-cpp.y
 	mv ./streamy-cpp.tab.* $(BLD)/.

@@ -19,7 +19,7 @@ class streamy
 public:
     streamy(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir);
 
-    bool load_config(const string& path);
+    bool load_config(const string& path, /* out */ string& s_out);
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
     bool assign(const string& name, const map<string, string>& map);
@@ -36,8 +36,7 @@ public:
     std::map<string, std::map<string, string>> arrays;
 
     string& read_stream(const string& path, /* out */string& out);
-    string read_stream(const string& path);
-    
+        
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);

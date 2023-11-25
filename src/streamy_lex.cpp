@@ -4,7 +4,6 @@
 #include <fstream>
 #include <filesystem>
 #include <regex>
-#include "fileio.hpp"
 #include "streamy.hpp"
 
 using namespace std;
@@ -16,7 +15,8 @@ int main(int argc, char *argv[])
     string config_path = project_folder + "/test/config/config";
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
-    sm.load_config(config_path);
+    string s_out;
+    sm.load_config(config_path, s_out);
 
     cout << "******* Display Configuration ******" << endl;
     map<string, string>::iterator end = sm.config.end();
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     cout << "******* Test Remove Comments  ******" << endl;
     string full_path = "/home/brian/src/streamy-cpp/test/templates/test_comments.tpl";
     string file;
-    file = ifs_read_all(full_path, file);
+    file = sm.read_stream(full_path, file);
     string c;
     c = sm.remove_comments(file, c);
     cout << c << endl;

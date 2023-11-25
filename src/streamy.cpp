@@ -21,12 +21,12 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
     trim(this->cache_dir, '/');
 }
 
-bool streamy::load_config(const string& path)
+bool streamy::load_config(const string& path, /* out */ string& s_out)
 {
-    string src = read_stream(path);
+    s_out = read_stream(path, s_out);
     regex rgx = regex(LOAD_CONFIG_PAIR); 
 
-    auto begin = sregex_iterator(src.begin(), src.end(), rgx, std::regex_constants::match_default);
+    auto begin = sregex_iterator(s_out.begin(), s_out.end(), rgx, std::regex_constants::match_default);
     auto end = sregex_iterator(); 
 
     for (sregex_iterator iter = begin; iter != end; ++iter)
@@ -102,22 +102,22 @@ string& streamy::read_stream(const string& path, /* out */string& out)
     return out;
 }
 
-std::string streamy::read_stream(const string& path)
-{
-    string src;
-    ifstream file;
-    file.open(path, ios::in); //open a file
-    if (file.is_open())
-    {   
-        string tp;
-        while(getline(file, tp))
-        { 
-            src += tp;
-        }
-        file.close(); //close the file object.
-    }
-    return src;
-}
+// std::string streamy::read_stream(const string& path)
+// {
+//     string src;
+//     ifstream file;
+//     file.open(path, ios::in); //open a file
+//     if (file.is_open())
+//     {   
+//         string tp;
+//         while(getline(file, tp))
+//         { 
+//             src += tp;
+//         }
+//         file.close(); //close the file object.
+//     }
+//     return src;
+// }
 
 // string& streamy::read_stream(const string& path, string& /* out */ out)
 // {
@@ -132,13 +132,12 @@ std::string streamy::read_stream(const string& path)
 //         }
 //         file.close(); //close the file object.
 //     }
-//     return out;
-// }
+//     return out;`
 
-string& streamy::include_file(const string& tmpl, string& s_out)
+string& streamy::include_file(const string& tmpl, /* out */ string& s_out)
 {
     string path = template_dir + "/" + tmpl;
-    string src = read_stream(path);
+    string src = read_stream(path, s_out);
     regex exp = regex(INCLUDE, regex::ECMAScript);
 
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
@@ -163,13 +162,12 @@ string& streamy::include_file(const string& tmpl, string& s_out)
 
 string& streamy::include(const string& tmpl, /*out*/ string& s_out)
 {
-    string full_path = this->template_dir + "/" + tmpl;
-    string s = read_stream(full_path);
     regex exp = regex(INCLUDE, regex::ECMAScript); // match
     smatch match;
     stringstream strm_str; 
+    string s;
 
-    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
+    while(std::regex_search(tmpl, match, exp, std::regex_constants::match_default))
     {
         std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
@@ -260,7 +258,7 @@ string streamy::get_conf(string s)
 string& streamy::remove_file_comments(const string& tmpl, /*out*/ string& s_out)
 {
     string full_path = this->template_dir + "/" + tmpl;
-    string src = read_stream(full_path);
+    string src = read_stream(full_path, s_out);
 
     regex exp = regex(COMMENT, regex::ECMAScript); // match
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
