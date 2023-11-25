@@ -102,38 +102,6 @@ string& streamy::read_stream(const string& path, /* out */string& out)
     return out;
 }
 
-// std::string streamy::read_stream(const string& path)
-// {
-//     string src;
-//     ifstream file;
-//     file.open(path, ios::in); //open a file
-//     if (file.is_open())
-//     {   
-//         string tp;
-//         while(getline(file, tp))
-//         { 
-//             src += tp;
-//         }
-//         file.close(); //close the file object.
-//     }
-//     return src;
-// }
-
-// string& streamy::read_stream(const string& path, string& /* out */ out)
-// {
-//     ifstream file;
-//     file.open(path, ios::in); //open a file
-//     if (file.is_open())
-//     {   
-//         string tp;
-//         while(getline(file, tp))
-//         { 
-//             out += tp;
-//         }
-//         file.close(); //close the file object.
-//     }
-//     return out;`
-
 string& streamy::include_file(const string& tmpl, /* out */ string& s_out)
 {
     string path = template_dir + "/" + tmpl;
@@ -347,31 +315,3 @@ string streamy::replace_tag(string& src, const string& exp_str)
 
     return output;
 }
-
-// string streamy::if_sequence(const string& src)
-// {
-//     string IF_SEQUENCE; // TODO!
-//     regex exp = regex(IF_SEQUENCE, regex::ECMAScript); // match
-//     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-//     auto end = sregex_iterator(); 
-
-//     string output;
-//     int beg_pos = 0;
-//     for (sregex_iterator iter = begin; iter != end; ++iter)
-//     {
-//         smatch match = *iter;
-//         int end_pos = match.position();
-//         std::ssub_match sub = match[1];
-//         std::string s(sub.str());
-//         string& tag = trim(s);
-//         //HTML
-//         output += "@IF SEQUENCE@\n";
-//         output += "@HTML@ " + tag + " @HTML@\n";
-//         output += "@/IF_SEQUENCE@\n";
-//         output += src.substr(beg_pos, end_pos-beg_pos);
-//         beg_pos = end_pos + match.length();
-//     }
-//     output += src.substr(beg_pos);
-
-//     return output;
-// }
