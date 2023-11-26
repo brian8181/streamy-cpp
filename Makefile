@@ -1,8 +1,8 @@
-# CHANGE DATE: 
-# Tue Oct  3 07:03:38 AM CDT 2023
-# Tue Oct 24 08:40:27 AM CDT 2023
-# Thu Nov 16 06:31:21 PM CST 2023
-# Mon Nov 20 09:38:52 AM CST 2023
+# // License:    GPL
+# // Author:     Brian K Preston
+# // File Name:  Makefile
+# // Build Date: Sun Nov 26 12:55:26 PM CST 2023
+# // Version:    3.6.7
 
 PREFIX = build
 CXX = g++
