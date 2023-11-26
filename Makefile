@@ -6,33 +6,22 @@
 
 PREFIX = build
 CXX = g++
-<<<<<<< HEAD
 CXXFLAGS = -g -Wall -DDEBUG -std=c++17
-=======
-CXXFLAGS = -std=c++11 -DDEBUG -ggdb
 CC       = gcc -g
 #LEX      = flex -i -I 
->>>>>>> step_one_lexer
 LEX      = flex
 YACC     = bison -d   
 
-APPNAME = streamy
 SRC = src
 BLD = build
 OBJ = build
 
 all: libstreamy.so libstreamy.a streamy_lex streamy_app app bash_color_test
 
-<<<<<<< HEAD
 yacc_lex: streamy_lexer tokenizer
-=======
 
 test:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/%.cpp
-
-$(APPNAME): app.o main.o streamy.o streamy.yy.c 
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/streamy.o -o $(BUILD)/streamy
->>>>>>> step_one_lexer
 
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
@@ -69,7 +58,6 @@ bash_color_test:
 	$(CXX) $(CXXFLAGS) -std=c++17 $(SRC)/bash_color_test.cpp -o $(BLD)/bash_color_test
 
 main.o:
-<<<<<<< HEAD
 	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/main.cpp -o $(OBJ)/main.o
 
 app.o:
@@ -92,29 +80,13 @@ test1:
 	g++ -std=c++14 -fPIC -Wall -I/usr/local/include -c $(SRC)/020-TestCase-2.cpp -o $(BLD)/020-TestCase-2.o
 	g++ -std=c++14 -Wall -I/usr/local/include -o $(BLD)/020-TestCase $(BLD)/020-TestCase-1.o $(SRC)/020-TestCase-2.cpp && $(BLD)/020-TestCase --success
 
-*.o: fileio.o libstreamy
-	$(CXX) $(CXXFLAGS) $% -o $@
-	echo $^
-=======
-	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/$@
-
-$(APPNAME).yy.c:
-	$(LEX) -o $(BUILD)/$(APPNAME).yy.c $(SRC)/$(APPNAME).l
-
-$(APPNAME).so: $(APPNAME).o
-	$(CXX) $(CXXFLAGS) --shared $(OBJ)/$(APPNAME).o -o $(BUILD)/$(APPNAME).so
-
-$(APPNAME).a: $(APPNAME).o
-	ar rvs $(BUILD)/$(APPNAME).a $(OBJ)/$(APPNAME).o
-
-stream_app: main.o stream_app.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/$@.o -o $(BUILD)/$@
+# *.o: fileio.o libstreamy
+# 	$(CXX) $(CXXFLAGS) $% -o $@
+# 	echo $^
+# 	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/$@
 
 stream_app.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
-
-streamy-cpp: streamy-cpp.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/streamy-cpp.yy.o -o $(BUILD)/streamy-cpp
 
 streamy-cpp.o: streamy-cpp.yy.c
 	$(CXX) $(CXXFLAGS) -c $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp.yy.o
@@ -125,16 +97,15 @@ streamy-cpp.yy.c:
 bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
 
-tokenizer: tokenizer.yy.c
-	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -o $(BUILD)/tokenizer
+# tokenizer: tokenizer.yy.c
+# 	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c -o $(BUILD)/tokenizer
 
-tokenizer.yy.c:
-	$(LEX) -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
->>>>>>> step_one_lexer
+# tokenizer.yy.c:
+# 	$(LEX) -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
-y.tab.c y.tab.h:
-	$(YACC) $(SRC)/streamy-cpp.y
-	mv ./streamy-cpp.tab.* $(BLD)/.
+# y.tab.c y.tab.h:
+# 	$(YACC) $(SRC)/streamy-cpp.y
+# 	mv ./streamy-cpp.tab.* $(BLD)/.
 
 install:
 	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a

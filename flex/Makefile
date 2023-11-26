@@ -12,16 +12,20 @@ YACC = bison
 SRC = .
 BUILD=./build
 
-all: streamy-cpp tokenizer
+all: streamy-cpp.yy.c
 
-streamy-cpp: streamy-cpp.yy.c
-	$(CXX) $(CXXFLAGS) $(SRC)/stream_app.o $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp
+streamy-cpp: streamy-cpp.yy.c tokenizer.yy.c
+	$(CXX) $(CXXFLAGS) $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp
 
 streamy-cpp.yy.c:
-	$(LEX) -o $(BUILD)/streamy-cpp.yy.c streamy-cpp.l
+	$(LEX) -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
 
 tokenizer: tokenizer.yy.c
 	$(CXX) $(CXXFLAGS) $(BUILD)/tokenizer.yy.c $(BUILD)/streamy-cpp.yy.c -I/usr/include -o $(BUILD)/tokenizer
+
+tokenizer.yy.c:
+	$(LEX) -o $(BUILD)/tokenizer.yy.c $(SRC)/tokenizer.l
+
 
 # eof: eof_rules.l
 # 	$(LEX)  eof_rules.l

@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Nov 25 06:09:29 2023
+# Make data base, printed on Sun Nov 26 03:41:50 2023
 
 # Variables
 
@@ -278,7 +278,7 @@ all:
 # strcache performance: lookups = 27 / hit rate = 14%
 # hash-table stats:
 # Load=23/8192=0%, Rehash=0, Collisions=0/27=0%
-# Finished Make data base on Sat Nov 25 06:09:29 2023
+# Finished Make data base on Sun Nov 26 03:41:50 2023
 
  
 Makefile:9: *** missing separator.  Stop.

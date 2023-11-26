@@ -28,7 +28,6 @@ public:
     bool load_config(const string& path, /* out */ string& s_out);
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
-    bool assign(const string& name, const map<string, string>& map);
     bool display(const string& tmpl);
     string& lex_file(string& tmpl, /*out*/ string& s_out);
     string& include_file(const string& tmpl, string& s_out);

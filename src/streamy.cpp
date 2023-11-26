@@ -60,11 +60,6 @@ bool streamy::assign(const string& name, const vector<string>& vec)
     return true;
 }
 
-bool streamy::assign(const string& name, const map<string, string>& map)
-{
-    return true;
-}
-
 bool streamy::display(const string& tmpl)
 {
     string src;
