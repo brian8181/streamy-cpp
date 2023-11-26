@@ -222,11 +222,12 @@ string& streamy::trim(std::string &s)
 string& streamy::remove_file_comments(const string& tmpl, /*out*/ string& s_out)
 {
     string full_path = this->template_dir + "/" + tmpl;
-    string src = read_stream(full_path, s_out);
+    string src;
+    src = read_stream(full_path, src);
 
     regex exp = regex(COMMENT, regex::ECMAScript); // match
     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
+    auto end = sregex_iterator();
 
     int beg_pos = 0;
     for (sregex_iterator iter = begin; iter != end; ++iter)

@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Nov 26 03:50:12 2023
+# Make data base, printed on Sun Nov 26 10:56:47 2023
 
 # Variables
 
@@ -17,6 +17,7 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
+ 
 NO_AT_BRIDGE = 1
 # makefile (from 'Makefile', line 14)
 SRC = src
@@ -279,7 +280,6 @@ app: main.o app.o streamy.o
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 54):
 	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/app
- 
 
 bison_incl_skel:
 #  Implicit rule search has not been done.
@@ -307,7 +307,7 @@ streamy-cpp.o: streamy-cpp.yy.c
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2023-11-26 03:49:26.304162684
+#  Last modified 2023-11-26 10:55:22.640907561
 #  File has been updated.
 #  Successfully updated.
 
@@ -348,8 +348,8 @@ streamy_app: fileio.o streamy.o libstreamy.a libstreamy.so
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 37):
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_app.cpp -o $(OBJ)/streamy_app.o
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_app.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/streamy_app
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_app.cpp -o $(OBJ)/streamy_app.o
+	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/streamy_app
 
 streamy-cpp.yy.c:
 #  Implicit rule search has not been done.
@@ -388,6 +388,7 @@ streamy.o:
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
+ 
 #  Modification time never checked.
 #  File has not been updated.
 
@@ -426,7 +427,7 @@ main.o:
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 60):
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/main.cpp -o $(OBJ)/main.o
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/main.cpp -o $(OBJ)/main.o
 
 tokenizer.yy.c:
 #  Implicit rule search has not been done.
@@ -440,7 +441,7 @@ bash_color_test:
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 57):
-	$(CXX) $(CXXFLAGS) -std=c++17 $(SRC)/bash_color_test.cpp -o $(BLD)/bash_color_test
+	$(CXX) $(CXXFLAGS) $(SRC)/bash_color_test.cpp -o $(BLD)/bash_color_test
 
 install:
 #  Implicit rule search has not been done.
@@ -469,16 +470,17 @@ streamy_lex: fileio.o libstreamy.a libstreamy.so
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 43):
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_lex.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/streamy_lex
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_lex.o $(BLD)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/streamy_lex_a
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
+	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/streamy_lex
+	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(BLD)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/streamy_lex_a
+	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o -lstreamy -L$(PREFIX)/lib $(OBJ)/fileio.o -o $(BLD)/streamy_lex_so
 
 app.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 63):
-	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
 
 libstreamy.a: streamy.o
 #  Implicit rule search has not been done.
@@ -502,6 +504,6 @@ libstreamy.a: streamy.o
 # strcache performance: lookups = 100 / hit rate = 54%
 # hash-table stats:
 # Load=46/8192=1%, Rehash=0, Collisions=0/100=0%
-# Finished Make data base on Sun Nov 26 03:50:12 2023
+# Finished Make data base on Sun Nov 26 10:56:47 2023
 
  

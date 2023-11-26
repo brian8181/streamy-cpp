@@ -6,14 +6,15 @@ chmod 755 build/libstreamy.so
 ar rvs build/libstreamy.a build/streamy.o
 chmod 755 build/libstreamy.a
 g++ -g -Wall -DDEBUG -std=c++17 -c src/fileio.cpp -o build/fileio.o	
-g++ -g -Wall -DDEBUG -std=c++17 -std=c++17 -fPIC -c src/streamy_lex.cpp -o build/streamy_lex.o
-g++ -g -Wall -DDEBUG -std=c++17 -std=c++17 -fPIC build/streamy_lex.o build/streamy.o build/fileio.o -o build/streamy_lex
-g++ -g -Wall -DDEBUG -std=c++17 -std=c++17 -fPIC build/streamy_lex.o build/libstreamy.a build/fileio.o -o build/streamy_lex_a
-g++ -g -Wall -DDEBUG -std=c++17 -std=c++17 -fPIC -c src/streamy_app.cpp -o build/streamy_app.o
-g++ -g -Wall -DDEBUG -std=c++17 -std=c++17 -fPIC build/streamy_app.o build/streamy.o build/fileio.o -o build/streamy_app
-g++ -g -Wall -DDEBUG -std=c++17 -std=c++17 -fPIC -c src/main.cpp -o build/main.o
-g++ -g -Wall -DDEBUG -std=c++17 -std=c++17 -fPIC -c src/app.cpp -o build/app.o
+g++ -g -Wall -DDEBUG -std=c++17 -fPIC -c src/streamy_lex.cpp -o build/streamy_lex.o
+g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_lex.o build/streamy.o build/fileio.o -o build/streamy_lex
+g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_lex.o build/libstreamy.a build/fileio.o -o build/streamy_lex_a
+#g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_lex.o -lstreamy -Lbuild/lib build/fileio.o -o build/streamy_lex_so
+g++ -g -Wall -DDEBUG -std=c++17 -fPIC -c src/streamy_app.cpp -o build/streamy_app.o
+g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_app.o build/streamy.o build/fileio.o -o build/streamy_app
+g++ -g -Wall -DDEBUG -std=c++17 -fPIC -c src/main.cpp -o build/main.o
+g++ -g -Wall -DDEBUG -std=c++17 -fPIC -c src/app.cpp -o build/app.o
 g++ -g -Wall -DDEBUG -std=c++17 build/app.o build/main.o build/streamy.o build/fileio.o -o build/app
-g++ -g -Wall -DDEBUG -std=c++17 -std=c++17 src/bash_color_test.cpp -o build/bash_color_test
+g++ -g -Wall -DDEBUG -std=c++17 src/bash_color_test.cpp -o build/bash_color_test
 make: Leaving directory '/home/brian/src/streamy-cpp'
  
