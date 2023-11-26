@@ -8,14 +8,13 @@ PREFIX = build
 CXX = g++
 CXXFLAGS = -g -Wall -DDEBUG -std=c++17
 CC       = gcc -g
-#LEX      = flex -i -I 
 LEX      = flex
 YACC     = bison -d   
 SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a streamy_lex streamy_app app bash_color_test
+all: libstreamy.so libstreamy.a streamy_lex streamy_app bash_color_test
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -50,8 +49,8 @@ streamy_lexer:
 	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy.yy.c -o $(BLD)/streamy_lexer.o
 	$(CXX) $(CXXFLAGS) $(OBJ)/streamy_lexer.o -ll -o $(BLD)/streamy_lexer
 
-app: main.o app.o streamy.o
-	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/app
+# app: main.o app.o streamy.o
+# 	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/app
 
 bash_color_test:
 	$(CXX) $(CXXFLAGS) $(SRC)/bash_color_test.cpp -o $(BLD)/bash_color_test
@@ -59,8 +58,8 @@ bash_color_test:
 main.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/main.cpp -o $(OBJ)/main.o
 
-app.o:
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
+# app.o:
+# 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
 
 fileio.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o	
