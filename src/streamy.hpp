@@ -32,6 +32,7 @@ public:
     string& lex_file(string& tmpl, /*out*/ string& s_out);
     string& include_file(const string& tmpl, string& s_out);
     string& include(const string& tmpl, /*out*/ string& s_out);
+    string& read_stream(const string& path, /* out */string& out);
 
      // maps
     std::map<string, string> streamy_vars;
@@ -39,9 +40,7 @@ public:
     std::map<string, string> vars;
     std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
-
-    string& read_stream(const string& path, /* out */string& out);
-        
+     
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);

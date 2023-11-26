@@ -6,16 +6,20 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Nov 26 03:41:50 2023
+# Make data base, printed on Sun Nov 26 03:50:12 2023
 
 # Variables
 
+# makefile (from 'Makefile', line 16)
+OBJ = build
 # environment
 GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
 NO_AT_BRIDGE = 1
+# makefile (from 'Makefile', line 14)
+SRC = src
 # environment
 VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # environment
@@ -98,6 +102,8 @@ VSCODE_PID = 10515
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
+# makefile (from 'Makefile', line 15)
+BLD = build
 # environment
 SESSION_MANAGER = local/unix:@/tmp/.ICE-unix/1388,unix/unix:/tmp/.ICE-unix/1388
 # automatic
@@ -160,16 +166,18 @@ XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
 DESKTOP_SESSION = xfce
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = XFCE
-# environment
+# 'override' directive
 GNUMAKEFLAGS := 
 # environment
 LOGNAME = brian
+# makefile (from 'Makefile', line 13)
+YACC = bison -d   
 # environment
 GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # environment
 XDG_VTNR = 1
 # makefile
-.DEFAULT_GOAL := 
+.DEFAULT_GOAL := all
 # environment
 HISTCONTROL = ignoreboth
 # environment
@@ -204,6 +212,8 @@ ELECTRON_RUN_AS_NODE = 1
 VSCODE_IPC_HOOK = /run/user/1000/vscode-b296f0cc-1.84-main.sock
 # environment
 TERM = dumb
+# makefile (from 'Makefile', line 12)
+LEX = flex
 # environment
 XDG_SESSION_ID = 2
 # default
@@ -214,12 +224,16 @@ XDG_SESSION_ID = 2
 SUFFIXES := 
 # environment
 GUESTFISH_RESTORE = \e[0m
+# makefile (from 'Makefile', line 9)
+CXXFLAGS = -g -Wall -DDEBUG -std=c++17
 # environment
 XDG_GREETER_DATA_DIR = /var/lib/lightdm-data/brian
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink guile load
 # makefile (from 'Makefile', line 8)
 CXX = g++
+# makefile (from 'Makefile', line 10)
+CC = gcc -g
 # environment
 XDG_MENU_PREFIX = xfce-
 # environment
@@ -227,7 +241,7 @@ DOTNET_ROOT = /usr/lib64/dotnet
 # environment
 GDMSESSION = xfce
 # variable set hash-table stats:
-# Load=108/1024=11%, Rehash=0, Collisions=7/121=6%
+# Load=115/1024=11%, Rehash=0, Collisions=14/152=9%
 
 # Pattern-specific Variable Values
 
@@ -245,11 +259,131 @@ GDMSESSION = xfce
 
 # Files
 
-# Not a target:
-Makefile:
+tokenizer: tokenizer.yy.c
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+#  recipe to execute (from 'Makefile', line 69):
+	$(CXX) $(CXXFLAGS) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
+
+stream_app.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 88):
+	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
+
+app: main.o app.o streamy.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 54):
+	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/app
+ 
+
+bison_incl_skel:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 97):
+	$(YACC) $(SRC)/bison_incl_skel.y
+
+streamy-cpp.o: streamy-cpp.yy.c
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 91):
+	$(CXX) $(CXXFLAGS) -c $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp.yy.o
+
+020-TestCase:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 78):
+	g++ -std=c++14 -fPIC -Wall -I/usr/local/include -c $(SRC)/020-TestCase-1.cpp -o $(BLD)/020-TestCase-1.o
+	g++ -std=c++14 -fPIC -Wall -I/usr/local/include -c $(SRC)/020-TestCase-2.cpp -o $(BLD)/020-TestCase-2.o
+	g++ -std=c++14 -Wall -I/usr/local/include -o $(BLD)/020-TestCase $(BLD)/020-TestCase-1.o $(SRC)/020-TestCase-2.cpp && $(BLD)/020-TestCase --success
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2023-11-26 03:49:26.304162684
+#  File has been updated.
+#  Successfully updated.
+
+uninstall:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 105):
+	rm -rf /usr/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
+
+libstreamy.so: streamy.o
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/7=0%
+#  recipe to execute (from 'Makefile', line 29):
+	$(CXX) $(CXXFLAGS) -fPIC --shared $(OBJ)/streamy.o -o $(BLD)/libstreamy.so
+	chmod 755 $(BLD)/libstreamy.so
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 108):
+	-rm $(BLD)/*
+
+fileio.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 66):
+	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o	
+
+streamy_app: fileio.o streamy.o libstreamy.a libstreamy.so
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 37):
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_app.cpp -o $(OBJ)/streamy_app.o
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_app.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/streamy_app
+
+streamy-cpp.yy.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 94):
+	$(LEX) -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
+
+streamy.o:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := streamy.o
+# automatic
+# * := 
+# automatic
+# < := 
+# automatic
+# + := 
+# automatic
+# % := 
+# automatic
+# ^ := 
+# automatic
+# ? := 
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/15=7%
+#  recipe to execute (from 'Makefile', line 26):
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
 # Not a target:
 .DEFAULT:
@@ -257,29 +391,117 @@ Makefile:
 #  Modification time never checked.
 #  File has not been updated.
 
-# Not a target:
-all:
+all: libstreamy.so libstreamy.a streamy_lex streamy_app app bash_color_test
 #  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/7=0%
+
+streamy_lexer:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 49):
+	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
+	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy.yy.c -o $(BLD)/streamy_lexer.o
+	$(CXX) $(CXXFLAGS) $(OBJ)/streamy_lexer.o -ll -o $(BLD)/streamy_lexer
+
+yacc_lex: streamy_lexer tokenizer
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
+test:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 23):
+	$(CXX) $(CXXFLAGS) -c $(SRC)/%.cpp
+
+main.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 60):
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/main.cpp -o $(OBJ)/main.o
+
+tokenizer.yy.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 72):
+	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
+
+bash_color_test:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 57):
+	$(CXX) $(CXXFLAGS) -std=c++17 $(SRC)/bash_color_test.cpp -o $(BLD)/bash_color_test
+
+install:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 100):
+	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
+	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
+	chmod 755  $(PREFIX)/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
+
+test1:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 75):
+	g++ -std=c++14 -Wall -I/usr/local/include $(SRC)/010-TestCase.cpp -o $(BLD)/test1 
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+streamy_lex: fileio.o libstreamy.a libstreamy.so
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 43):
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_lex.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/streamy_lex
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC $(OBJ)/streamy_lex.o $(BLD)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/streamy_lex_a
+
+app.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 63):
+	$(CXX) $(CXXFLAGS) -std=c++17 -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
+
+libstreamy.a: streamy.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 33):
+	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
+	chmod 755 $(BLD)/libstreamy.a
+
 # files hash-table stats:
-# Load=4/1024=0%, Rehash=0, Collisions=0/5=0%
+# Load=28/1024=3%, Rehash=0, Collisions=0/75=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 23 / storage = 169 B / avg = 7 B
-# current buf: size = 8162 B / used = 169 B / count = 23 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 46 / storage = 423 B / avg = 9 B
+# current buf: size = 8162 B / used = 423 B / count = 46 / avg = 9 B
 
-# strcache performance: lookups = 27 / hit rate = 14%
+# strcache performance: lookups = 100 / hit rate = 54%
 # hash-table stats:
-# Load=23/8192=0%, Rehash=0, Collisions=0/27=0%
-# Finished Make data base on Sun Nov 26 03:41:50 2023
+# Load=46/8192=1%, Rehash=0, Collisions=0/100=0%
+# Finished Make data base on Sun Nov 26 03:50:12 2023
 
  
-Makefile:9: *** missing separator.  Stop.
-
