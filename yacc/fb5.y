@@ -11,7 +11,7 @@
 %%
 
 calclist:
-| calclist exp EOL { printf("= %d\n", $1); } EOL is end of an expression
+| calclist exp EOL { printf("= %d\n", $1); }
 ;
 
 exp: factor
