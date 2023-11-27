@@ -1,6 +1,9 @@
-# yacc make
-# Fri Sep 29 11:01:50 AM CDT 2023
-# Version 0.0.1
+
+# // License:    GPL
+# // Author:     Brian K Preston
+# // File Name:  lex & yacc/Makefile
+# // Build Date: Mon Nov 27 09:33:36 AM CST 2023
+# // Version:    0.0.1
 
 DIR=.
 LEX=flex

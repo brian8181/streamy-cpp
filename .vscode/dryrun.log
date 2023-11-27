@@ -16,4 +16,6 @@ g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_app.o build/streamy.o build/
 #g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_app.o -lstreamy -Lbuild/lib -o build/streamy_app_so
 g++ -g -Wall -DDEBUG -std=c++17 src/bash_color_test.cpp -o build/bash_color_test
 make: Leaving directory '/home/brian/src/streamy-cpp'
+
+TEST
  
