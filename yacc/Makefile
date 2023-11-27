@@ -1,9 +1,9 @@
-# streamy-cpp make
+# yacc make
 # Fri Sep 29 11:01:50 AM CDT 2023
 # Version 0.0.1
 
-LEX = flex
-YACC = bison
+LEX=flex
+YACC=bison
 SRC=./yacc
 OBJ=./build
 BLD=./build
