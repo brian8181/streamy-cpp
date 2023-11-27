@@ -13,5 +13,13 @@ all: fb1-4.yy.c
 fb1-4.yy.c:
 	$(LEX) -o build/fb1-4.yy.c fb1-4.l
 
+exampleA:
+	flex -o build/exmapleA.yy.c exampleA.l
+	gcc build/exmapleA.yy.c ‑lfl -build/exmapleA.yy.c
+
+bas:
+	yacc -d bas.y
+	
+
 clean:
 	-rm -rf $(BLD)/*
