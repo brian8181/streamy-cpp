@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Nov 27 08:03:48 2023
+# Make data base, printed on Mon Nov 27 09:28:43 2023
 
 # Variables
 
@@ -74,6 +74,8 @@ CURDIR := /home/brian/src/streamy-cpp
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 LESSOPEN = ||/usr/bin/lesspipe.sh %s
+# environment
+VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
@@ -89,6 +91,7 @@ XDG_CONFIG_DIRS = /etc/xdg
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # environment
+ 
 XDG_SESSION_DESKTOP = xfce
 # makefile (from 'Makefile', line 1)
 MAKEFILE_LIST := Makefile
@@ -237,7 +240,7 @@ DOTNET_ROOT = /usr/lib64/dotnet
 # environment
 GDMSESSION = xfce
 # variable set hash-table stats:
-# Load=113/1024=11%, Rehash=0, Collisions=13/150=9%
+# Load=114/1024=11%, Rehash=0, Collisions=14/151=9%
 
 # Pattern-specific Variable Values
 
@@ -295,8 +298,7 @@ streamy-cpp.o: streamy-cpp.yy.c
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
- 
-#  Last modified 2023-11-26 19:30:13.994249008
+#  Last modified 2023-11-27 08:32:23.553570534
 #  File has been updated.
 #  Successfully updated.
 
@@ -304,7 +306,7 @@ uninstall:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 104):
+#  recipe to execute (from 'Makefile', line 107):
 	rm -rf /usr/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
 
 libstreamy.so: streamy.o
@@ -322,8 +324,15 @@ clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 107):
+#  recipe to execute (from 'Makefile', line 110):
 	-rm $(BLD)/*
+
+clean_src:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 113):
+	-rm ./*.o
 
 fileio.o:
 #  Implicit rule search has not been done.
@@ -339,6 +348,8 @@ streamy_app: fileio.o streamy.o libstreamy.a libstreamy.so
 #  recipe to execute (from 'Makefile', line 36):
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_app.cpp -o $(OBJ)/streamy_app.o
 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/streamy_app
+	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o $(BLD)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/streamy_app_a
+	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_app_so
 
 streamy-cpp.yy.c:
 #  Implicit rule search has not been done.
@@ -374,6 +385,7 @@ streamy.o:
 #  recipe to execute (from 'Makefile', line 25):
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
+ 
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
@@ -435,7 +447,7 @@ install:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 99):
+#  recipe to execute (from 'Makefile', line 102):
 	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
 	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
 	chmod 755  $(PREFIX)/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
@@ -463,6 +475,13 @@ streamy_lex: fileio.o libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(BLD)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/streamy_lex_a
 	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o -lstreamy -L$(PREFIX)/lib $(OBJ)/fileio.o -o $(BLD)/streamy_lex_so
 
+complie:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 99):
+	g++ -c $(SRC)/*.cpp
+
 libstreamy.a: streamy.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -472,19 +491,19 @@ libstreamy.a: streamy.o
 	chmod 755 $(BLD)/libstreamy.a
 
 # files hash-table stats:
-# Load=26/1024=3%, Rehash=0, Collisions=0/66=0%
+# Load=28/1024=3%, Rehash=0, Collisions=0/68=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 45 / storage = 418 B / avg = 9 B
-# current buf: size = 8162 B / used = 418 B / count = 45 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 47 / storage = 442 B / avg = 9 B
+# current buf: size = 8162 B / used = 442 B / count = 47 / avg = 9 B
 
-# strcache performance: lookups = 93 / hit rate = 51%
+# strcache performance: lookups = 97 / hit rate = 51%
 # hash-table stats:
-# Load=45/8192=1%, Rehash=0, Collisions=0/93=0%
-# Finished Make data base on Mon Nov 27 08:03:48 2023
+# Load=47/8192=1%, Rehash=0, Collisions=0/97=0%
+# Finished Make data base on Mon Nov 27 09:28:43 2023
 
  

@@ -1,4 +1,4 @@
-make --dry-run --always-make --keep-going --print-directory
+make --dry-run --keep-going --print-directory
 make: Entering directory '/home/brian/src/streamy-cpp'
 g++ -g -Wall -DDEBUG -std=c++17 -fPIC -c src/streamy.cpp -o build/streamy.o
 g++ -g -Wall -DDEBUG -std=c++17 -fPIC --shared build/streamy.o -o build/libstreamy.so
@@ -10,9 +10,10 @@ g++ -g -Wall -DDEBUG -std=c++17 -fPIC -c src/streamy_lex.cpp -o build/streamy_le
 g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_lex.o build/streamy.o build/fileio.o -o build/streamy_lex
 g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_lex.o build/libstreamy.a build/fileio.o -o build/streamy_lex_a
 #g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_lex.o -lstreamy -Lbuild/lib build/fileio.o -o build/streamy_lex_so
- 
 g++ -g -Wall -DDEBUG -std=c++17 -fPIC -c src/streamy_app.cpp -o build/streamy_app.o
 g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_app.o build/streamy.o build/fileio.o -o build/streamy_app
+#g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_app.o build/libstreamy.a build/fileio.o -o build/streamy_app_a
+#g++ -g -Wall -DDEBUG -std=c++17 -fPIC build/streamy_app.o -lstreamy -Lbuild/lib -o build/streamy_app_so
 g++ -g -Wall -DDEBUG -std=c++17 src/bash_color_test.cpp -o build/bash_color_test
 make: Leaving directory '/home/brian/src/streamy-cpp'
  
