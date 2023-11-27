@@ -23,10 +23,9 @@ char format[20];
 %left LOG
 
 
-list:   /∗ nothing ∗/
+list:   /* nothing */
         | list EOLN
-        | list expr EOLN
-          { printf( format , (double) $2 ); ans=$2; }
+        | list expr EOLN { printf( format , (double) $2 ); ans=$2; }
         ;
 
 expr:   conditional_expr
@@ -36,34 +35,31 @@ conditional_expr: logical_or_expr
         ;
 
 logical_or_expr: logical_and_expr
-        | logical_or_expr OR logical_and_expr
-          { $$ = (int) $1 || (int) $3; }
+        | logical_or_expr OR logical_and_expr { $$ = (int) $1 || (int) $3; }
         ;
 
 logical_and_expr: inclusive_or_expr
-        | logical_and_expr LAND inclusive_or_expr
-          { $$ = (int) $1 && (int) $3; }
+        | logical_and_expr LAND inclusive_or_expr { $$ = (int) $1 && (int) $3; }
         ;
 
 inclusive_or_expr: exclusive_or_expr
-        | inclusive_or_expr IOR exclusive_or_expr
-          { $$ = (int) $1 | (int) $3; }
+        | inclusive_or_expr IOR exclusive_or_expr { $$ = (int) $1 | (int) $3; }
         ;
 
 exclusive_or_expr: and_expr
         | exclusive_or_expr XOR and_expr
-          { $$ = (int) $1 ^ (int) $3; }
+        { $$ = (int) $1 ^ (int) $3; }
         ;
 
 and_expr: shift_expr
         | and_expr AND shift_expr
-          { $$ = (int) $1 & (int) $3; }
+        { $$ = (int) $1 & (int) $3; }
         ;
 shift_expr: pow_expr
         | shift_expr LEFTSHIFT pow_expr
-          { $$ = (int) $1 << (int) $3; }
+        { $$ = (int) $1 << (int) $3; }
         | shift_expr RIGHTSHIFT pow_expr
-          { $$ = (int) $1 >>(int) $3; }
+           $$ = (int) $1 >>(int) $3; }
         ;
 
 pow_expr: add_expr
@@ -154,11 +150,11 @@ function_call: SIN OPENBRACKET expr CLOSEBRACKET
 
 #include <stdio.h>
 #include <ctype.h>
-char ∗progname;
+char* progname;
 double yylval;
 
-main( argc, argv )
-char ∗argv[];
+int main( argc, argv )
+char* argv[];
 {
   progname = argv[0];
   strcpy(format,"%g\n");
@@ -166,14 +162,14 @@ char ∗argv[];
 }
 
 yyerror( s )
-char ∗s;
+char* s;
 {
-  warning( s , ( char ∗ )0 );
+  warning( s , ( char * )0 );
   yyparse();
 }
 
 warning( s , t )
-char ∗s , ∗t;
+char *s , *t;
 {
   fprintf( stderr ,"%s: %s\n" , progname , s );
   if ( t )
