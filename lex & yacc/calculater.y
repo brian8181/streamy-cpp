@@ -28,26 +28,33 @@ list:   /∗ nothing ∗/
         | list expr EOLN
           { printf( format , (double) $2 ); ans=$2; }
         ;
+
 expr:   conditional_expr
         ;
+
 conditional_expr: logical_or_expr
         ;
+
 logical_or_expr: logical_and_expr
         | logical_or_expr OR logical_and_expr
           { $$ = (int) $1 || (int) $3; }
         ;
+
 logical_and_expr: inclusive_or_expr
         | logical_and_expr LAND inclusive_or_expr
           { $$ = (int) $1 && (int) $3; }
         ;
+
 inclusive_or_expr: exclusive_or_expr
         | inclusive_or_expr IOR exclusive_or_expr
           { $$ = (int) $1 | (int) $3; }
         ;
+
 exclusive_or_expr: and_expr
         | exclusive_or_expr XOR and_expr
           { $$ = (int) $1 ^ (int) $3; }
         ;
+
 and_expr: shift_expr
         | and_expr AND shift_expr
           { $$ = (int) $1 & (int) $3; }
@@ -58,18 +65,22 @@ shift_expr: pow_expr
         | shift_expr RIGHTSHIFT pow_expr
           { $$ = (int) $1 >>(int) $3; }
         ;
+
 pow_expr: add_expr
         | pow_expr POW add_expr { $$ = pow($1,$3); }
         ;
+
 add_expr: mul_expr
         | add_expr PLUS mul_expr  { $$ = $1 + $3; }
         | add_expr MINUS mul_expr { $$ = $1 ‑ $3; }
         ;
+
 mul_expr: unary_expr
         | mul_expr MUL unary_expr { $$ = $1 ∗ $3; }
         | mul_expr DIV unary_expr { $$ = $1 / $3; }
         | mul_expr MOD unary_expr { $$ = fmod($1,$3); }
         ;
+
 unary_expr: assign_expr
         | MINUS primary %prec UNARYMINUS { $$ = ‑$2; }
         | INC unary_expr { $$ = $2+1; }
@@ -77,6 +88,7 @@ unary_expr: assign_expr
         | NOT unary_expr { $$ = !$2; }
         | LOG unary_expr { $$ = log($2); }
         ;
+
 assign_expr: postfix_expr
         | REGA OPENREG expr CLOSEREG ASSIGN postfix_expr
           { reg[(int)$3]=$6; $$=$6; }
@@ -90,12 +102,14 @@ assign_expr: postfix_expr
             $$=0;
           }
         ;
+
 postfix_expr: primary
         | postfix_expr INC { $$ = $1+1; }
         | postfix_expr DEC { $$ = $1‑1; }
         | postfix_expr FACT
           { $$ = calcfact((unsigned long int)$1); }
         ;
+
  primary: NUMBER { $$ = $1; }
         | PIVAL { $$ = M_PI; }
         | OPENBRACKET expr CLOSEBRACKET { $$ = $2; }
@@ -103,6 +117,7 @@ postfix_expr: primary
         | CONST OPENBRACKET expr CLOSEBRACKET { $$ = constval($3); }
         | set_format
         ;
+
 set_format: function_call
         | FIX OPENBRACKET expr CLOSEBRACKET
               { sprintf(format,"
@@ -120,6 +135,7 @@ g\n"); $$=0; }
         | ENG { sprintf(format,"
 e\n"); $$=0; }
         ;
+        
 function_call: SIN OPENBRACKET expr CLOSEBRACKET
                { $$ = (cos($3)∗tan($3)); }
         | COS OPENBRACKET expr CLOSEBRACKET

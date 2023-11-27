@@ -35,8 +35,8 @@ libstreamy.a: streamy.o
 streamy_app: fileio.o streamy.o libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_app.cpp -o $(OBJ)/streamy_app.o
 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/streamy_app
-#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o $(BLD)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/streamy_app_a
-#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_app_so
+	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o $(BLD)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/streamy_app_a
+	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_app_so
 
 streamy_lex: fileio.o libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
@@ -95,6 +95,9 @@ streamy-cpp.yy.c:
 bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
 
+complie:
+	g++ -c $(SRC)/*.cpp
+
 install:
 	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
 	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
@@ -105,3 +108,6 @@ uninstall:
 
 clean:
 	-rm $(BLD)/*
+
+clean_src:
+	-rm ./*.o
