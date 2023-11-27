@@ -5,9 +5,8 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
- 
 
-# Make data base, printed on Sun Nov 26 12:54:52 2023
+# Make data base, printed on Sun Nov 26 19:32:56 2023
 
 # Variables
 
@@ -56,6 +55,7 @@ XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
 # environment
 SSH_ASKPASS = /usr/libexec/openssh/gnome-ssh-askpass
 # environment
+ 
 LANG = C
 # environment
 GUESTFISH_OUTPUT = \e[0m
@@ -300,7 +300,7 @@ streamy-cpp.o: streamy-cpp.yy.c
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2023-11-26 12:53:46.556717814
+#  Last modified 2023-11-26 19:30:13.994249008
 #  File has been updated.
 #  Successfully updated.
 
@@ -381,6 +381,7 @@ streamy.o:
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
+ 
 #  Modification time never checked.
 #  File has not been updated.
 
@@ -435,7 +436,6 @@ bash_color_test:
 #  recipe to execute (from 'Makefile', line 56):
 	$(CXX) $(CXXFLAGS) $(SRC)/bash_color_test.cpp -o $(BLD)/bash_color_test
 
- 
 install:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -490,6 +490,6 @@ libstreamy.a: streamy.o
 # strcache performance: lookups = 92 / hit rate = 52%
 # hash-table stats:
 # Load=44/8192=1%, Rehash=0, Collisions=0/92=0%
-# Finished Make data base on Sun Nov 26 12:54:52 2023
+# Finished Make data base on Sun Nov 26 19:32:56 2023
 
  

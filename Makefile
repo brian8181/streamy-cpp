@@ -7,9 +7,9 @@
 PREFIX = build
 CXX = g++
 CXXFLAGS = -g -Wall -DDEBUG -std=c++17
-CC       = gcc -g
-LEX      = flex
-YACC     = bison -d   
+CC = gcc -g
+LEX = flex
+YACC = bison -d   
 SRC = src
 BLD = build
 OBJ = build
