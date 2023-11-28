@@ -23,8 +23,7 @@ char format[20];
 %left LOG
 
 
-list:   /* nothing */
-        | list EOLN
+list:   | list EOLN
         | list expr EOLN { printf( format , (double) $2 ); ans=$2; }
         ;
 
@@ -47,19 +46,15 @@ inclusive_or_expr: exclusive_or_expr
         ;
 
 exclusive_or_expr: and_expr
-        | exclusive_or_expr XOR and_expr
-        { $$ = (int) $1 ^ (int) $3; }
+        | exclusive_or_expr XOR and_expr { $$ = (int) $1 ^ (int) $3; }
         ;
 
 and_expr: shift_expr
-        | and_expr AND shift_expr
-        { $$ = (int) $1 & (int) $3; }
+        | and_expr AND shift_expr { $$ = (int) $1 & (int) $3; }
         ;
 shift_expr: pow_expr
-        | shift_expr LEFTSHIFT pow_expr
-        { $$ = (int) $1 << (int) $3; }
-        | shift_expr RIGHTSHIFT pow_expr
-           $$ = (int) $1 >>(int) $3; }
+        | shift_expr LEFTSHIFT pow_expr { $$ = (int) $1 << (int) $3; }
+        | shift_expr RIGHTSHIFT pow_expr { $$ = (int) $1 >>(int) $3 ; } 
         ;
 
 pow_expr: add_expr
@@ -68,28 +63,26 @@ pow_expr: add_expr
 
 add_expr: mul_expr
         | add_expr PLUS mul_expr  { $$ = $1 + $3; }
-        | add_expr MINUS mul_expr { $$ = $1 ‑ $3; }
+        | add_expr MINUS mul_expr { $$ = $1 - $3; }
         ;
 
 mul_expr: unary_expr
-        | mul_expr MUL unary_expr { $$ = $1 ∗ $3; }
+        | mul_expr MUL unary_expr { $$ = $1 * $3; }
         | mul_expr DIV unary_expr { $$ = $1 / $3; }
         | mul_expr MOD unary_expr { $$ = fmod($1,$3); }
         ;
 
 unary_expr: assign_expr
-        | MINUS primary %prec UNARYMINUS { $$ = ‑$2; }
+        | MINUS primary %prec UNARYMINUS { $$ = -$2; }
         | INC unary_expr { $$ = $2+1; }
-        | DEC unary_expr { $$ = $2‑1; }
+        | DEC unary_expr { $$ = $2-1; }
         | NOT unary_expr { $$ = !$2; }
         | LOG unary_expr { $$ = log($2); }
         ;
 
 assign_expr: postfix_expr
-        | REGA OPENREG expr CLOSEREG ASSIGN postfix_expr
-          { reg[(int)$3]=$6; $$=$6; }
-        | REGA OPENREG expr CLOSEREG
-          { $$=reg[(int)$3]; }
+        | REGA OPENREG expr CLOSEREG ASSIGN postfix_expr { reg[(int)$3]=$6; $$=$6; }
+        | REGA OPENREG expr CLOSEREG { $$=reg[(int)$3]; }
         | REGA
           { int i;
             for(i=0;i<100;i++)
@@ -99,14 +92,15 @@ assign_expr: postfix_expr
           }
         ;
 
-postfix_expr: primary
+postfix_expr: 
+        primary
         | postfix_expr INC { $$ = $1+1; }
-        | postfix_expr DEC { $$ = $1‑1; }
-        | postfix_expr FACT
-          { $$ = calcfact((unsigned long int)$1); }
+        | postfix_expr DEC { $$ = $1-1; }
+        | postfix_expr FACT { $$ = calcfact((unsigned long int)$1); }
         ;
 
- primary: NUMBER { $$ = $1; }
+ primary: 
+        NUMBER { $$ = $1; }
         | PIVAL { $$ = M_PI; }
         | OPENBRACKET expr CLOSEBRACKET { $$ = $2; }
         | ANS { $$ = ans; }
@@ -115,37 +109,24 @@ postfix_expr: primary
         ;
 
 set_format: function_call
-        | FIX OPENBRACKET expr CLOSEBRACKET
-              { sprintf(format,"
-.%df\n",(int)$3); $$=0; }
-        | FIX { sprintf(format,"
-f\n"); $$=0; }
+        | FIX OPENBRACKET expr CLOSEBRACKET { sprintf(format,".%df\n",(int)$3); $$=0; }
+        | FIX { sprintf(format,"f\n"); $$=0; }
         | SCI OPENBRACKET expr CLOSEBRACKET
-              { sprintf(format,"
-.%dg\n",(int)$3); $$=0; }
-        | SCI { sprintf(format,"
-g\n"); $$=0; }
+              { sprintf(format,".%dg\n",(int)$3); $$=0; }
+        | SCI { sprintf(format,"g\n"); $$=0; }
         | ENG OPENBRACKET expr CLOSEBRACKET
-              { sprintf(format,"
-.%de\n",(int)$3); $$=0; }
-        | ENG { sprintf(format,"
-e\n"); $$=0; }
+              { sprintf(format,".%de\n",(int)$3); $$=0; }
+        | ENG { sprintf(format,"e\n"); $$=0; }
         ;
         
-function_call: SIN OPENBRACKET expr CLOSEBRACKET
-               { $$ = (cos($3)∗tan($3)); }
-        | COS OPENBRACKET expr CLOSEBRACKET
-               { $$ = cos($3); }
-        | TAN OPENBRACKET expr CLOSEBRACKET
-               { $$ = tan($3); }
-        | ASIN OPENBRACKET expr CLOSEBRACKET
-               { $$ = asin($3); }
-        | ACOS OPENBRACKET expr CLOSEBRACKET
-               { $$ = acos($3); }
-        | ATAN OPENBRACKET expr CLOSEBRACKET
-               { $$ = atan($3); }
+function_call: 
+        SIN OPENBRACKET expr CLOSEBRACKET { $$ = (cos($3)*tan($3)); }
+        | COS OPENBRACKET expr CLOSEBRACKET { $$ = cos($3); }
+        | TAN OPENBRACKET expr CLOSEBRACKET { $$ = tan($3); }
+        | ASIN OPENBRACKET expr CLOSEBRACKET { $$ = asin($3); }
+        | ACOS OPENBRACKET expr CLOSEBRACKET { $$ = acos($3); }
+        | ATAN OPENBRACKET expr CLOSEBRACKET { $$ = atan($3); }
         ;
-
 
 
 #include <stdio.h>

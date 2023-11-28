@@ -30,7 +30,7 @@ public:
     bool assign(const string& name, const vector<string>& vec);
     bool display(const string& tmpl);
     string& lex_file(string& tmpl, /*out*/ string& s_out);
-    string& include_file(const string& tmpl, string& s_out);
+    string& include_file(const string& tmpl, /* out */ string& s_out);
     string& include(const string& tmpl, /*out*/ string& s_out);
     string& read_stream(const string& path, /* out */string& out);
 

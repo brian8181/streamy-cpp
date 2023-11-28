@@ -13,9 +13,6 @@
 
 streamy::streamy(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
-    string s = "test/";
-    s = trim(s, '/');
-
     this->template_dir = template_dir;
     this->compile_dir = compile_dir;
     this->config_dir = config_dir;
@@ -95,7 +92,7 @@ bool streamy::display(const string& tmpl)
     return true;
 }
 
-string& streamy::read_stream(const string& path, /* out */string& out)
+string& streamy::read_stream(const string& path, /* out */ string& out)
 {
     std::ifstream ifstrm(path);
     std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
