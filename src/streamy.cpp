@@ -173,6 +173,11 @@ string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
     return s_out;
 }
 
+string& streamy::parse(string& lex, /* out */ string& s_out)
+{
+    return s_out;
+}
+
 std::string& streamy::trim(string &s, char c)
 {
     if(s.at(s.length()-1) == c)

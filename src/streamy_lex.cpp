@@ -35,6 +35,9 @@ int main(int argc, char *argv[])
     string tmpl = "test.tpl";
     string _out;
     sm.lex_file(tmpl, _out);
+
+    string _html;
+    sm.parse(_out, _html); // parse generates the final HTLM from temaple
     cout << _out << endl;
 
     sm.assign("headers", "HEADERS");
