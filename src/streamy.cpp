@@ -175,12 +175,31 @@ string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
 
 string& streamy::parse(string& lex, /* out */ string& s_out)
 {
+    regex exp = regex(ESCAPE, regex::ECMAScript); // match
+    smatch match;
+    stringstream strm_str; 
+
+    while(std::regex_search(lex, match, exp, std::regex_constants::match_default))
+    {
+        std::string fmt_match_beg = match.format("TEXT: $`");
+        std::string fmt_match = match.format("TAG $&");
+        lex = match.format("$'");
+        strm_str << fmt_match_beg << endl;
+        strm_str << fmt_match << endl;
+    }
+
+    strm_str << lex << endl;
+    s_out = strm_str.str();
     return s_out;
 }
 
 string& streamy::parse_file(string& file, /* out */ string& s_out)
 {
-    return s_out;
+    string full_path = this->template_dir + "/" + file;
+    string s;
+    string out;
+    s = read_stream(full_path, s);
+    return parse(s, out);
 }
 
 std::string& streamy::trim(string &s, char c)
