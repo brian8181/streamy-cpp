@@ -175,6 +175,8 @@ string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
 
 string& streamy::parse(string& lex, /* out */ string& s_out)
 {
+
+    // this just does lexing for for as an exmaple
     regex exp = regex(ESCAPE, regex::ECMAScript); // match
     smatch match;
     stringstream strm_str; 
@@ -195,6 +197,7 @@ string& streamy::parse(string& lex, /* out */ string& s_out)
 
 string& streamy::parse_file(string& file, /* out */ string& s_out)
 {
+    // open file the call parse function ...
     string full_path = this->template_dir + "/" + file;
     string s;
     string out;
