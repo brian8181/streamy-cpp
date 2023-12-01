@@ -174,8 +174,21 @@ string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
     return s_out;
 }
 
+string& streamy::parse_file(string& file, /* out */ string& s_out)
+{
+    // open file the call parse function ...
+    string full_path = this->template_dir + "/" + file;
+    string s;
+    string out;
+    s = read_stream(full_path, s);
+    return parse(s, out);
+}
+
 string& streamy::parse(string& lex, /* out */ string& s_out)
 {
+    string LEX_BEGIN_MARKUP = "\\<\\(TEXT|TAG\\)\\>";
+    string LEX_END_MARKUP = "/\\<\\(TEXT|TAG\\)\\>";
+
     // this just does lexing for for as an exmaple
     regex exp = regex(ESCAPE, regex::ECMAScript); // match
     smatch match;
@@ -195,14 +208,9 @@ string& streamy::parse(string& lex, /* out */ string& s_out)
     return s_out;
 }
 
-string& streamy::parse_file(string& file, /* out */ string& s_out)
+string& streamy::parse_tag(string& lex, /* out */ string& s_out)
 {
-    // open file the call parse function ...
-    string full_path = this->template_dir + "/" + file;
-    string s;
-    string out;
-    s = read_stream(full_path, s);
-    return parse(s, out);
+    return s_out;
 }
 
 std::string& streamy::trim(string &s, char c)
