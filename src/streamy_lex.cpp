@@ -84,11 +84,12 @@ int main(int argc, char *argv[])
     }
 
     cout << "******* Display template stream ******" << endl;
-    string tmpl = "test.tpl";
+    //string tmpl = "test.tpl";
     string _out;
-    sm.lex_file(tmpl, _out);
+    sm.lex_file(file_path, _out);
 
     string _html;
+    _out.clear();
     sm.parse(_out, _html); // parse generates the final HTLM from temaple
     cout << _out << endl;
 

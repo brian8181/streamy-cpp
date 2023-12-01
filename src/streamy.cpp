@@ -148,7 +148,7 @@ string& streamy::include(const string& tmpl, /*out*/ string& s_out)
     return s_out;
 }
 
-string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
+string& streamy::lex_file(const string& tmpl, /*out*/ string& s_out)
 {
     string full_path = this->template_dir + "/" + tmpl;
     // string s = read_stream(full_path);
@@ -169,12 +169,13 @@ string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
         strm_str << fmt_match << endl;
     }
 
-    strm_str << s << endl;
     s_out = strm_str.str();
+    cout  << s_out << endl;
+
     return s_out;
 }
 
-string& streamy::parse_file(string& file, /* out */ string& s_out)
+string& streamy::parse_file(const string& file, /* out */ string& s_out)
 {
     // open file the call parse function ...
     string full_path = this->template_dir + "/" + file;
@@ -184,31 +185,21 @@ string& streamy::parse_file(string& file, /* out */ string& s_out)
     return parse(s, out);
 }
 
-string& streamy::parse(string& lex, /* out */ string& s_out)
+string& streamy::parse(const string& tmpl, /* out */ string& s_out)
 {
     string LEX_BEGIN_MARKUP = "\\<\\(TEXT|TAG\\)\\>";
     string LEX_END_MARKUP = "/\\<\\(TEXT|TAG\\)\\>";
+    stringstream strm_str;
+    
+    // todo
 
-    // this just does lexing for for as an exmaple
-    regex exp = regex(ESCAPE, regex::ECMAScript); // match
-    smatch match;
-    stringstream strm_str; 
-
-    while(std::regex_search(lex, match, exp, std::regex_constants::match_default))
-    {
-        std::string fmt_match_beg = match.format("TEXT: $`");
-        std::string fmt_match = match.format("TAG $&");
-        lex = match.format("$'");
-        strm_str << fmt_match_beg << endl;
-        strm_str << fmt_match << endl;
-    }
-
-    strm_str << lex << endl;
+    cout << strm_str.str() << endl;
+    //strm_str << tmpl_tmp << endl;
     s_out = strm_str.str();
     return s_out;
 }
 
-string& streamy::parse_tag(string& lex, /* out */ string& s_out)
+string& streamy::parse_tag(const string& text, /* out */ string& s_out)
 {
     return s_out;
 }

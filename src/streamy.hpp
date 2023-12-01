@@ -29,10 +29,10 @@ public:
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
     bool display(const string& tmpl);
-    string& lex_file(string& tmpl, /*out*/ string& s_out);
-    string& parse_file(string& file, /* out */ string& s_out);           // parse lexed input
-    string& parse(string& lex, /* out */ string& s_out);                // parse lexed input
-    string& parse_tag(string& lex, /* out */ string& s_out);                // parse lexed input
+    string& lex_file(const string& tmpl, /*out*/ string& s_out);
+    string& parse_file(const string& file, /* out */ string& s_out);           // parse lexed input
+    string& parse(const string& tmpl, /* out */ string& s_out);                // parse lexed input
+    string& parse_tag(const string& text, /* out */ string& s_out);                // parse lexed input
     string& include_file(const string& tmpl, /* out */ string& s_out);
     string& include(const string& tmpl, /*out*/ string& s_out);
     string& read_stream(const string& path, /* out */string& out);
