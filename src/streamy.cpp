@@ -161,8 +161,9 @@ string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
 
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        std::string fmt_match_beg = match.format("TEXT: $`");
-        std::string fmt_match = match.format("TAG $&");
+        std::string fmt_match_beg = match.format("[<TEXT>$`</TEXT>");
+        std::string fmt_match = match.format("<TAG>$&</TAG>");
+
         s = match.format("$'");
         strm_str << fmt_match_beg << endl;
         strm_str << fmt_match << endl;
@@ -175,7 +176,6 @@ string& streamy::lex_file(string& tmpl, /*out*/ string& s_out)
 
 string& streamy::parse(string& lex, /* out */ string& s_out)
 {
-
     // this just does lexing for for as an exmaple
     regex exp = regex(ESCAPE, regex::ECMAScript); // match
     smatch match;

@@ -10,14 +10,46 @@
 #include <fstream>
 #include <filesystem>
 #include <regex>
+#include "fileio.hpp"
 #include "streamy.hpp"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    filesystem::path path(argv[0]);
-    string project_folder = path.parent_path().parent_path();
+
+    std::filesystem::path root(argv[0]);
+    string root_str = root.replace_extension("conf");
+    map<string, string> pairs = get_config(root_str);
+
+    const string project_folder = pairs["project_folder"];
+    const string template_folder = pairs["template_folder"];
+    const string default_template = pairs["default_template"];
+    
+    // check for input or use default
+    string template_name = default_template;
+    if (argc > 1)
+    {
+        template_name.clear();
+        template_name = argv[1];
+    }
+    const string file_path = template_folder + template_name;
+    string output;
+    try
+    {
+        string src = ifs_read_all(file_path);
+        //lex(src);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error reading file ... " << e.what() << endl;
+    }
+    cout << output;
+
+    // *** //
+    
+    //filesystem::path path(argv[0]);
+    string parent = root.parent_path().parent_path();
     string config_path = project_folder + "/test/config/config";
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
