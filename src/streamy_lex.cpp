@@ -86,7 +86,8 @@ int main(int argc, char *argv[])
     cout << "******* Display template stream ******" << endl;
     //string tmpl = "test.tpl";
     string _out;
-    sm.lex_file(file_path, _out);
+    sm.lex_file("lex_all.tpl", _out);
+    cout << _out << endl;
 
     string _html;
     _out.clear();
