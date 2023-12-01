@@ -27,7 +27,7 @@
             "command": "echo ${workspaceFolder}"
         },
         {
-            "label": "streamy_lex",
+            "label": "Make_streamy_lex",
             "type": "shell",
             "command": "make -f ${fileDirname}/Makefile streamy_lex",
             "problemMatcher": [

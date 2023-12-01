@@ -15,9 +15,29 @@
 
 using namespace std;
 
+void  lex(string& s)
+{
+    cout << "Lexing..." << endl;
+
+    const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,]*\\}";
+    regex exp = regex(ESCAPE, regex::ECMAScript); // match
+    smatch match;
+
+    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
+    {
+        std::string fmt_match_beg = match.format("<TEXT>$`</TEXT>");
+        std::string fmt_match = match.format("<TAG>$&</TAG>");
+        s = match.format("$'");
+        std::cout << fmt_match_beg << endl;
+        std::cout << fmt_match << endl;
+    }
+    cout << s << endl;
+
+    cout << "End Lexing..." << endl;
+}
+
 int main(int argc, char *argv[])
 {
-
     std::filesystem::path root(argv[0]);
     string root_str = root.replace_extension("conf");
     map<string, string> pairs = get_config(root_str);
@@ -37,8 +57,8 @@ int main(int argc, char *argv[])
     string output;
     try
     {
-        string src = ifs_read_all(file_path);
-        //lex(src);
+        ifs_read_all(file_path, output);
+        lex(output);
     }
     catch (const std::exception &e)
     {

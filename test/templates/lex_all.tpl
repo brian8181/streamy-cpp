@@ -1,0 +1,8 @@
+A
+{AA}
+BB 
+{BBB}
+CCCC
+{DDD}
+WWWW
+{TTT}
