@@ -54,17 +54,17 @@ int main(int argc, char *argv[])
         template_name = argv[1];
     }
     const string file_path = template_folder + template_name;
-    string output;
-    try
-    {
-        ifs_read_all(file_path, output);
-        lex(output);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << "Error reading file ... " << e.what() << endl;
-    }
-    cout << output;
+    // string output;
+    // try
+    // {
+    //     ifs_read_all(file_path, output);
+    //     lex(output);
+    // }
+    // catch (const std::exception &e)
+    // {
+    //     std::cerr << "Error reading file ... " << e.what() << endl;
+    // }
+    // cout << output;
 
     // *** //
     
@@ -85,8 +85,8 @@ int main(int argc, char *argv[])
 
     cout << "******* Display template stream ******" << endl;
     //string tmpl = "test.tpl";
-    string _out;
-    sm.lex_file("lex_all.tpl", _out);
+    //string _out;
+    //sm.lex_file("lex_all.tpl", _out);
     //cout << _out;
 
     //string _html;
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
     string display_out;
-    sm.display("default.tpl", display_out);
+    sm.display("lex_all.tpl");
 
     // int len = sm.tokens.size();
     // for(int i = 0; i < len; ++i)
@@ -130,39 +130,39 @@ int main(int argc, char *argv[])
     vector<string> citys = {"Mesquite", "Dallas", "Addison", "New York", "London", "Barcelona", "Madrid", "Paris", "Las Angelels", "Las Vegas", "Garland", "Richardson", "Plano"};
     sm.assign("citys", citys);
 
-    cout << "******* Display Arrays ******" << endl;
-    map<string, vector<string>>::iterator avend = sm.var_arrays.end();
-    for (map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
-    {
-        cout << "key: " << iter->first << endl;
-        int len = iter->second.size();
-        for(int i = 0; i < len; ++i)
-        {
-            cout << "index: " << i << " value: " << iter->second[i] << endl;
-        }
-    }
+    // cout << "******* Display Arrays ******" << endl;
+    // map<string, vector<string>>::iterator avend = sm.var_arrays.end();
+    // for (map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
+    // {
+    //     cout << "key: " << iter->first << endl;
+    //     int len = iter->second.size();
+    //     for(int i = 0; i < len; ++i)
+    //     {
+    //         cout << "index: " << i << " value: " << iter->second[i] << endl;
+    //     }
+    // }
 
-    cout << "******* Test Include ******" << endl;
-    string include;
-    sm.include("test_include.tpl", include);
-    cout << include << endl;    
+    // cout << "******* Test Include ******" << endl;
+    // string include;
+    // sm.include("test_include.tpl", include);
+    // cout << include << endl;    
 
-    cout << "******* Test Include File ******" << endl;
-    string include_file;
-    sm.include_file("test_include.tpl", include_file);
-    cout << include_file << endl;    
+    // cout << "******* Test Include File ******" << endl;
+    // string include_file;
+    // sm.include_file("test_include.tpl", include_file);
+    // cout << include_file << endl;    
       
-    cout << "******* Test Remove File Comments  ******" << endl;
-    string comments;
-    comments = sm.remove_file_comments("test_comments.tpl", comments);
-    cout << comments << endl;
+    // cout << "******* Test Remove File Comments  ******" << endl;
+    // string comments;
+    // comments = sm.remove_file_comments("test_comments.tpl", comments);
+    // cout << comments << endl;
 
-    cout << "******* Test Remove Comments  ******" << endl;
-    string full_path = "/home/brian/src/streamy-cpp/test/templates/test_comments.tpl";
-    string file;
-    file = sm.read_stream(full_path, file);
-    string c;
-    c = sm.remove_comments(file, c);
-    cout << c << endl;
+    // cout << "******* Test Remove Comments  ******" << endl;
+    // string full_path = "/home/brian/src/streamy-cpp/test/templates/test_comments.tpl";
+    // string file;
+    // file = sm.read_stream(full_path, file);
+    // string c;
+    // c = sm.remove_comments(file, c);
+    // cout << c << endl;
     return 0;
 }

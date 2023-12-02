@@ -28,16 +28,16 @@ public:
     bool load_config(const string& path, /* out */ string& s_out);
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
-    string& display_file(const string& file, /* out */ string& s_out);
-    string& display(const string& file, /* out */ string& s_out);
-    bool display_(const string& tmpl);
-    string& lex_file(const string& tmpl, /*out*/ string& s_out);
-    string& lex(const string& tmpl, /*out*/ string& s_out);
-    string& parse_file(const string& file, /* out */ string& s_out);           // parse lexed input
-    string& parse(const string& tmpl, /* out */ string& s_out);                // parse lexed input
-    string& parse_tag(const string& text, /* out */ string& s_out);                // parse lexed input
-    string& include_file(const string& tmpl, /* out */ string& s_out);
-    string& include(const string& tmpl, /*out*/ string& s_out);
+    //string& display_file(const string& file, /* out */ string& s_out);
+    void display(const string& file);
+    //bool display_(const string& tmpl);
+    void lex(const string& tmpl);
+    //string& lex(const string& tmpl, /*out*/ string& s_out);
+    //string& parse_file(const string& file, /* out */ string& s_out);           // parse lexed input
+    string& parse(std::vector<pair<int, std::string>> tokens, /* out */ string& s_out);                // parse lexed input
+    // string& parse_tag(const string& text, /* out */ string& s_out);                // parse lexed input
+    // string& include_file(const string& tmpl, /* out */ string& s_out);
+    // string& include(const string& tmpl, /*out*/ string& s_out);
     string& read_stream(const string& path, /* out */string& out);
 
      // maps
