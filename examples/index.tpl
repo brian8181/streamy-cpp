@@ -67,7 +67,7 @@ form name="search_form" onsubmit="return on_query_submit(search_form)" action="r
 	<br />
 	<a href="mailto:{#admin_email#}?subject=Web Password">{#admin_email#}</a>
 	{$admin_email}
-	{$version0}
+	{$version}
 	{$version_date}
     {* this is a comment *}
 </div>

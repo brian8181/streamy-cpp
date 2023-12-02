@@ -77,7 +77,6 @@ bool streamy::lex_(const string& tmpl, /* out */ std::vector<pair<int, std::stri
     tokens.clear(); // clear tokens
 
     size_t len = tmpl.size();
-    size_t pos = 0;
     size_t bpos = tmpl.find('{', 0);
     tokens.push_back(pair<int, string>(OPEN_CURLY_BRACE, "}"));
     while(bpos < len)
@@ -128,12 +127,12 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
                 ss << tokens[i].second;
                 break;
             case TAG:
-                regex exp = regex(VARIABLE, regex::ECMAScript); // match
+                regex exp = regex(VARIABLE + "|" + CONFIG_VARIABLE, regex::ECMAScript); // match
                 smatch m;
                 std::regex_search(tokens[i].second, m, exp);
                 if (!m.empty())
                 {
-                    sub_match sm = m[1];
+                    sub_match sm = m[REG_VAR].matched ? m[REG_VAR] : ( m[CONF_VAR].matched ? m[CONF_VAR] : m[TAG] ); 
                     map<string, string>::const_iterator find_iter = vars.find(sm.str());
                     if(find_iter != vars.end())
                     {
@@ -141,19 +140,36 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
                         break;
                     }
                 }
-                exp = regex(COMMENT, regex::ECMAScript); // match
+                // exp = regex(CONFIG_VARIABLE, regex::ECMAScript); // match
+                // std::regex_search(tokens[i].second, m, exp);
+                // if (!m.empty())
+                // {
+                //     sub_match sm = m[1];
+                //     map<string, string>::const_iterator find_iter = config.find(sm.str());
+                //     if(find_iter != config.end())
+                //     {
+                //         ss << find_iter->second;
+                //         break;
+                //     }
+                // }
+                exp = regex(INCLUDE, regex::ECMAScript); // match
                 std::regex_search(tokens[i].second, m, exp);
                 if (!m.empty())
                 {
-                    //sub_match sm = m[1];
-                    //map<string, string>::const_iterator find_iter = vars.find(sm.str());
-                    // if(find_iter != vars.end())
-                    // {
-                    //     ss << find_iter->second;
-                    // }
-                    break;
+                    sub_match sm = m[1];
+                    map<string, string>::const_iterator find_iter = config.find(sm.str());
+                    if(find_iter != config.end())
+                    {
+                        ss << find_iter->second;
+                        break;
+                    }
                 }
-                ss << FMT_FG_RED << "ERROR( " << tokens[i].second + " )" << FMT_RESET;
+                exp = regex(COMMENT, regex::ECMAScript); // match
+                std::regex_search(tokens[i].second, m, exp);
+                if (!m.empty()) 
+                    break;
+
+                ss << FMT_FG_RED << "ERROR( " << FMT_RESET << FMT_FG_LIGHT_CYAN << tokens[i].second << FMT_RESET << FMT_FG_RED << " )" << FMT_RESET;
                 break;
         }
     }

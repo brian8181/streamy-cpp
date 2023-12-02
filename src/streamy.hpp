@@ -13,12 +13,13 @@
 
 using namespace std;
 
-const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,]*\\}";
+const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]*\\}";
 const string SYMBOL_NAME = "\\b[_.~]*[A-Za-z][A-Za-z0-9_.-~]*\\b";
 const string LOAD_CONFIG_PAIR = "([A-Za-z][A-Za-z0-9]*)=([A-Za-z0-9]*);";
 const string INCLUDE = "\\{\\s*\\include file\\s*=\\s*\"(.*?)\"\\s*\\}";
 const string VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
-const string COMMENT = "\\n?\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}\\n?";
+const string CONFIG_VARIABLE = "\\{\\s*#(" + SYMBOL_NAME + ")#\\s*\\}";
+const string COMMENT = "\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}";
 
 const string TAGS = "\\{\\s*(\\$(" + SYMBOL_NAME + "))|(\\*[\\w\\s\\p]*\\)\\s*\\}";
 
@@ -28,6 +29,9 @@ const int OPEN_CURLY_BRACE = 0x4;
 const int CLOSE_CURLY_BRACE = 0x8;
 const int ASTERISK = 0x10;
 const int HASH_MARK = 0x20;
+
+const int REG_VAR = 0x1;
+const int CONF_VAR = 0x2;
 
 class streamy
 {

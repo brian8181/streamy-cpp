@@ -68,6 +68,12 @@ int parse_options(int argc, char* argv[])
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }
 
+    sm.config.insert(pair<string, string>("version", "2000"));
+    sm.config.insert(pair<string, string>("mail_message", "No Mail!"));
+    sm.config.insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
+    sm.vars.insert(pair<string, string>("version", "2000"));
+    sm.vars.insert(pair<string, string>("mail_message", "No Mail!"));
+    sm.vars.insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "*PAGE_TITLE*");
     sm.assign("body", "**THE BODY**");
