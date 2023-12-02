@@ -36,6 +36,15 @@
             "group": "build"
         },
         {
+            "label": "MAKE_EXAMPLES",
+            "type": "shell",
+            "command": "make -f ${workspaceFolder}/Makefile examples",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
             "label": "echo",
             "type": "shell",
             "command": "echo ${workspaceFolder}"

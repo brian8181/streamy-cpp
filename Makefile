@@ -31,6 +31,7 @@ index.cgi: fileio.o streamy.o libstreamy.so libstreamy.a index.o
 	$(CXX) $(CXXFLAGS) -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/index_a.cgi
 	#$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/index_so.cgi
+	cp ./examples/index.conf $(BLD)/index.conf
 
 index.o: 
 	$(CXX) $(CXXFLAGS) -I$(SRC) -c ./examples/index.cpp -o $(OBJ)/index.o
