@@ -1,8 +1,11 @@
 A
-{headers}
+{$headers}
+{$page_title}
 BB 
-{BBB}testing{$ABC} test {$fff}
+testing
+{$body} test 
+{$admin_email}
 CCCC
-{DDD}
+VERSION ->{$version}
 WWWW
-{TTT}XXX
+**{$version_date}**

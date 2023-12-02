@@ -92,8 +92,7 @@ int main(int argc, char *argv[])
     //string _html;
     //sm.parse(_out, _html); // parse generates the final HTLM from temaple
     //cout << _html;
-
-    
+  
 
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "streamyCPP Test Page");

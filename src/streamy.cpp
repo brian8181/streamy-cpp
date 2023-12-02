@@ -172,12 +172,9 @@ string& streamy::lex_file(const string& tmpl, /*out*/ string& s_out)
     string full_path = this->template_dir + "/" + tmpl;
     string s;
     read_stream(full_path, s);
+
     regex exp = regex(ESCAPE, std::regex::ECMAScript); // match
     smatch match;
-    stringstream strm_str; 
-    
-    //vector<pair<int, std::string>> tokens;
-
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
         std::string fmt_match_beg = match.format("$`");
@@ -186,14 +183,8 @@ string& streamy::lex_file(const string& tmpl, /*out*/ string& s_out)
         tokens.push_back(pair(1, fmt_match_beg));
         tokens.push_back(pair(0, fmt_match));
         s = match.format("$'");
-        strm_str << fmt_match_beg;
-        strm_str << fmt_match;
-    }
-
+     }
     tokens.push_back(pair(1, s));
-    strm_str << s;
-    s_out = strm_str.str();
-
     return s_out;
 }
 
@@ -217,11 +208,21 @@ string& streamy::parse(const string& tmpl, /* out */ string& s_out)
         }
         else
         {
-            string key = tokens[i].second;
-            cout << vars.at(key);
+            const string VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
+            regex exp = regex(VARIABLE, regex::ECMAScript); // match
+            smatch m;
+            std::regex_search(tokens[i].second, m, exp);
+            if (!m.empty())
+            {
+                sub_match sm = m[1];
+                map<string, string>::const_iterator find_iter = vars.find(sm.str());
+                if(find_iter != vars.end())
+                {
+                    cout << find_iter->second;
+                }
+             }
         }
     }
-
     return s_out;
 }
 
