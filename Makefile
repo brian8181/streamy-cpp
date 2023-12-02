@@ -25,11 +25,11 @@ test:
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
-index.cgi: index.o streamy.o
-	$(CXX) $(CXXFLAGS) ./examples/index.cpp $(BLD)/streamy.o -o $(BLD)/index.cgi
+index.cgi: fileio.o streamy.o index.o
+	$(CXX) $(CXXFLAGS) -I$(SRC) ./examples/index.cpp $(BLD)/streamy.o $(BLD)/fileio.o -o $(BLD)/index.cgi
 
-index.o:
-	$(CXX) $(CXXFLAGS) -c ./examples/index.cpp -o $(BLD)/index.o
+index.o: 
+	$(CXX) $(CXXFLAGS) -I$(SRC) -c ./examples/index.cpp -o $(BLD)/index.o
 
 libstreamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) -fPIC --shared $(OBJ)/streamy.o -o $(BLD)/libstreamy.so

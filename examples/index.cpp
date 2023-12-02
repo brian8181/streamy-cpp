@@ -24,7 +24,10 @@
 #include <sys/select.h>     /* for pselect   */
 #include <string>
 #include <getopt.h>
+#include <filesystem>
 #include "bash_color.h"
+#include "fileio.hpp"
+#include "streamy.hpp"
 
 using namespace std;
 
@@ -34,6 +37,46 @@ int parse_options(int argc, char* argv[])
 	cout << FMT_FG_RED << "Hello World!"  << FMT_RESET << endl;
 	cout << FMT_FG_GREEN << "Hello World!"  << FMT_RESET << endl;
 	cout << FMT_FG_YELLOW << "Hello World!"  << FMT_RESET << endl;
+
+    std::filesystem::path root(argv[0]);
+    string root_str = root.replace_extension("conf");
+    map<string, string> pairs = get_config(root_str);
+
+    const string project_folder = pairs["project_folder"];
+    const string template_folder = pairs["template_folder"];
+    const string default_template = pairs["default_template"];
+    
+    // check for input or use default
+    string template_name = default_template;
+    if (argc > 1)
+    {
+        template_name.clear();
+        template_name = argv[1];
+    }
+    const string file_path = template_folder + template_name;
+
+    string config_path = project_folder + "/test/config/config";
+
+    streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
+    string s_out;
+    sm.load_config(config_path, s_out);
+
+    cout << "******* Display Configuration ******" << endl;
+    map<string, string>::iterator end = sm.config.end();
+    for (map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
+    {
+        cout << "key: " << iter->first << " , value: " << iter->second << endl;
+    }
+
+    sm.assign("headers", "HEADERS");
+    sm.assign("page_title", "*PAGE_TITLE*");
+    sm.assign("body", "**THE BODY**");
+    sm.assign("admin_email", "admin@something.com");
+    sm.assign("version", "0.1");
+    sm.assign("version_date", "Feb, 14 2022");
+    string display_out;
+    sm.display("home.tpl");
+    
 	return 0;
 }
 
