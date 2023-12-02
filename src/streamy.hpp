@@ -28,7 +28,9 @@ public:
     bool load_config(const string& path, /* out */ string& s_out);
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
-    bool display(const string& tmpl);
+    string& display_file(const string& file, /* out */ string& s_out);
+    string& display(const string& file, /* out */ string& s_out);
+    bool display_(const string& tmpl);
     string& lex_file(const string& tmpl, /*out*/ string& s_out);
     string& parse_file(const string& file, /* out */ string& s_out);           // parse lexed input
     string& parse(const string& tmpl, /* out */ string& s_out);                // parse lexed input

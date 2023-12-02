@@ -57,7 +57,53 @@ bool streamy::assign(const string& name, const vector<string>& vec)
     return true;
 }
 
-bool streamy::display(const string& tmpl)
+string& streamy::display_file(const string& file, /* out */ string& s_out)
+{
+     // open file the call parse function ...
+    string full_path = this->template_dir + "/" + file;
+    string src;
+    read_stream(full_path, src);
+    return display(src, s_out);
+}
+
+string& streamy::display(const string& tmpl, /* out */ string& s_out)
+{
+    string src;
+    src = include_file(tmpl, src);
+    //src = remove_comments(src);
+    //src = if_sequence(src);
+    //src = variable(src);
+
+    //REPLACE VARIABLES
+    regex exp = regex(VARIABLE, regex::ECMAScript); // match
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+    string output;
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        std::string s(sub.str());
+        string& tag = trim(s);
+        
+        int end_pos = match.position();
+        output += src.substr(beg_pos, end_pos-beg_pos);
+        map<string, string>::const_iterator find_iter = vars.find(tag);
+        if(find_iter != vars.end())
+        {
+            output += find_iter->second;
+        }
+        beg_pos = end_pos + match.length();
+    }
+    output = replace_tag(output, ESCAPE);
+    cout << output << endl;
+    s_out = output;
+    return s_out;
+}
+    
+
+bool streamy::display_(const string& tmpl)
 {
     string src;
     src = include_file(tmpl, src);

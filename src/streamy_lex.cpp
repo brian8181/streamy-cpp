@@ -100,7 +100,8 @@ int main(int argc, char *argv[])
     sm.assign("admin_email", "admin@something.com");
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
-    sm.display("default.tpl");
+    string display_out;
+    sm.display("default.tpl", display_out);
 
     cout << "******* Display Variables ******" << endl;
     map<string, string>::iterator vend = sm.vars.end();
