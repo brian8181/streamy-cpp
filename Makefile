@@ -17,6 +17,8 @@ OBJ = build
 
 all: libstreamy.so libstreamy.a streamy_lex streamy_lexer streamy_app index.cgi bash_color_test
 
+examples: index.cgi 
+
 yacc_lex: streamy_lexer tokenizer
 
 test:
