@@ -41,7 +41,6 @@ public:
     bool load_config(const string& path, /* out */ string& s_out);
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
-    //string& display_file(const string& file, /* out */ string& s_out);
     void display(const string& file);
     
 private:
@@ -52,16 +51,17 @@ private:
     string& include(const string& tmpl, /* out */ string& s_out);
 
 public:
-  // maps
+    // maps
     std::map<string, string> streamy_vars;
     std::map<string, string> config;
     std::map<string, string> vars;
     std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
+
+    // testing
     typedef std::vector<pair<int, std::string>> tokens_vector;
     tokens_vector v;
-    //std::vector<pair<int, std::string>> tokens;
-
+    
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);
@@ -74,12 +74,12 @@ public:
     string cache_dir;
 
 public:
-    string& remove_file_comments(const string& tmpl, /*out*/ string& s_out);
-    string& remove_comments(const string& tmpl, /*out*/ string& s_out);
-    string replace_tag(string& tmpl, const string& exp_str);
-    string variable(const string& src);
-    string left_delimiter = "{";
-    string right_delimiter = "}";
+    // string& remove_file_comments(const string& tmpl, /*out*/ string& s_out);
+    // string& remove_comments(const string& tmpl, /*out*/ string& s_out);
+    // string replace_tag(string& tmpl, const string& exp_str);
+    // string variable(const string& src);
+    // string left_delimiter = "{";
+    // string right_delimiter = "}";
 };
 
 #endif
