@@ -77,11 +77,11 @@ int main(int argc, char *argv[])
     sm.load_config(config_path, s_out);
 
     cout << "******* Display Configuration ******" << endl;
-    map<string, string>::iterator end = sm.config.end();
-    for (map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
-    {
-        cout << "key: " << iter->first << " , value: " << iter->second << endl;
-    }
+    //map<string, string>::iterator end = sm.config.end();
+    // for (map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
+    // {
+    //     cout << "key: " << iter->first << " , value: " << iter->second << endl;
+    // }
 
     cout << "******* Display template stream ******" << endl;
     //string tmpl = "test.tpl";
@@ -117,11 +117,11 @@ int main(int argc, char *argv[])
 
 
     cout << "******* Display Variables ******" << endl;
-    map<string, string>::iterator vend = sm.vars.end();
-    for (map<string, string>::iterator iter = sm.vars.begin(); iter != vend; ++iter)
-    {
-        cout << "key: " << iter->first << " , value: " << iter->second << endl;
-    }              
+    // map<string, string>::iterator vend = sm.vars.end();
+    // for (map<string, string>::iterator iter = sm.vars.begin(); iter != vend; ++iter)
+    // {
+    //     cout << "key: " << iter->first << " , value: " << iter->second << endl;
+    // }              
    
     vector<string> names = {"Brian", "Chris", "Bob", "Sue", "Tammy", "Bill", "Julie", "Jancie", "David", "Shelly"};
     sm.assign("names_one", names);  

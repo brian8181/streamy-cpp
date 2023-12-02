@@ -68,6 +68,31 @@ void streamy::display(const string& file)
     cout << _html << endl;
 }
 
+bool streamy::lex_(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
+{
+    string full_path = this->template_dir + "/" + tmpl;
+    string s;
+    read_stream(full_path, s);
+    tokens.clear(); // clear tokens
+
+    size_t len = tmpl.size();
+    size_t pos = 0;
+    size_t bpos = tmpl.find('{', 0);
+    tokens.push_back(pair<int, string>(OPEN_CURLY_BRACE, "}"));
+    while(bpos < len)
+    {
+        string substr;
+        size_t epos = tmpl.find('}', bpos);
+        if(!(epos < len))
+            return false;
+        substr = tmpl.substr(bpos, bpos-epos);
+        tokens.push_back(pair<int, string>(CLOSE_CURLY_BRACE, "}"));
+        bpos = tmpl.find('{', epos);
+    }
+
+    return true;
+}
+
 bool streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
 {
     string full_path = this->template_dir + "/" + tmpl;
@@ -82,8 +107,8 @@ bool streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::strin
         std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
 
-        tokens.push_back(pair(1, fmt_match_beg));
-        tokens.push_back(pair(0, fmt_match));
+        tokens.push_back(pair(TEXT, fmt_match_beg));
+        tokens.push_back(pair(TAG, fmt_match));
         s = match.format("$'");
      }
     tokens.push_back(pair(1, s));
@@ -96,37 +121,37 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
     int len = tokens.size();
     for(int i = 0; i < len; ++i)
     {
-        if(tokens[i].first)
+        switch(tokens[i].first)
         {
-            ss << tokens[i].second;
-        }
-        else
-        {
-            const string VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
-            regex exp = regex(VARIABLE, regex::ECMAScript); // match
-            smatch m;
-            std::regex_search(tokens[i].second, m, exp);
-            if (!m.empty())
-            {
-                sub_match sm = m[1];
-                map<string, string>::const_iterator find_iter = vars.find(sm.str());
-                if(find_iter != vars.end())
+            case TEXT:
+                ss << tokens[i].second;
+                break;
+            case TAG:
+                regex exp = regex(VARIABLE, regex::ECMAScript); // match
+                smatch m;
+                std::regex_search(tokens[i].second, m, exp);
+                if (!m.empty())
                 {
-                    ss << find_iter->second;
+                    sub_match sm = m[1];
+                    map<string, string>::const_iterator find_iter = vars.find(sm.str());
+                    if(find_iter != vars.end())
+                    {
+                        ss << find_iter->second;
+                    }
                 }
-             }
+                break;
         }
     }
     html = ss.str();
     return true;
 }
 
-string& streamy::read_stream(const string& path, /* out */ string& out)
+string& streamy::read_stream(const string& path, /* out */ string& s_out)
 {
     std::ifstream ifstrm(path);
     std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
-    out = output;
-    return out;
+    s_out = output;
+    return s_out;
 }
 
 std::string& streamy::trim(string &s, char c)
@@ -172,32 +197,32 @@ string& streamy::trim(std::string &s)
     return s;
 }
 
+string& streamy::include(const string& tmpl, /* out */ string& s_out)
+{
+    string path = template_dir + "/" + tmpl;
+    string src;
+    read_stream(path, src);
 
-// string& streamy::include_file(const string& tmpl, /* out */ string& s_out)
-// {
-//     string path = template_dir + "/" + tmpl;
-//     string src = read_stream(path, s_out);
-//     regex exp = regex(INCLUDE, regex::ECMAScript);
-
-//     auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-//     auto end = sregex_iterator(); 
-//     int beg_pos = 0;
-//     for (sregex_iterator iter = begin; iter != end; ++iter)
-//     {
-//         smatch match = *iter;
-//         std::ssub_match sub = match[1];
-//         string s(sub.str());
-//         string& tag = trim(s);
+    regex exp = regex(INCLUDE, regex::ECMAScript);
+    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+    int beg_pos = 0;
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        std::ssub_match sub = match[1];
+        string s(sub.str());
+        string& tag = trim(s);
         
-//         int end_pos = match.position();
-//         s_out += src.substr(beg_pos, end_pos-beg_pos);
-//         // call include recursively
-//         s_out += include_file(tag, s_out);
-//         beg_pos = end_pos + match.length();
-//     }
-//     s_out += src.substr(beg_pos);
-//     return s_out;
-// }
+        int end_pos = match.position();
+        s_out += src.substr(beg_pos, end_pos-beg_pos);
+        // call include recursively
+        s_out += include(tag, s_out);
+        beg_pos = end_pos + match.length();
+    }
+    s_out += src.substr(beg_pos);
+    return s_out;
+}
 
 // string& streamy::include(const string& tmpl, /*out*/ string& s_out)
 // {
