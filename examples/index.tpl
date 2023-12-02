@@ -20,6 +20,7 @@
 {$body}
 Version is {$version}
 {$version_date}
+{* this is a comment *}
 
 form name="search_form" onsubmit="return on_query_submit(search_form)" action="results.php" method="get">
 	<div style="text-align: center">
@@ -68,6 +69,7 @@ form name="search_form" onsubmit="return on_query_submit(search_form)" action="r
 	{$admin_email}
 	{$version0}
 	{$version_date}
+    {* this is a comment *}
 </div>
 <br />
 <span style="font-size: smaller;"><em>Version {#version#} {#version_date#} ~(Copyright &#169; 2008)</em></span>

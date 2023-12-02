@@ -10,6 +10,7 @@
 #include "patterns.hpp"
 #include "streamy.hpp"
 #include "base64.hpp"
+#include "bash_color.h"
 
 streamy::streamy(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
@@ -137,8 +138,22 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
                     if(find_iter != vars.end())
                     {
                         ss << find_iter->second;
+                        break;
                     }
                 }
+                exp = regex(COMMENT, regex::ECMAScript); // match
+                std::regex_search(tokens[i].second, m, exp);
+                if (!m.empty())
+                {
+                    //sub_match sm = m[1];
+                    //map<string, string>::const_iterator find_iter = vars.find(sm.str());
+                    // if(find_iter != vars.end())
+                    // {
+                    //     ss << find_iter->second;
+                    // }
+                    break;
+                }
+                ss << FMT_FG_RED << "ERROR( " << tokens[i].second + " )" << FMT_RESET;
                 break;
         }
     }
