@@ -14,7 +14,8 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a streamy_lex streamy_lexer streamy_app bash_color_test
+
+all: libstreamy.so libstreamy.a streamy_lex streamy_lexer streamy_app index.cgi bash_color_test
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -23,6 +24,12 @@ test:
 
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
+
+index.cgi: index.o streamy.o
+	$(CXX) $(CXXFLAGS) ./examples/index.cpp $(BLD)/streamy.o -o $(BLD)/index.cgi
+
+index.o:
+	$(CXX) $(CXXFLAGS) -c ./examples/index.cpp -o $(BLD)/index.o
 
 libstreamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) -fPIC --shared $(OBJ)/streamy.o -o $(BLD)/libstreamy.so

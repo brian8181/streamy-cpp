@@ -31,14 +31,15 @@ public:
     //string& display_file(const string& file, /* out */ string& s_out);
     void display(const string& file);
     //bool display_(const string& tmpl);
-    void lex(const string& tmpl);
+    
     //string& lex(const string& tmpl, /*out*/ string& s_out);
     //string& parse_file(const string& file, /* out */ string& s_out);           // parse lexed input
-    string& parse(std::vector<pair<int, std::string>> tokens, /* out */ string& s_out);                // parse lexed input
     // string& parse_tag(const string& text, /* out */ string& s_out);                // parse lexed input
     // string& include_file(const string& tmpl, /* out */ string& s_out);
     // string& include(const string& tmpl, /*out*/ string& s_out);
     string& read_stream(const string& path, /* out */string& out);
+    bool lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens);
+    bool parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html); 
 
      // maps
     std::map<string, string> streamy_vars;
@@ -46,7 +47,8 @@ public:
     std::map<string, string> vars;
     std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
-    std::vector<pair<int, std::string>> tokens;
+    typedef std::vector<pair<int, std::string>> tokens_vector;
+    //std::vector<pair<int, std::string>> tokens;
 
     string& trim(string &s, char c);
     string& ltrim(std::string &s);

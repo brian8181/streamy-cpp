@@ -95,13 +95,13 @@ int main(int argc, char *argv[])
   
 
     sm.assign("headers", "HEADERS");
-    sm.assign("page_title", "streamyCPP Test Page");
-    sm.assign("body", "The Body");
+    sm.assign("page_title", "*PAGE_TITLE*");
+    sm.assign("body", "**THE BODY**");
     sm.assign("admin_email", "admin@something.com");
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
     string display_out;
-    sm.display("lex_all.tpl");
+    sm.display("home.tpl");
 
     // int len = sm.tokens.size();
     // for(int i = 0; i < len; ++i)
