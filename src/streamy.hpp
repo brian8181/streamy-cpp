@@ -32,6 +32,7 @@ public:
     string& display(const string& file, /* out */ string& s_out);
     bool display_(const string& tmpl);
     string& lex_file(const string& tmpl, /*out*/ string& s_out);
+    string& lex(const string& tmpl, /*out*/ string& s_out);
     string& parse_file(const string& file, /* out */ string& s_out);           // parse lexed input
     string& parse(const string& tmpl, /* out */ string& s_out);                // parse lexed input
     string& parse_tag(const string& text, /* out */ string& s_out);                // parse lexed input
@@ -45,7 +46,8 @@ public:
     std::map<string, string> vars;
     std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
-     
+    std::vector<pair<int, std::string>> tokens;
+
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
     string& rtrim(std::string &s);

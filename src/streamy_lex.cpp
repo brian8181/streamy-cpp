@@ -87,12 +87,13 @@ int main(int argc, char *argv[])
     //string tmpl = "test.tpl";
     string _out;
     sm.lex_file("lex_all.tpl", _out);
-    cout << _out << endl;
+    //cout << _out;
 
-    string _html;
-    _out.clear();
-    sm.parse(_out, _html); // parse generates the final HTLM from temaple
-    cout << _out << endl;
+    //string _html;
+    //sm.parse(_out, _html); // parse generates the final HTLM from temaple
+    //cout << _html;
+
+    
 
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "streamyCPP Test Page");
@@ -102,6 +103,19 @@ int main(int argc, char *argv[])
     sm.assign("version_date", "Feb, 14 2022");
     string display_out;
     sm.display("default.tpl", display_out);
+
+    // int len = sm.tokens.size();
+    // for(int i = 0; i < len; ++i)
+    // {
+    //     if(sm.tokens[i].first)
+    //         cout << sm.tokens[i].second;
+    //     else
+    //     {
+    //         cout << "TAG_REPLACE" << sm.tokens[i].second;
+    //     }
+    // }
+
+
 
     cout << "******* Display Variables ******" << endl;
     map<string, string>::iterator vend = sm.vars.end();

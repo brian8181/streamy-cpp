@@ -1,7 +1,7 @@
 A
-{AA}
+{headers}
 BB 
-{BBB}testing
+{BBB}testing{$ABC} test {$fff}
 CCCC
 {DDD}
 WWWW

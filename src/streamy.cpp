@@ -62,25 +62,16 @@ string& streamy::display_file(const string& file, /* out */ string& s_out)
      // open file the call parse function ...
     string full_path = this->template_dir + "/" + file;
     string src;
-    read_stream(full_path, src);
-    return display(src, s_out);
+    //read_stream(full_path, src);
+    return display(file, s_out);
 }
 
 string& streamy::display(const string& tmpl, /* out */ string& s_out)
 {
-    // string src;
-    // src = include_file(tmpl, src); // done by parser ?
-    // src = remove_comments(src); // done by parser ?
-    string _out;
-    lex_file("lex_all.tpl", _out);
-
+    lex_file(tmpl, s_out);
     string _html;
-    _out.clear();
-    parse(_out, _html); // parse generates the final HTLM from temaple
-    
-    cout << _out << endl;
-    /* todo */
-
+    parse(s_out, _html); // parse generates the final HTLM from temaple
+    cout << _html << endl;
     return s_out;
 }
     
@@ -181,20 +172,25 @@ string& streamy::lex_file(const string& tmpl, /*out*/ string& s_out)
     string full_path = this->template_dir + "/" + tmpl;
     string s;
     read_stream(full_path, s);
-    regex exp = regex(ESCAPE, regex::ECMAScript); // match
+    regex exp = regex(ESCAPE, std::regex::ECMAScript); // match
     smatch match;
     stringstream strm_str; 
+    
+    //vector<pair<int, std::string>> tokens;
 
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        std::string fmt_match_beg = match.format("<TEXT>$`</TEXT>");
-        std::string fmt_match = match.format("<TAG>$&</TAG>");
+        std::string fmt_match_beg = match.format("$`");
+        std::string fmt_match = match.format("$&");
 
+        tokens.push_back(pair(1, fmt_match_beg));
+        tokens.push_back(pair(0, fmt_match));
         s = match.format("$'");
-        strm_str << fmt_match_beg << endl;
-        strm_str << fmt_match << endl;
+        strm_str << fmt_match_beg;
+        strm_str << fmt_match;
     }
 
+    tokens.push_back(pair(1, s));
     strm_str << s;
     s_out = strm_str.str();
 
@@ -212,26 +208,20 @@ string& streamy::parse_file(const string& file, /* out */ string& s_out)
 
 string& streamy::parse(const string& tmpl, /* out */ string& s_out)
 {
-    string LEX_BEGIN_MARKUP = "\\<\\(TEXT|TAG\\)\\>";
-    string LEX_END_MARKUP = "/\\<\\(TEXT|TAG\\)\\>";
-    regex exp = regex(LEX_BEGIN_MARKUP, regex::ECMAScript); // match
-    smatch match;
-    stringstream strm_str;
-    string s = tmpl;
-    
-    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
+    int len = tokens.size();
+    for(int i = 0; i < len; ++i)
     {
-        std::string fmt_match_beg = match.format("$`");
-        std::string fmt_match = match.format("<REPLACE>$&</REPLACE>");
-
-        s = match.format("$'");
-        strm_str << fmt_match_beg << endl;
-        strm_str << fmt_match << endl;
+        if(tokens[i].first)
+        {
+            cout << tokens[i].second;
+        }
+        else
+        {
+            string key = tokens[i].second;
+            cout << vars.at(key);
+        }
     }
 
-    //cout << strm_str.str() << endl;
-    //strm_str << tmpl_tmp << endl;
-    s_out = strm_str.str();
     return s_out;
 }
 
