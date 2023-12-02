@@ -69,29 +69,29 @@ void streamy::display(const string& file)
     cout << _html << endl;
 }
 
-bool streamy::lex_(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
-{
-    string full_path = this->template_dir + "/" + tmpl;
-    string s;
-    read_stream(full_path, s);
-    tokens.clear(); // clear tokens
+// bool streamy::lex_(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
+// {
+//     string full_path = this->template_dir + "/" + tmpl;
+//     string s;
+//     read_stream(full_path, s);
+//     tokens.clear(); // clear tokens
 
-    size_t len = tmpl.size();
-    size_t bpos = tmpl.find('{', 0);
-    tokens.push_back(pair<int, string>(OPEN_CURLY_BRACE, "}"));
-    while(bpos < len)
-    {
-        string substr;
-        size_t epos = tmpl.find('}', bpos);
-        if(!(epos < len))
-            return false;
-        substr = tmpl.substr(bpos, bpos-epos);
-        tokens.push_back(pair<int, string>(CLOSE_CURLY_BRACE, "}"));
-        bpos = tmpl.find('{', epos);
-    }
+//     size_t len = tmpl.size();
+//     size_t bpos = tmpl.find('{', 0);
+//     tokens.push_back(pair<int, string>(OPEN_CURLY_BRACE, "}"));
+//     while(bpos < len)
+//     {
+//         string substr;
+//         size_t epos = tmpl.find('}', bpos);
+//         if(!(epos < len))
+//             return false;
+//         substr = tmpl.substr(bpos, bpos-epos);
+//         tokens.push_back(pair<int, string>(CLOSE_CURLY_BRACE, "}"));
+//         bpos = tmpl.find('{', epos);
+//     }
 
-    return true;
-}
+//     return true;
+// }
 
 bool streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
 {
@@ -127,12 +127,28 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
                 ss << tokens[i].second;
                 break;
             case TAG:
-                regex exp = regex(VARIABLE + "|" + CONFIG_VARIABLE, regex::ECMAScript); // match
+                regex exp = regex(VARIABLE + "|" + ARRAY + "|" + CONFIG_VARIABLE, regex::ECMAScript); // match
                 smatch m;
                 std::regex_search(tokens[i].second, m, exp);
                 if (!m.empty())
                 {
-                    sub_match sm = m[REG_VAR].matched ? m[REG_VAR] : ( m[CONF_VAR].matched ? m[CONF_VAR] : m[TAG] ); 
+                    //sub_match sm= m[REG_VAR];// = m[REG_VAR].matched ? m[REG_VAR] : ( m[CONF_VAR].matched ? m[CONF_VAR] : m[TAG] ); 
+                    // int matched;
+                    // matched = ( m[REG_VAR].matched ? (matched | REG_VAR) : ( m[CONF_VAR].matched ? (matched | CONF_VAR) : ( m[ARRAY].matched ? (matched | ARRAY) : 0 ) ) );
+                    if(m[REG_VAR].matched)
+                    {
+                        //psm = &m[REG_VAR];
+                    }
+                    else if(m[CONF_VAR].matched)
+                    {
+                        //sm = m[CONF_VAR];
+                    }
+                    else if(m[ARRAY_VAR].matched)
+                    {
+                        //sm = m[ARRAY_VAR];
+                    }
+                    
+                    sub_match sm = m[REG_VAR];
                     map<string, string>::const_iterator find_iter = vars.find(sm.str());
                     if(find_iter != vars.end())
                     {

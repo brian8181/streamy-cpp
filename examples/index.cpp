@@ -68,6 +68,9 @@ int parse_options(int argc, char* argv[])
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }
 
+    vector<string> citys = {"Mesquite", "Dallas", "Addison", "New York", "London", "Barcelona", "Madrid", "Paris", "Las Angelels", "Las Vegas", "Garland", "Richardson", "Plano"};
+    sm.assign("citys", citys);
+
     sm.config.insert(pair<string, string>("version", "2000"));
     sm.config.insert(pair<string, string>("mail_message", "No Mail!"));
     sm.config.insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
@@ -81,7 +84,8 @@ int parse_options(int argc, char* argv[])
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
     string display_out;
-    sm.display("home.tpl");
+
+    sm.display("test_vars.tpl");
     
 	return 0;
 }

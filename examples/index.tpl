@@ -22,6 +22,14 @@ Version is {$version}
 {$version_date}
 {* this is a comment *}
 
+{* The header file with the main logo and stuff *}
+{include file='header.tpl'}
+
+{* Dev note: the $includeFile var is assigned in foo.php script *}
+{include file=$includeFile}
+
+{$foo[4]}
+
 form name="search_form" onsubmit="return on_query_submit(search_form)" action="results.php" method="get">
 	<div style="text-align: center">
 		<div style="text-align: center">

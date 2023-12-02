@@ -18,6 +18,8 @@ const string SYMBOL_NAME = "\\b[_.~]*[A-Za-z][A-Za-z0-9_.-~]*\\b";
 const string LOAD_CONFIG_PAIR = "([A-Za-z][A-Za-z0-9]*)=([A-Za-z0-9]*);";
 const string INCLUDE = "\\{\\s*\\include file\\s*=\\s*\"(.*?)\"\\s*\\}";
 const string VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
+const string VAR2  = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]\\s*\\}";
+const string ARRAY = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]\\s*\\}";
 const string CONFIG_VARIABLE = "\\{\\s*#(" + SYMBOL_NAME + ")#\\s*\\}";
 const string COMMENT = "\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}";
 
@@ -32,12 +34,12 @@ const int HASH_MARK = 0x20;
 
 const int REG_VAR = 0x1;
 const int CONF_VAR = 0x2;
+const int ARRAY_VAR = 0x4;
 
 class streamy
 {
 public:
     streamy(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir);
-
     bool load_config(const string& path, /* out */ string& s_out);
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
@@ -46,7 +48,7 @@ public:
 private:
     string& read_stream(const string& path, /* out */string& out);
     bool lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens);
-    bool lex_(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens);
+    //bool lex_(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens);
     bool parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html); 
     string& include(const string& tmpl, /* out */ string& s_out);
 
@@ -59,8 +61,8 @@ public:
     std::map<string, std::map<string, string>> arrays;
 
     // testing
-    typedef std::vector<pair<int, std::string>> tokens_vector;
-    tokens_vector v;
+    typedef std::vector<pair<int, std::string>> token_vector;
+    token_vector v;
     
     string& trim(string &s, char c);
     string& ltrim(std::string &s);
