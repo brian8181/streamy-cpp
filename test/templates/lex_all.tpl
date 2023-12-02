@@ -1,8 +1,8 @@
 A
 {AA}
 BB 
-{BBB}
+{BBB}testing
 CCCC
 {DDD}
 WWWW
-{TTT}
+{TTT}XXX

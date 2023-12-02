@@ -68,37 +68,19 @@ string& streamy::display_file(const string& file, /* out */ string& s_out)
 
 string& streamy::display(const string& tmpl, /* out */ string& s_out)
 {
-    string src;
-    src = include_file(tmpl, src);
-    //src = remove_comments(src);
-    //src = if_sequence(src);
-    //src = variable(src);
+    // string src;
+    // src = include_file(tmpl, src); // done by parser ?
+    // src = remove_comments(src); // done by parser ?
+    string _out;
+    lex_file("lex_all.tpl", _out);
 
-    //REPLACE VARIABLES
-    regex exp = regex(VARIABLE, regex::ECMAScript); // match
-    auto begin = sregex_iterator(src.begin(), src.end(), exp, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
-    string output;
-    int beg_pos = 0;
-    for (sregex_iterator iter = begin; iter != end; ++iter)
-    {
-        smatch match = *iter;
-        std::ssub_match sub = match[1];
-        std::string s(sub.str());
-        string& tag = trim(s);
-        
-        int end_pos = match.position();
-        output += src.substr(beg_pos, end_pos-beg_pos);
-        map<string, string>::const_iterator find_iter = vars.find(tag);
-        if(find_iter != vars.end())
-        {
-            output += find_iter->second;
-        }
-        beg_pos = end_pos + match.length();
-    }
-    output = replace_tag(output, ESCAPE);
-    cout << output << endl;
-    s_out = output;
+    string _html;
+    _out.clear();
+    parse(_out, _html); // parse generates the final HTLM from temaple
+    
+    cout << _out << endl;
+    /* todo */
+
     return s_out;
 }
     
@@ -205,7 +187,7 @@ string& streamy::lex_file(const string& tmpl, /*out*/ string& s_out)
 
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        std::string fmt_match_beg = match.format("[<TEXT>$`</TEXT>");
+        std::string fmt_match_beg = match.format("<TEXT>$`</TEXT>");
         std::string fmt_match = match.format("<TAG>$&</TAG>");
 
         s = match.format("$'");
@@ -213,6 +195,7 @@ string& streamy::lex_file(const string& tmpl, /*out*/ string& s_out)
         strm_str << fmt_match << endl;
     }
 
+    strm_str << s;
     s_out = strm_str.str();
 
     return s_out;
