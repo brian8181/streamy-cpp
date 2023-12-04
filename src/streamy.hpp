@@ -44,6 +44,8 @@ const int HASH_MARK = 0x20;
 const int REG_VAR = 2;
 const int ARRAY_VAR = 4;
 const int STATIC_VAR = 7;
+const int ESC_COMMENT = 8;
+const int ESC_INCLUDE = 9;
 
 class streamy
 {
