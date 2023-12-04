@@ -19,7 +19,6 @@
 
 #include <iostream>
 #include <cstring>
-#include <string>
 #include <unistd.h>         /* for STDIN_FILENO */
 #include <sys/select.h>     /* for pselect   */
 #include <string>
@@ -62,9 +61,11 @@ int parse_options(int argc, char* argv[])
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }
 
-    vector<string> citys = {"Mesquite", "Dallas", "Addison", "New York", "London", "Barcelona", "Madrid", "Paris", "Las Angelels", "Las Vegas", "Garland", "Richardson", "Plano"};
+    vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London", 
+                             "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas", 
+                             "Garland",   "Richardson", "Plano"};
     sm.assign("citys", citys);
-    
+
     sm.config.insert(pair<string, string>("version", "2000"));
     sm.config.insert(pair<string, string>("mail_message", "No Mail!"));
     sm.config.insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
