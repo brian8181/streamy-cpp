@@ -123,7 +123,7 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
            
                 if (!m.empty())
                 {
-                    if(m[REG_VAR].matched || m[STATIC_VAR].matched || m[ARRAY_VAR].matched)
+                    if(m[REG_VAR].matched || m[STATIC_VAR].matched || m[ARRAY_VAR].matched || m[ESC_COMMENT].matched || m[ESC_INCLUDE].matched)
                     {
                         ss << FMT_FG_GREEN << "MATCH( " << FMT_RESET << FMT_FG_BLUE << FMT_UNDERLINE << tokens[i].second
                             << FMT_RESET_UNDERLINE << FMT_RESET << FMT_FG_GREEN << " )" << FMT_RESET;

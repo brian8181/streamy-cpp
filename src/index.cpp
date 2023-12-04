@@ -33,12 +33,7 @@ using namespace std;
 
 int parse_options(int argc, char* argv[])
 {
-	cout << FMT_FG_BLUE << "Hello World!"  << FMT_RESET << endl;
-	cout << FMT_FG_RED << "Hello World!"  << FMT_RESET << endl;
-	cout << FMT_FG_GREEN << "Hello World!"  << FMT_RESET << endl;
-	cout << FMT_FG_YELLOW << "Hello World!"  << FMT_RESET << endl;
-
-    std::filesystem::path root(argv[0]);
+	std::filesystem::path root(argv[0]);
     string root_str = root.replace_extension("conf");
     map<string, string> pairs = get_config(root_str);
 
@@ -54,8 +49,7 @@ int parse_options(int argc, char* argv[])
         template_name = argv[1];
     }
     const string file_path = template_folder + "/" + template_name;
-
-    string config_path = project_folder + "/test/config/config";
+    const string config_path = project_folder + "/test/config/config";
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     string s_out;
@@ -70,7 +64,7 @@ int parse_options(int argc, char* argv[])
 
     vector<string> citys = {"Mesquite", "Dallas", "Addison", "New York", "London", "Barcelona", "Madrid", "Paris", "Las Angelels", "Las Vegas", "Garland", "Richardson", "Plano"};
     sm.assign("citys", citys);
-
+    
     sm.config.insert(pair<string, string>("version", "2000"));
     sm.config.insert(pair<string, string>("mail_message", "No Mail!"));
     sm.config.insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
@@ -84,7 +78,6 @@ int parse_options(int argc, char* argv[])
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
     string display_out;
-
     sm.display("test_vars.tpl");
     
 	return 0;
