@@ -15,9 +15,9 @@ BLD = build
 OBJ = build
 
 
-all: libstreamy.so libstreamy.a streamy_lexer index.cgi bash_color_test
+all: libstreamy.so libstreamy.a streamy_lexer index.cgi bash_color_test index.cgi
 
-examples: index.cgi 
+#examples: index.cgi 
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -31,10 +31,10 @@ index.cgi: fileio.o libstreamy.so libstreamy.a index.o
 	$(CXX) $(CXXFLAGS) -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/index_a.cgi
 	#$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/index_so.cgi
-	cp ./examples/index.conf $(BLD)/index.conf
+	cp $(SRC)/index.conf $(BLD)/index.conf
 
 index.o: 
-	$(CXX) $(CXXFLAGS) -I$(SRC) -c ./examples/index.cpp -o $(OBJ)/index.o
+	$(CXX) $(CXXFLAGS) -I$(SRC) -c $(SRC)/index.cpp -o $(OBJ)/index.o
 
 libstreamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) -fPIC --shared $(OBJ)/streamy.o -o $(BLD)/libstreamy.so
