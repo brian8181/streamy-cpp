@@ -123,7 +123,7 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
 {
     stringstream ss;
     stringstream estream;
-    estream << "(" << VARIABLE << ")|(" << ARRAY << ")|(" << STATIC_VARIABLE << ")";
+    estream << "(" << VARIABLE << ")|(" << ARRAY << ")|(" << STATIC_VARIABLE << ")|(" << COMMENT << ")|(" << INCLUDE << ")";
  
     int len = tokens.size();
     for(int i = 0; i < len; ++i)
@@ -156,22 +156,22 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
                         break;
                     }
                 }
-                exp = regex(INCLUDE, regex::ECMAScript); // match
-                std::regex_search(tokens[i].second, m, exp);
-                if (!m.empty())
-                {
-                    sub_match sm = m[1];
-                    map<string, string>::const_iterator find_iter = config.find(sm.str());
-                    if(find_iter != config.end())
-                    {
-                        ss << find_iter->second;
-                        break;
-                    }
-                }
-                exp = regex(COMMENT, regex::ECMAScript); // match
-                std::regex_search(tokens[i].second, m, exp);
-                if (!m.empty()) 
-                    break;
+                // exp = regex(INCLUDE, regex::ECMAScript); // match
+                // std::regex_search(tokens[i].second, m, exp);
+                // if (!m.empty())
+                // {
+                //     sub_match sm = m[1];
+                //     map<string, string>::const_iterator find_iter = config.find(sm.str());
+                //     if(find_iter != config.end())
+                //     {
+                //         ss << find_iter->second;
+                //         break;
+                //     }
+                // }
+                // exp = regex(COMMENT, regex::ECMAScript); // match
+                // std::regex_search(tokens[i].second, m, exp);
+                // if (!m.empty()) 
+                //     break;
 
                 ss << FMT_FG_RED << "ERROR( " << FMT_RESET << FMT_FG_LIGHT_CYAN << tokens[i].second << FMT_RESET << FMT_FG_RED << " )" << FMT_RESET;
                 break;
