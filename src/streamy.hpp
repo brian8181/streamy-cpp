@@ -23,10 +23,10 @@ const string SYMBOL_NAME = "\\b[_.~]*[A-Za-z][A-Za-z0-9_.-~]*\\b";
 const string LOAD_CONFIG_PAIR = "([A-Za-z][A-Za-z0-9]*)=([A-Za-z0-9]*);";
 const string TAGS = "\\{\\s*(\\$(" + SYMBOL_NAME + "))|(\\*[\\w\\s\\p]*\\)\\s*\\}";
 // file
-const string EXPR_FILE = "\\{\\s*\\(.*) file\\s*=\\s*\"(.*?)\"\\s*\\}";
-const string EXPR_INCLUDE = "\\{\\s*\\include file\\s*=\\s*\"(.*?)\"\\s*\\}";
-const string EXPR_CONFIG_LOAD = "\\{\\s*\\config_load file\\s*=\\s*\"(.*?)\"\\s*\\}";
-const string EXPR_INSERT = "\\{\\s*\\insert file\\s*=\\s*\"(.*?)\"\\s*\\}";
+const string EXPR_FILE = "\\{(insert)|(include)|(config_load) file=\"[A-Za-z.]+\"\\}";
+const string EXPR_INCLUDE = "\\{include file=\"[A-Za-z.]+\"\\}";
+const string EXPR_CONFIG_LOAD = "\\{\\s*config_load files=\"[A-Za-z.]+\"\\}";
+const string EXPR_INSERT = "\\{\\s*insert file\\s*=\\s*\"(.*?)\"\\s*\\}";
 // variables
 const string EXPR_VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
 const string EXPR_OBJECT = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";

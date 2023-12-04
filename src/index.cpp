@@ -81,7 +81,7 @@ int parse_options(int argc, char* argv[])
     string display_out;
     sm.display("test_vars.tpl");
     
-	return 0;
+    return 0;
 }
 
 int stdin_ready (int filedes)

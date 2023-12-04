@@ -96,8 +96,8 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
 {
     stringstream ss;
     stringstream estream;
-    estream << "(" << EXPR_VARIABLE << ")|(" << EXPR_ARRAY << ")|(" << EXPR_STATIC_VARIABLE << ")|(" << EXPR_COMMENT << ")|("
-        << EXPR_INCLUDE << ")|(" << EXPR_INSERT << ")|(" << EXPR_CONFIG_LOAD << ")";
+    estream << "(" << EXPR_VARIABLE << ")|(" << EXPR_ARRAY << ")|(" << EXPR_STATIC_VARIABLE << ")|(" << EXPR_COMMENT << ")|(" << EXPR_FILE << ")";
+        //<< EXPR_INCLUDE << ")|(" << EXPR_INSERT << ")|(" << EXPR_CONFIG_LOAD << ")";
  
     int len = tokens.size();
     for(int i = 0; i < len; ++i)
