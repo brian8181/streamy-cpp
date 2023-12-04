@@ -13,34 +13,29 @@
 
 using namespace std;
 
+// tokens
+const int TEXT = 0x1;
+const int TAG = 0x2;
+
+// todo
 const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]*\\}";
 const string SYMBOL_NAME = "\\b[_.~]*[A-Za-z][A-Za-z0-9_.-~]*\\b";
 const string LOAD_CONFIG_PAIR = "([A-Za-z][A-Za-z0-9]*)=([A-Za-z0-9]*);";
-
-// file
-const string INCLUDE = "\\{\\s*\\include file\\s*=\\s*\"(.*?)\"\\s*\\}";
-const string CONFIG_LOAD = "\\{\\s*\\config_load file\\s*=\\s*\"(.*?)\"\\s*\\}";
-const string INSERT = "\\{\\s*\\insert file\\s*=\\s*\"(.*?)\"\\s*\\}";
-
-// variables
-const string VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
-const string OBJECT = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
-const string ARRAY = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]\\s*\\}";
-const string STATIC_VARIABLE = "\\{\\s*#(" + SYMBOL_NAME + ")#\\s*\\}";
-
-const string COMMENT = "\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}";
 const string TAGS = "\\{\\s*(\\$(" + SYMBOL_NAME + "))|(\\*[\\w\\s\\p]*\\)\\s*\\}";
+// file
+const string EXPR_FILE = "\\{\\s*\\(.*) file\\s*=\\s*\"(.*?)\"\\s*\\}";
+const string EXPR_INCLUDE = "\\{\\s*\\include file\\s*=\\s*\"(.*?)\"\\s*\\}";
+const string EXPR_CONFIG_LOAD = "\\{\\s*\\config_load file\\s*=\\s*\"(.*?)\"\\s*\\}";
+const string EXPR_INSERT = "\\{\\s*\\insert file\\s*=\\s*\"(.*?)\"\\s*\\}";
+// variables
+const string EXPR_VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
+const string EXPR_OBJECT = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
+const string EXPR_ARRAY = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]\\s*\\}";
+const string EXPR_STATIC_VARIABLE = "\\{\\s*#(" + SYMBOL_NAME + ")#\\s*\\}";
+// other
+const string EXPR_COMMENT = "\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}";
 
-
-
-
-const int TEXT = 0x1;
-const int TAG = 0x2;
-const int OPEN_CURLY_BRACE = 0x4;
-const int CLOSE_CURLY_BRACE = 0x8;
-const int ASTERISK = 0x10;
-const int HASH_MARK = 0x20;
-
+// group indexs
 const int REG_VAR = 2;
 const int ARRAY_VAR = 4;
 const int STATIC_VAR = 7;
@@ -59,7 +54,6 @@ public:
 private:
     string& read_stream(const string& path, /* out */string& out);
     bool lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens);
-    //bool lex_(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens);
     bool parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html); 
     bool parse_tag(const string token, /* out */ string& html); 
     string& include(const string& tmpl, /* out */ string& s_out);

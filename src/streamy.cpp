@@ -11,10 +11,7 @@
 #include "streamy.hpp"
 #include "bash_color.h"
 
-vector<string> KEYWORDS_REGEX { VARIABLE, ARRAY, OBJECT, STATIC_VARIABLE, INCLUDE, CONFIG_LOAD, COMMENT };
-
-
-
+//vector<string> KEYWORDS_REGEX { VARIABLE, ARRAY, OBJECT, STATIC_VARIABLE, INCLUDE, CONFIG_LOAD, COMMENT };
 
 streamy::streamy(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
@@ -73,30 +70,6 @@ void streamy::display(const string& file)
     cout << _html << endl;
 }
 
-// bool streamy::lex_(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
-// {
-//     string full_path = this->template_dir + "/" + tmpl;
-//     string s;
-//     read_stream(full_path, s);
-//     tokens.clear(); // clear tokens
-
-//     size_t len = tmpl.size();
-//     size_t bpos = tmpl.find('{', 0);
-//     tokens.push_back(pair<int, string>(OPEN_CURLY_BRACE, "}"));
-//     while(bpos < len)
-//     {
-//         string substr;
-//         size_t epos = tmpl.find('}', bpos);
-//         if(!(epos < len))
-//             return false;
-//         substr = tmpl.substr(bpos, bpos-epos);
-//         tokens.push_back(pair<int, string>(CLOSE_CURLY_BRACE, "}"));
-//         bpos = tmpl.find('{', epos);
-//     }
-
-//     return true;
-// }
-
 bool streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
 {
     string full_path = this->template_dir + "/" + tmpl;
@@ -123,7 +96,8 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
 {
     stringstream ss;
     stringstream estream;
-    estream << "(" << VARIABLE << ")|(" << ARRAY << ")|(" << STATIC_VARIABLE << ")|(" << COMMENT << ")|(" << INCLUDE << ")";
+    estream << "(" << EXPR_VARIABLE << ")|(" << EXPR_ARRAY << ")|(" << EXPR_STATIC_VARIABLE << ")|(" << EXPR_COMMENT << ")|("
+        << EXPR_INCLUDE << ")|(" << EXPR_INSERT << ")|(" << EXPR_CONFIG_LOAD << ")";
  
     int len = tokens.size();
     for(int i = 0; i < len; ++i)
