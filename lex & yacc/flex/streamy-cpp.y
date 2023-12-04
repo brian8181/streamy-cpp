@@ -18,7 +18,7 @@
 
 input:
 	%empty
-	| ";"
+	| '*'
 	| input line
 	;
 	
@@ -38,7 +38,7 @@ expr:
 
 function:
 		TEXT
-		| expr expr "*" { $$ = $1 * $2 }
+		| expr expr '*' { $$ = $1 * $2 }
 		;
 
 %%

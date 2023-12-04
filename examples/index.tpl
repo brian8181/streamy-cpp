@@ -28,6 +28,17 @@ Version is {$version}
 {* Dev note: the $includeFile var is assigned in foo.php script *}
 {include file=$includeFile}
 
+{config_load file='colors.conf'}
+{include file='header.tpl'}
+{insert file='banner_ads.tpl' title='Smarty is cool'}
+
+{if $logged_in}
+Welcome, <font color="{#fontColor#}">{$name}!</font>
+{else}
+hi, {$name}
+{/if}
+{include file='footer.tpl' ad=$random_id}
+
 {$foo[4]}
 
 form name="search_form" onsubmit="return on_query_submit(search_form)" action="results.php" method="get">

@@ -61,6 +61,7 @@
         "random": "cpp",
         "iomanip": "cpp",
         "numbers": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "cinttypes": "cpp"
     }
 }

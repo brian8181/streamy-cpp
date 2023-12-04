@@ -15,7 +15,7 @@ BLD = build
 OBJ = build
 
 
-all: libstreamy.so libstreamy.a streamy_lex streamy_lexer streamy_app index.cgi bash_color_test
+all: libstreamy.so libstreamy.a streamy_lexer index.cgi bash_color_test
 
 examples: index.cgi 
 
@@ -27,7 +27,7 @@ test:
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
-index.cgi: fileio.o streamy.o libstreamy.so libstreamy.a index.o
+index.cgi: fileio.o libstreamy.so libstreamy.a index.o
 	$(CXX) $(CXXFLAGS) -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/index_a.cgi
 	#$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/index_so.cgi

@@ -53,7 +53,7 @@ int parse_options(int argc, char* argv[])
         template_name.clear();
         template_name = argv[1];
     }
-    const string file_path = template_folder + template_name;
+    const string file_path = template_folder + "/" + template_name;
 
     string config_path = project_folder + "/test/config/config";
 

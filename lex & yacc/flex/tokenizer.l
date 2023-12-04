@@ -1,44 +1,4 @@
 %{
-
-%}
-
-DIGIT                      [0-9]
-NUMBER                     [0-9]+
-OPEN_CURLY                 "{"
-CLOSE_CURLY                "}"
-OPEN_BRACE                 "["
-CLOSE_BRACE                "]"
-OPEN_PAREN                 "("
-CLOSE_PAREN                ")"
-LESS_THAN                  "<"
-GREATER_THAN               ">"
-SINGLE_QUOTE               "'"
-DOUBLE_QUOTE               "\""
-EQUAL                      "="
-DOT                        "."
-PLUS                       "+"
-MINUS                      "-"
-MULTIPLY                   "*"
-EXPONET                    "^"
-FOREWARD_SLASH             "/"
-BACKWARD_SLASH             "\\"
-BAR                         "|"
-HASH                        "#"
-UNDERSCORE                  "_"
-SEMI_COLON                  ";"
-COLON                       ":"
-AMPERSAND                   "&"
-TILDE                       "~"
-TICK_MARK                   "`"
-AT_SYMBOL                   "@"
-EXCLAMATION                 "!"
-PERCENT                     "%"
-COMMA                       ","
-QUESTION                    "?"
-VARIABLE                    "$"[a-zA-Z]+[a-zA-Z0-9]*
-TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
-
-%{
 /* need this for the call to atof() below */
 #include <math.h>
 %}

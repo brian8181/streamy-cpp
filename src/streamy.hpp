@@ -16,14 +16,23 @@ using namespace std;
 const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]*\\}";
 const string SYMBOL_NAME = "\\b[_.~]*[A-Za-z][A-Za-z0-9_.-~]*\\b";
 const string LOAD_CONFIG_PAIR = "([A-Za-z][A-Za-z0-9]*)=([A-Za-z0-9]*);";
-const string INCLUDE = "\\{\\s*\\include file\\s*=\\s*\"(.*?)\"\\s*\\}";
-const string VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
-const string VAR2  = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]\\s*\\}";
-const string ARRAY = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]\\s*\\}";
-const string CONFIG_VARIABLE = "\\{\\s*#(" + SYMBOL_NAME + ")#\\s*\\}";
-const string COMMENT = "\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}";
 
+// file
+const string INCLUDE = "\\{\\s*\\include file\\s*=\\s*\"(.*?)\"\\s*\\}";
+const string CONFIG_LOAD = "\\{\\s*\\config_load file\\s*=\\s*\"(.*?)\"\\s*\\}";
+const string INSERT = "\\{\\s*\\insert file\\s*=\\s*\"(.*?)\"\\s*\\}";
+
+// variables
+const string VARIABLE = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
+const string OBJECT = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\s*\\}";
+const string ARRAY = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]\\s*\\}";
+const string STATIC_VARIABLE = "\\{\\s*#(" + SYMBOL_NAME + ")#\\s*\\}";
+
+const string COMMENT = "\\{\\s*\\*[\\w\\s\\p]*\\*\\s*\\}";
 const string TAGS = "\\{\\s*(\\$(" + SYMBOL_NAME + "))|(\\*[\\w\\s\\p]*\\)\\s*\\}";
+
+
+
 
 const int TEXT = 0x1;
 const int TAG = 0x2;
@@ -32,9 +41,9 @@ const int CLOSE_CURLY_BRACE = 0x8;
 const int ASTERISK = 0x10;
 const int HASH_MARK = 0x20;
 
-const int REG_VAR = 0x1;
-const int CONF_VAR = 0x2;
-const int ARRAY_VAR = 0x4;
+const int REG_VAR = 2;
+const int ARRAY_VAR = 4;
+const int STATIC_VAR = 7;
 
 class streamy
 {
@@ -50,6 +59,7 @@ private:
     bool lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens);
     //bool lex_(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens);
     bool parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html); 
+    bool parse_tag(const string token, /* out */ string& html); 
     string& include(const string& tmpl, /* out */ string& s_out);
 
 public:
