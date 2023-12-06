@@ -29,7 +29,7 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
     trim(this->cache_dir, '/');
 }
 
-bool streamy::load_config(const string& path, /* out */ string& s_out)
+string& streamy::load_config(const string& path, /* out */ string& s_out)
 {
     s_out = read_stream(path, s_out);
     regex rgx = regex(LOAD_CONFIG_PAIR); 
@@ -45,7 +45,7 @@ bool streamy::load_config(const string& path, /* out */ string& s_out)
         pair<string, string> p(name, value);
         map_config.insert(p);
     }
-    return true;
+    return s_out;
 }
 
 bool streamy::assign(const string& name, const string& val)

@@ -31,32 +31,28 @@
 using namespace std;
 
 int parse_options(int argc, char* argv[])
-{  
-    // const string file_path = template_folder + "/" + template_name;
-    // const string config_path = project_folder + "/test/config/config"; 
-    // conststring project_folder; // const string file_path = template_folder + "/" + template_name;
-    // const string config_path = project_folder + "/test/config/config"; 
-    // conststring project_folder;
-
-    const string project_folder = ".";
-    const string config_path = "./test/conf";
-	streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
-    string s_out;
-    std::map<string, string> config;
-    std::map<string, string> vars;
-
-    sm.load_config(config_path, s_out);
-
-    cout << "******* Display Configuration ******" << endl;
-    map<string, string>::iterator end = sm.get_map_config(config).end();
-    for (map<string, string>::iterator iter = sm.get_map_config(config).begin(); iter != end; ++iter)
-    {
-        cout << "key: " << iter->first << " , value: " << iter->second << endl;
-    }
-
+{
+    // testing values ...  
     vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London", 
                              "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas", 
                              "Garland",   "Richardson", "Plano"};
+
+    // initial configuration ...
+    const string project_folder = "/home/brian/src/streamy-cpp";
+    const string config_path = "./test/conf";
+    std::map<string, string> config;
+    std::map<string, string> vars;
+    string s_out;
+
+    // steamy-cpp ...
+	streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
+    sm.load_config(config_path, s_out);
+
+    // testing - will this work ... 
+    // string s = sm.load_config(config_path, s);
+    // testing - this should not work there is a warning ... 
+    // string& s = sm.load_config(config_path, s);
+   
     sm.assign("citys", citys);
     sm.get_map_config(config).insert(pair<string, string>("version", "2000"));
     sm.get_map_config(config).insert(pair<string, string>("mail_message", "No Mail!"));
@@ -70,8 +66,14 @@ int parse_options(int argc, char* argv[])
     sm.assign("admin_email", "admin@something.com");
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
-    string display_out;
     sm.display("test_vars.tpl");
+
+    // read / display ...
+    map<string, string>::iterator end = sm.get_map_config(config).end();
+    for (map<string, string>::iterator iter = sm.get_map_config(config).begin(); iter != end; ++iter)
+    {
+        cout << "key: " << iter->first << " , value: " << iter->second << endl;
+    }
     
     return 0;
 }
@@ -79,12 +81,12 @@ int parse_options(int argc, char* argv[])
 int stdin_ready (int filedes)
 {
 	fd_set set;
-	// declare/initialize zero timeout 
+	// declare/initialize zero timeout ...
 	struct timespec timeout = { .tv_sec = 0 };
-	// initialize the file descriptor set
+	// initialize the file descriptor set ...
 	FD_ZERO(&set);
 	FD_SET(filedes, &set);
-	// check stdin_ready is ready on filedes 
+	// check stdin_ready is ready on filedes ...
 	return pselect(filedes + 1, &set, NULL, NULL, &timeout, NULL);
 }
 
@@ -96,7 +98,7 @@ int main(int argc, char* argv[])
 		{
 			std::string buffer;
 			std::cin >> buffer;
-			// add piped buffer to end of argv
+			// add piped buffer to end of argv ...
 			char* argvtmp[sizeof(char*) * argc+1];
 			memcpy(argvtmp, argv, sizeof(char*) * argc);
 			argvtmp[argc] = &buffer[0];

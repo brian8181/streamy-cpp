@@ -21,7 +21,7 @@ class streamy
 {
 public:
     streamy(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir);
-    bool load_config(const string& path, /* out */ string& s_out);
+    string& load_config(const string& path, /* out */ string& s_out);
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
     void display(const string& file);
