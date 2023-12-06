@@ -22,11 +22,6 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
     this->compile_dir = compile_dir;
     this->config_dir = config_dir;
     this->cache_dir = cache_dir;
-
-    trim(this->template_dir, '/');
-    trim(this->compile_dir, '/');
-    trim(this->config_dir, '/');
-    trim(this->cache_dir, '/');
 }
 
 string& streamy::load_config(const string& path, /* out */ string& s_out)
@@ -115,6 +110,7 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
 {
     stringstream ss;
     stringstream estream;
+
     estream     << "(" 
                 << EXPR_ARRAY 
                 << ")|("
@@ -207,49 +203,6 @@ string& streamy::read_stream(const string& path, /* out */ string& s_out)
     std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
     s_out = output;
     return s_out;
-}
-
-std::string& streamy::trim(string &s, char c)
-{
-    if(s.at(s.length()-1) == c)
-        s.pop_back();
-
-    return s;
-}
-
-string& streamy::ltrim(std::string &s)
-{
-    int len = s.size();
-    int i;
-    for(i = 0; i < len; ++i)
-    {
-        if(!std::isspace(s[i]))
-            break;
-    }
-    string::iterator beg = s.begin(); 
-    s.erase(beg, beg+i);
-    return s;
-}
-
-string& streamy::rtrim(std::string &s)
-{
-    int len = s.size();
-    int i = len;
-    for(;i > 0; --i)
-    {
-        if(!std::isspace(s[i-1]))
-            break;
-    }
-    string::iterator end = s.end(); 
-    s.erase(end-(len-i), end);
-    return s;
-}
-
-string& streamy::trim(std::string &s)
-{
-    rtrim(s);
-    ltrim(s);
-    return s;
 }
 
 // string& streamy::include(const string& tmpl, /* out */ string& s_out)

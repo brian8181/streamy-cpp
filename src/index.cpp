@@ -23,9 +23,6 @@
 #include <sys/select.h>     /* for pselect   */
 #include <string>
 #include <getopt.h>
-#include <filesystem>
-#include "bash_color.h"
-#include "fileio.hpp"
 #include "streamy.hpp"
 
 using namespace std;
@@ -40,6 +37,8 @@ int parse_options(int argc, char* argv[])
     // initial configuration ...
     const string project_folder = "/home/brian/src/streamy-cpp";
     const string config_path = "./test/conf";
+
+    // out variables : so the function may return by reference not value
     std::map<string, string> config;
     std::map<string, string> vars;
     string s_out;
@@ -52,7 +51,7 @@ int parse_options(int argc, char* argv[])
     // string s = sm.load_config(config_path, s);
     // testing - this should not work there is a warning ... 
     // string& s = sm.load_config(config_path, s);
-   
+    
     sm.assign("citys", citys);
     sm.get_map_config(config).insert(pair<string, string>("version", "2000"));
     sm.get_map_config(config).insert(pair<string, string>("mail_message", "No Mail!"));
