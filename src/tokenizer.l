@@ -2,7 +2,6 @@
     
 %}
 
-<<<<<<< HEAD
 DIGIT                       [0-9]
 NUMBER                      [0-9]+
 OPEN_CURLY                  "{"
@@ -44,49 +43,6 @@ FOREACH                     "foreach"
 FOREACHELSE                 "foreachelse"
 VARIABLE                    "$"[a-zA-Z]+[a-zA-Z0-9]*
 TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
-=======
-DIGIT            [0-9]
-NUMBER           [0-9]+
-OPEN_CURLY       "{"
-CLOSE_CURLY      "}"
-OPEN_BRACE       "["
-CLOSE_BRACE      "]"
-OPEN_PAREN       "("
-CLOSE_PAREN      ")"
-LESS_THAN        "<"
-GREATER_THAN     ">"
-SINGLE_QUOTE     "'"
-DOUBLE_QUOTE     "\""
-EQUAL            "="
-DOT              "."
-PLUS             "+"
-MINUS            "-"
-MULTIPLY         "*"
-EXPONET          "^"
-FOREWARD_SLASH    "/"
-BACKWARD_SLASH   "\\"
-BAR              "|"
-HASH             "#"
-UNDERSCORE       "_"
-SEMI_COLON       ";"
-COLON            ":"
-AMPERSAND        "&"
-TILDE            "~"
-TICK_MARK        "`"
-AT_SYMBOL        "@"
-EXCLAMATION      "!"
-PERCENT          "%"
-COMMA            ","
-QUESTION         "?"
-DOLLAR_SIGN      "$"
-IF               "if"
-ELSE             "else"
-ELSE_IF          "elseif"
-FOREACH          "foreach"
-FOREACHELSE      "foreachelse"
-VARIABLE         "$"[a-zA-Z]+[a-zA-Z0-9]*
-TEXT             [a-zA-Z0-9]+[a-zA-Z0-9]*
->>>>>>> step_one_lexer
 
 %%
 

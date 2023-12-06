@@ -87,7 +87,23 @@ bool streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::strin
         tokens.push_back(pair(TEXT, fmt_match_beg));
         tokens.push_back(pair(TAG, fmt_match));
         s = match.format("$'");
-     }
+
+        // lex tag
+        string token_str = s;;
+        regex exp_toks = regex(TOKENS,  std::regex::ECMAScript); // match
+        smatch tok_match;
+        while(std::regex_search(token_str, match, exp_toks, std::regex_constants::match_default))
+        {
+            std::string fmt_match_beg = match.format("$`");
+            std::string fmt_match = match.format("$&");
+
+            int TOKEN_TYPE; // set value from bits
+            //tokens.push_back(pair(TEXT, fmt_match_beg));
+            tokens.push_back(pair(TOKEN, fmt_match));
+            token_str = match.format("$'");
+        }
+        tokens.push_back(pair(TOKEN,token_str ));
+    }
     tokens.push_back(pair(1, s));
     return true;
 }
@@ -96,7 +112,7 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
 {
     stringstream ss;
     stringstream estream;
-    estream << "(" << EXPR_VARIABLE << ")|(" << EXPR_ARRAY << ")|(" << EXPR_STATIC_VARIABLE << ")|(" << EXPR_COMMENT << ")|(" << EXPR_FILE << ")";
+    estream << "(" + EXPR_ARRAY + ")|(" << EXPR_FILE << ")|("  << EXPR_STATIC_VARIABLE <<  ")";
         //<< EXPR_INCLUDE << ")|(" << EXPR_INSERT << ")|(" << EXPR_CONFIG_LOAD << ")";
  
     int len = tokens.size();
@@ -114,39 +130,23 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
                 smatch m;
                 std::regex_search(tokens[i].second, m, exp);
 
-                // unsigned int mbits = 0;
-                // for(int i = 1; i < 5; ++i)
-                // {
-                //     //mbits |= m[i].matched ? (1 << i) : 0;
-                //     mbits |= (int(m[i].matched) << i);
-                // }
+                int len = m.size();
+                unsigned int mbits = 0;
+                for(int i = 0; i < len && i < 32; ++i)
+                {
+                    //int* pbits = (int*)m[0].matched;
+                    mbits |= (int(m[i].matched) << i);
+                }
            
                 if (!m.empty())
                 {
-                    if(m[REG_VAR].matched || m[STATIC_VAR].matched || m[ARRAY_VAR].matched || m[ESC_COMMENT].matched || m[ESC_INCLUDE].matched)
+                    //if(m[ESC_REG_VAR].matched || m[ESC_STATIC_VAR].matched || m[ESC_ARRAY_VAR].matched || m[ESC_COMMENT].matched || m[ESC_INCLUDE].matched)
                     {
                         ss << FMT_FG_GREEN << "MATCH( " << FMT_RESET << FMT_FG_BLUE << FMT_UNDERLINE << tokens[i].second
-                            << FMT_RESET_UNDERLINE << FMT_RESET << FMT_FG_GREEN << " )" << FMT_RESET;
+                            << FMT_RESET_UNDERLINE << FMT_RESET << FMT_FG_GREEN << " )" << FMT_RESET << " : " << std::oct << mbits;
                         break;
                     }
                 }
-                // exp = regex(INCLUDE, regex::ECMAScript); // match
-                // std::regex_search(tokens[i].second, m, exp);
-                // if (!m.empty())
-                // {
-                //     sub_match sm = m[1];
-                //     map<string, string>::const_iterator find_iter = config.find(sm.str());
-                //     if(find_iter != config.end())
-                //     {
-                //         ss << find_iter->second;
-                //         break;
-                //     }
-                // }
-                // exp = regex(COMMENT, regex::ECMAScript); // match
-                // std::regex_search(tokens[i].second, m, exp);
-                // if (!m.empty()) 
-                //     break;
-
                 ss << FMT_FG_RED << "ERROR( " << FMT_RESET << FMT_FG_LIGHT_CYAN << tokens[i].second << FMT_RESET << FMT_FG_RED << " )" << FMT_RESET;
                 break;
         }
