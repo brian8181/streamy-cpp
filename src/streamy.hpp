@@ -10,54 +10,12 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <regex>
 
-using namespace std;
-// tokens
-const int TEXT = 0x1;
-const int TAG = 0x2;
-
-// todo
-const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]*\\}";
-
-//const string SYMBOL_NAME = "\\b[_~]*[A-Za-z][A-Za-z0-9_-~]*\\b";
-const string SYMBOL_NAME = "\\b\\$?_*[A-Za-z][A-Za-z0-9_]*\\b";
-const string VAR = "\\$(" + SYMBOL_NAME + ")"; 
-const string ACTIONS = "(insert)|(include)|(config_load)";
-
-const string TOKENS = "(" + VAR + ")|(" + ACTIONS + ")";
-const string test;
-const string LOAD_CONFIG_PAIR = "([A-Za-z][A-Za-z0-9]*)=([A-Za-z0-9]*);";
-const string TAGS = "\\{\\s*(\\$(?:" + SYMBOL_NAME + "))|(\\*[\\w\\s\\p]*\\)\\s*\\}";
-// file
-const string EXPR_FILE = "\\{(insert)|(include)|(config_load) file=\"[A-Za-z.]+\"\\}";
-// const string EXPR_INCLUDE = "\\{include file=\"[A-Za-z.]+\"\\}";
-// const string EXPR_CONFIG_LOAD = "\\{\\s*config_load files=\"[A-Za-z.]+\"\\}";
-// const string EXPR_INSERT = "\\{\\s*insert file\\s*=\\s*\"(.*?)\"\\s*\\}";
-// variables
-const string EXPR_VARIABLE = SYMBOL_NAME;
-
-const string EXPR_OBJECT =  "\\{\\s*\\$(" + SYMBOL_NAME + ")(?:\\.)|(?:->)" + SYMBOL_NAME + "(\\(\\))*\\s*\\}";
-const string EXPR_ARRAY = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]\\s*\\}";
-const string EXPR_STATIC_VARIABLE = "\\s*#(" + SYMBOL_NAME + ")#\\s*";
-// other
-const string EXPR_COMMENT = "\\{\\*[\\w\\s]*\\*\\}";
-const string EXPR_ASSIGN = "";
-
-// group indexs
-const int TOKEN = 0; // todo
-const int ESC_REG_VAR = 2;
-const int ESC_ARRAY_VAR = 4;
-const int ESC_STATIC_VAR = 7;
-const int ESC_OBJECT = 0; // todo
-const int ESC_COMMENT = 8;
-const int ESC_INCLUDE = 9;
-const int ESC_LOAD_CONFIG = 0;
-const int ESC_STRING_LITERIAL = 0;
-const int ESC_NUMERIC_LITERAL = 0;
-const int ESC_DECIMAL_LITERAL = 0;
-const int ESC_SIGNED_NUMERIC_LITERAL = 0;
-const int ESC_UNSIGNED_NUMERIC_LITERAL = 0;
-const int ESC_INNNER_REG_VAR =  0;
+using std::string;
+using std::map;
+using std::vector;
+using std::pair;
 
 class streamy
 {
@@ -67,9 +25,12 @@ public:
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
     void display(const string& file);
+    std::map<string, string>& get_map_vars(/* out */ std::map<string, string>& vars);
+    std::map<string, string>& get_map_config(/* out */ std::map<string, string>& config);
     
 private:
     string& read_stream(const string& path, /* out */string& out);
+    int read_bits(const std::smatch& m);
     bool lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens);
     bool parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html); 
     bool parse_tag(const string token, /* out */ string& html); 
@@ -78,8 +39,8 @@ private:
 public:
     // maps
     std::map<string, string> streamy_vars;
-    std::map<string, string> config;
-    std::map<string, string> vars;
+    std::map<string, string> map_config;
+    std::map<string, string> map_vars;
     std::map<string, vector<string>> var_arrays;
     std::map<string, std::map<string, string>> arrays;
 
@@ -98,13 +59,9 @@ public:
     string config_dir;
     string cache_dir;
 
-public:
-    // string& remove_file_comments(const string& tmpl, /*out*/ string& s_out);
-    // string& remove_comments(const string& tmpl, /*out*/ string& s_out);
-    // string replace_tag(string& tmpl, const string& exp_str);
-    // string variable(const string& src);
-    // string left_delimiter = "{";
-    // string right_delimiter = "}";
+private:
+    string left_delimiter = "{";
+    string right_delimiter = "}";
 };
 
 #endif

@@ -8,8 +8,11 @@
 #include <regex>
 #include <fstream>
 #include <sstream>
-#include "streamy.hpp"
 #include "bash_color.h"
+#include "symbols.hpp"
+#include "streamy.hpp"
+
+using namespace std;
 
 //vector<string> KEYWORDS_REGEX { VARIABLE, ARRAY, OBJECT, STATIC_VARIABLE, INCLUDE, CONFIG_LOAD, COMMENT };
 
@@ -40,7 +43,7 @@ bool streamy::load_config(const string& path, /* out */ string& s_out)
         string name = match[1].str();
         string value = match[2].str();
         pair<string, string> p(name, value);
-        config.insert(p);
+        map_config.insert(p);
     }
     return true;
 }
@@ -48,7 +51,7 @@ bool streamy::load_config(const string& path, /* out */ string& s_out)
 bool streamy::assign(const string& name, const string& val)
 {
     pair<string, string> p(name, val);
-    vars.insert(p);
+    map_vars.insert(p);
     return true;
 }
 
@@ -97,7 +100,7 @@ bool streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::strin
             std::string fmt_match_beg = match.format("$`");
             std::string fmt_match = match.format("$&");
 
-            int TOKEN_TYPE; // set value from bits
+            // int TOKEN_TYPE; // set value from bits
             //tokens.push_back(pair(TEXT, fmt_match_beg));
             tokens.push_back(pair(TOKEN, fmt_match));
             token_str = match.format("$'");
@@ -112,8 +115,17 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
 {
     stringstream ss;
     stringstream estream;
-    estream << "(" + EXPR_ARRAY + ")|(" << EXPR_FILE << ")|("  << EXPR_STATIC_VARIABLE <<  ")";
-        //<< EXPR_INCLUDE << ")|(" << EXPR_INSERT << ")|(" << EXPR_CONFIG_LOAD << ")";
+    estream     << "(" 
+                << EXPR_ARRAY 
+                << ")|("
+                << EXPR_ACTION_FILE 
+                << ")|("  
+                << EXPR_STATIC_VARIABLE 
+                << ")|(" 
+                << EXPR_VARIABLE 
+                << ")|("
+                << EXPR_COMMENT 
+                << ")";
  
     int len = tokens.size();
     for(int i = 0; i < len; ++i)
@@ -130,20 +142,14 @@ bool streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
                 smatch m;
                 std::regex_search(tokens[i].second, m, exp);
 
-                int len = m.size();
-                unsigned int mbits = 0;
-                for(int i = 0; i < len && i < 32; ++i)
-                {
-                    //int* pbits = (int*)m[0].matched;
-                    mbits |= (int(m[i].matched) << i);
-                }
+                int bits = read_bits(m);
            
                 if (!m.empty())
                 {
-                    //if(m[ESC_REG_VAR].matched || m[ESC_STATIC_VAR].matched || m[ESC_ARRAY_VAR].matched || m[ESC_COMMENT].matched || m[ESC_INCLUDE].matched)
+                    if(m[ESC_REG_VAR].matched || m[ESC_STATIC_VAR].matched || m[ESC_ARRAY_VAR].matched || m[ESC_COMMENT].matched || m[ESC_INCLUDE].matched)
                     {
                         ss << FMT_FG_GREEN << "MATCH( " << FMT_RESET << FMT_FG_BLUE << FMT_UNDERLINE << tokens[i].second
-                            << FMT_RESET_UNDERLINE << FMT_RESET << FMT_FG_GREEN << " )" << FMT_RESET << " : " << std::oct << mbits;
+                            << FMT_RESET_UNDERLINE << FMT_RESET << FMT_FG_GREEN << " )" << FMT_RESET << " : " << std::oct << bits;
                         break;
                     }
                 }
@@ -170,6 +176,29 @@ bool streamy::parse_tag(const string token, /* out */ string& html)
     //     }
     // }
     return true;
+}
+
+std::map<string, string>& streamy::get_map_config(/* out */ std::map<string, string>& config)
+ {
+    config = map_config;
+    return config;
+ }
+
+ std::map<string, string>& streamy::get_map_vars(/* out */ std::map<string, string>& vars)
+ {
+    vars = map_vars;
+    return vars;
+ }
+
+int streamy::read_bits(const smatch& m)
+{
+    int len = m.size();
+    unsigned int bits = 0;
+    for(int i = 0; i < len && i < 32; ++i)
+    {
+        bits |= (int(m[i].matched) << i);
+    }
+    return bits;
 }
 
 string& streamy::read_stream(const string& path, /* out */ string& s_out)

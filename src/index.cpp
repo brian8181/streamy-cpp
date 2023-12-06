@@ -42,11 +42,14 @@ int parse_options(int argc, char* argv[])
     const string config_path = "./test/conf";
 	streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     string s_out;
+    std::map<string, string> config;
+    std::map<string, string> vars;
+
     sm.load_config(config_path, s_out);
 
     cout << "******* Display Configuration ******" << endl;
-    map<string, string>::iterator end = sm.config.end();
-    for (map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
+    map<string, string>::iterator end = sm.get_map_config(config).end();
+    for (map<string, string>::iterator iter = sm.get_map_config(config).begin(); iter != end; ++iter)
     {
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }
@@ -55,13 +58,12 @@ int parse_options(int argc, char* argv[])
                              "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas", 
                              "Garland",   "Richardson", "Plano"};
     sm.assign("citys", citys);
-
-    sm.config.insert(pair<string, string>("version", "2000"));
-    sm.config.insert(pair<string, string>("mail_message", "No Mail!"));
-    sm.config.insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
-    sm.vars.insert(pair<string, string>("version", "2000"));
-    sm.vars.insert(pair<string, string>("mail_message", "No Mail!"));
-    sm.vars.insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
+    sm.get_map_config(config).insert(pair<string, string>("version", "2000"));
+    sm.get_map_config(config).insert(pair<string, string>("mail_message", "No Mail!"));
+    sm.get_map_config(config).insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
+    sm.get_map_vars(vars).insert(pair<string, string>("version", "2000"));
+    sm.get_map_vars(vars).insert(pair<string, string>("mail_message", "No Mail!"));
+    sm.get_map_vars(vars).insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "*PAGE_TITLE*");
     sm.assign("body", "**THE BODY**");
