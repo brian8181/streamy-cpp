@@ -15,26 +15,22 @@ using std::string;
 const int TEXT = 0x1;
 const int TAG = 0x2;
 
-// todo
-const string ESCAPE = "\\{[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]*\\}";
-const string SYMBOL_NAME = "\\b\\$?_*[A-Za-z][A-Za-z0-9_]*\\b";
+const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
+const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
+const string VALID_FILE_CHARS = "[A-Za-z0-9_.]";
+const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
 const string ACTION = "(insert)|(include)|(config_load)";
-const string LOAD_CONFIG_PAIR = "([A-Za-z][A-Za-z0-9]*)=([A-Za-z0-9]*);";
-// file
-const string EXPR_ACTION_FILE = "\\{(insert)|(include)|(config_load) file=\"[A-Za-z.]+\"\\}";
-// const string EXPR_INCLUDE = "\\{include file=\"[A-Za-z.]+\"\\}";
-// const string EXPR_CONFIG_LOAD = "\\{\\s*config_load files=\"[A-Za-z.]+\"\\}";
-// const string EXPR_INSERT = "\\{\\s*insert file\\s*=\\s*\"(.*?)\"\\s*\\}";
-// variables
-const string EXPR_VARIABLE = "\\$(" + SYMBOL_NAME + ")"; ;
+const string VAR_MODIFIER = "(capitalize)|(indent)|(lower)|(spacify)|(string_format)|(truncate)|(date_format)|(escape)";
+const string LOAD_CONFIG_PAIR = "([A-Za-z]" + VALID_SYMBOL_CHARS + "*)=(" + VALID_SYMBOL_CHARS + "*);";
+const string EXPR_VARIABLE = "\\$(" + SYMBOL_NAME + ")(\\|" + VAR_MODIFIER +  ")?";
 const string EXPR_OBJECT =  "\\{\\s*\\$(" + SYMBOL_NAME + ")(?:\\.)|(?:->)" + SYMBOL_NAME + "(\\(\\))*\\s*\\}";
-const string EXPR_ARRAY = "\\{\\s*\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]\\s*\\}";
+const string EXPR_ARRAY = "\\$(" + SYMBOL_NAME + ")\\[([0-9]+)\\]";
 const string EXPR_STATIC_VARIABLE = "\\s*#(" + SYMBOL_NAME + ")#\\s*";
-// other
-const string EXPR_COMMENT = "\\{\\*[\\w\\s]*\\*\\}";
-const string EXPR_ASSIGN = "";
+const string EXPR_ACTION_FILE = ACTION + " file=\"" + VALID_FILE_CHARS + "+\"";
+const string EXPR_COMMENT = "\\*\\s*" + VALID_SYMBOL_CHARS + "*\\s*\\*";
+// lexing
+const string ESCAPE = "\\{" + VALID_ESC_CHARS + "*\\}";
 const string TOKENS = "(" + EXPR_VARIABLE + ")|(" + ACTION + ")";
-const string TAGS = "\\{\\s*(\\$(?:" + SYMBOL_NAME + "))|(\\*[\\w\\s\\p]*\\)\\s*\\}";
 
 // group indexs
 const int TOKEN = 0; // todo

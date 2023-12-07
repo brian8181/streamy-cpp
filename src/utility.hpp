@@ -8,12 +8,19 @@
 #define _UTILITY_HPP
 
 #include <string>
+#include <regex>
 
 using std::string;
+using std::map;
+using std::smatch;
 
-string& trim(string &s, char c);
-string& ltrim(std::string &s);
-string& rtrim(std::string &s);
-string& trim(std::string &s);
+//void combine_regex(map<string&, string&> strings, string& or_strings);
+int read_bits(const smatch& m);
+string& read_stream(const string& path, /* out */ string& s_out);
+string& trim(string& s, char c);
+string& ltrim(string& s);
+string& rtrim(string& s);
+string& trim(string& s);
+
 
 #endif

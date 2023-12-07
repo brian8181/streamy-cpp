@@ -16,18 +16,13 @@ OBJ = build
 
 all: libstreamy.so libstreamy.a streamy_lexer index.cgi bash_color_test index.cgi
 
-#examples: index.cgi 
-
 yacc_lex: streamy_lexer tokenizer
-
-test:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/%.cpp
 
 streamy.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
 utility.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
 
 index.cgi: fileio.o libstreamy.so libstreamy.a index.o
 	$(CXX) $(CXXFLAGS) -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/index.cgi

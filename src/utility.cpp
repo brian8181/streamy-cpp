@@ -5,7 +5,43 @@
 // Build Date: Sun Oct  1 09:39:08 PM CDT 2023
 // Version:    3.6.7
 
+#include <sstream>
+#include <fstream>
 #include "utility.hpp"
+
+using std::ostringstream;
+
+// void combine_regex(map<string&, string&> strings, string& or_strings)
+// {
+//     string name;
+//     ostringstream s;
+//     s << "(";
+//     int len = strings.size();
+//     for(int i = 0; i < len; ++i)
+//     {   
+//         s << name << ")|(";
+//     }
+//     s << name[len] << ")";
+// }
+
+int read_bits(const smatch& m)
+{
+    int len = m.size();
+    unsigned int bits = 0;
+    for(int i = 0; i < len && i < 32; ++i)
+    {
+        bits |= (int(m[i].matched) << i);
+    }
+    return bits;
+}
+
+string& read_stream(const string& path, /* out */ string& s_out)
+{
+    std::ifstream ifstrm(path);
+    std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
+    s_out = output;
+    return s_out;
+}
 
 string& trim(string &s, char c)
 {
