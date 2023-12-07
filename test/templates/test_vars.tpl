@@ -1,6 +1,7 @@
 
 {* Wrong * }
 {* Right *}
+{8 Right 8}
 {$foo}
 {$boo.}
 {$boo->}
@@ -16,4 +17,9 @@
 {$foo.$boo}
 {$foo->$boo}
 {$boo } 
-($hoo $doo}
+{$hoo $doo}
+{insert file="test.html"}
+{insert file="test.html"}
+{include file="test.html"}
+{$num|truncate}
+{$num|upper}

@@ -25,24 +25,22 @@ public:
     bool assign(const string& name, const string& val);
     bool assign(const string& name, const vector<string>& vec);
     void display(const string& file);
+    void clear_all();
     map<string, string>& get_map_vars(/* out */ map<string, string>& vars);
     map<string, string>& get_map_config(/* out */ map<string, string>& config);
     
 private:
-    string& read_stream(const string& path, /* out */string& out);
-    int read_bits(const std::smatch& m);
-    bool lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
-    bool parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
-    bool parse_tag(const string token, /* out */ string& html); 
-    //string& include(const string& tmpl, /* out */ string& s_out);
+    // string& read_stream(const string& path, /* out */string& out);
+    // int read_bits(const std::smatch& m);
+    void lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
+    void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
+    void parse_tag(const string token, /* out */ string& html); 
 
 public:
     // maps
-    map<string, string> streamy_vars;
     map<string, string> map_config;
     map<string, string> map_vars;
-    map<string, vector<string>> var_arrays;
-    map<string, map<string, string>> arrays;
+    map<string, vector<string>> map_arrays;
     // testing
     typedef vector<pair<int, string>> token_vector;
     token_vector v;
