@@ -11,6 +11,7 @@
 #include "bash_color.h"
 #include "symbols.hpp"
 #include "streamy.hpp"
+//#include "tokens.hpp"
 //#include "utility.hpp"
 
 using namespace std;
@@ -77,10 +78,16 @@ void streamy::display(const string& file)
 {
     // open file the call parse function ...
     string full_path = this->template_dir + "/" + file;
+    // stdout all unescaped text send escaped text to the lexer
+    std::vector<pair<int, std::string>> escaped;
+    find_escaped_text(file, escaped);
     std::vector<pair<int, std::string>> tokens;
-    find_escaped_text(file, tokens);
+    // tokenize the template code
+    lex(file, tokens);
+    // parse the tokens appling agrammer rules
     string _html;
     parse(tokens, _html); 
+    // stdout final
     cout << _html << endl;
 }
 
@@ -114,41 +121,10 @@ void streamy::find_escaped_text(const string& tmpl, /* out */ std::vector<pair<i
 
 void streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
 {
-    string full_path = this->template_dir + "/" + tmpl;
-    string s;
-    read_stream(full_path, s);
-    tokens.clear(); // clear tokens
-
-    regex exp = regex(ESCAPE, std::regex::ECMAScript); // match
-    smatch match;
-    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
-    {
-        std::string fmt_match_beg = match.format("$`");
-        std::string fmt_match = match.format("$&");
-
-        tokens.push_back(pair(TEXT, fmt_match_beg));
-        tokens.push_back(pair(TAG, fmt_match));
-        s = match.format("$'");
-        s.find(s, OPEN_CURLY_BRACE);
-        token_map.insert(pair(((int)OPEN_CURLY_BRACE), s));
-        
-        // lex tag
-        string token_str = s;;
-        regex exp_toks = regex(TOKENS,  std::regex::ECMAScript); // match
-        smatch tok_match;
-        while(std::regex_search(token_str, match, exp_toks, std::regex_constants::match_default))
-        {
-            std::string fmt_match_beg = match.format("$`");
-            std::string fmt_match = match.format("$&");
-            // int TOKEN_TYPE; // set value from bits
-
-            //tokens.push_back(pair(TEXT, fmt_match_beg));
-            tokens.push_back(pair(TOKEN, fmt_match));
-            token_str = match.format("$'");
-        }
-        tokens.push_back(pair(TOKEN,token_str ));
-    }
-    tokens.push_back(pair(TEXT, s));
+    // do
+    // get_next_token( KEY_WORDS | SYMBOL_NAME | OPERATORS )
+    // repeat ...
+    // while not end
 }
 
 void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html)
