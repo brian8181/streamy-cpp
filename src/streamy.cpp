@@ -61,18 +61,16 @@ string& streamy::load_config(const string& path, /* out */ string& s_out)
     return s_out;
 }
 
-bool streamy::assign(const string& name, const string& val)
+void streamy::assign(const string& name, const string& val)
 {
     pair<string, string> p(name, val);
     map_vars.insert(p);
-    return true;
 }
 
-bool streamy::assign(const string& name, const vector<string>& vec)
+void streamy::assign(const string& name, const vector<string>& vec)
 {
     pair<string, vector<string>> p(name, vec);
     map_arrays.insert(p);
-    return true;
 }
 
 void streamy::display(const string& file)
@@ -80,7 +78,7 @@ void streamy::display(const string& file)
     // open file the call parse function ...
     string full_path = this->template_dir + "/" + file;
     std::vector<pair<int, std::string>> tokens;
-    lex(file, tokens);
+    find_escaped_text(file, tokens);
     string _html;
     parse(tokens, _html); 
     cout << _html << endl;
@@ -91,6 +89,27 @@ void streamy::clear_all()
     map_config.clear();
     map_vars.clear();
     map_arrays.clear();
+}
+
+void streamy::find_escaped_text(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
+{
+    string full_path = this->template_dir + "/" + tmpl;
+    string s;
+    read_stream(full_path, s);
+    tokens.clear(); // clear tokens
+
+    regex exp = regex(ESCAPE, std::regex::ECMAScript); // match
+    smatch match;
+    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
+    {
+        std::string fmt_match_beg = match.format("$`");
+        std::string fmt_match = match.format("$&");
+
+        tokens.push_back(pair(TEXT, fmt_match_beg));
+        tokens.push_back(pair(TAG, fmt_match));
+        s = match.format("$'");
+    }
+    tokens.push_back(pair(TEXT, s));
 }
 
 void streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
@@ -110,7 +129,9 @@ void streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::strin
         tokens.push_back(pair(TEXT, fmt_match_beg));
         tokens.push_back(pair(TAG, fmt_match));
         s = match.format("$'");
-
+        s.find(s, OPEN_CURLY_BRACE);
+        token_map.insert(pair(((int)OPEN_CURLY_BRACE), s));
+        
         // lex tag
         string token_str = s;;
         regex exp_toks = regex(TOKENS,  std::regex::ECMAScript); // match
@@ -119,15 +140,15 @@ void streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::strin
         {
             std::string fmt_match_beg = match.format("$`");
             std::string fmt_match = match.format("$&");
-
             // int TOKEN_TYPE; // set value from bits
+
             //tokens.push_back(pair(TEXT, fmt_match_beg));
             tokens.push_back(pair(TOKEN, fmt_match));
             token_str = match.format("$'");
         }
         tokens.push_back(pair(TOKEN,token_str ));
     }
-    tokens.push_back(pair(1, s));
+    tokens.push_back(pair(TEXT, s));
 }
 
 void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html)

@@ -8,17 +8,38 @@
 #define _SYMBOLS_HPP
 
 #include <string>
+#include <sstream>
 
 using std::string;
+using std::stringstream;
 
 // tokens
 const int TEXT = 0x1;
 const int TAG = 0x2;
 
+const char OPEN_CURLY_BRACE = '{';
+const char CLOSE_CURLY_BRACE = '}';
+const char FORWARD_SLASH = '/';
 const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
 const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
 const string VALID_FILE_CHARS = "[A-Za-z0-9_.]";
+const string VALID_LITERAL_CHARS = "";
+const string VALID_INT_LITERAL = "";
 const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
+// state, found open curly brace
+const string VARIABLE_TOKEN = "\\$(" + SYMBOL_NAME + ")";
+const string COMMENT_TOKEN = "\\*\\s*" + VALID_SYMBOL_CHARS + "*\\s*\\*";
+const string ACTION_TOKEN = "(insert)|(include)|(config_load)";
+const string STATIC_VARIABLE_TOKEN = "\\s*#(" + SYMBOL_NAME + ")#\\s*";
+const string MATCHED_OPEN_CURLY = "(" + VARIABLE_TOKEN 
+                                    + ")|("
+                                    + COMMENT_TOKEN
+                                    + ")|("
+                                    + ACTION_TOKEN
+                                    + ")}("
+                                    + STATIC_VARIABLE_TOKEN
+                                    + ")";
+// state, found left hand side, looking for modifiers or close curly brace
 const string ACTION = "(insert)|(include)|(config_load)";
 const string VAR_MODIFIER = "(capitalize)|(indent)|(lower)|(spacify)|(string_format)|(truncate)|(date_format)|(escape)";
 const string LOAD_CONFIG_PAIR = "([A-Za-z]" + VALID_SYMBOL_CHARS + "*)=(" + VALID_SYMBOL_CHARS + "*);";

@@ -46,12 +46,6 @@ int parse_options(int argc, char* argv[])
     // steamy-cpp ...
 	streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     sm.load_config(config_path, s_out);
-
-    // testing - will this work ... 
-    // string s = sm.load_config(config_path, s);
-    // testing - this should not work there is a warning ... 
-    // string& s = sm.load_config(config_path, s);
-    
     sm.assign("citys", citys);
     sm.get_map_config(config).insert(pair<string, string>("version", "2000"));
     sm.get_map_config(config).insert(pair<string, string>("mail_message", "No Mail!"));
@@ -73,7 +67,6 @@ int parse_options(int argc, char* argv[])
     {
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }
-    
     return 0;
 }
 
