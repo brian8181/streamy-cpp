@@ -11,8 +11,7 @@
 #include "bash_color.h"
 #include "symbols.hpp"
 #include "streamy.hpp"
-//#include "tokens.hpp"
-//#include "utility.hpp"
+#include "tokens.hpp"
 
 using namespace std;
 
@@ -125,6 +124,23 @@ void streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::strin
     // get_next_token( KEY_WORDS | SYMBOL_NAME | OPERATORS )
     // repeat ...
     // while not end
+     int len = tokens.size();
+    for(int i = 0; i < len; ++i)
+    {
+        regex sexpr = regex(OPEN_CURLY_BRACE, regex::ECMAScript); // match
+        smatch m;
+        std::regex_search(tokens[i].second, m, sexpr);
+        if (!m.empty())
+        {
+            sub_match sm = m[1];
+            map<string, string>::const_iterator find_iter = map_config.find(sm.str());
+            if(find_iter != map_config.end())
+            {
+                //ss << find_iter->second;
+                break;
+            }
+        }
+    }
 }
 
 void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html)

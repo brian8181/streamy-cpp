@@ -17,29 +17,6 @@ using std::map;
 using std::vector;
 using std::pair;
 
-
-// const string OPEN_CURLY_BRACE;
-// const int STATE_BEGIN = 0;
-// const int STATE_INITIAL = 9999;
-// const int STATE_MATCH_START = 0x2;
-// const int STATE_MATCH_FILE_KEYWORD = 0x4;
-// const int STATE_MATCH_MODIFIER = 0x8;
-// const int STATE_MATCH_FILE_NAME = 0x1000;
-// const int STATE_MATCH_VARIABLE = 1;
-// const int STATE_MATCH_LITERAL = 0x4;
-// const int EVENT_INITIALIZED = 0x1;
-// // events
-// const int EVENT_MATCHED_CURLY = 0x2;
-// const int EVENT_FILE_KEYWORD = 0x4;
-// const int EVENT_COMMENT = 0x20;
-// const int EVENT_MODIFIER = 0x8;
-// const int EVENT_VARIABLE = 0x10;
-// const int EVENT_STATIC = 0x40;
-// const int EVENT_BEGIN_IF = 0x40;
-// const int EVENT_END_IF = 0x80;
-// const int EVENT_LITERAL = 0x100;
-// const int EVENT_FILE_NAE = 0x200;
-
 class streamy
 {
 public:
