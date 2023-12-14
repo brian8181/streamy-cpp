@@ -8,10 +8,12 @@
 #define _TOKENS_HPP
 
 #include <string>
+#include <map>
 #include <sstream>
 
 using std::string;
 using std::stringstream;
+using std::map;
 
 // escapes
 const int TEXT = 0x1;
@@ -28,10 +30,13 @@ const int DOLLAR_SIGN_ID = 0x40;
 const string OPEN_CURLY_BRACE = "\\{";
 const string CLOSE_CURLY_BRACE = "\\}";
 const string FORWARD_SLASH = "/";
-const string ASTERIK = "*";
+const string ASTERIK = "\\*";
 const string HASH_MARK = "#";
-const string DOLLAR_SIGN = "$";
-const string VARIABLE = "[*#$]";
+const string DOLLAR_SIGN = "\\$";
+const string VARIABLE_OFFSETS = "[*#$]";
+
+
+map<char, int> VARIABLE_OFFSETS_MAP = { {'$', DOLLAR_SIGN_ID }, {'#', HASH_MARK_ID }, {'*', ASTERIK_ID } };
 //
 const string ACTION_TOKEN = "(insert)|(include)|(config_load)";
 const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)";
