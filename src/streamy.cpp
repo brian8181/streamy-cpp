@@ -124,23 +124,21 @@ void streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::strin
     // get_next_token( KEY_WORDS | SYMBOL_NAME | OPERATORS )
     // repeat ...
     // while not end
-     int len = tokens.size();
-    for(int i = 0; i < len; ++i)
+    
+    string s = tmpl;
+    tokens.clear(); // clear tokens
+    regex exp = regex(OPEN_CURLY_BRACE, std::regex::ECMAScript); // match
+    smatch match;
+    while(std::regex_search(tmpl, match, exp, std::regex_constants::match_default))
     {
-        regex sexpr = regex(OPEN_CURLY_BRACE, regex::ECMAScript); // match
-        smatch m;
-        std::regex_search(tokens[i].second, m, sexpr);
-        if (!m.empty())
-        {
-            sub_match sm = m[1];
-            map<string, string>::const_iterator find_iter = map_config.find(sm.str());
-            if(find_iter != map_config.end())
-            {
-                //ss << find_iter->second;
-                break;
-            }
-        }
+        std::string fmt_match_beg = match.format("$`");
+        std::string fmt_match = match.format("$&");
+
+        tokens.push_back(pair(TEXT, fmt_match_beg));
+        tokens.push_back(pair(TAG, fmt_match));
+        s = match.format("$'");
     }
+    tokens.push_back(pair(OPEN_CURLY_BRACE_ID, s));
 }
 
 void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html)

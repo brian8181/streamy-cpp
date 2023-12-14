@@ -16,10 +16,17 @@ using std::stringstream;
 // escapes
 const int TEXT = 0x1;
 const int TAG = 0x2;
+//token ids
+const int OPEN_CURLY_BRACE_ID = 0x02;
+const int CLOSE_CURLY_BRACE_ID = 0x04;
+const int FORWARD_SLASH_ID = 0x08;
+const int ASTERIK_ID = 0x10;
+const int HASH_MARK_ID = 0x20;
+const int DOLLAR_SIGN_ID = 0x40;
 
 // tokens
-const string OPEN_CURLY_BRACE = "{";
-const string CLOSE_CURLY_BRACE = "}";
+const string OPEN_CURLY_BRACE = "\\{";
+const string CLOSE_CURLY_BRACE = "\\}";
 const string FORWARD_SLASH = "/";
 const string ASTERIK = "*";
 const string HASH_MARK = "#";
