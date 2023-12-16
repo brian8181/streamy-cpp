@@ -83,18 +83,20 @@ void streamy::display(const string& file)
     std::vector<pair<int, std::string>> tokens;
     // tokenize the template code
     lex(file, tokens);
-    //#if DEBUG
-    int len = tokens.size();
-    for(int i = 0; i < len; ++i)
-    {
-        cout << tokens[i].first << " : " << tokens[i].second << endl;
-    }
-    //#endif
     // parse the tokens appling agrammer rules
     string _html;
     parse(tokens, _html); 
     // stdout final
     cout << _html << endl;
+
+    #if DEBUG
+    int len = tokens.size();
+    for(int i = 0; i < len; ++i)
+    {
+        cout << tokens[i].first << " : " << tokens[i].second << endl;
+    }
+    #endif
+    
 }
 
 void streamy::clear_all()
@@ -132,18 +134,14 @@ void streamy::lex(const string& tmpl_name, /* out */ std::vector<pair<int, std::
     read_stream(full_path, s);
     tokens.clear(); // clear tokens
 
-    regex exp = regex(VARIABLE_OFFSETS, std::regex::ECMAScript); // match
+    regex exp = regex(FIRST_PASS, std::regex::ECMAScript); // match
     smatch match;
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        //std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
-
-        //tokens.push_back(pair(TEXT, fmt_match_beg));
         tokens.push_back(pair(TAG, fmt_match));
         s = match.format("$'");
     }
-    tokens.push_back(pair(TEXT, s));
 }
 
 void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html)
@@ -173,27 +171,27 @@ void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
                 break;
             case TAG:
 
-                string expression_stream = sexpr.str();
-                // regex exp = regex(expression_stream, regex::ECMAScript); // match
-                // smatch m;
-                // std::regex_search(tokens[i].second, m, exp);
+            string expression_stream = sexpr.str();
+            // regex exp = regex(expression_stream, regex::ECMAScript); // match
+            // smatch m;
+            // std::regex_search(tokens[i].second, m, exp);
 
-                // int bits  = read_bits(m);
-           
-                // if (!m.empty())
-                // {
-                //     //if(m[ESC_REG_VAR].matched || m[ESC_STATIC_VAR].matched || m[ESC_ARRAY_VAR].matched || m[ESC_COMMENT].matched || m[ESC_INCLUDE].matched)
-                //     {
-                //         shtml << FMT_FG_GREEN << "MATCH( " << FMT_RESET << FMT_FG_BLUE << FMT_UNDERLINE << tokens[i].second
-                //             << FMT_RESET_UNDERLINE << FMT_RESET << FMT_FG_GREEN << " )" << FMT_RESET << " : " << std::oct << bits;
-                //         break;
-                //     }
-                // }
-                // shtml << FMT_FG_RED << "ERROR( " << FMT_RESET << FMT_FG_LIGHT_CYAN << tokens[i].second << FMT_RESET << FMT_FG_RED << " )" << FMT_RESET;
-                string tag = tokens[i].second;
-                token_vector toks;
-                lex(tag, toks);
-                break;
+            // int bits  = read_bits(m);
+        
+            // if (!m.empty())
+            // {
+            //     //if(m[ESC_REG_VAR].matched || m[ESC_STATIC_VAR].matched || m[ESC_ARRAY_VAR].matched || m[ESC_COMMENT].matched || m[ESC_INCLUDE].matched)
+            //     {
+            //         shtml << FMT_FG_GREEN << "MATCH( " << FMT_RESET << FMT_FG_BLUE << FMT_UNDERLINE << tokens[i].second
+            //             << FMT_RESET_UNDERLINE << FMT_RESET << FMT_FG_GREEN << " )" << FMT_RESET << " : " << std::oct << bits;
+            //         break;
+            //     }
+            // }
+            // shtml << FMT_FG_RED << "ERROR( " << FMT_RESET << FMT_FG_LIGHT_CYAN << tokens[i].second << FMT_RESET << FMT_FG_RED << " )" << FMT_RESET;
+            string tag = tokens[i].second;
+            token_vector toks;
+            lex(tag, toks);
+            break;
         }
     }
     html = shtml.str();

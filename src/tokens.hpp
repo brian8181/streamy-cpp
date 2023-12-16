@@ -46,6 +46,7 @@ map<char, int> VARIABLE_OFFSETS_MAP = { {'$', DOLLAR_SIGN_ID }, {'#', HASH_MARK_
 
 const string ACTION_TOKEN = "(insert)|(include)|(config_load)";
 const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)|(foreachelse)|(literal)|(section)|(strip)|(assign)|(counter)|(cycle)|(debug)|(eval)|(fetch)|(html_checkboxes)";
+const string FIRST_PASS = "(" + VARIABLE_OFFSETS + ")|(" + ACTION_TOKEN + ")|(" + KEY_WORDS + ")";
 
 const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
 const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
