@@ -119,9 +119,22 @@ void streamy::find_escaped_text(const string& tmpl, /* out */ std::vector<pair<i
     {
         std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
-
         tokens.push_back(pair(TEXT, fmt_match_beg));
-        tokens.push_back(pair(TAG, fmt_match));
+
+        // {   // parse tags
+        //     tokens.push_back(pair(TAG, fmt_match));
+        //     tokens.clear(); // clear tokens
+        //     regex exp = regex(FIRST_PASS, std::regex::ECMAScript); // match
+        //     smatch match;
+        //     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
+        //     {
+        //         std::string fmt_match = match.format("$&");
+        //         tokens.push_back(pair(TAG, fmt_match));
+        //         s = match.format("$'");
+        //     }
+        //     tokens.push_back(pair(TEXT, s));
+        // }
+
         s = match.format("$'");
     }
     tokens.push_back(pair(TEXT, s));
@@ -142,6 +155,7 @@ void streamy::lex(const string& tmpl_name, /* out */ std::vector<pair<int, std::
         tokens.push_back(pair(TAG, fmt_match));
         s = match.format("$'");
     }
+    tokens.push_back(pair(TEXT, s));
 }
 
 void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html)
@@ -195,21 +209,6 @@ void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
         }
     }
     html = shtml.str();
-}
-
-void streamy::parse_tag(const string token, /* out */ string& html)
-{
-    // regex exp = regex(INCLUDE, regex::ECMAScript); // match
-    // std::regex_search(tokens[i].second, m, exp);
-    // if (!m.empty())
-    // {
-    //     sub_match sm = m[1];
-    //     map<string, string>::const_iterator find_iter = config.find(sm.str());
-    //     if(find_iter != config.end())
-    //     {
-    //         ss << find_iter->second;
-    //         break;
-    //     }
 }
 
 std::map<string, string>& streamy::get_map_config(/* out */ std::map<string, string>& config)
