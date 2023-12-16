@@ -25,6 +25,7 @@ const int FORWARD_SLASH_ID = 0x08;
 const int ASTERIK_ID = 0x10;
 const int HASH_MARK_ID = 0x20;
 const int DOLLAR_SIGN_ID = 0x40;
+const int EQUALS_OPERATOR_ID = 0x80;
 
 // tokens
 const string OPEN_CURLY_BRACE = "\\{";
@@ -33,18 +34,22 @@ const string FORWARD_SLASH = "/";
 const string ASTERIK = "\\*";
 const string HASH_MARK = "#";
 const string DOLLAR_SIGN = "\\$";
+const string EQUALS_OPERATOR = "==";
+const string LESS_THAN_OPERATOR = "<";
+const string GREATER_THAN_OPERATOR = ">";
+const string NOT_OPERATOR = "!";
+const string LESS_THAN_EQUAL_OPERATOR = "<=";
+const string GREATER_THAN_EQUAL_OPERATOR = ">=";
+const string NOT_EQUAL_OPERATOR = "!=";
 const string VARIABLE_OFFSETS = "[*#$]";
-
-
 map<char, int> VARIABLE_OFFSETS_MAP = { {'$', DOLLAR_SIGN_ID }, {'#', HASH_MARK_ID }, {'*', ASTERIK_ID } };
-//
+
 const string ACTION_TOKEN = "(insert)|(include)|(config_load)";
-const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)";
+const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)|(foreachelse)|(literal)|(section)|(strip)|(assign)|(counter)|(cycle)|(debug)|(eval)|(fetch)|(html_checkboxes)";
+
 const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
 const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
 const string VALID_FILE_CHARS = "[A-Za-z0-9_.]";
-const string VALID_LITERAL_CHARS = "";
-const string VALID_INT_LITERAL = "";
 const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
 const string VARIABLE_TOKEN = "\\$(" + SYMBOL_NAME + ")";
 const string COMMENT_TOKEN = "\\*\\s*" + VALID_SYMBOL_CHARS + "*\\s*\\*";
@@ -71,19 +76,19 @@ const string TOKENS = "(" + EXPR_VARIABLE + ")|(" + ACTION_TOKEN + ")";
 
 // group indexs
 const int TOKEN = 0; // todo
-const int ESC_REG_VAR = 2;
-const int ESC_ARRAY_VAR = 4;
-const int ESC_STATIC_VAR = 7;
-const int ESC_OBJECT = 0; // todo
-const int ESC_COMMENT = 8;
-const int ESC_INCLUDE = 9;
-const int ESC_LOAD_CONFIG = 0;
-const int ESC_STRING_LITERIAL = 0;
-const int ESC_NUMERIC_LITERAL = 0;
-const int ESC_DECIMAL_LITERAL = 0;
-const int ESC_SIGNED_NUMERIC_LITERAL = 0;
-const int ESC_UNSIGNED_NUMERIC_LITERAL = 0;
-const int ESC_INNNER_REG_VAR =  0;
+const int ESC_REG_VAR = 0x1000;
+const int ESC_ARRAY_VAR = 0x2000;
+const int ESC_STATIC_VAR = 0x4000;
+const int ESC_OBJECT = 0x8000; 
+const int ESC_COMMENT = 0x10000;
+const int ESC_INCLUDE = 0x20000;
+const int ESC_LOAD_CONFIG = 0x40000;
+const int ESC_STRING_LITERIAL = 0x80000;
+const int ESC_NUMERIC_LITERAL = 0x100000;
+const int ESC_DECIMAL_LITERAL = 0x200000;
+const int ESC_SIGNED_NUMERIC_LITERAL = 0x400000;
+const int ESC_UNSIGNED_NUMERIC_LITERAL = 0x800000;
+const int ESC_INNNER_REG_VAR =  0x1000000;
 
 
 // const int STATE_BEGIN = 0;

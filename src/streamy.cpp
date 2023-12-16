@@ -83,6 +83,13 @@ void streamy::display(const string& file)
     std::vector<pair<int, std::string>> tokens;
     // tokenize the template code
     lex(file, tokens);
+    //#if DEBUG
+    int len = tokens.size();
+    for(int i = 0; i < len; ++i)
+    {
+        cout << tokens[i].first << " : " << tokens[i].second << endl;
+    }
+    //#endif
     // parse the tokens appling agrammer rules
     string _html;
     parse(tokens, _html); 
@@ -118,49 +125,25 @@ void streamy::find_escaped_text(const string& tmpl, /* out */ std::vector<pair<i
     tokens.push_back(pair(TEXT, s));
 }
 
-void streamy::lex(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
+void streamy::lex(const string& tmpl_name, /* out */ std::vector<pair<int, std::string>>& tokens)
 {
-    // do
-    // get_next_token( KEY_WORDS | SYMBOL_NAME | OPERATORS )
-    // repeat ...
-    // while not end
-
-    string s = tmpl;
+    string full_path = this->template_dir + "/" + tmpl_name;
+    string s;
+    read_stream(full_path, s);
     tokens.clear(); // clear tokens
 
-    int pos;
-    pos = s.find(OPEN_CURLY_BRACE);
-    pos = s.find_first_of(VARIABLE_OFFSETS);
-
-    switch(VARIABLE_OFFSETS_MAP[s[pos]])
+    regex exp = regex(VARIABLE_OFFSETS, std::regex::ECMAScript); // match
+    smatch match;
+    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        case DOLLAR_SIGN_ID:
-        // get var name
-        break;
+        //std::string fmt_match_beg = match.format("$`");
+        std::string fmt_match = match.format("$&");
 
-        case ASTERIK_ID:
-        // find last / next ASTERIK
-        break;
-
-        case HASH_MARK_ID:
-        // find next HASH
-        // get var name
-        break;
+        //tokens.push_back(pair(TEXT, fmt_match_beg));
+        tokens.push_back(pair(TAG, fmt_match));
+        s = match.format("$'");
     }
-
-//     regex exp = regex(OPEN_CURLY_BRACE, std::regex::ECMAScript); // match
-//     smatch match;
-//     while(std::regex_search(tmpl, match, exp, std::regex_constants::match_default))
-//     {
-//         std::string fmt_match_beg = match.format("$`");
-//         std::string fmt_match = match.format("$&");
-
-//         tokens.push_back(pair(TEXT, fmt_match_beg));
-//         tokens.push_back(pair(TAG, fmt_match));
-//         s = match.format("$'");
-//     }
-//     tokens.push_back(pair(OPEN_CURLY_BRACE_ID, s));
-
+    tokens.push_back(pair(TEXT, s));
 }
 
 void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html)

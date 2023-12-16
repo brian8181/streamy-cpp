@@ -11,18 +11,18 @@
 
 using std::ostringstream;
 
-// void combine_regex(map<string&, string&> strings, string& or_strings)
-// {
-//     string name;
-//     ostringstream s;
-//     s << "(";
-//     int len = strings.size();
-//     for(int i = 0; i < len; ++i)
-//     {   
-//         s << name << ")|(";
-//     }
-//     s << name[len] << ")";
-// }
+void combine_regex(map<string&, string&> strings, string& or_strings)
+{
+    string name;
+    ostringstream s;
+    s << "(";
+    int len = strings.size();
+    for(int i = 0; i < len; ++i)
+    {   
+        s << name << ")|(";
+    }
+    s << name[len] << ")";
+}
 
 int read_bits(const smatch& m)
 {

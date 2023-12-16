@@ -1,10 +1,10 @@
-# // License:    GPL
-# // Author:     Brian K Preston
-# // File Name:  Makefile
-# // Build Date: Sun Nov 26 12:55:26 PM CST 2023
-# // Version:    3.6.7
+# License:    GPL
+# Author:     Brian K Preston
+# File Name:  Makefile
+# Build Date: Thu Dec 14 11:48:58 PM CST 2023
+# Version:    0.0.1
 
-PREFIX = build
+PREFIX = /usr/lib
 CXX = g++
 CXXFLAGS = -g -Wall -DDEBUG -std=c++17
 CC = gcc -g
@@ -27,7 +27,7 @@ utility.o:
 index.cgi: fileio.o libstreamy.so libstreamy.a index.o
 	$(CXX) $(CXXFLAGS) -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/index_a.cgi
-	#$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/index_so.cgi
+	#$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX) -o $(BLD)/index_so.cgi
 	cp $(SRC)/index.conf $(BLD)/index.conf
 
 index.o: 
@@ -45,13 +45,13 @@ streamy_app: fileio.o streamy.o libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_app.cpp -o $(OBJ)/streamy_app.o
 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/streamy_app
 	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o $(BLD)/libstreamy.a $(OBJ)/fileio.o -o $(BLD)/streamy_app_a
-	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_app_so
+	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_app.o -lstreamy -L$(PREFIX) -o $(BLD)/streamy_app_so
 
 streamy_lex: fileio.o libstreamy.a libstreamy.so
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(OBJ)/streamy.o -o $(BLD)/streamy_lex
 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(BLD)/libstreamy.a -o $(BLD)/streamy_lex_a
-	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX)/lib -o $(BLD)/streamy_lex_so
+	#$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX) -o $(BLD)/streamy_lex_so
 	cp $(SRC)/streamy_lex.conf $(BLD)/streamy_lex.conf
 
 streamy_lexer:
@@ -88,19 +88,14 @@ test1:
 	g++ -std=c++14 -fPIC -Wall -I/usr/local/include -c $(SRC)/020-TestCase-2.cpp -o $(BLD)/020-TestCase-2.o
 	g++ -std=c++14 -Wall -I/usr/local/include -o $(BLD)/020-TestCase $(BLD)/020-TestCase-1.o $(SRC)/020-TestCase-2.cpp && $(BLD)/020-TestCase --success
 
-# *.o: fileio.o libstreamy
-# 	$(CXX) $(CXXFLAGS) $% -o $@
-# 	echo $^
-# 	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(OBJ)/$@
-
 stream_app.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
 
 streamy-cpp.o: streamy-cpp.yy.c
-	$(CXX) $(CXXFLAGS) -c $(BUILD)/streamy-cpp.yy.c -o $(BUILD)/streamy-cpp.yy.o
+	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy-cpp.yy.c -o $(BLD)/streamy-cpp.yy.o
 
 streamy-cpp.yy.c:
-	$(LEX) -o $(BUILD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
+	$(LEX) -o $(BLD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
 
 bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
@@ -109,12 +104,12 @@ complie:
 	g++ -c $(SRC)/*.cpp
 
 install:
-	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
-	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
-	chmod 755  $(PREFIX)/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
+	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/libstreamy.a
+	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/libstreamy.so
+	chmod 755  $(PREFIX)/libstreamy.a $(PREFIX)/libstreamy.so
 
 uninstall:
-	rm -rf /usr/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
+	rm -rf $(PREFIX)/libstreamy.a $(PREFIX)/libstreamy.so
 
 clean:
 	-rm $(BLD)/*
