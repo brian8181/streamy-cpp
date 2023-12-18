@@ -11,7 +11,6 @@
 #include <regex>
 
 using std::string;
-using std::map;
 using std::smatch;
 
 //void combine_regex(map<string&, string&> strings, string& or_strings);

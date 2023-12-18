@@ -11,29 +11,33 @@
 #include "bash_color.h"
 #include "symbols.hpp"
 #include "streamy.hpp"
+#include "utility.hpp"
 #include "tokens.hpp"
 
 using namespace std;
 
-string& read_stream(const string& path, /* out */ string& s_out)
-{
-    std::ifstream ifstrm(path);
-    std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
-    s_out = output;
-    return s_out;
-}
+// // todo refactor, move these functions to seperate file (utility.cpp)
+// string& read_stream(const string& path, /* out */ string& s_out)
+// {
+//     std::ifstream ifstrm(path);
+//     std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
+//     s_out = output;
+//     return s_out;
+// }
 
-int read_bits(const smatch& m)
-{
-    int len = m.size();
-    unsigned int bits = 0;
-    for(int i = 0; i < len && i < 32; ++i)
-    {
-        bits |= (int(m[i].matched) << i);
-    }
-    return bits;
-}
+// // todo refactor, move these functions to seperate file (utility.cpp)
+// int read_bits(const smatch& m)
+// {
+//     int len = m.size();
+//     unsigned int bits = 0;
+//     for(int i = 0; i < len && i < 32; ++i)
+//     {
+//         bits |= (int(m[i].matched) << i);
+//     }
+//     return bits;
+// }
 
+// start streamy implementation
 streamy::streamy(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
     this->template_dir = template_dir;
@@ -59,18 +63,6 @@ string& streamy::load_config(const string& path, /* out */ string& s_out)
         map_config.insert(p);
     }
     return s_out;
-}
-
-void streamy::assign(const string& name, const string& val)
-{
-    pair<string, string> p(name, val);
-    map_vars.insert(p);
-}
-
-void streamy::assign(const string& name, const vector<string>& vec)
-{
-    pair<string, vector<string>> p(name, vec);
-    map_arrays.insert(p);
 }
 
 void streamy::display(const string& file)
@@ -99,11 +91,16 @@ void streamy::display(const string& file)
     
 }
 
-void streamy::clear_all()
+void streamy::assign(const string& name, const string& val)
 {
-    map_config.clear();
-    map_vars.clear();
-    map_arrays.clear();
+    pair<string, string> p(name, val);
+    map_vars.insert(p);
+}
+
+void streamy::assign(const string& name, const vector<string>& vec)
+{
+    pair<string, vector<string>> p(name, vec);
+    map_arrays.insert(p);
 }
 
 void streamy::find_escaped_text(const string& tmpl, /* out */ std::vector<pair<int, std::string>>& tokens)
@@ -222,3 +219,10 @@ std::map<string, string>& streamy::get_map_config(/* out */ std::map<string, str
     vars = map_vars;
     return vars;
  }
+
+void streamy::clear_all()
+{
+    map_config.clear();
+    map_vars.clear();
+    map_arrays.clear();
+}
