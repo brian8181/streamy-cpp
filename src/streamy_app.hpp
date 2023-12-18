@@ -15,7 +15,7 @@
 // Author:     Brian K Preston
 // File Name:  streamy_app.hpp
 // Build Date: Sun Oct  1 09:39:08 PM CDT 2023
-// Version:    3.6.7
+// Version:    0.0.1
 
 #ifndef _STREAMY_APP_HPP
 #define _STREAMY_APP_HPP

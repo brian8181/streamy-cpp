@@ -1,8 +1,8 @@
 // License:    GPL
 // Author:     Brian K Preston
 // File Name:  streamy.cpp
-// Build Date: Sun Oct  1 09:39:08 PM CDT 2023
-// Version:    3.6.7
+// Build Date: Mon Dec 18 03:57:00 PM CST 2023
+// Version:    0.0.1
 
 #include <iostream>
 #include <regex>

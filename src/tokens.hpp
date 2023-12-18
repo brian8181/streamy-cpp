@@ -1,8 +1,8 @@
-// License:    GPL
+// License:    None
 // Author:     Brian K Preston
-// File Name:  streamy.hpp
-// Build Date: Sun Oct  1 09:39:08 PM CDT 2023
-// Version:    3.6.7
+// File Name:  token.hpp
+// Build Date: Mon Dec 18 03:57:00 PM CST 2023
+// Version:    0.0.1
 
 #ifndef _TOKENS_HPP
 #define _TOKENS_HPP
