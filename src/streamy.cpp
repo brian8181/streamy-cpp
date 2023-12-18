@@ -9,7 +9,6 @@
 #include <fstream>
 #include <sstream>
 #include "bash_color.h"
-#include "symbols.hpp"
 #include "streamy.hpp"
 #include "utility.hpp"
 #include "tokens.hpp"

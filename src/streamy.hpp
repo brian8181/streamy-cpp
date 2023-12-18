@@ -34,9 +34,7 @@ private:
     void lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
     void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
     void parse_tag(const string token, /* out */ string& html); 
-    // string& read_stream(const string& path, /* out */string& out);
-    // int read_bits(const std::smatch& m);
-
+   
 public:
     // types
     typedef vector<pair<int, string>> token_vector;
