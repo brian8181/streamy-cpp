@@ -87,7 +87,6 @@ void streamy::display(const string& file)
         cout << tokens[i].first << " : " << tokens[i].second << endl;
     }
     #endif
-    
 }
 
 void streamy::assign(const string& name, const string& val)
@@ -117,7 +116,7 @@ void streamy::find_escaped_text(const string& tmpl, /* out */ std::vector<pair<i
         std::string fmt_match = match.format("$&");
         tokens.push_back(pair(TEXT, fmt_match_beg));
 
-        // {   // parse tags
+        // {   // lex tags
         //     tokens.push_back(pair(TAG, fmt_match));
         //     tokens.clear(); // clear tokens
         //     regex exp = regex(FIRST_PASS, std::regex::ECMAScript); // match

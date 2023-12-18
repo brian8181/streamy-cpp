@@ -6,7 +6,7 @@
 
 PREFIX = /usr/lib
 CXX = g++
-CXXFLAGS = -g -Wall -DDEBUG -std=c++17
+CXXFLAGS = -g -Wall -fPIC -DDEBUG -std=c++17 -fmessage-length=100 -fverbose-asm
 CC = gcc -g
 LEX = flex
 YACC = bison -d   
@@ -24,10 +24,13 @@ streamy.o:
 utility.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
 
-index.cgi: utility.o fileio.o libstreamy.so libstreamy.a index.o
-	$(CXX) $(CXXFLAGS) -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
+index.cgi: utility.o libstreamy.so libstreamy.a index.o
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
-	#$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/utility.o -lstreamy -L$(PREFIX) -o $(BLD)/index_so.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/utility.o $(OBJ)/libstreamy.so -L$(PREFIX) -o $(BLD)/index_so.cgi   
+
+index_soso.cgi: install
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/utility.o -lstreamy -L$(PREFIX) -o $(BLD)/index_soso.cgi                                                                 
 	cp $(SRC)/index.conf $(BLD)/index.conf
 
 index.o: 

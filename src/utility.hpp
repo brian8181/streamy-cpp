@@ -13,7 +13,7 @@
 using std::string;
 using std::smatch;
 
-//void combine_regex(map<string&, string&> strings, string& or_strings);
+//  void combine_regex(map<string&, string&> strings, string& or_strings);
 int read_bits(const smatch& m);
 string& read_stream(const string& path, /* out */ string& s_out);
 string& trim(string& s, char c);
