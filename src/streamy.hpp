@@ -36,11 +36,10 @@ private:
     void lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
     void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
     void parse_tag(const string token, /* out */ string& html); 
-   
-public:
+
+//public:
     // types
     typedef vector<pair<int, string>> token_vector;
-
     // map    
     map<string, string> map_config;
     map<string, string> map_vars;
@@ -52,7 +51,6 @@ public:
     string compile_dir;
     string config_dir;
     string cache_dir;
-   
 };
 
 #endif
