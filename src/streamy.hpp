@@ -27,6 +27,7 @@ public:
     void assign(const string& name, const vector<string>& vec);
     map<string, string>& get_map_vars(/* out */ map<string, string>& vars);
     map<string, string>& get_map_config(/* out */ map<string, string>& config);
+    map<string, vector<string>> & get_map_arrays(/* out */ map<string, vector<string>> & arrays);
     void clear_all();
     
 private:

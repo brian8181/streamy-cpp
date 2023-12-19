@@ -26,7 +26,6 @@ const int ASTERIK_ID = 0x10;
 const int HASH_MARK_ID = 0x20;
 const int DOLLAR_SIGN_ID = 0x40;
 const int EQUALS_OPERATOR_ID = 0x80;
-
 // tokens
 const string OPEN_CURLY_BRACE = "\\{";
 const string CLOSE_CURLY_BRACE = "\\}";

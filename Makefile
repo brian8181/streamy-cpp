@@ -6,15 +6,15 @@
 
 PREFIX = /usr/lib
 CXX = g++
-CXXFLAGS = -g -Wall -fPIC -DDEBUG -std=c++17 -fmessage-length=100 -fverbose-asm
-CC = gcc -g
+CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17 -fmessage-length=100 -fverbose-asm
+CC = gcc -ggdb
 LEX = flex
 YACC = bison -d   
 SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a streamy_lexer index.cgi bash_color_test index.cgi
+all: libstreamy.so libstreamy.a streamy_lexer index.cgi index.cgi streamy_lexer tokenizer
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -27,7 +27,7 @@ utility.o:
 index.cgi: utility.o libstreamy.so libstreamy.a index.o
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/utility.o $(OBJ)/libstreamy.so -L$(PREFIX) -o $(BLD)/index_so.cgi   
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi   
 
 index_soso.cgi: install
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/utility.o -lstreamy -L$(PREFIX) -o $(BLD)/index_soso.cgi                                                                 
@@ -41,7 +41,8 @@ libstreamy.so: streamy.o
 	chmod 755 $(BLD)/libstreamy.so
 
 libstreamy.a: streamy.o
-	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
+	ar rcs $(BLD)/libstreamy.a $(OBJ)/streamy.o
+	#ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
 	chmod 755 $(BLD)/libstreamy.a
 
 streamy_app: fileio.o streamy.o libstreamy.a libstreamy.so
@@ -62,23 +63,11 @@ streamy_lexer:
 	$(CXX) -g -DDEBUG -std=c++17 -c $(BLD)/streamy.yy.c -o $(BLD)/streamy_lexer.o
 	$(CXX) -g -DDEBUG -std=c++17 $(OBJ)/streamy_lexer.o -ll -o $(BLD)/streamy_lexer
 
-# app: main.o app.o streamy.o
-# 	$(CXX) $(CXXFLAGS) $(OBJ)/app.o $(OBJ)/main.o $(OBJ)/streamy.o $(OBJ)/fileio.o -o $(BLD)/app
-
-bash_color_test:
-	$(CXX) $(CXXFLAGS) $(SRC)/bash_color_test.cpp -o $(BLD)/bash_color_test
-
-main.o:
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/main.cpp -o $(OBJ)/main.o
-
-# app.o:
-# 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/app.cpp -o $(OBJ)/app.o
-
 fileio.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o	
 
 tokenizer: tokenizer.yy.c
-	$(CXX) $(CXXFLAGS) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
+	$(CC) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
 
 tokenizer.yy.c:
 	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l

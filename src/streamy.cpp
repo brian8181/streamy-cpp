@@ -6,37 +6,15 @@
 
 #include <iostream>
 #include <regex>
-#include <fstream>
 #include <sstream>
-#include "bash_color.h"
 #include "streamy.hpp"
 #include "utility.hpp"
 #include "tokens.hpp"
+// debug
+#include "bash_color.h"
 
 using namespace std;
 
-// // todo refactor, move these functions to seperate file (utility.cpp)
-// string& read_stream(const string& path, /* out */ string& s_out)
-// {
-//     std::ifstream ifstrm(path);
-//     std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
-//     s_out = output;
-//     return s_out;
-// }
-
-// // todo refactor, move these functions to seperate file (utility.cpp)
-// int read_bits(const smatch& m)
-// {
-//     int len = m.size();
-//     unsigned int bits = 0;
-//     for(int i = 0; i < len && i < 32; ++i)
-//     {
-//         bits |= (int(m[i].matched) << i);
-//     }
-//     return bits;
-// }
-
-// start streamy implementation
 streamy::streamy(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
     this->template_dir = template_dir;
@@ -216,6 +194,12 @@ std::map<string, string>& streamy::get_map_config(/* out */ std::map<string, str
  {
     vars = map_vars;
     return vars;
+ }
+
+ map<string, vector<string>> &streamy::get_map_arrays(/* out */ map<string, vector<string>> & arrays)
+ {
+    arrays = arrays;
+    return arrays;
  }
 
 void streamy::clear_all()

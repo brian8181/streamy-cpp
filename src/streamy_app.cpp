@@ -69,11 +69,11 @@ int parse_options(int argc, char* argv[])
 	sm.load_config(conf_path, s_out);
 
 	cout << "******* Display Configuration ******" << endl;
-    map<string, string>::iterator end = sm.config.end();
-    for (map<string, string>::iterator iter = sm.config.begin(); iter != end; ++iter)
-    {
-        cout << "key: " << iter->first << " , value: " << iter->second << endl;
-    }
+    // map<string, string>::iterator end = sm.load_config().end();
+    // for (map<string, string>::iterator iter = sm.load_config().begin(); iter != end; ++iter)
+    // {
+    //     cout << "key: " << iter->first << " , value: " << iter->second << endl;
+    // }
 
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "streamyCPP Test Page");
@@ -85,8 +85,8 @@ int parse_options(int argc, char* argv[])
     //sm.display("default.tpl", display_out);
 
 	cout << "******* Display Variables ******" << endl;
-	std::map<string, string>::iterator vend = sm.vars.end();
-	for (std::map<string, string>::iterator iter = sm.vars.begin(); iter != vend; ++iter)
+	std::map<string, string>::iterator vend = sm.get_map_vars().end();
+	for (std::map<string, string>::iterator iter = sm.get_map_vars().begin(); iter != vend; ++iter)
 	{
 		cout << "key: " << iter->first << " , value: " << iter->second << endl;
 	}              
@@ -97,8 +97,8 @@ int parse_options(int argc, char* argv[])
 	sm.assign("names_two", names2);
 
 	cout << "******* Display Arrays ******" << endl;
-	std::map<string, vector<string>>::iterator avend = sm.var_arrays.end();
-	for (std::map<string, vector<string>>::iterator iter = sm.var_arrays.begin(); iter != avend; ++iter)
+	std::map<string, vector<string>>::iterator avend = sm.get_map_vars().end();
+	for (std::map<string, vector<string>>::iterator iter = sm.get_map_arrays().begin(); iter != avend; ++iter)
 	{
 		cout << "key: " << iter->first << endl; // << iter->second << endl;
 		vector<string>::iterator end = iter->second.end();

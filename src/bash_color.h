@@ -52,6 +52,5 @@ const string FMT_BG_LIGHT_MAGENTA  = "\033[105m";
 const string FMT_BG_LIGHT_CYAN     = "\033[106m";
 const string FMT_BG_WHITE          = "\033[107m";
 
-
 #endif
 
