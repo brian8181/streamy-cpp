@@ -31,6 +31,7 @@ public:
     void clear_all();
     
 private:
+    // todo! deprecating tokens!
     void find_escaped_text(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
     void lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
     void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
