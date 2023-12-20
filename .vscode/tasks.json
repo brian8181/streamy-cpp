@@ -3,7 +3,7 @@
         {
             "label": "MAKE DEBUGGDB",
             "type": "shell",
-            "command": "make -f ${workspaceFolder}/Makefile",
+            "command": "make -f ${workspaceFolder}/makefile",
             "problemMatcher": [
                 "$gcc"
             ],
@@ -15,7 +15,7 @@
         {
             "label": "MAKE find_tags",
             "type": "shell",
-            "command": "make -f ${fileDirname}/Makefile find_tags.cgi",
+            "command": "make -f ${fileDirname}/makefile find_tags.cgi",
             "problemMatcher": [
                 "$gcc"
             ],
@@ -29,7 +29,7 @@
         {
             "label": "Make_streamy_lex",
             "type": "shell",
-            "command": "make -f ${fileDirname}/Makefile streamy_lex",
+            "command": "make -f ${fileDirname}/makefile streamy_lex",
             "problemMatcher": [
                 "$gcc"
             ],
@@ -38,7 +38,7 @@
         {
             "label": "MAKE_EXAMPLES",
             "type": "shell",
-            "command": "make -f ${workspaceFolder}/Makefile examples",
+            "command": "make -f ${workspaceFolder}/makefile",
             "problemMatcher": [
                 "$gcc"
             ],

@@ -103,12 +103,12 @@ void streamy::find_escaped_text(const string& tmpl, /* out */ std::vector<pair<i
             regex tok_exp = regex(FIRST_PASS, std::regex::ECMAScript); // match
             smatch tok_match;
 
-            while(std::regex_search(tok_s, match, exp, std::regex_constants::match_default))
+            while(std::regex_search(tok_s, tok_match, tok_exp, std::regex_constants::match_default))
             {
-                std::string tok_fmt_match = match.format("$&");
+                std::string tok_fmt_match = tok_match.format("$&");
                 // todo! deprecating tokens! 
                 tokens.push_back(pair(TAG, tok_fmt_match));
-                tok_s = match.format("$'");
+                tok_s = tok_match.format("$'");
                 strm << "<ESCAPED>" << tok_s << "</ESCAPED>";
             }
         }

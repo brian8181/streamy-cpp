@@ -37,9 +37,9 @@ private:
     void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
     void parse_tag(const string token, /* out */ string& html); 
 
-//public:
     // types
     typedef vector<pair<int, string>> token_vector;
+    
     // map    
     map<string, string> map_config;
     map<string, string> map_vars;

@@ -72,13 +72,16 @@ tokenizer: tokenizer.yy.c
 tokenizer.yy.c:
 	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
+CATCH_SINGLE_INCLUDE = /usr/local/include
 test1:
-	g++ -std=c++14 -Wall -I/usr/local/include $(SRC)/010-TestCase.cpp -o $(BLD)/test1 
-
-020-TestCase:
-	g++ -std=c++14 -fPIC -Wall -I/usr/local/include -c $(SRC)/020-TestCase-1.cpp -o $(BLD)/020-TestCase-1.o
-	g++ -std=c++14 -fPIC -Wall -I/usr/local/include -c $(SRC)/020-TestCase-2.cpp -o $(BLD)/020-TestCase-2.o
+	#g++ -std=c++14 -Wall -I/usr/local/include $(SRC)/010-TestCase.cpp -o $(BLD)/test1
+	g++ -std=c++14 -Wall -I$(CATCH_SINGLE_INCLUDE) $(SRC)/010-TestCase.cpp -o $(BLD)/010-TestCase
+	g++ -std=c++14 -Wall -I/usr/local/include -c $(SRC)/020-TestCase-1.cpp -o $(BLD)/020-TestCase-1.o
+	g++ -std=c++14 -Wall -I/usr/local/include -c $(SRC)/020-TestCase-2.cpp -o $(BLD)/020-TestCase-2.o
 	g++ -std=c++14 -Wall -I/usr/local/include -o $(BLD)/020-TestCase $(BLD)/020-TestCase-1.o $(SRC)/020-TestCase-2.cpp && $(BLD)/020-TestCase --success
+
+020-TestCase-1:
+	g++ -std=c++14 -Wall -I/usr/local/include -c $(SRC)/020-TestCase-1.cpp -o $(BLD)/020-TestCase-1.o
 
 stream_app.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/app.cpp -o $(OBJ)/stream_app.o
