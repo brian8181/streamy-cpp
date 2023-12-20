@@ -31,11 +31,10 @@ public:
     void clear_all();
     
 private:
-    // todo! deprecating tokens!
-    void find_escaped_text(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
-    void lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
+    void find_escapes(const string& tmpl);
+    //void lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
     void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
-    void parse_tag(const string token, /* out */ string& html); 
+    //void parse_tag(const string token, /* out */ string& html); 
 
     // types
     typedef vector<pair<int, string>> token_vector;

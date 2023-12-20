@@ -1,12 +1,12 @@
 
-{* Wrong * }
-{* Right *}
+<HTML>Testing{* Wrong * }</HTML>
+<HTML>{* Right *}</HTML?
 {8 Right 8}
-{$foo}
+<BODY>{$foo}</BODY>
 {$boo.}
 {$boo->}
 {$citys[3]}
-{#static#}
+<H1>{#static#}</H1>
 {include file="text.txt"}
 {config_load file="text.txt"}
 {insert file="test.txt"}
