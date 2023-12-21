@@ -1,8 +1,8 @@
 // License:    None
 // Author:     Brian K Preston
-// File Name:  utility.hpp
-// Build Date: Mon Dec 18 03:57:00 PM CST 2023
-// Version:    0.0.1
+// File Name:  ./utility.hpp
+// Build Date: Thu Dec 21 09:06:55 AM CST 2023
+// Version:    0.0.2
 
 #ifndef _UTILITY_HPP
 #define _UTILITY_HPP

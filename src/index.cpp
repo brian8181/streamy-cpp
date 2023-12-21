@@ -13,9 +13,9 @@
 
 // License:    GPL
 // Author:     Brian K Preston
-// File Name:  index.cpp
-// Build Date: Mon Dec 18 03:57:00 PM CST 2023
-// Version:    0.0.1
+// File Name:  ./index.cpp
+// Build Date: Thu Dec 21 09:06:55 AM CST 2023
+// Version:    0.0.2
 
 #include <iostream>
 #include <cstring>

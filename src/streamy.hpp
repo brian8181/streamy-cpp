@@ -1,8 +1,8 @@
 // License:    None
 // Author:     Brian K Preston
 // File Name:  streamy.hpp
-// Build Date: Mon Dec 18 03:57:00 PM CST 2023
-// Version:    0.0.1
+// Build Date: Thu Dec 21 09:06:55 AM CST 2023
+// Version:    0.0.2
 
 #ifndef _streamy_HPP
 #define _streamy_HPP
@@ -33,7 +33,7 @@ public:
 private:
     void find_escapes(const string& tmpl);
     //void lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
-    void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
+    //void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
     //void parse_tag(const string token, /* out */ string& html); 
 
     // types

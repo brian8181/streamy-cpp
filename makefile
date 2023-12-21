@@ -1,12 +1,12 @@
 # License:    GPL
 # Author:     Brian K Preston
 # File Name:  Makefile
-# Build Date: Thu Dec 14 11:48:58 PM CST 2023
-# Version:    0.0.1
+# Build Date: Thu Dec 21 09:06:55 AM CST 2023
+# Version:    0.0.2
 
 PREFIX = /usr/lib
 CXX = g++
-CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17 -fmessage-length=100 -fverbose-asm
+CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17 # -fmessage-length=100 -fverbose-asm
 CC = gcc -ggdb
 LEX = flex
 YACC = bison -d   

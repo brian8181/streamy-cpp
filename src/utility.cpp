@@ -1,8 +1,8 @@
 // License:    None
 // Author:     Brian K Preston
-// File Name:  utility.cpp
-// Build Date: Mon Dec 18 03:57:00 PM CST 2023
-// Version:    0.0.1
+// File Name:  ./utility.cpp
+// Build Date: Thu Dec 21 09:06:55 AM CST 2023
+// Version:    0.0.2
 
 #include <sstream>
 #include <fstream>
