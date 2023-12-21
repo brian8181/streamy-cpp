@@ -71,7 +71,7 @@ const string EXPR_STATIC_VARIABLE = "\\s*#(" + SYMBOL_NAME + ")#\\s*";
 const string EXPR_ACTION_FILE = ACTION_TOKEN + " file=\"" + VALID_FILE_CHARS + "+\"";
 const string EXPR_COMMENT = "\\*\\s*" + VALID_SYMBOL_CHARS + "*\\s*\\*";
 // lexing
-const string ESCAPE = "\\{" + VALID_ESC_CHARS + "*\\}";
+const string ESCAPE = "\\{\\(" + VALID_ESC_CHARS + "*\\)\\}";
 const string TOKENS = "(" + EXPR_VARIABLE + ")|(" + ACTION_TOKEN + ")";
 
 // group indexs

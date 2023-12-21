@@ -32,9 +32,8 @@ public:
     
 private:
     void find_escapes(const string& tmpl);
-    //void lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
-    //void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
-    //void parse_tag(const string token, /* out */ string& html); 
+    void lex(const string& match);
+    void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
 
     // types
     typedef vector<pair<int, string>> token_vector;
