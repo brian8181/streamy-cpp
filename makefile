@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a streamy_lexer index.cgi index.cgi streamy_lexer tokenizer
+all: libstreamy.so libstreamy.a streamy_lexer index.cgi page_test.cgi page2_test.cgi streamy_lexer tokenizer
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -24,14 +24,30 @@ streamy.o:
 utility.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
 
+page_test.cgi: utility.o libstreamy.so libstreamy.a page_test.o
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/page_test.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/page_test.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/page_test.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/page_test_a.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/page_test.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/page_test_so.cgi   
+
+page2_test.cgi: utility.o libstreamy.so libstreamy.a page2_test.o
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/page2_test.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/page2_test.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/page2_test.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/page_test_a.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/page2_test.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/page_test_so.cgi   
+
 index.cgi: utility.o libstreamy.so libstreamy.a index.o
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi   
-
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi
+	
 index_soso.cgi: install
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/utility.o -lstreamy -L$(PREFIX) -o $(BLD)/index_soso.cgi                                                                 
 	cp $(SRC)/index.conf $(BLD)/index.conf
+
+page2_test.o: 
+	$(CXX) $(CXXFLAGS) -I$(SRC) -c $(SRC)/page2_test.cpp -o $(OBJ)/page2_test.o
+
+page_test.o: 
+	$(CXX) $(CXXFLAGS) -I$(SRC) -c $(SRC)/page_test.cpp -o $(OBJ)/page_test.o
 
 index.o: 
 	$(CXX) $(CXXFLAGS) -I$(SRC) -c $(SRC)/index.cpp -o $(OBJ)/index.o

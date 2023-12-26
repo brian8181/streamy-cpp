@@ -88,8 +88,8 @@ int main(int argc, char* argv[])
 	{
 		if(stdin_ready(STDIN_FILENO))
 		{
-			std::string buffer;     
-                 std::cin >> buffer;
+			std::string buffer;
+			std::cin >> buffer;
 			// add piped buffer to end of argv ...
 			char* argvtmp[sizeof(char*) * argc+1];
 			memcpy(argvtmp, argv, sizeof(char*) * argc);

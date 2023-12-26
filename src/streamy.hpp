@@ -21,20 +21,20 @@ class streamy
 {
 public:
     streamy(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir);
-    string& load_config(const string& path, /* out */ string& s_out);
+    void load_config(const string& path);
     void display(const string& file);
     void assign(const string& name, const string& val);
     void assign(const string& name, const vector<string>& vec);
-    map<string, string>& get_map_vars(/* out */ map<string, string>& vars);
-    map<string, string>& get_map_config(/* out */ map<string, string>& config);
-    map<string, vector<string>> & get_map_arrays(/* out */ map<string, vector<string>> & arrays);
+    map<string, string>& get_map_vars();
+    map<string, string>& get_map_config();
+    map<string, vector<string>>& get_map_arrays();
+    unsigned int get_state();
     void clear_all();
     
 private:
     void find_escapes(const string& tmpl);
-    //void lex(const string& tmpl, /* out */ vector<pair<int, std::string>>& tokens);
-    //void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
-    //void parse_tag(const string token, /* out */ string& html); 
+    void lex(const string& match);
+    void parse(const std::vector<pair<int, string>>& tokens, /* out */ string& html); 
 
     // types
     typedef vector<pair<int, string>> token_vector;
@@ -50,6 +50,9 @@ private:
     string compile_dir;
     string config_dir;
     string cache_dir;
+
+    // state
+    unsigned int state;
 };
 
 #endif
