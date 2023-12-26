@@ -33,7 +33,11 @@ const string FORWARD_SLASH = "/";
 const string ASTERIK = "\\*";
 const string HASH_MARK = "#";
 const string DOLLAR_SIGN = "\\$";
-const string EQUALS_OPERATOR = "==";
+const string QUOTE_MARK = "\"";
+const string UNDERSCORE = "_";
+const string MINUS_SIGN = "-";
+const string EQUALS = "=";
+const string EQUALS_LOGICAL = "==";
 const string LESS_THAN_OPERATOR = "<";
 const string GREATER_THAN_OPERATOR = ">";
 const string NOT_OPERATOR = "!";
@@ -71,7 +75,7 @@ const string EXPR_STATIC_VARIABLE = "\\s*#(" + SYMBOL_NAME + ")#\\s*";
 const string EXPR_ACTION_FILE = ACTION_TOKEN + " file=\"" + VALID_FILE_CHARS + "+\"";
 const string EXPR_COMMENT = "\\*\\s*" + VALID_SYMBOL_CHARS + "*\\s*\\*";
 // lexing
-const string ESCAPE = "\\{\\(" + VALID_ESC_CHARS + "*\\)\\}";
+const string ESCAPE = "\\{\\(" + VALID_ESC_CHARS + "*\\}";
 const string TOKENS = "(" + EXPR_VARIABLE + ")|(" + ACTION_TOKEN + ")";
 
 // group indexs

@@ -66,7 +66,7 @@ int parse_options(int argc, char* argv[])
 	
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/testcache");
     string s_out;
-	sm.load_config(conf_path, s_out);
+	sm.load_config(conf_path);
 
 	cout << "******* Display Configuration ******" << endl;
     // map<string, string>::iterator end = sm.load_config().end();

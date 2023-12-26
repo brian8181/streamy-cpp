@@ -23,9 +23,10 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
     this->cache_dir = cache_dir;
 }
 
-string& streamy::load_config(const string& path, /* out */ string& s_out)
+void streamy::load_config(const string& path)
 {
-    s_out = read_stream(path, s_out);
+    string s_out;
+    read_stream(path, s_out);
     regex rgx = regex(LOAD_CONFIG_PAIR); 
 
     auto begin = sregex_iterator(s_out.begin(), s_out.end(), rgx, std::regex_constants::match_default);
@@ -39,7 +40,6 @@ string& streamy::load_config(const string& path, /* out */ string& s_out)
         pair<string, string> p(name, value);
         map_config.insert(p);
     }
-    return s_out;
 }
 
 void streamy::display(const string& file)
@@ -90,21 +90,64 @@ void streamy::find_escapes(const string& tmpl)
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
         std::string fmt_match_beg = match.format("$`");
-        std::string fmt_match = match.format("$&");
-        strm << fmt_match_beg << fmt_match;
+        std::string fmt_match = match.format("@@@$&@@@s");
+        strm << fmt_match_beg;// << fmt_match;
 
         // // lexing
-        // string tok_s = fmt_match;
-        // regex tok_exp = regex(FIRST_PASS, std::regex::ECMAScript); // match
-        // smatch tok_match;
+        string tok_s = fmt_match;
+        regex tok_exp = regex(FIRST_PASS, std::regex::ECMAScript); // match
+        smatch tok_match;
 
-        // while(std::regex_search(tok_s, tok_match, tok_exp, std::regex_constants::match_default))
-        // {
-        //     std::string tok_fmt_match = tok_match.format("$&");
-        //     tok_s = tok_match.format("$'");
-        //     strm << "<ESCAPED>" << tok_s << "</ESCAPED>";
-        // }
-        
+        do
+        {
+            while(std::regex_search(tok_s, tok_match, tok_exp, std::regex_constants::match_default) )
+            {
+                std::string tok_fmt_match = match.format("##$&##");
+                // found ?
+                sub_match subm = match[1];
+                int state;
+                int event;
+                switch(state)
+                {
+                    // case STATE1:
+                    // {
+                    //     // first pass
+                    //     switch(event)
+                    //     {
+                    //         case EVENT1:
+                    //         case EVENT2:
+                    //         case 3:
+                    //     }
+                    //     break;
+                    // }
+                    // case STATE2:
+                    //      // first pass
+                    //     switch(event)
+                    //     {
+                    //         case EVENT1:
+                    //         case 3:
+                    //         case 4:
+                    //     }
+                    // case HASH_MARK_ID:
+                    case 10:
+                    {
+                        // found closeing hash or asktrik  // set s string // stopping here agian
+                        tok_s = "[*#]";
+                        string name = match.format("$`"); // beg
+                        strm << name;
+                    }
+                    case DOLLAR_SIGN_ID:
+                    {
+                        string name = match.format("$`").substr(1,match.length());
+                    }
+                }
+                strm << tok_fmt_match;
+            }
+            tok_s = tok_match.format("$'");
+        }
+        while(tok_s.length() > 0);
+
+        strm << tok_s;
         s = match.format("$'");
     }
     strm << s;
@@ -179,22 +222,19 @@ void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */
     html = shtml.str();
 }
 
-std::map<string, string>& streamy::get_map_config(/* out */ std::map<string, string>& config)
+std::map<string, string>& streamy::get_map_config()
  {
-    config = map_config;
-    return config;
+    return map_config;
  }
 
- std::map<string, string>& streamy::get_map_vars(/* out */ std::map<string, string>& vars)
+ std::map<string, string>& streamy::get_map_vars()
  {
-    vars = map_vars;
-    return vars;
+    return map_vars;
  }
 
- map<string, vector<string>> &streamy::get_map_arrays(/* out */ map<string, vector<string>> & arrays)
+ map<string, vector<string>>& streamy::get_map_arrays()
  {
-    arrays = arrays;
-    return arrays;
+    return map_arrays;
  }
 
 void streamy::clear_all()
@@ -202,4 +242,9 @@ void streamy::clear_all()
     map_config.clear();
     map_vars.clear();
     map_arrays.clear();
+}
+
+unsigned int streamy::get_state()
+{
+    return state;
 }

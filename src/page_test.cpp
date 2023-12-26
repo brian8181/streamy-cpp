@@ -45,14 +45,14 @@ int parse_options(int argc, char* argv[])
 
     // steamy-cpp ...
 	streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
-    sm.load_config(config_path, s_out);
+    sm.load_config(config_path);
     sm.assign("citys", citys);
-    sm.get_map_config(config).insert(pair<string, string>("version", "2000"));
-    sm.get_map_config(config).insert(pair<string, string>("mail_message", "No Mail!"));
-    sm.get_map_config(config).insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
-    sm.get_map_vars(vars).insert(pair<string, string>("version", "2000"));
-    sm.get_map_vars(vars).insert(pair<string, string>("mail_message", "No Mail!"));
-    sm.get_map_vars(vars).insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
+    sm.get_map_config().insert(pair<string, string>("version", "2000"));
+    sm.get_map_config().insert(pair<string, string>("mail_message", "No Mail!"));
+    sm.get_map_config().insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
+    sm.get_map_vars().insert(pair<string, string>("version", "2000"));
+    sm.get_map_vars().insert(pair<string, string>("mail_message", "No Mail!"));
+    sm.get_map_vars().insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "*PAGE_TITLE*");
     sm.assign("body", "**THE BODY**");
@@ -62,8 +62,8 @@ int parse_options(int argc, char* argv[])
     sm.display("test_vars.tpl");
 
     // read / display ...
-    map<string, string>::iterator end = sm.get_map_config(config).end();
-    for (map<string, string>::iterator iter = sm.get_map_config(config).begin(); iter != end; ++iter)
+    map<string, string>::iterator end = sm.get_map_config().end();
+    for (map<string, string>::iterator iter = sm.get_map_config().begin(); iter != end; ++iter)
     {
         cout << "key: " << iter->first << " , value: " << iter->second << endl;
     }
