@@ -57,12 +57,22 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     // find escape sequences
     vector<std::pair<int, std::string>> escapes;
     find_escapes(full_path, escapes);
+
+#ifdef DEBUG
+    int len = escapes.size();
+    for(int i =0; i < len; ++i)
+    {
+        if(escapes[i].first == TAG)
+            cout << FMT_FG_BLUE << "escape" << FMT_FG_RED << "-->" << FMT_FG_GREEN << escapes[i].second << FMT_RESET << endl;
+    }
+#endif
+
     vector<vector<string>> tokens;
     // lex tags in escape sequences
     lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
     parse(tokens, html);
-    
+
     return html;
 }
 
@@ -78,11 +88,10 @@ void streamy::assign(const string& name, const vector<string>& vec)
     map_arrays.insert(p);
 }
 
-void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, std::string>> escapes)
+void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, std::string>>& escapes)
 {
-    string full_path = this->template_dir + "/" + tmpl;
     string s;
-    read_stream(full_path, s);
+    read_stream(tmpl, s);
 
     regex exp = regex(ESCAPE, std::regex::ECMAScript); // match
     smatch match;
@@ -92,8 +101,6 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
         std::string fmt_match = match.format("$&");
         escapes.push_back(pair(TEXT, fmt_match_beg));
         escapes.push_back(pair(TAG, fmt_match));
-        vector<string> tokens;
-        lex(fmt_match, tokens);
         s = match.format("$'");
     }
     escapes.push_back(pair(TEXT, s));
