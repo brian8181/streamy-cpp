@@ -42,21 +42,28 @@ void streamy::load_config(const string& path)
     }
 }
 
-void streamy::display(const string& file)
+void streamy::display(const string& tmpl)
+{
+    string _html;
+    compile(tmpl, _html);
+    // stdout final
+    cout << _html << endl;
+}
+
+string& streamy::compile(const string& tmpl, /* out */ string& html)
 {
     // open file the call parse function ...
-    string full_path = this->template_dir + "/" + file;
+    string full_path = this->template_dir + "/" + tmpl;
     // find escape sequences
     vector<std::pair<int, std::string>> escapes;
-    find_escapes(file, escapes);
+    find_escapes(full_path, escapes);
     vector<vector<string>> tokens;
     // lex tags in escape sequences
     lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
-    string _html;
-    parse(tokens,_html);
-    // stdout final
-    cout << _html << endl;
+    parse(tokens, html);
+    
+    return html;
 }
 
 void streamy::assign(const string& name, const string& val)
@@ -69,11 +76,6 @@ void streamy::assign(const string& name, const vector<string>& vec)
 {
     pair<string, vector<string>> p(name, vec);
     map_arrays.insert(p);
-}
-
-string& streamy::compile(const string& tmpl, /* out */ string& html)
-{
-    return html;
 }
 
 void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, std::string>> escapes)
