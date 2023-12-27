@@ -17,6 +17,10 @@ using std::map;
 using std::vector;
 using std::pair;
 
+ // escapes
+const int TEXT = 0x1;
+const int TAG = 0x2;
+
 class streamy
 {
 public:

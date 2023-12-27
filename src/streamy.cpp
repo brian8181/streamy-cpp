@@ -48,22 +48,14 @@ void streamy::display(const string& file)
     string full_path = this->template_dir + "/" + file;
     // stdout all unescaped text send escaped text to the lexer
     find_escapes(file);
-    std::vector<pair<int, std::string>> tokens;
+    // std::vector<pair<int, std::string>> tokens;
     // tokenize the template code
     // lex(file, tokens);
     // parse the tokens appling agrammer rules
-    string _html;
+    // string _html;
     // parse(tokens, _html); 
     // stdout final
-    cout << _html << endl;
-
-    #if DEBUG
-    int len = tokens.size();
-    for(int i = 0; i < len; ++i)
-    {
-        cout << tokens[i].first << " : " << tokens[i].second << endl;
-    }
-    #endif
+    // cout << _html << endl;
 }
 
 void streamy::assign(const string& name, const string& val)
@@ -89,68 +81,13 @@ void streamy::find_escapes(const string& tmpl)
     smatch match;
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        std::string fmt_match_beg = match.format("$`");
-        std::string fmt_match = match.format("@@@$&@@@s");
-        strm << fmt_match_beg;// << fmt_match;
-
-        // // lexing
-        string tok_s = fmt_match;
-        regex tok_exp = regex(FIRST_PASS, std::regex::ECMAScript); // match
-        smatch tok_match;
-
-        do
-        {
-            while(std::regex_search(tok_s, tok_match, tok_exp, std::regex_constants::match_default) )
-            {
-                std::string tok_fmt_match = match.format("##$&##");
-                // found ?
-                sub_match subm = match[1];
-                int state;
-                int event;
-                switch(state)
-                {
-                    // case STATE1:
-                    // {
-                    //     // first pass
-                    //     switch(event)
-                    //     {
-                    //         case EVENT1:
-                    //         case EVENT2:
-                    //         case 3:
-                    //     }
-                    //     break;
-                    // }
-                    // case STATE2:
-                    //      // first pass
-                    //     switch(event)
-                    //     {
-                    //         case EVENT1:
-                    //         case 3:
-                    //         case 4:
-                    //     }
-                    // case HASH_MARK_ID:
-                    case 10:
-                    {
-                        // found closeing hash or asktrik  // set s string // stopping here agian
-                        tok_s = "[*#]";
-                        string name = match.format("$`"); // beg
-                        strm << name;
-                    }
-                    case DOLLAR_SIGN_ID:
-                    {
-                        string name = match.format("$`").substr(1,match.length());
-                    }
-                }
-                strm << tok_fmt_match;
-            }
-            tok_s = tok_match.format("$'");
-        }
-        while(tok_s.length() > 0);
-
-        strm << tok_s;
+        std::string fmt_match_beg = match.format("TEXT:$`\n");
+        std::string fmt_match = match.format("ESCAPE:$&\n");
+        strm << fmt_match_beg;
+        strm << fmt_match;
         s = match.format("$'");
     }
-    strm << s;
+    strm << "TEXT:" << s << endl;
     std::cout << strm.str();
 }
 
