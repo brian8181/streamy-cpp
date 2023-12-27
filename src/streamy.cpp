@@ -46,8 +46,9 @@ void streamy::display(const string& file)
 {
     // open file the call parse function ...
     string full_path = this->template_dir + "/" + file;
-    // stdout all unescaped text send escaped text to the lexer
-    find_escapes(file);
+    
+    vector<std::pair<int, std::string>> escapes;
+    find_escapes(file, escapes);
     // std::vector<pair<int, std::string>> tokens;
     // tokenize the template code
     // lex(file, tokens);
@@ -70,93 +71,50 @@ void streamy::assign(const string& name, const vector<string>& vec)
     map_arrays.insert(p);
 }
 
-void streamy::find_escapes(const string& tmpl)
+string& streamy::compile(const string& tmpl, /* out */ string& html)
+{
+    return html;
+}
+
+void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, std::string>> escapes)
 {
     string full_path = this->template_dir + "/" + tmpl;
     string s;
     read_stream(full_path, s);
-    stringstream strm;
 
     regex exp = regex(ESCAPE, std::regex::ECMAScript); // match
     smatch match;
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        std::string fmt_match_beg = match.format("TEXT:$`\n");
-        std::string fmt_match = match.format("ESCAPE:$&\n");
-        strm << fmt_match_beg;
-        strm << fmt_match;
+        std::string fmt_match_beg = match.format("$`");
+        std::string fmt_match = match.format("$&");
+        escapes.push_back(pair(TEXT, fmt_match_beg));
+        escapes.push_back(pair(TAG, fmt_match));
+        vector<string> tokens;
+        lex(fmt_match, tokens);
         s = match.format("$'");
     }
-    strm << "TEXT:" << s << endl;
-    std::cout << strm.str();
+    escapes.push_back(pair(TEXT, s));
 }
 
-void streamy::lex(const string& match)
+void streamy::lex(const string& s, /* out */ vector<string>& tokens)
 {
-    // // lexing
-    // string tok_s = fmt_match;
-    // regex tok_exp = regex(FIRST_PASS, std::regex::ECMAScript); // match
-    // smatch tok_match;
+    // lexing
+    string str = s;
+    regex exp = regex(REGEXP_TOKENS, std::regex::ECMAScript); // match
+    smatch match;
 
-    // while(std::regex_search(tok_s, tok_match, tok_exp, std::regex_constants::match_default))
-    // {
-    //     std::string tok_fmt_match = tok_match.format("$&");
-    //     tok_s = tok_match.format("$'");
-    //     strm << "<ESCAPED>" << tok_s << "</ESCAPED>";
-    // }
-}
-
-void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html)
-{
-    stringstream shtml;
-    stringstream sexpr;
-
-    sexpr       << "(" 
-                << EXPR_COMMENT 
-                << ")|("  
-                << EXPR_STATIC_VARIABLE
-                << ")|(" 
-                << EXPR_VARIABLE
-                << ")|("
-                << EXPR_ARRAY 
-                << ")|("
-                << EXPR_ACTION_FILE 
-                << ")";
- 
-    int len = tokens.size();
-    for(int i = 0; i < len; ++i)
+    while(std::regex_search(str, match, exp, std::regex_constants::match_default))
     {
-        switch(tokens[i].first)
-        {
-            case TEXT:
-                shtml << tokens[i].second;
-                break;
-            case TAG:
-
-            string expression_stream = sexpr.str();
-            // regex exp = regex(expression_stream, regex::ECMAScript); // match
-            // smatch m;
-            // std::regex_search(tokens[i].second, m, exp);
-
-            // int bits  = read_bits(m);
-        
-            // if (!m.empty())
-            // {
-            //     //if(m[ESC_REG_VAR].matched || m[ESC_STATIC_VAR].matched || m[ESC_ARRAY_VAR].matched || m[ESC_COMMENT].matched || m[ESC_INCLUDE].matched)
-            //     {
-            //         shtml << FMT_FG_GREEN << "MATCH( " << FMT_RESET << FMT_FG_BLUE << FMT_UNDERLINE << tokens[i].second
-            //             << FMT_RESET_UNDERLINE << FMT_RESET << FMT_FG_GREEN << " )" << FMT_RESET << " : " << std::oct << bits;
-            //         break;
-            //     }
-            // }
-            // shtml << FMT_FG_RED << "ERROR( " << FMT_RESET << FMT_FG_LIGHT_CYAN << tokens[i].second << FMT_RESET << FMT_FG_RED << " )" << FMT_RESET;
-            string tag = tokens[i].second;
-            token_vector toks;
-            //lex(tag, toks);
-            break;
-        }
+        std::string fmt_match = match.format("$&");
+        tokens.push_back(fmt_match);
+        str = match.format("$'");
     }
-    html = shtml.str();
+}
+
+void streamy::parse(const std::vector<string>& tokens, /* out */ string& html)
+{
+    
 }
 
 std::map<string, string>& streamy::get_map_config()
