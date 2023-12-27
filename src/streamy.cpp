@@ -46,17 +46,17 @@ void streamy::display(const string& file)
 {
     // open file the call parse function ...
     string full_path = this->template_dir + "/" + file;
-    
+    // find escape sequences
     vector<std::pair<int, std::string>> escapes;
     find_escapes(file, escapes);
-    // std::vector<pair<int, std::string>> tokens;
-    // tokenize the template code
-    // lex(file, tokens);
+    vector<vector<string>> tokens;
+    // lex tags in escape sequences
+    lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
-    // string _html;
-    // parse(tokens, _html); 
+    string _html;
+    parse(tokens,_html);
     // stdout final
-    // cout << _html << endl;
+    cout << _html << endl;
 }
 
 void streamy::assign(const string& name, const string& val)
@@ -97,9 +97,23 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
     escapes.push_back(pair(TEXT, s));
 }
 
+void streamy::lex_escapes(std::vector<pair<int, std::string>> escapes, /* out */ vector<vector<string>>& tokens)
+{
+    int len = escapes.size();
+    for(int i = 0; i < len; ++i)
+    {
+        pair<int, std::string> p = escapes[i];
+        if(p.first == TAG)
+        {   
+            vector<string> tok_vec;
+            lex(p.second, tok_vec);
+            tokens.push_back(tok_vec);
+        }
+    }
+}
+
 void streamy::lex(const string& s, /* out */ vector<string>& tokens)
 {
-    // lexing
     string str = s;
     regex exp = regex(REGEXP_TOKENS, std::regex::ECMAScript); // match
     smatch match;
@@ -112,9 +126,8 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
     }
 }
 
-void streamy::parse(const std::vector<string>& tokens, /* out */ string& html)
+void streamy::parse(const vector<vector<string>>& tokens, /* out */ string& html)
 {
-    
 }
 
 std::map<string, string>& streamy::get_map_config()
