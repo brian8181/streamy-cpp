@@ -2,6 +2,7 @@
 {$headers}
 {$page_title}
 {$foo[3] + 3}
+{/if}
 {*TEWST*}
 BB 
 testing

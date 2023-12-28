@@ -127,7 +127,7 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
 {
     string str = s;
     string opers = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
-    string delimter = "([ ,'\"$*#=+-:!%<>|.(){}\\]\\[])";
+    string delimter = "([ ,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
     regex exp = regex(opers + "|" + delimter, std::regex::ECMAScript); 
     smatch match;
 
@@ -141,7 +141,7 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
             tokens.push_back(fmt_match);
         str = match.format("$'");
     }
-    
+
 #ifdef DEBUG
     int len = tokens.size(); 
     cout << FMT_FG_RED << "Token-> ";
