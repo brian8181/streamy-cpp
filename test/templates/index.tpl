@@ -1,7 +1,7 @@
 
 {$headers}
 {$page_title}
-{$foo[3]}
+{$foo[3] + 3}
 {*TEWST*}
 BB 
 testing
@@ -24,7 +24,7 @@ WWWW
 {include file="text.txt"}
 {config_load file="text.txt"}
 {insert file="test.txt"}
-{$foo.foo}
+{$foo.foo == true}
 {$foo->foo}
 {$foo.foo()}
 {$foo->foo()}
