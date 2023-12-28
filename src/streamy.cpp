@@ -94,7 +94,6 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
 {
     string s;
     read_stream(tmpl, s);
-
     regex exp = regex(ESCAPE, std::regex::ECMAScript);
     smatch match;
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
