@@ -57,6 +57,11 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     // find escape sequences
     vector<std::pair<int, std::string>> escapes;
     find_escapes(full_path, escapes);
+    vector<vector<string>> tokens;
+    // lex tags in escape sequences
+    lex_escapes(escapes, tokens);
+    // parse the tokens appling agrammer rules
+    parse(tokens, html);
 
 #ifdef DEBUG
     int len = escapes.size();
@@ -69,12 +74,6 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
         }
     }
 #endif
-
-    vector<vector<string>> tokens;
-    // lex tags in escape sequences
-    lex_escapes(escapes, tokens);
-    // parse the tokens appling agrammer rules
-    parse(tokens, html);
 
     return html;
 }
@@ -132,7 +131,6 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
 
     while(std::regex_search(str, match, exp, std::regex_constants::match_default))
     {
-        // todo split on newline
         std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
         if(fmt_match_beg.length() > 0)
@@ -141,13 +139,15 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
             tokens.push_back(fmt_match);
         str = match.format("$'");
     }
-    //tokens.push_back(str);
 
 #ifdef DEBUG
-    for(int i = 0; i < tokens.size(); ++i)
+    int len = tokens.size(); 
+    cout << FMT_FG_RED << "Token-> ";
+    for(int i = 0; i < len; ++i)
     {
-        cout << "Token->" << tokens[i] << endl;
+        cout << FMT_FG_YELLOW << tokens[i] << FMT_RESET << ", ";
     }
+    cout << endl;
 #endif
 }
 
