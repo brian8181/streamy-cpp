@@ -63,7 +63,10 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     for(int i =0; i < len; ++i)
     {
         if(escapes[i].first == TAG)
-            cout << FMT_FG_BLUE << "escape" << FMT_FG_RED << "-->" << FMT_FG_GREEN << escapes[i].second << FMT_RESET << endl;
+        {
+            cout << FMT_FG_BLUE << "escape" << FMT_FG_RED << "-->" 
+                 << FMT_FG_GREEN << escapes[i].second << FMT_RESET << endl;
+        }
     }
 #endif
 
@@ -93,7 +96,7 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
     string s;
     read_stream(tmpl, s);
 
-    regex exp = regex(ESCAPE, std::regex::ECMAScript); // match
+    regex exp = regex(ESCAPE, std::regex::ECMAScript);
     smatch match;
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
@@ -124,15 +127,28 @@ void streamy::lex_escapes(std::vector<pair<int, std::string>> escapes, /* out */
 void streamy::lex(const string& s, /* out */ vector<string>& tokens)
 {
     string str = s;
-    regex exp = regex(REGEXP_TOKENS, std::regex::ECMAScript); // match
+    regex exp = regex("[ ,'\"$*#=|.(){}]", std::regex::ECMAScript); 
     smatch match;
 
     while(std::regex_search(str, match, exp, std::regex_constants::match_default))
     {
+        // todo split on newline
+        std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
-        tokens.push_back(fmt_match);
+        if(fmt_match_beg.length() > 0)
+            tokens.push_back(fmt_match_beg);
+        if(!std::isspace(fmt_match[0]))    
+            tokens.push_back(fmt_match);
         str = match.format("$'");
     }
+    //tokens.push_back(str);
+
+#ifdef DEBUG
+    for(int i = 0; i < tokens.size(); ++i)
+    {
+        cout << "Token->" << tokens[i] << endl;
+    }
+#endif
 }
 
 void streamy::parse(const vector<vector<string>>& tokens, /* out */ string& html)

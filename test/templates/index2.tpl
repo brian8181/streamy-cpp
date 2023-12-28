@@ -1,0 +1,2 @@
+{$headers}
+{$page_title}
