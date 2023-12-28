@@ -59,7 +59,7 @@ int parse_options(int argc, char* argv[])
     sm.assign("admin_email", "admin@something.com");
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
-    sm.display("test_vars.tpl");
+    sm.display("index.tpl");
 
     // read / display ...
     map<string, string>::iterator end = sm.get_map_config().end();

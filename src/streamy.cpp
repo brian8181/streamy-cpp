@@ -42,28 +42,40 @@ void streamy::load_config(const string& path)
     }
 }
 
-void streamy::display(const string& file)
+void streamy::display(const string& tmpl)
 {
-    // open file the call parse function ...
-    string full_path = this->template_dir + "/" + file;
-    // stdout all unescaped text send escaped text to the lexer
-    find_escapes(file);
-    std::vector<pair<int, std::string>> tokens;
-    // tokenize the template code
-    // lex(file, tokens);
-    // parse the tokens appling agrammer rules
     string _html;
-    // parse(tokens, _html); 
+    compile(tmpl, _html);
     // stdout final
     cout << _html << endl;
+}
 
-    #if DEBUG
-    int len = tokens.size();
-    for(int i = 0; i < len; ++i)
+string& streamy::compile(const string& tmpl, /* out */ string& html)
+{
+    // open file the call parse function ...
+    string full_path = this->template_dir + "/" + tmpl;
+    // find escape sequences
+    vector<std::pair<int, std::string>> escapes;
+    find_escapes(full_path, escapes);
+    vector<vector<string>> tokens;
+    // lex tags in escape sequences
+    lex_escapes(escapes, tokens);
+    // parse the tokens appling agrammer rules
+    parse(tokens, html);
+
+#ifdef DEBUG
+    int len = escapes.size();
+    for(int i =0; i < len; ++i)
     {
-        cout << tokens[i].first << " : " << tokens[i].second << endl;
+        if(escapes[i].first == TAG)
+        {
+            cout << FMT_FG_BLUE << "escape" << FMT_FG_RED << "-->" 
+                 << FMT_FG_GREEN << escapes[i].second << FMT_RESET << endl;
+        }
     }
-    #endif
+#endif
+
+    return html;
 }
 
 void streamy::assign(const string& name, const string& val)
@@ -78,148 +90,71 @@ void streamy::assign(const string& name, const vector<string>& vec)
     map_arrays.insert(p);
 }
 
-void streamy::find_escapes(const string& tmpl)
+void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, std::string>>& escapes)
 {
-    string full_path = this->template_dir + "/" + tmpl;
     string s;
-    read_stream(full_path, s);
-    stringstream strm;
+    read_stream(tmpl, s);
 
-    regex exp = regex(ESCAPE, std::regex::ECMAScript); // match
+    regex exp = regex(ESCAPE, std::regex::ECMAScript);
     smatch match;
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
         std::string fmt_match_beg = match.format("$`");
-        std::string fmt_match = match.format("@@@$&@@@s");
-        strm << fmt_match_beg;// << fmt_match;
-
-        // // lexing
-        string tok_s = fmt_match;
-        regex tok_exp = regex(FIRST_PASS, std::regex::ECMAScript); // match
-        smatch tok_match;
-
-        do
-        {
-            while(std::regex_search(tok_s, tok_match, tok_exp, std::regex_constants::match_default) )
-            {
-                std::string tok_fmt_match = match.format("##$&##");
-                // found ?
-                sub_match subm = match[1];
-                int state;
-                int event;
-                switch(state)
-                {
-                    // case STATE1:
-                    // {
-                    //     // first pass
-                    //     switch(event)
-                    //     {
-                    //         case EVENT1:
-                    //         case EVENT2:
-                    //         case 3:
-                    //     }
-                    //     break;
-                    // }
-                    // case STATE2:
-                    //      // first pass
-                    //     switch(event)
-                    //     {
-                    //         case EVENT1:
-                    //         case 3:
-                    //         case 4:
-                    //     }
-                    // case HASH_MARK_ID:
-                    case 10:
-                    {
-                        // found closeing hash or asktrik  // set s string // stopping here agian
-                        tok_s = "[*#]";
-                        string name = match.format("$`"); // beg
-                        strm << name;
-                    }
-                    case DOLLAR_SIGN_ID:
-                    {
-                        string name = match.format("$`").substr(1,match.length());
-                    }
-                }
-                strm << tok_fmt_match;
-            }
-            tok_s = tok_match.format("$'");
-        }
-        while(tok_s.length() > 0);
-
-        strm << tok_s;
+        std::string fmt_match = match.format("$&");
+        escapes.push_back(pair(TEXT, fmt_match_beg));
+        escapes.push_back(pair(TAG, fmt_match));
         s = match.format("$'");
     }
-    strm << s;
-    std::cout << strm.str();
+    escapes.push_back(pair(TEXT, s));
 }
 
-void streamy::lex(const string& match)
+void streamy::lex_escapes(std::vector<pair<int, std::string>> escapes, /* out */ vector<vector<string>>& tokens)
 {
-    // // lexing
-    // string tok_s = fmt_match;
-    // regex tok_exp = regex(FIRST_PASS, std::regex::ECMAScript); // match
-    // smatch tok_match;
-
-    // while(std::regex_search(tok_s, tok_match, tok_exp, std::regex_constants::match_default))
-    // {
-    //     std::string tok_fmt_match = tok_match.format("$&");
-    //     tok_s = tok_match.format("$'");
-    //     strm << "<ESCAPED>" << tok_s << "</ESCAPED>";
-    // }
-}
-
-void streamy::parse(const std::vector<pair<int, std::string>>& tokens, /* out */ string& html)
-{
-    stringstream shtml;
-    stringstream sexpr;
-
-    sexpr       << "(" 
-                << EXPR_COMMENT 
-                << ")|("  
-                << EXPR_STATIC_VARIABLE
-                << ")|(" 
-                << EXPR_VARIABLE
-                << ")|("
-                << EXPR_ARRAY 
-                << ")|("
-                << EXPR_ACTION_FILE 
-                << ")";
- 
-    int len = tokens.size();
+    int len = escapes.size();
     for(int i = 0; i < len; ++i)
     {
-        switch(tokens[i].first)
-        {
-            case TEXT:
-                shtml << tokens[i].second;
-                break;
-            case TAG:
-
-            string expression_stream = sexpr.str();
-            // regex exp = regex(expression_stream, regex::ECMAScript); // match
-            // smatch m;
-            // std::regex_search(tokens[i].second, m, exp);
-
-            // int bits  = read_bits(m);
-        
-            // if (!m.empty())
-            // {
-            //     //if(m[ESC_REG_VAR].matched || m[ESC_STATIC_VAR].matched || m[ESC_ARRAY_VAR].matched || m[ESC_COMMENT].matched || m[ESC_INCLUDE].matched)
-            //     {
-            //         shtml << FMT_FG_GREEN << "MATCH( " << FMT_RESET << FMT_FG_BLUE << FMT_UNDERLINE << tokens[i].second
-            //             << FMT_RESET_UNDERLINE << FMT_RESET << FMT_FG_GREEN << " )" << FMT_RESET << " : " << std::oct << bits;
-            //         break;
-            //     }
-            // }
-            // shtml << FMT_FG_RED << "ERROR( " << FMT_RESET << FMT_FG_LIGHT_CYAN << tokens[i].second << FMT_RESET << FMT_FG_RED << " )" << FMT_RESET;
-            string tag = tokens[i].second;
-            token_vector toks;
-            //lex(tag, toks);
-            break;
+        pair<int, std::string> p = escapes[i];
+        if(p.first == TAG)
+        {   
+            vector<string> tok_vec;
+            lex(p.second, tok_vec);
+            tokens.push_back(tok_vec);
         }
     }
-    html = shtml.str();
+}
+
+void streamy::lex(const string& s, /* out */ vector<string>& tokens)
+{
+    string str = s;
+    string opers = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
+    string delimter = "([ ,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
+    regex exp = regex(opers + "|" + delimter, std::regex::ECMAScript); 
+    smatch match;
+
+    while(std::regex_search(str, match, exp, std::regex_constants::match_default))
+    {
+        std::string fmt_match_beg = match.format("$`");
+        std::string fmt_match = match.format("$&");
+        if(fmt_match_beg.length() > 0)
+            tokens.push_back(fmt_match_beg);
+        if(!std::isspace(fmt_match[0]))    
+            tokens.push_back(fmt_match);
+        str = match.format("$'");
+    }
+
+#ifdef DEBUG
+    int len = tokens.size(); 
+    cout << FMT_FG_RED << "Token-> ";
+    for(int i = 0; i < len; ++i)
+    {
+        cout << FMT_FG_YELLOW << tokens[i] << FMT_RESET << ", ";
+    }
+    cout << endl;
+#endif
+}
+
+void streamy::parse(const vector<vector<string>>& tokens, /* out */ string& html)
+{
 }
 
 std::map<string, string>& streamy::get_map_config()
