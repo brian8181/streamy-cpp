@@ -35,11 +35,15 @@ public:
     map<string, string>& get_map_vars();
     map<string, string>& get_map_config();
     map<string, vector<string>>& get_map_arrays();
+    vector<pair<string, string>>& get_registered_object(string object_name, /*out*/ vector<pair<string, string>>& registered_object);
+    string smarty_prefilter_name(const string& src, const string& smarty);
+    string smarty_postfilter_name(const string& src, const string& smarty);
     void clear_all();
     void clear_config();
     void clear_config(string name);
     void clear_assign();
     void clear_assign(string name);
+    void clear_cache();
     unsigned int get_state();
     
 private:
@@ -55,7 +59,9 @@ private:
     // map    
     map<string, string> map_config;
     map<string, string> map_vars;
+    map<string, string> map_const;
     map<string, vector<string>> map_arrays;
+    map<string, pair<string, vector<string>>> map_objects;
     map<int, string> token_map;
 
     // config
@@ -66,7 +72,12 @@ private:
 
     bool caching = false;
     bool config_overwrite = false;
+    bool autoload_filters = false;
 
+    string version = "0.0.1";
+    string templ;
+    string ldelm;
+    string rdelm;
     // state
     unsigned int state;
 };

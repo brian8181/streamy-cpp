@@ -12,6 +12,7 @@
 #include "tokens.hpp"
 // debug
 #include "bash_color.h"
+#include <filesystem>
 
 using namespace std;
 
@@ -203,12 +204,22 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
             // }
             // end_of_string = match.format("$'");
         }
-
     }
 }
 
 void streamy::parse(const vector<vector<string>>& tokens, /* out */ string& html)
 {
+}
+
+vector<pair<string, string>>& streamy::get_registered_object(string object_name, /*out*/ vector<pair<string, string>>& registered_object)
+{
+    return registered_object;
+}
+
+void streamy::clear_cache()
+{
+    // delete cache
+    filesystem::path p = cache_dir;
 }
 
 std::map<string, string>& streamy::get_map_config()
@@ -253,6 +264,16 @@ void streamy::clear_all()
     map_config.clear();
     map_vars.clear();
     map_arrays.clear();
+}
+
+string smarty_prefilter_name(const string& src, const string& smarty)
+{
+    return "";
+}
+
+string smarty_postfilter_name(const string& src, const string& smarty)
+{
+    return "";
 }
 
 unsigned int streamy::get_state()
