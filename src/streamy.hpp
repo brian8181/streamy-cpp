@@ -24,16 +24,23 @@ const int TAG = 0x2;
 class streamy
 {
 public:
+    streamy();
     streamy(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir);
-    void load_config(const string& path);
+    void config_load(const string& path);
+    void config_load(const string& path, const string& section);
     void display(const string& file);
     void assign(const string& name, const string& val);
     void assign(const string& name, const vector<string>& vec);
+    string& fetch(const string& tmpl, const string& cache_id, const string& compile_id, /*out*/ string& html);
     map<string, string>& get_map_vars();
     map<string, string>& get_map_config();
     map<string, vector<string>>& get_map_arrays();
-    unsigned int get_state();
     void clear_all();
+    void clear_config();
+    void clear_config(string name);
+    void clear_assign();
+    void clear_assign(string name);
+    unsigned int get_state();
     
 private:
     string& compile(const string& tmpl, /* out */ string& html);
@@ -56,6 +63,9 @@ private:
     string compile_dir;
     string config_dir;
     string cache_dir;
+
+    bool caching = false;
+    bool config_overwrite = false;
 
     // state
     unsigned int state;

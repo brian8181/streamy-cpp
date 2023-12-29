@@ -15,6 +15,14 @@
 
 using namespace std;
 
+streamy::streamy()
+{
+    this->template_dir = "../streamy/templates";
+    this->compile_dir = "../streamy/compile";
+    this->config_dir = "../streamy/config";
+    this->cache_dir = "../streamy/cache";
+}
+
 streamy::streamy(const string& template_dir, const string& compile_dir, const string& config_dir, const string& cache_dir)
 {
     this->template_dir = template_dir;
@@ -23,8 +31,31 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
     this->cache_dir = cache_dir;
 }
 
-void streamy::load_config(const string& path)
+void streamy::config_load(const string& path)
 {
+    // todo comments !
+    // todo sections !
+    string s_out;
+    read_stream(path, s_out);
+    regex rgx = regex(LOAD_CONFIG_PAIR); 
+
+    auto begin = sregex_iterator(s_out.begin(), s_out.end(), rgx, std::regex_constants::match_default);
+    auto end = sregex_iterator(); 
+
+    for (sregex_iterator iter = begin; iter != end; ++iter)
+    {
+        smatch match = *iter;
+        string name = match[1].str();
+        string value = match[2].str();
+        pair<string, string> p(name, value);
+        map_config.insert(p);
+    }
+}
+
+void streamy::config_load(const string& path, const string& section)
+{
+    // todo comments !
+    // todo sections !
     string s_out;
     read_stream(path, s_out);
     regex rgx = regex(LOAD_CONFIG_PAIR); 
@@ -50,6 +81,12 @@ void streamy::display(const string& tmpl)
     cout << _html << endl;
 }
 
+string& streamy::fetch(const string& tmpl, const string& cache_id, const string& compile_id, /*out*/ string& html)
+{
+    compile(tmpl, html);
+    return html;
+}
+
 string& streamy::compile(const string& tmpl, /* out */ string& html)
 {
     // open file the call parse function ...
@@ -73,7 +110,6 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
                  << FMT_FG_GREEN << escapes[i].second << FMT_RESET << endl;
         }
     }
-
     len = tokens.size(); 
     for(int i = 0; i < len; ++i)
     {

@@ -42,6 +42,7 @@ const string LITERAL_NUMERIC = "[0-9]*.?[0-9]*";
 const string WHITE_SPACE = "[:[space]:]";
 
 const string ACTION_TOKEN = "(insert)|(include)|(config_load)";
+const string MATH = "(abs)|(ceil)|(cos)|(exp)|(floor)|(log)|(log10)|(max)|(min)|(pi)|(pow)|(rand)|(round)|(sin)|(sqrt)|(srans)|(tan)";
 const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)|(foreachelse)|(literal)|(section)|(strip)|(assign)|(counter)|(cycle)|(debug)|(eval)|(fetch)|(html_checkboxes)";
 const string REGEXP_TOKENS = "(" + VARIABLE_OFFSETS + ")|(" + ACTION_TOKEN + ")|(" + KEY_WORDS + ")";
 
