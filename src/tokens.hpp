@@ -11,6 +11,12 @@
 
 using std::string;
 
+string INTEGER_LITERAL = "([0-9]+)";
+string FLOAT_LITERAL = "([0-9]*\\.[0-9]+)";
+string HEX_LITERAL = "(0x[0-9A-Fa-f]+)";
+string LOGICAL_OPERATORS = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
+string OPERATORS = "([\\s,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
+
 // tokens
 const string OPEN_CURLY_BRACE = "\\{";
 const string CLOSE_CURLY_BRACE = "\\}";
