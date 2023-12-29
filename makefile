@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a streamy_lexer index.cgi page_test.cgi page2_test.cgi streamy_lexer tokenizer
+all: libstreamy.so libstreamy.a streamy_lexer index.cgi lexer_tester.cgi page_test.cgi page2_test.cgi streamy_lexer tokenizer
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -38,7 +38,12 @@ index.cgi: utility.o libstreamy.so libstreamy.a index.o
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi
-	
+
+lexer_tester.cgi: utility.o libstreamy.so libstreamy.a lexer_tester.o
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/lexer_tester.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/lexer_tester.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/lexer_tester.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/lexer_tester_a.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/lexer_tester.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/lexer_tester_so.cgi
+
 index_soso.cgi: install
 	$(CXX) $(CXXFLAGS) -fPIC -I$(SRC) $(OBJ)/index.o $(OBJ)/utility.o -lstreamy -L$(PREFIX) -o $(BLD)/index_soso.cgi                                                                 
 	cp $(SRC)/index.conf $(BLD)/index.conf
@@ -51,6 +56,9 @@ page_test.o:
 
 index.o: 
 	$(CXX) $(CXXFLAGS) -I$(SRC) -c $(SRC)/index.cpp -o $(OBJ)/index.o
+
+lexer_tester.o: 
+	$(CXX) $(CXXFLAGS) -I$(SRC) -c $(SRC)/lexer_tester.cpp -o $(OBJ)/lexer_tester.o
 
 libstreamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) -fPIC --shared $(OBJ)/streamy.o -o $(BLD)/libstreamy.so

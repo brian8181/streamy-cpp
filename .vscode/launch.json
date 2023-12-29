@@ -87,6 +87,28 @@
             ],
             "preLaunchTask": "MAKE_EXAMPLES",
             "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "lexer_tester.cgi",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/lexer_tester.cgi",
+            "args": ["lexer_all.tpl"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "MAKE_EXAMPLES",
+            "miDebuggerPath": "/usr/bin/gdb"
         }
+
   ]
 }
