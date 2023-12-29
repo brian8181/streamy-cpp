@@ -212,19 +212,41 @@ void streamy::parse(const vector<vector<string>>& tokens, /* out */ string& html
 }
 
 std::map<string, string>& streamy::get_map_config()
- {
+{
     return map_config;
- }
+}
 
- std::map<string, string>& streamy::get_map_vars()
- {
+std::map<string, string>& streamy::get_map_vars()
+{
     return map_vars;
- }
+}
 
- map<string, vector<string>>& streamy::get_map_arrays()
- {
+map<string, vector<string>>& streamy::get_map_arrays()
+{
     return map_arrays;
- }
+}
+
+void streamy::clear_config()
+{
+    map_config.clear();
+}
+
+void streamy::clear_config(string name)
+{
+    map_config[name].clear();
+    map_config.erase(name);
+}
+
+void streamy::clear_assign()
+{
+    map_vars.clear();
+}
+
+void streamy::clear_assign(string name)
+{
+    map_vars[name].clear();
+    map_vars.erase(name);
+}
 
 void streamy::clear_all()
 {
