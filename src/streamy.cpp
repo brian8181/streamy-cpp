@@ -125,9 +125,12 @@ void streamy::lex_escapes(std::vector<pair<int, std::string>> escapes, /* out */
 void streamy::lex(const string& s, /* out */ vector<string>& tokens)
 {
     string str = s;
+    string integer_literal = "([0-9]+)";
+    string float_literal = "([0-9]*\\.[0-9]+)";
+    string hex_literal = "(0x[0-9A-Fa-f]+)";
     string opers = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
-    string delimter = "([ ,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
-    regex exp = regex(opers + "|" + delimter, std::regex::ECMAScript); 
+    string delimter = "([\\s,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
+    regex exp = regex(hex_literal + "|" + float_literal + "|" + opers + "|" + delimter, std::regex::ECMAScript); 
     smatch match;
 
     while(std::regex_search(str, match, exp, std::regex_constants::match_default))
@@ -138,7 +141,28 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
             tokens.push_back(fmt_match_beg);
         if(!std::isspace(fmt_match[0]))    
             tokens.push_back(fmt_match);
+
         str = match.format("$'");
+
+        if(fmt_match == "*" || fmt_match == "#" || fmt_match == "\"" || fmt_match == "'")
+        {
+            int pos = str.find_first_of("*#\"'");
+            tokens.push_back(str.substr(0, pos));
+            tokens.push_back(str.substr(pos, 1));
+            string en = str.substr(pos+1, 1);
+            str = en;
+
+            // need to debug!
+            // regex exp_literal = regex("[#]", std::regex::ECMAScript); 
+            // smatch literal_match;
+            // if(std::regex_search(str , literal_match, exp_literal, std::regex_constants::match_default))
+            // {
+            //     fmt_match_beg = match.format("$`");
+            //     fmt_match = match.format("$&");
+            //     tokens.push_back(fmt_match_beg);
+            // }
+            // str = match.format("$'");
+        }
     }
 
 #ifdef DEBUG

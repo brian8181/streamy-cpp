@@ -1,7 +1,10 @@
 
 {$headers}
+{#testing#}
 {$page_title}
 {$foo[3] + 3}
+{$x == 5.2 0.1 .3}
+{$a == 0x20, $b == 0x3aaFF, $c == 0xFF}
 {/if}
 {*TEWST*}
 BB 
@@ -14,7 +17,7 @@ WWWW
 **{$version_date}**
 {* extra headers *}
 {if isset($headers)}
-<HTML>Testing{* Wrong * }</HTML>
+<HTML>Testing{* Wrong *}</HTML>
 <HTML>{* Right *}</HTML?
 {8 Right 8}
 <BODY>{$foo}</BODY>
