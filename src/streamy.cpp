@@ -73,8 +73,19 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
                  << FMT_FG_GREEN << escapes[i].second << FMT_RESET << endl;
         }
     }
-#endif
 
+    len = tokens.size(); 
+    for(int i = 0; i < len; ++i)
+    {
+         cout << FMT_FG_RED << "Token-> ";
+        int slen = tokens[i].size();
+        for(int j = 0; j < slen; ++j)
+        {
+            cout << FMT_FG_YELLOW << tokens[i][j] << FMT_RESET << ", ";
+        }
+        cout << endl;
+    }
+#endif
     return html;
 }
 
@@ -128,9 +139,9 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
     string integer_literal = "([0-9]+)";
     string float_literal = "([0-9]*\\.[0-9]+)";
     string hex_literal = "(0x[0-9A-Fa-f]+)";
-    string opers = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
-    string delimter = "([\\s,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
-    regex exp = regex(hex_literal + "|" + float_literal + "|" + opers + "|" + delimter, std::regex::ECMAScript); 
+    string logical_operators = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
+    string operators = "([\\s,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
+    regex exp = regex(hex_literal + "|" + float_literal + "|" + logical_operators + "|" + operators, std::regex::ECMAScript); 
     smatch match;
 
     while(std::regex_search(str, match, exp, std::regex_constants::match_default))
@@ -164,16 +175,6 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
             // str = match.format("$'");
         }
     }
-
-#ifdef DEBUG
-    int len = tokens.size(); 
-    cout << FMT_FG_RED << "Token-> ";
-    for(int i = 0; i < len; ++i)
-    {
-        cout << FMT_FG_YELLOW << tokens[i] << FMT_RESET << ", ";
-    }
-    cout << endl;
-#endif
 }
 
 void streamy::parse(const vector<vector<string>>& tokens, /* out */ string& html)
