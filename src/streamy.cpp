@@ -151,7 +151,7 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
     escapes.push_back(pair(TEXT, s));
 }
 
-void streamy::lex_escapes(std::vector<pair<int, std::string>>& escapes, /* out */ vector<vector<string>>& tokens)
+void streamy::lex_escapes(vector<pair<int, string>> escapes, /* out */ vector<vector<string>>& tokens)
 {
     int len = escapes.size();
     for(int i = 0; i < len; ++i)
@@ -159,9 +159,10 @@ void streamy::lex_escapes(std::vector<pair<int, std::string>>& escapes, /* out *
         pair<int, std::string> p = escapes[i];
         if(p.first == TAG)
         {   
-            vector<string> tok_vec;
-            lex(p.second, tok_vec);
-            tokens.push_back(tok_vec);
+            vector<string> tok_line;
+            lex(p.second, tok_line);
+            //
+            tokens.push_back(tok_line);
         }
     }
 }
@@ -206,32 +207,32 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
             {
                 switch(tokens[i][j][0])
                 {
-                    // case '$':
-                    // {
-                    //     vector<vector<string>>::iterator iter = tokens.begin();
-                    //     symbol_name = tokens[i][j];
-                    //     string value = map_vars[symbol_name];
-                    //     vector<string> line_vec = { value };
-                    //     //tokens.erase(iter+i);
-                    //     //tokens.insert(iter+i, line_vec); 
-                    //     break;
-                    // }
-                    // case '#':
-                    // {
-                    //     vector<vector<string>>::iterator iter = tokens.begin();
-                    //     symbol_name = tokens[i][j];
-                    //     string value = map_config[symbol_name];
-                    //     vector<string> line_vec = { value };
-                    //     //tokens.erase(iter+i);
-                    //     //tokens.insert(iter+i, line_vec); 
-                    //     break;
-                    // }
-                    // case '*':
-                    // {
-                    //     vector<vector<string>>::iterator iter = tokens.begin();
-                    //     //tokens.erase(iter+i);
-                    //     break;
-                   // }
+                    case '$':
+                    {
+                        vector<vector<string>>::iterator iter = tokens.begin();
+                        symbol_name = tokens[i][j+1];
+                        string value = map_vars[symbol_name];
+                        vector<string> line_vec = { value };
+                        //tokens.erase(iter+i);
+                        //tokens.insert(iter+i, line_vec); 
+                        break;
+                    }
+                    case '#':
+                    {
+                        vector<vector<string>>::iterator iter = tokens.begin();
+                        symbol_name = tokens[i][j+1];
+                        string value = map_config[symbol_name];
+                        vector<string> line_vec = { value };
+                        //tokens.erase(iter+i);
+                        //tokens.insert(iter+i, line_vec); 
+                        break;
+                    }
+                    case '*':
+                    {
+                        vector<vector<string>>::iterator iter = tokens.begin();
+                        //tokens.erase(iter+i);
+                        break;
+                   }
                 }
             }
         }
