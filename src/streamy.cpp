@@ -144,11 +144,14 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
     {
         std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
-        escapes.push_back(pair(TEXT, fmt_match_beg));
+        // cout TEXT ??
+        //escapes.push_back(pair(TEXT, fmt_match_beg));
+        cout << fmt_match_beg << fmt_match;
         escapes.push_back(pair(TAG, fmt_match));
         s = match.format("$'");
     }
-    escapes.push_back(pair(TEXT, s));
+    //escapes.push_back(pair(TEXT, s));
+    cout << s;
 }
 
 void streamy::lex_escapes(vector<pair<int, string>> escapes, /* out */ vector<vector<string>>& tokens)
