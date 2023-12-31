@@ -23,6 +23,7 @@
 #include <sys/select.h>     /* for pselect   */
 #include <string>
 #include <getopt.h>
+#include <filesystem>
 #include "streamy.hpp"
 
 using namespace std;
@@ -59,7 +60,16 @@ int parse_options(int argc, char* argv[])
     // sm.assign("admin_email", "admin@something.com");
     // sm.assign("version", "0.1");
     // sm.assign("version_date", "Feb, 14 2022");
-    string tmpl(argv[1]);
+   
+    if(argc < 2)
+    {
+        cout << "No file parameter." << endl;
+        cout << "usage: "  << "lex_tester.cgi " << "[path to template file]" << endl; 
+        return -1;
+    }
+
+    filesystem::path file = argv[1];
+    string tmpl(file);
     sm.display(tmpl);
 
     // // read / display ...

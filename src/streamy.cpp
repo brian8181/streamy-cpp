@@ -34,8 +34,6 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
 
 void streamy::config_load(const string& path)
 {
-    // todo comments !
-    // todo sections !
     string s_out;
     read_stream(path, s_out);
     regex rgx = regex(LOAD_CONFIG_PAIR); 
@@ -46,17 +44,15 @@ void streamy::config_load(const string& path)
     for (sregex_iterator iter = begin; iter != end; ++iter)
     {
         smatch match = *iter;
-        string name = match[1].str();
+        string symbol_name = match[1].str();
         string value = match[2].str();
-        pair<string, string> p(name, value);
+        pair<string, string> p(symbol_name, value);
         map_config.insert(p);
     }
 }
 
 void streamy::config_load(const string& path, const string& section)
 {
-    // todo comments !
-    // todo sections !
     string s_out;
     read_stream(path, s_out);
     regex rgx = regex(LOAD_CONFIG_PAIR); 
@@ -67,9 +63,9 @@ void streamy::config_load(const string& path, const string& section)
     for (sregex_iterator iter = begin; iter != end; ++iter)
     {
         smatch match = *iter;
-        string name = match[1].str();
+        string symbol_name = match[1].str();
         string value = match[2].str();
-        pair<string, string> p(name, value);
+        pair<string, string> p(symbol_name, value);
         map_config.insert(p);
     }
 }
@@ -99,7 +95,7 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     // lex tags in escape sequences
     lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
-    parse(tokens, html);
+    //parse(tokens, html);
 
 #ifdef DEBUG
     int len = escapes.size();
@@ -126,19 +122,19 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     return html;
 }
 
-void streamy::assign(const string& name, const string& val)
+void streamy::assign(const string& symbol_name, const string& val)
 {
-    pair<string, string> p(name, val);
+    pair<string, string> p(symbol_name, val);
     map_vars.insert(p);
 }
 
-void streamy::assign(const string& name, const vector<string>& vec)
+void streamy::assign(const string& symbol_name, const vector<string>& vec)
 {
-    pair<string, vector<string>> p(name, vec);
+    pair<string, vector<string>> p(symbol_name, vec);
     map_arrays.insert(p);
 }
 
-void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, std::string>>& escapes)
+void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, string>>& escapes)
 {
     string s;
     read_stream(tmpl, s);
@@ -155,7 +151,7 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
     escapes.push_back(pair(TEXT, s));
 }
 
-void streamy::lex_escapes(std::vector<pair<int, std::string>> escapes, /* out */ vector<vector<string>>& tokens)
+void streamy::lex_escapes(std::vector<pair<int, std::string>>& escapes, /* out */ vector<vector<string>>& tokens)
 {
     int len = escapes.size();
     for(int i = 0; i < len; ++i)
@@ -192,23 +188,40 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
             tokens.push_back(end_of_string.substr(0, pos));
             tokens.push_back(end_of_string.substr(pos, 1));
             end_of_string = end_of_string.substr(pos+1, 1);
-            
-            // need to debug!
-            // regex exp_literal = regex("[#]", std::regex::ECMAScript); 
-            // smatch literal_match;
-            // if(std::regex_search(end_of_string , literal_match, exp_literal, std::regex_constants::match_default))
-            // {
-            //     fmt_match_beg = match.format("$`");
-            //     fmt_match = match.format("$&");
-            //     tokens.push_back(fmt_match_beg);
-            // }
-            // end_of_string = match.format("$'");
         }
     }
 }
 
-void streamy::parse(const vector<vector<string>>& tokens, /* out */ string& html)
+void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
 {
+    int len = tokens.size();
+    string symbol_name;
+    for(int i = 0; i < len; ++i)
+    {
+        int jlen = tokens[i].size();
+        for(int j = 0; j < jlen; ++j)
+        {
+            string token = tokens[i][j];
+            if(token.size() == 1)
+            {
+                switch(tokens[i][j][0])
+                {
+                    case '$':
+                        symbol_name = tokens[i][j];
+                        tokens[i][j+1] = map_vars[symbol_name];
+                        break;
+                    case '#':
+                        symbol_name = tokens[i][j];
+                        tokens[i][j+1] = map_config[symbol_name];
+                        break;
+                    case '*':
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 }
 
 vector<pair<string, string>>& streamy::get_registered_object(string object_name, /*out*/ vector<pair<string, string>>& registered_object)
@@ -242,10 +255,9 @@ void streamy::clear_config()
     map_config.clear();
 }
 
-void streamy::clear_config(string name)
+void streamy::clear_config(string symbol_name)
 {
-    map_config[name].clear();
-    map_config.erase(name);
+    map_config.erase(symbol_name);
 }
 
 void streamy::clear_assign()
@@ -253,10 +265,9 @@ void streamy::clear_assign()
     map_vars.clear();
 }
 
-void streamy::clear_assign(string name)
+void streamy::clear_assign(string symbol_name)
 {
-    map_vars[name].clear();
-    map_vars.erase(name);
+    map_vars.erase(symbol_name);
 }
 
 void streamy::clear_all()
