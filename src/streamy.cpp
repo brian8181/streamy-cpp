@@ -95,7 +95,7 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     // lex tags in escape sequences
     lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
-    //parse(tokens, html);
+    parse(tokens, html);
 
 #ifdef DEBUG
     int len = escapes.size();
@@ -194,9 +194,9 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
 
 void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
 {
-    int len = tokens.size();
+    int ilen = tokens.size();
     string symbol_name;
-    for(int i = 0; i < len; ++i)
+    for(int i = 0; i < ilen; ++i)
     {
         int jlen = tokens[i].size();
         for(int j = 0; j < jlen; ++j)
@@ -206,18 +206,32 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
             {
                 switch(tokens[i][j][0])
                 {
-                    case '$':
-                        symbol_name = tokens[i][j];
-                        tokens[i][j+1] = map_vars[symbol_name];
-                        break;
-                    case '#':
-                        symbol_name = tokens[i][j];
-                        tokens[i][j+1] = map_config[symbol_name];
-                        break;
-                    case '*':
-                        break;
-                    default:
-                        break;
+                    // case '$':
+                    // {
+                    //     vector<vector<string>>::iterator iter = tokens.begin();
+                    //     symbol_name = tokens[i][j];
+                    //     string value = map_vars[symbol_name];
+                    //     vector<string> line_vec = { value };
+                    //     //tokens.erase(iter+i);
+                    //     //tokens.insert(iter+i, line_vec); 
+                    //     break;
+                    // }
+                    // case '#':
+                    // {
+                    //     vector<vector<string>>::iterator iter = tokens.begin();
+                    //     symbol_name = tokens[i][j];
+                    //     string value = map_config[symbol_name];
+                    //     vector<string> line_vec = { value };
+                    //     //tokens.erase(iter+i);
+                    //     //tokens.insert(iter+i, line_vec); 
+                    //     break;
+                    // }
+                    // case '*':
+                    // {
+                    //     vector<vector<string>>::iterator iter = tokens.begin();
+                    //     //tokens.erase(iter+i);
+                    //     break;
+                   // }
                 }
             }
         }
