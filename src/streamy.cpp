@@ -93,7 +93,7 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     find_escapes(full_path, escapes);
     vector<vector<string>> tokens;
     // lex tags in escape sequences
-    lex_escapes(escapes, tokens);
+    // lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
     parse(tokens, html);
 
@@ -146,8 +146,19 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
         std::string fmt_match = match.format("$&");
         // cout TEXT ??
         //escapes.push_back(pair(TEXT, fmt_match_beg));
-        cout << fmt_match_beg << fmt_match;
-        escapes.push_back(pair(TAG, fmt_match));
+        cout << fmt_match_beg;
+        //escapes.push_back(pair(TAG, fmt_match));
+        vector<string> tok_line;
+        lex(fmt_match, tok_line);
+#ifdef DEBUG
+        int len = tok_line.size();
+        for(int i = 0; i < len; ++i)
+            cout << tok_line[i];
+#endif
+        vector<vector<string>> dummy_one_line_vector = { tok_line };
+        string html;
+        parse(dummy_one_line_vector, html);
+        cout << html;
         s = match.format("$'");
     }
     //escapes.push_back(pair(TEXT, s));
@@ -198,23 +209,24 @@ void streamy::lex(const string& s, /* out */ vector<string>& tokens)
 
 void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
 {
-    int ilen = tokens.size();
+    //int ilen = tokens.size();
     string symbol_name;
-    for(int i = 0; i < ilen; ++i)
-    {
-        int jlen = tokens[i].size();
+    //for(int i = 0; i < ilen; ++i)
+    //{
+        int jlen = tokens[0].size();
         for(int j = 0; j < jlen; ++j)
         {
-            string token = tokens[i][j];
+            string token = tokens[0][j];
             if(token.size() == 1)
             {
-                switch(tokens[i][j][0])
+                switch(tokens[0][j][0])
                 {
                     case '$':
                     {
                         vector<vector<string>>::iterator iter = tokens.begin();
-                        symbol_name = tokens[i][j+1];
+                        symbol_name = tokens[0][j+1];
                         string value = map_vars[symbol_name];
+                        html = value;
                         vector<string> line_vec = { value };
                         //tokens.erase(iter+i);
                         //tokens.insert(iter+i, line_vec); 
@@ -223,8 +235,9 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                     case '#':
                     {
                         vector<vector<string>>::iterator iter = tokens.begin();
-                        symbol_name = tokens[i][j+1];
+                        symbol_name = tokens[0][j+1];
                         string value = map_config[symbol_name];
+                        html = value;
                         vector<string> line_vec = { value };
                         //tokens.erase(iter+i);
                         //tokens.insert(iter+i, line_vec); 
@@ -233,13 +246,14 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                     case '*':
                     {
                         vector<vector<string>>::iterator iter = tokens.begin();
+                        html = "";
                         //tokens.erase(iter+i);
                         break;
                    }
                 }
             }
         }
-    }
+    //}
 }
 
 vector<pair<string, string>>& streamy::get_registered_object(string object_name, /*out*/ vector<pair<string, string>>& registered_object)
