@@ -251,7 +251,7 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                     case '*':
                     {
                         vector<vector<string>>::iterator iter = tokens.begin();
-                        html = "";
+                        //html = ""; do nothing, comment are just not displayed
                         //tokens.erase(iter+i);
                         break;
                    }
