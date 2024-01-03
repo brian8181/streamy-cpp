@@ -42,8 +42,23 @@ const string LITERAL_NUMERIC = "[0-9]*.?[0-9]*";
 const string WHITE_SPACE = "[:[space]:]";
 
 const string ACTION_TOKEN = "(insert)|(include)|(config_load)";
-const string MATH = "(abs)|(ceil)|(cos)|(exp)|(floor)|(log)|(log10)|(max)|(min)|(pi)|(pow)|(rand)|(round)|(sin)|(sqrt)|(srans)|(tan)";
+// const string MATH = "(abs)|(ceil)|(cos)|(exp)|(floor)|(log)|(log10)|(max)|(min)|(pi)|(pow)|(rand)|(round)|(sin)|(sqrt)|(srans)|(tan)";
 const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)|(foreachelse)|(literal)|(section)|(strip)|(assign)|(counter)|(cycle)|(debug)|(eval)|(fetch)|(html_checkboxes)";
+
+enum en_token
+{
+    ID_IF = 0x01,
+    ID__ELSE = 0x02,
+    ID_ELSEIF = 0x04,
+    ID_FOREACH = 0x80,
+    ID_FOREACHELSE = 0x100,
+    ID_LITERAL     = 0x200,
+    ID_ASTERIK = 0x1000,
+    ID_HASH_MARK = 0x2000,
+    ID_DOLLAR_SIGN = 0x4000,
+    ID_DOT = 0x80000
+};
+
 const string REGEXP_TOKENS = "(" + VARIABLE_OFFSETS + ")|(" + ACTION_TOKEN + ")|(" + KEY_WORDS + ")";
 
 const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";

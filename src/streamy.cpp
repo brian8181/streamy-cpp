@@ -7,6 +7,7 @@
 #include <iostream>
 #include <regex>
 #include <sstream>
+#include <map>
 #include "streamy.hpp"
 #include "utility.hpp"
 #include "tokens.hpp"
@@ -15,6 +16,9 @@
 #include <filesystem>
 
 using namespace std;
+
+map<string, unsigned int> _token_map = { {"#", ID_HASH_MARK}, {"*", ID_ASTERIK}, {"$", ID_DOLLAR_SIGN}, {"IF", ID_IF}, {"ELSEIF", ID_ELSEIF}, {"ELSE", ID__ELSE} };
+unsigned int token_id = 0;
 
 streamy::streamy()
 {
@@ -222,13 +226,13 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
         for(int j = 0; j < jlen; ++j)
         {
             string token = tokens[0][j];
-            if(token.size() == 1)
+            //if(token.size() == 1)
             {
-                switch(tokens[0][j][0])
+                switch(_token_map[token])
                 {
-                    case '$':
+                    case ID_DOLLAR_SIGN:
                     {
-                        vector<vector<string>>::iterator iter = tokens.begin();
+                        //vector<vector<string>>::iterator iter = tokens.begin();
                         symbol_name = tokens[0][j+1];
                         string value = map_vars[symbol_name];
                         html = value;
@@ -237,9 +241,9 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                         //tokens.insert(iter+i, line_vec); 
                         break;
                     }
-                    case '#':
+                    case ID_HASH_MARK:
                     {
-                        vector<vector<string>>::iterator iter = tokens.begin();
+                        //vector<vector<string>>::iterator iter = tokens.begin();
                         symbol_name = tokens[0][j+1];
                         string value = map_config[symbol_name];
                         html = value;
@@ -248,13 +252,29 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                         //tokens.insert(iter+i, line_vec); 
                         break;
                     }
-                    case '*':
+                    case ID_ASTERIK:       
                     {
-                        vector<vector<string>>::iterator iter = tokens.begin();
+                        //vector<vector<string>>::iterator iter = tokens.begin();
                         //html = ""; do nothing, comment are just not displayed
                         //tokens.erase(iter+i);
                         break;
-                   }
+                    }
+                    case ID_IF:
+                    {
+                        break;
+                    }
+                    case ID__ELSE:
+                    {
+                        break;
+                    }
+                    case ID_FOREACH:
+                    {
+                        break;
+                    }
+                    case ID_FOREACHELSE:
+                    {
+                        break;
+                    }
                    default:
                    {
                         html = "todo; coming soon ...";
