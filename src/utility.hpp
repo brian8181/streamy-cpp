@@ -8,13 +8,19 @@
 #define _UTILITY_HPP
 
 #include <string>
+#include <vector>
+#include <map>
 #include <regex>
 
 using std::string;
+using std::map;
+using std::vector;
 using std::smatch;
 
-//  void combine_regex(map<string&, string&> strings, string& or_strings);
+vector<string> getlines(string path);
 int read_bits(const smatch& m);
+bool file_exist(const string& path);
+map<string, string>& get_name_value_pairs(string path, /* out */ map<string, string>& pairs);
 string& read_stream(const string& path, /* out */ string& s_out);
 string& trim(string& s, char c);
 string& ltrim(string& s);

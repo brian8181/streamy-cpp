@@ -24,6 +24,7 @@
 #include <string>
 #include <getopt.h>
 #include <filesystem>
+#include "utility.hpp"
 #include "streamy.hpp"
 
 using namespace std;
@@ -56,8 +57,16 @@ int parse_options(int argc, char* argv[])
         return -1;
     }
 
-    filesystem::path file = argv[1];
-    string tmpl(file);
+	string file_path = project_folder + "/test/templates/" + argv[1];
+    filesystem::path file = file_path;
+	if(!file_exist(file.string()))
+	{
+		cout << file.filename() << " : file not found ..." << endl;
+        cout << "usage: "  << "lex_tester.cgi " << "[path to template file]" << endl; 
+		return -1;
+	}
+
+    string tmpl(file.filename());
     sm.display(tmpl);	
 
     return 0;
@@ -84,7 +93,7 @@ int main(int argc, char* argv[])
 			std::string buffer;     
             std::cin >> buffer;
 			// add piped buffer to end of argv ...
-			char* argvtmp[sizeof(char*) * argc+1];
+			char* argvtmp[sizeof(char*) * argc+1] = {0};
 			memcpy(argvtmp, argv, sizeof(char*) * argc);
 			argvtmp[argc] = &buffer[0];
 			argv = argvtmp;
