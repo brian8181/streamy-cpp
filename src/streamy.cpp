@@ -230,6 +230,9 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
             {
                 switch(_token_map[token])
                 {
+                    case ID_OPEN_CURLY_BRACE:
+                    case ID_CLOSE_CURLY_BRACE:
+                        break;
                     case ID_DOLLAR_SIGN:
                     {
                         //vector<vector<string>>::iterator iter = tokens.begin();
@@ -275,9 +278,18 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                     {
                         break;
                     }
+                    case ID_EQUAL:
+                    {
+                        break;
+                    }
+                    case ID_FILE_FUNCTION:
+                    {
+                        break;
+                    }
                    default:
                    {
-                        html = "todo; coming soon ...";
+                        html += token;
+                        break;
                    }
                 }
             }

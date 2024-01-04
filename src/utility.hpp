@@ -27,5 +27,7 @@ string& ltrim(string& s);
 string& rtrim(string& s);
 string& trim(string& s);
 
+void match_whole_string(string src, string exp);
+
 
 #endif

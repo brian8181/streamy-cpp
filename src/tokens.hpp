@@ -47,6 +47,8 @@ const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)|(foreachelse)|(literal)
 
 enum en_token
 {
+    ID_OPEN_CURLY_BRACE = 0x400,
+    ID_CLOSE_CURLY_BRACE = 0x800,
     ID_IF = 0x01,
     ID__ELSE = 0x02,
     ID_ELSEIF = 0x04,
@@ -56,7 +58,9 @@ enum en_token
     ID_ASTERIK = 0x1000,
     ID_HASH_MARK = 0x2000,
     ID_DOLLAR_SIGN = 0x4000,
-    ID_DOT = 0x80000
+    ID_DOT = 0x8000,
+    ID_EQUAL = 0x10000,
+    ID_FILE_FUNCTION = 0x20000
 };
 
 const string REGEXP_TOKENS = "(" + VARIABLE_OFFSETS + ")|(" + ACTION_TOKEN + ")|(" + KEY_WORDS + ")";
