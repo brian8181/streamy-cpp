@@ -2,6 +2,7 @@
 #define _BASH_COLOR_HPP
 
 #include <iostream>
+#include <string>
 
 using std::string;
 

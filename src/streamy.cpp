@@ -12,13 +12,19 @@
 #include "utility.hpp"
 #include "tokens.hpp"
 #include "grammer.hpp"
-// debug
 #include "bash_color.h"
 #include <filesystem>
 
 using namespace std;
 
-map<string, unsigned int> _token_map = { {"#", ID_HASH_MARK}, {"*", ID_ASTERIK}, {"$", ID_DOLLAR_SIGN}, {"IF", ID_IF}, {"ELSEIF", ID_ELSEIF}, {"ELSE", ID_ELSE} };
+map<string, unsigned int> _token_map = { {"{", ID_OPEN_CURLY_BRACE}, {"}", ID_CLOSE_CURLY_BRACE}, {"#", ID_HASH_MARK}, {"*", ID_ASTERIK}, {"$", ID_DOLLAR_SIGN}, 
+                                          {"=", ID_EQUAL}, {"|", ID_VBAR}, {":", ID_COLON}, {"\"", ID_DOUBLE_QUOTE}, {"'", ID_SINGLE_QUOTE}, {".", ID_DOT},
+                                          {"+", ID_PLUS}, {"-", ID_MINUS}, {"%", ID_MODULUS}, 
+                                          {"[", ID_OPEN_BRACE}, {"]", ID_CLOSE_BRACE}, {";", ID_SEMI_COLON},
+                                          {"&&", ID_LOGICAL_AND}, {"||", ID_LOGICAL_OR}, {"!", ID_LOGICAL_NOT},
+                                          {"if", ID_IF}, {"ELSEIF", ID_ELSEIF}, {"ELSE", ID_ELSE}, {"foreach", ID_FOREACH}, {"foreachelse", ID_FOREACHELSE},
+                                          {"include", ID_BUILTIN_FUNCTION }, {"config_load", ID_BUILTIN_FUNCTION }, {"insert", ID_BUILTIN_FUNCTION},
+                                          {"assign", ID_BUILTIN_FUNCTION }, {"fetch", ID_BUILTIN_FUNCTION}, {"capture", ID_BUILTIN_FUNCTION } };
 unsigned int token_id = 0;
 
 streamy::streamy()
@@ -263,33 +269,59 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                         //tokens.erase(iter+i);
                         break;
                     }
+                    case ID_MODULUS:
+                    case ID_LOGICAL_AND:
+                    case ID_LOGICAL_OR:
+                    case ID_LOGICAL_NOT:
+                    case ID_LESS_THAN:
+                    case ID_GREATER_THAN:
+                    case ID_DOUBLE_QUOTE:
+                    case ID_SINGLE_QUOTE:
+                    case ID_PLUS:
+                    case ID_MINUS:
+                    case ID_VBAR:
+                    case ID_DOT:
+                    case ID_COLON:
+                    case ID_SEMI_COLON:
+                    case ID_OPEN_PAREN:
+                    case ID_CLOSE_PAREN:
+                    case ID_OPEN_BRACE:
+                    case ID_CLOSE_BRACE:
+                    case ID_EQUAL:
+                    {
+                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                        break;
+                    }
                     case ID_IF:
                     {
+                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
                         break;
                     }
                     case ID_ELSE:
                     {
+                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
                         break;
                     }
                     case ID_FOREACH:
                     {
+                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
                         break;
                     }
                     case ID_FOREACHELSE:
                     {
+                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
                         break;
                     }
-                    case ID_EQUAL:
+                    
+                    case ID_BUILTIN_FUNCTION:
                     {
-                        break;
-                    }
-                    case ID_FILE_FUNCTION:
-                    {
+                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
                         break;
                     }
                    default:
                    {
-                        html += token;
+                        cout << FMT_FG_RED << "error " << FMT_RESET << FMT_BOLD << "unknown token: " 
+                            << FMT_FG_BLUE << token << FMT_RESET << endl;
                         break;
                    }
                 }
