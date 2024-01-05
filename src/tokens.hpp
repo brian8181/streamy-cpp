@@ -11,12 +11,16 @@
 
 using std::string;
 
-// tokens
+// literals
 const string INTEGER_LITERAL = "([0-9]+)";
 const string FLOAT_LITERAL = "([0-9]*\\.[0-9]+)";
 const string HEX_LITERAL = "(0x[0-9A-Fa-f]+)";
+
+// operator grouped
 const string LOGICAL_OPERATORS = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
 const string OPERATORS = "([\\s,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
+
+// operators
 const string OPEN_CURLY_BRACE = "\\{";
 const string CLOSE_CURLY_BRACE = "\\}";
 const string FORWARD_SLASH = "/";
@@ -34,23 +38,25 @@ const string NOT_OPERATOR = "!";
 const string LESS_THAN_EQUAL_OPERATOR = "<=";
 const string GREATER_THAN_EQUAL_OPERATOR = ">=";
 const string NOT_EQUAL_OPERATOR = "!=";
-const string VARIABLE_OFFSETS = "[*#$]";
-//const string LITERAL_TEXT = "\\\"(" + VALID_ESC_CHARS + ")\\\"";
-//const string LITERAL_NUMERIC = "[0-9]*.?[0-9]*";
-//const string LITERAL_COMMENT = "\\*(" + VALID_SYMBOL_CHARS + ")\\*";
-const string WHITE_SPACE = "[:[space]:]";
-const string BUILTIN_FUNCTION = "(insert)|(include)|(config_load)|(assign)|(fetch)|(capture)";
-// const string MATH = "(abs)|(ceil)|(cos)|(exp)|(floor)|(log)|(log10)|(max)|(min)|(pi)|(pow)|(rand)|(round)|(sin)|(sqrt)|(srans)|(tan)";
-const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)|(foreachelse)|(literal)|(section)|(strip)|(assign)|(counter)|(cycle)|(debug)|(eval)|(fetch)|(html_checkboxes)";
-const string REGEXP_TOKENS = "(" + VARIABLE_OFFSETS + ")|(" + BUILTIN_FUNCTION + ")|(" + KEY_WORDS + ")";
+
+// valid chars
 const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
 const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
 const string VALID_FILE_CHARS = "[A-Za-z0-9_.]";
+const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
+
+// streamy functions, types, modifiers, keywords ...
+const string VARIABLE_ESCAPES = "[*#$]";
+const string BUILTIN_FUNCTION = "(insert)|(include)|(config_load)|(assign)|(fetch)|(capture)";
+const string MATH = "(abs)|(ceil)|(cos)|(exp)|(floor)|(log)|(log10)|(max)|(min)|(pi)|(pow)|(rand)|(round)|(sin)|(sqrt)|(srans)|(tan)";
+const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)|(foreachelse)|(literal)|(section)|(strip)|(assign)|(counter)|(cycle)|(debug)|(eval)|(fetch)|(html_checkboxes)";
 const string VAR_MODIFIER = "(capitalize)|(indent)|(lower)|(upper)|(spacify)|(string_format)|(truncate)|(date_format)|(escape)";
 const string LOAD_CONFIG_PAIR = "([A-Za-z]" + VALID_SYMBOL_CHARS + "*)=(" + VALID_SYMBOL_CHARS + "*);";
-const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
-const string EXPR_VARIABLE = "\\$(" + SYMBOL_NAME + ")(\\|" + VAR_MODIFIER +  ")?";
+
 // lexing
+const string REGEXP_TOKENS = "(" + VARIABLE_ESCAPES + ")|(" + BUILTIN_FUNCTION + ")|(" + KEY_WORDS + ")";
+const string WHITE_SPACE = "[:[space]:]";
+const string EXPR_VARIABLE = "\\$(" + SYMBOL_NAME + ")(\\|" + VAR_MODIFIER +  ")?";
 const string ESCAPE = "\\{" + VALID_ESC_CHARS + "*\\}";
 const string TOKENS = "(" + EXPR_VARIABLE + ")|(" + BUILTIN_FUNCTION + ")";
 

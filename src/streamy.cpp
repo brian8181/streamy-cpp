@@ -88,7 +88,7 @@ void streamy::display(const string& tmpl)
     string _html;
     compile(tmpl, _html);
     // stdout final
-    //cout << _html << endl;
+    // cout << _html << endl;
 }
 
 string& streamy::fetch(const string& tmpl, const string& cache_id, const string& compile_id, /*out*/ string& html)
