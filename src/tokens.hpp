@@ -36,7 +36,7 @@ const string GREATER_THAN_EQUAL_OPERATOR = ">=";
 const string NOT_EQUAL_OPERATOR = "!=";
 const string VARIABLE_OFFSETS = "[*#$]";
 //const string LITERAL_TEXT = "\\\"(" + VALID_ESC_CHARS + ")\\\"";
-const string LITERAL_NUMERIC = "[0-9]*.?[0-9]*";
+//const string LITERAL_NUMERIC = "[0-9]*.?[0-9]*";
 //const string LITERAL_COMMENT = "\\*(" + VALID_SYMBOL_CHARS + ")\\*";
 const string WHITE_SPACE = "[:[space]:]";
 const string BUILTIN_FUNCTION = "(insert)|(include)|(config_load)|(assign)|(fetch)|(capture)";
