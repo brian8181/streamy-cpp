@@ -102,11 +102,16 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     // open file the call parse function ...
     string full_path = this->template_dir + "/" + tmpl;
     // find escape sequences
-    vector<std::pair<int, std::string>> escapes;
+    vector<std::pair<int, vector<std::string>>> escapes;
     find_escapes(full_path, escapes);
 
-    // vector<vector<string>> tokens;
-    // lex tags in escape sequences
+
+
+    int len = escapes.size();
+    for(int i = 0; i < len; ++i)
+    {
+        cout << escapes[i].second[0];
+    }
     // lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
     // parse(tokens, html);
@@ -126,7 +131,7 @@ void streamy::assign(const string& symbol_name, const vector<string>& vec)
     map_arrays.insert(p);
 }
 
-void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, string>>& escapes)
+void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, vector<string>>>& escapes)
 {
     string s;
     read_stream(tmpl, s);
@@ -136,41 +141,51 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
     {
         std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
-        //escapes.push_back(pair(TEXT, fmt_match_beg));
-        cout << fmt_match_beg;
-        //escapes.push_back(pair(TAG, fmt_match));
-        vector<string> tok_line;
-        lex(fmt_match, tok_line);
-        vector<vector<string>> dummy_one_line_vector = { tok_line };
-        string html;
-        parse(dummy_one_line_vector, html);
-        // puke out the html        
-        cout << html;
+        vector<string> begin_text = {fmt_match_beg};
+        escapes.push_back(pair(TEXT, begin_text));
+        //cout << fmt_match_beg;
+        vector<string> tag_match = {fmt_match};
+        escapes.push_back(pair(TAG, tag_match));
+        vector<vector<string>> tokens;
+        lex_escapes(escapes, tokens);
+       
+        // vector<string> tok_line;
+        // lex(fmt_match, tok_line);
+        // vector<vector<string>> dummy_one_line_vector = { tok_line };
+        // string html;
+        // parse(dummy_one_line_vector, html);
+        // // puke out the html        
+        // cout << html;
+
         s = match.format("$'");
     }
     //escapes.push_back(pair(TEXT, s));
     cout << s;
 }
 
-void streamy::lex_escapes(vector<pair<int, string>> escapes, /* out */ vector<vector<string>>& tokens)
+void streamy::lex_escapes(vector<pair<int, vector<string>>>& escapes, /* out */ vector<vector<string>>& tokens)
 {
     int len = escapes.size();
     for(int i = 0; i < len; ++i)
     {
-        pair<int, std::string> p = escapes[i];
-        if(p.first == TAG)
-        {   
-            vector<string> tok_line;
-            lex(p.second, tok_line);
-            //
-            tokens.push_back(tok_line);
+        pair<int, vector<std::string>> p = escapes[i];
+        switch(p.first)
+        {
+            case TEXT:
+                break;
+            case TAG:
+                vector<string> tok_line;
+                lex(p.second, tok_line);
+                //tokens.push_back(tok_line);
+                p.second = tok_line;
+                break;
         }
     }
 }
 
-void streamy::lex(const string& s, /* out */ vector<string>& tokens)
+void streamy::lex(const vector<string>& s, /* out */ vector<string>& tokens)
 {
-    string end_of_string = s;
+    string end_of_string = s[0];
     regex exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, std::regex::ECMAScript); 
     smatch match;
 
