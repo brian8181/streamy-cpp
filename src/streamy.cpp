@@ -139,8 +139,10 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, ve
     smatch match;
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        std::string fmt_match_beg = match.format("$`");
-        std::string fmt_match = match.format("$&");
+        //std::string fmt_match_beg = match.format("$`");
+        std::string fmt_match_beg = match.prefix();
+        //std::string fmt_match = match.format("$&");
+        string fmt_match = match.str();
         vector<string> begin_text = {fmt_match_beg};
         escapes.push_back(pair(TEXT, begin_text));
         //cout << fmt_match_beg;
@@ -149,15 +151,8 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, ve
         vector<vector<string>> tokens;
         lex_escapes(escapes, tokens);
        
-        // vector<string> tok_line;
-        // lex(fmt_match, tok_line);
-        // vector<vector<string>> dummy_one_line_vector = { tok_line };
-        // string html;
-        // parse(dummy_one_line_vector, html);
-        // // puke out the html        
-        // cout << html;
-
-        s = match.format("$'");
+        //s = match.format("$'");
+        s = match.suffix();
     }
     //escapes.push_back(pair(TEXT, s));
     cout << s;
@@ -174,9 +169,11 @@ void streamy::lex_escapes(vector<pair<int, vector<string>>>& escapes, /* out */ 
             case TEXT:
                 break;
             case TAG:
-                vector<string> tok_line;
-                lex(p.second, tok_line);
-                p.second = tok_line;
+                // vector<string> tok_line;
+                // lex(p.second, tok_line);
+                // pair<int, vector<string>> np(p.first, tok_line);
+                // escapes[p.first].second.clear();
+                // escapes[p.first].second.assign(tok_line.begin(), tok_line.end());
                 break;
         }
     }
@@ -190,14 +187,17 @@ void streamy::lex(const vector<string>& s, /* out */ vector<string>& tokens)
 
     while(std::regex_search(end_of_string, match, exp, std::regex_constants::match_default))
     {
-        std::string fmt_match_beg = match.format("$`");
-        std::string fmt_match = match.format("$&");
+        // std::string fmt_match_beg = match.format("$`");
+        // std::string fmt_match = match.format("$&");
+        std::string fmt_match_beg = match.prefix();
+        std::string fmt_match = match.suffix();
         if(fmt_match_beg.size() > 0)
             tokens.push_back(fmt_match_beg);
         if(!std::isspace(fmt_match[0]))    
             tokens.push_back(fmt_match);
 
-        end_of_string = match.format("$'");
+        //end_of_string = match.format("$'");
+        end_of_string = match.suffix();
         if(fmt_match == "*" || fmt_match == "#" || fmt_match == "\"" || fmt_match == "'")
         {
             int pos = end_of_string.find_first_of("*#\"'");

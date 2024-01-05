@@ -114,7 +114,7 @@ streamy-cpp.o: streamy-cpp.yy.c
 	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy-cpp.yy.c -o $(BLD)/streamy-cpp.yy.o
 
 streamy-cpp.yy.c:
-	$(LEX) -o $(BLD)/streamy-cpp.yy.c $(SRC)/streamy-cpp.l
+	$(LEX) -o $(BLD)/streamy-cpp.yy.c $(SRC)/streamy-cpp
 
 bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
