@@ -12,7 +12,7 @@
 using std::string;
 
 
-enum en_token : unsigned long
+enum token_id : unsigned long
 {
     ID_IF                 = 0x1ul,
     ID_ELSE               = 0x2ul,
@@ -47,7 +47,16 @@ enum en_token : unsigned long
     ID_LOGICAL_OR         = 0x40000000ul,
     ID_DIVIDE_OR          = 0x80000000ul,
     ID_MULTIPLY           = 0x100000000ul,
-    ID_LOGICAL_EQUAL      = 0x200000000ul
+    ID_LOGICAL_EQUAL      = 0x200000000ul,
+    ID_MODIFIER_CAPATIALIZE = 0x400000000ul,
+    ID_MODIFIER_INDENT      = 0x600000000ul,
+    ID_MODIFIER_LOWER       = 0x800000000ul,
+    ID_MODIFIER_UPPER       = 0x1000000000ul,
+    ID_MODIFIER_TRUNCATE    = 0x2000000000ul,
+    ID_MODIFIER_SPACIFY     = 0x4000000000ul,
+    ID_MODIFIER_STRINGF_FORMAT = 0x8000000000ul,
+    ID_MODIFIER_DATE_FORMAT    = 0x10000000000ul,
+    ID_MODIFIER_ESCAPE         = 0x20000000000ul
 };
 
 

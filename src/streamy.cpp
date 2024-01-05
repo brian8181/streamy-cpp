@@ -24,7 +24,9 @@ map<string, unsigned int> _token_map = { {"{", ID_OPEN_CURLY_BRACE}, {"}", ID_CL
                                           {"&&", ID_LOGICAL_AND}, {"||", ID_LOGICAL_OR}, {"!", ID_LOGICAL_NOT},
                                           {"if", ID_IF}, {"ELSEIF", ID_ELSEIF}, {"ELSE", ID_ELSE}, {"foreach", ID_FOREACH}, {"foreachelse", ID_FOREACHELSE},
                                           {"include", ID_BUILTIN_FUNCTION }, {"config_load", ID_BUILTIN_FUNCTION }, {"insert", ID_BUILTIN_FUNCTION},
-                                          {"assign", ID_BUILTIN_FUNCTION }, {"fetch", ID_BUILTIN_FUNCTION}, {"capture", ID_BUILTIN_FUNCTION } };
+                                          {"assign", ID_BUILTIN_FUNCTION }, {"fetch", ID_BUILTIN_FUNCTION}, {"capture", ID_BUILTIN_FUNCTION },
+                                          {"upper", ID_MODIFIER_UPPER}, {"lower", ID_MODIFIER_LOWER}, {"truncate", ID_MODIFIER_TRUNCATE}, {"capitalize", ID_MODIFIER_CAPATIALIZE},
+                                          {"indent", ID_MODIFIER_INDENT} };
 unsigned int token_id = 0;
 
 streamy::streamy()
@@ -102,34 +104,13 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     // find escape sequences
     vector<std::pair<int, std::string>> escapes;
     find_escapes(full_path, escapes);
+
     // vector<vector<string>> tokens;
     // lex tags in escape sequences
     // lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
-    //parse(tokens, html);
+    // parse(tokens, html);
 
-// #ifdef DEBUG
-//     int len = escapes.size();
-//     for(int i =0; i < len; ++i)
-//     {
-//         if(escapes[i].first == TAG)
-//         {
-//             cout << FMT_FG_BLUE << "escape" << FMT_FG_RED << "-->" 
-//                  << FMT_FG_GREEN << escapes[i].second << FMT_RESET << endl;
-//         }
-//     }
-//     len = tokens.size(); 
-//     for(int i = 0; i < len; ++i)
-//     {
-//          cout << FMT_FG_RED << "Token-> ";
-//         int slen = tokens[i].size();
-//         for(int j = 0; j < slen; ++j)
-//         {
-//             cout << FMT_FG_YELLOW << tokens[i][j] << FMT_RESET << ", ";
-//         }
-//         cout << endl;
-//     }
-// #endif
     return html;
 }
 
@@ -155,25 +136,15 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, st
     {
         std::string fmt_match_beg = match.format("$`");
         std::string fmt_match = match.format("$&");
-//         int len = tok_line.size();
-//         for(int i = 0; i < len; ++i)
-//             cout << tok_line[i];
-// #endif
-
-        // cout TEXT ??
         //escapes.push_back(pair(TEXT, fmt_match_beg));
         cout << fmt_match_beg;
         //escapes.push_back(pair(TAG, fmt_match));
         vector<string> tok_line;
         lex(fmt_match, tok_line);
-// #ifdef DEBUG
-//         int len = tok_line.size();
-//         for(int i = 0; i < len; ++i)
-//             cout << tok_line[i];
-// #endif
         vector<vector<string>> dummy_one_line_vector = { tok_line };
         string html;
         parse(dummy_one_line_vector, html);
+        // puke out the html        
         cout << html;
         s = match.format("$'");
     }
