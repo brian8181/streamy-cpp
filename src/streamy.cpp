@@ -11,13 +11,14 @@
 #include "streamy.hpp"
 #include "utility.hpp"
 #include "tokens.hpp"
+#include "grammer.hpp"
 // debug
 #include "bash_color.h"
 #include <filesystem>
 
 using namespace std;
 
-map<string, unsigned int> _token_map = { {"#", ID_HASH_MARK}, {"*", ID_ASTERIK}, {"$", ID_DOLLAR_SIGN}, {"IF", ID_IF}, {"ELSEIF", ID_ELSEIF}, {"ELSE", ID__ELSE} };
+map<string, unsigned int> _token_map = { {"#", ID_HASH_MARK}, {"*", ID_ASTERIK}, {"$", ID_DOLLAR_SIGN}, {"IF", ID_IF}, {"ELSEIF", ID_ELSEIF}, {"ELSE", ID_ELSE} };
 unsigned int token_id = 0;
 
 streamy::streamy()
@@ -266,7 +267,7 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                     {
                         break;
                     }
-                    case ID__ELSE:
+                    case ID_ELSE:
                     {
                         break;
                     }
