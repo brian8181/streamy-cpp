@@ -176,7 +176,6 @@ void streamy::lex_escapes(vector<pair<int, vector<string>>>& escapes, /* out */ 
             case TAG:
                 vector<string> tok_line;
                 lex(p.second, tok_line);
-                //tokens.push_back(tok_line);
                 p.second = tok_line;
                 break;
         }
