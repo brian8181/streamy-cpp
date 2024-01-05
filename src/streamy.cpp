@@ -181,6 +181,7 @@ void streamy::lex_escapes(vector<pair<int, vector<string>>>& escapes, /* out */ 
 
 void streamy::lex(const vector<string>& s, /* out */ vector<string>& tokens)
 {
+    // note to self: how about [space] & [word boundries] as delimiters could work good ... !
     string end_of_string = s[0];
     regex exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, std::regex::ECMAScript); 
     smatch match;
