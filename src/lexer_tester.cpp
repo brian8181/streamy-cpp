@@ -37,8 +37,8 @@ int parse_options(int argc, char* argv[])
                              "Garland",   "Richardson", "Plano"};
     
     // initial configuration ...
-    const string project_folder = "/home/brian/src/streamy-cpp";
-    const string config_path = "./test/conf";
+    const string project_folder = "/home/brian/src/streamy-cpp/build";
+    const string config_path = "/home/brian/src/streamy-cpp/test/config/test.conf";
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     sm.config_load(config_path);
