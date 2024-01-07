@@ -17,6 +17,7 @@ using std::map;
 using std::vector;
 using std::smatch;
 
+bool match_single(const string& pattern, const string& text, /* out */ smatch& match);
 bool match_single(const string& pattern, const string& text);
 vector<string>& getlines(const string& path, /*out*/ vector<string>& lines);
 int read_bits(const smatch& m);

@@ -47,45 +47,45 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
 
 void streamy::config_load(const string& path)
 {
-    string s_out;
-    read_stream(path, s_out);
-
+    const string EXP = LOAD_CONFIG_PAIR;
     vector<string> lines;
     lines = getlines(path, lines);
-    regex rgx = regex(LOAD_CONFIG_PAIR); 
 
-    auto begin = sregex_iterator(s_out.begin(), s_out.end(), rgx, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
-
-    for (sregex_iterator iter = begin; iter != end; ++iter)
+    int len = lines.size();
+    for(int i = 0; i < len; ++i)
     {
-        smatch match = *iter;
-        string symbol_name = match[1].str();
-        string value = match[2].str();
-        pair<string, string> p(symbol_name, value);
-        map_config.insert(p);
+        smatch match;
+        string line = lines[i];
+        bool is_match = match_single(EXP, line, match);
+        if(is_match)
+        {
+            string symbol_name = match[1].str();
+            string value = match[2].str();
+            pair<string, string> p(symbol_name, value);
+            map_config.insert(p);
+        }
     }
 }
 
 void streamy::config_load(const string& path, const string& section)
 {
-    string s_out;
-    read_stream(path, s_out);
-
+    const string EXP = LOAD_CONFIG_PAIR;
     vector<string> lines;
     lines = getlines(path, lines);
-    regex rgx = regex(LOAD_CONFIG_PAIR); 
 
-    auto begin = sregex_iterator(s_out.begin(), s_out.end(), rgx, std::regex_constants::match_default);
-    auto end = sregex_iterator(); 
-
-    for (sregex_iterator iter = begin; iter != end; ++iter)
+      int len = lines.size();
+    for(int i = 0; i < len; ++i)
     {
-        smatch match = *iter;
-        string symbol_name = match[1].str();
-        string value = match[2].str();
-        pair<string, string> p(symbol_name, value);
-        map_config.insert(p);
+        smatch match;
+        string line = lines[i];
+        bool is_match = match_single(EXP, line, match);
+        if(is_match)
+        {
+            string symbol_name = match[1].str();
+            string value = match[2].str();
+            pair<string, string> p(symbol_name, value);
+            map_config.insert(p);
+        }
     }
 }
 

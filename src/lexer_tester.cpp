@@ -42,7 +42,6 @@ int parse_options(int argc, char* argv[])
 	match = match_single(exp, text);
 	cout << "exp: " << "\"" << exp << "\"" << " matching " << "\"" << text << "\"" " : matched=" << (match ? "true":"false") << endl;
 
-
     // array of values ...  
     vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London", 
                              "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas", 

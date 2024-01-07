@@ -18,6 +18,17 @@ using std::map;
 using std::vector;
 using std::ostringstream;
 
+// returns true if only one match & match string size equals text size
+bool match_single(const string& pattern, const string& text, /* out */ smatch& match)
+{
+    regex rgx = regex(pattern);
+    regex_match(text, match, rgx);
+
+    if(match.size() == 1 && text.size(), match.str().size())
+        return true;
+
+    return false;
+}
 
 // returns true if only one match & match string size equals text size
 bool match_single(const string& pattern, const string& text)
