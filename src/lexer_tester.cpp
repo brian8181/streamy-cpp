@@ -61,11 +61,16 @@ int parse_options(int argc, char* argv[])
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
 
-	map<string, string> cfg = sm.get_map_config();
-	map<string, string>::iterator end = cfg.end();
-	for(map<string, string>::iterator iter = cfg.begin(); iter != end; ++iter)
+	map<string, map<string, string>> config = sm.get_map_config_sections();
+	map<string, map<string, string>>::iterator end = config.end();
+	for(map<string, map<string, string>>::iterator iter = config.begin(); iter != end; ++iter)
 	{
-		cout << "key = " << iter->first << " : value = " << iter->second << endl;
+		map<string, string> cfg_section = iter->second;
+		map<string, string>::iterator end = cfg_section.end();
+		for(map<string, string>::iterator section_iter = cfg_section.begin(); section_iter != end; ++section_iter)
+		{
+			cout << "key = " << section_iter->first << " : value = " << section_iter->second << endl;
+		}
 	}
 
 	if(argc < 2)

@@ -47,7 +47,7 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
 
 void streamy::config_load(const string& path)
 {
-    const string EXP = LOAD_CONFIG_PAIR;
+    const string LOAD_CONFIG = "(" + LOAD_CONFIG_PAIR + ")|(" + LOAD_CONFIG_SECTION+ ")";
     vector<string> lines;
     lines = getlines(path, lines);
 
@@ -56,51 +56,33 @@ void streamy::config_load(const string& path)
     {
         smatch match;
         string line = lines[i];
-        bool is_match = match_single(EXP, line, match);
-        if(is_match)
+        bool is_match = match_single(LOAD_CONFIG, line, match);
+        if(!is_match)
         {
-            string symbol_name = match[1].str();
-            string value = match[2].str();
+            cout << "error loading config file \"" << path << "\"" << endl; 
+        }
+
+        string section_name = "global";
+        if(match[2].matched)
+        {
+            // add new section
+            section_name = match[2].str();
+            map<string, string> section_map;
+            pair<string, map<string, string>> sp(section_name, section_map);
+            map_sections_config.insert(sp);
+        }
+        else
+        {
+            string symbol_name = match[3].str();
+            string value = match[4].str();
             pair<string, string> p(symbol_name, value);
-            map_config.insert(p);
+            map_sections_config[section_name].insert(p);
         }
     }
 }
 
 void streamy::config_load(const string& path, const string& section)
 {
-    string s_out;
-    read_stream(path, s_out);
-    regex section_exp(LOAD_CONFIG_SECTION);
-    smatch match;
-    regex_match(s_out, match, section_exp);
-
-    smatch::iterator end = match.end();
-    for(smatch::iterator iter = match.begin(); iter != end; ++iter)
-    {
-        // do something for each section
-    }
-
-    // bool is_match = match_single(LOAD_CONFIG_SECTION, line, match);
-    // if(is_match)
-    // {
-    //     const string EXP = LOAD_CONFIG_PAIR;
-    //     vector<string> lines;
-    //     int len = lines.size();
-    //     for(int i = 0; i < len; ++i)
-    //     {
-    //         smatch match;
-    //         string line = lines[i];
-    //         bool is_match = match_single(EXP, line, match);
-    //         if(is_match)
-    //         {
-    //             string symbol_name = match[1].str();
-    //             string value = match[2].str();
-    //             pair<string, string> p(symbol_name, value);
-    //             map_config.insert(p);
-    //         }
-    //     }
-    // }
     
 }
 
@@ -348,6 +330,11 @@ void streamy::clear_cache()
     filesystem::path p = cache_dir;
 }
 
+map<string, map<string, string>>& streamy::get_map_config_sections()
+{
+    return map_sections_config;
+}
+
 std::map<string, string>& streamy::get_map_config()
 {
     return map_config;
@@ -388,16 +375,6 @@ void streamy::clear_all()
     map_config.clear();
     map_vars.clear();
     map_arrays.clear();
-}
-
-string smarty_prefilter_name(const string& src, const string& smarty)
-{
-    return "";
-}
-
-string smarty_postfilter_name(const string& src, const string& smarty)
-{
-    return "";
 }
 
 unsigned int streamy::get_state()

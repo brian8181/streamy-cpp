@@ -34,10 +34,9 @@ public:
     string& fetch(const string& tmpl, const string& cache_id, const string& compile_id, /*out*/ string& html);
     map<string, string>& get_map_vars();
     map<string, string>& get_map_config();
+    map<string, map<string, string>>& get_map_config_sections();
     map<string, vector<string>>& get_map_arrays();
     vector<pair<string, string>>& get_registered_object(string object_name, /*out*/ vector<pair<string, string>>& registered_object);
-    string smarty_prefilter_name(const string& src, const string& smarty);
-    string smarty_postfilter_name(const string& src, const string& smarty);
     void clear_all();
     void clear_config();
     void clear_config(string name);
@@ -58,6 +57,7 @@ private:
     
     // map    
     map<string, string> map_config;
+    map<string, map<string, string>> map_sections_config;
     map<string, string> map_vars;
     map<string, string> map_const;
     map<string, vector<string>> map_arrays;
@@ -69,7 +69,6 @@ private:
     string compile_dir;
     string config_dir;
     string cache_dir;
-    void get_next_token(); 
     bool caching = false;
     bool config_overwrite = false;
     bool autoload_filters = false;
