@@ -49,7 +49,9 @@ void streamy::config_load(const string& path)
 {
     string s_out;
     read_stream(path, s_out);
-    vector<string> lines = getlines(path);
+
+    vector<string> lines;
+    lines = getlines(path, lines);
     regex rgx = regex(LOAD_CONFIG_PAIR); 
 
     auto begin = sregex_iterator(s_out.begin(), s_out.end(), rgx, std::regex_constants::match_default);
@@ -69,6 +71,9 @@ void streamy::config_load(const string& path, const string& section)
 {
     string s_out;
     read_stream(path, s_out);
+
+    vector<string> lines;
+    lines = getlines(path, lines);
     regex rgx = regex(LOAD_CONFIG_PAIR); 
 
     auto begin = sregex_iterator(s_out.begin(), s_out.end(), rgx, std::regex_constants::match_default);

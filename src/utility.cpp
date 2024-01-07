@@ -7,18 +7,37 @@
 #include <sstream>
 #include <fstream>
 #include <map>
+#include <string>
+#include <vector>
+#include <regex>
 #include "utility.hpp"
 
+using std::regex;
+using std::string;
 using std::map;
+using std::vector;
 using std::ostringstream;
 
+
+// returns true if only one match & match string size equals text size
+bool match_single(const string& pattern, const string& text)
+{
+    regex rgx = regex(pattern);
+    smatch match;
+    regex_match(text, match, rgx);
+
+    if(match.size() == 1 && text.size(), match.str().size())
+        return true;
+
+    return false;
+}
+
 // get file lines as vector
-vector<string> getlines(string path)
+vector<string>& getlines(const string& path, /* out */ vector<string>& lines)
 {
     std::ifstream file;
     file.open(path, std::ios::in);
 
-    vector<string> lines;
     if (file.is_open())
     {
         string line;
@@ -26,7 +45,7 @@ vector<string> getlines(string path)
         {
             lines.push_back(line);
         }
-        file.close();
+        file.close();   
     }
     return lines;
 }

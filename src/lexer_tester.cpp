@@ -31,13 +31,25 @@ using namespace std;
 
 int parse_options(int argc, char* argv[])
 {
+	// test match_single
+	string exp = "abc";
+	string text = "abc";
+	bool match = match_single(exp, text);
+	cout << "exp: " << "\"" << exp << "\"" << " matching " << "\"" << text << "\"" " : matched=" << (match ? "true":"false") << endl;
+
+	exp = "abc";
+	text = "abcabc";
+	match = match_single(exp, text);
+	cout << "exp: " << "\"" << exp << "\"" << " matching " << "\"" << text << "\"" " : matched=" << (match ? "true":"false") << endl;
+
+
     // array of values ...  
     vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London", 
                              "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas", 
                              "Garland",   "Richardson", "Plano"};
     
     // initial configuration ...
-    const string project_folder = "/home/brian/src/streamy-cpp/build";
+    const string project_folder = "/home/brian/src/streamy-cpp";
     const string config_path = "/home/brian/src/streamy-cpp/test/config/test1.conf";
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");

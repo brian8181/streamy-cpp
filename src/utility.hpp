@@ -17,7 +17,8 @@ using std::map;
 using std::vector;
 using std::smatch;
 
-vector<string> getlines(string path);
+bool match_single(const string& pattern, const string& text);
+vector<string>& getlines(const string& path, /*out*/ vector<string>& lines);
 int read_bits(const smatch& m);
 bool file_exist(const string& path);
 map<string, string>& get_name_value_pairs(string path, /* out */ map<string, string>& pairs);
