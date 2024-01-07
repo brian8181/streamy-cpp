@@ -38,7 +38,7 @@ int parse_options(int argc, char* argv[])
     
     // initial configuration ...
     const string project_folder = "/home/brian/src/streamy-cpp/build";
-    const string config_path = "/home/brian/src/streamy-cpp/test/config/test.conf";
+    const string config_path = "/home/brian/src/streamy-cpp/test/config/test1.conf";
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     sm.config_load(config_path);
@@ -49,6 +49,13 @@ int parse_options(int argc, char* argv[])
     sm.assign("admin_email", "admin@something.com");
     sm.assign("version", "0.1");
     sm.assign("version_date", "Feb, 14 2022");
+
+	map<string, string> cfg = sm.get_map_config();
+	map<string, string>::iterator end = cfg.end();
+	for(map<string, string>::iterator iter = cfg.begin(); iter != end; ++iter)
+	{
+		cout << "key = " << iter->first << " : value = " << iter->second << endl;
+	}
 
 	if(argc < 2)
     {
