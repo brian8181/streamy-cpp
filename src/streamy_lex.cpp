@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     string s_out;
-    sm.load_config(config_path, s_out);
+    //sm.load_config(config_path, s_out);
 
     cout << "******* Display Configuration ******" << endl;
     //map<string, string>::iterator end = sm.config.end();
@@ -93,7 +93,6 @@ int main(int argc, char *argv[])
     //sm.parse(_out, _html); // parse generates the final HTLM from temaple
     //cout << _html;
   
-
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "*PAGE_TITLE*");
     sm.assign("body", "**THE BODY**");
@@ -113,8 +112,6 @@ int main(int argc, char *argv[])
     //         cout << "TAG_REPLACE" << sm.tokens[i].second;
     //     }
     // }
-
-
 
     cout << "******* Display Variables ******" << endl;
     // map<string, string>::iterator vend = sm.vars.end();

@@ -86,6 +86,7 @@ int parse_options(int argc, char* argv[])
 
     string tmpl(file.filename());
     sm.display(tmpl);	
+	cout << endl; // add line break just in case ther is not one 
 
     return 0;
 }

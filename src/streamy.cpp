@@ -69,24 +69,39 @@ void streamy::config_load(const string& path)
 
 void streamy::config_load(const string& path, const string& section)
 {
-    const string EXP = LOAD_CONFIG_PAIR;
-    vector<string> lines;
-    lines = getlines(path, lines);
+    string s_out;
+    read_stream(path, s_out);
+    regex section_exp(LOAD_CONFIG_SECTION);
+    smatch match;
+    regex_match(s_out, match, section_exp);
 
-      int len = lines.size();
-    for(int i = 0; i < len; ++i)
+    smatch::iterator end = match.end();
+    for(smatch::iterator iter = match.begin(); iter != end; ++iter)
     {
-        smatch match;
-        string line = lines[i];
-        bool is_match = match_single(EXP, line, match);
-        if(is_match)
-        {
-            string symbol_name = match[1].str();
-            string value = match[2].str();
-            pair<string, string> p(symbol_name, value);
-            map_config.insert(p);
-        }
+        // do something for each section
     }
+
+    // bool is_match = match_single(LOAD_CONFIG_SECTION, line, match);
+    // if(is_match)
+    // {
+    //     const string EXP = LOAD_CONFIG_PAIR;
+    //     vector<string> lines;
+    //     int len = lines.size();
+    //     for(int i = 0; i < len; ++i)
+    //     {
+    //         smatch match;
+    //         string line = lines[i];
+    //         bool is_match = match_single(EXP, line, match);
+    //         if(is_match)
+    //         {
+    //             string symbol_name = match[1].str();
+    //             string value = match[2].str();
+    //             pair<string, string> p(symbol_name, value);
+    //             map_config.insert(p);
+    //         }
+    //     }
+    // }
+    
 }
 
 void streamy::display(const string& tmpl)
