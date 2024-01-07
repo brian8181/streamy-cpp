@@ -8,16 +8,16 @@
 #include <regex>
 #include <sstream>
 #include <map>
+#include <filesystem>
 #include "streamy.hpp"
 #include "utility.hpp"
 #include "tokens.hpp"
 #include "grammer.hpp"
 #include "bash_color.h"
-#include <filesystem>
 
 using namespace std;
 
-map<string, unsigned int> _token_map = { {"{", ID_OPEN_CURLY_BRACE}, {"}", ID_CLOSE_CURLY_BRACE}, {"#", ID_HASH_MARK}, {"*", ID_ASTERIK}, {"$", ID_DOLLAR_SIGN}, 
+map<string, unsigned int> _token_map = {  {"{", ID_OPEN_CURLY_BRACE}, {"}", ID_CLOSE_CURLY_BRACE}, {"#", ID_HASH_MARK}, {"*", ID_ASTERIK}, {"$", ID_DOLLAR_SIGN}, 
                                           {"=", ID_EQUAL}, {"|", ID_VBAR}, {":", ID_COLON}, {"\"", ID_DOUBLE_QUOTE}, {"'", ID_SINGLE_QUOTE}, {".", ID_DOT},
                                           {"+", ID_PLUS}, {"-", ID_MINUS}, {"%", ID_MODULUS}, 
                                           {"[", ID_OPEN_BRACE}, {"]", ID_CLOSE_BRACE}, {";", ID_SEMI_COLON},
@@ -108,13 +108,12 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     vector<std::pair<int, vector<std::string>>> escapes;
     find_escapes(full_path, escapes);
 
-
-
     int len = escapes.size();
     for(int i = 0; i < len; ++i)
     {
         cout << escapes[i].second[0];
     }
+
     // lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
     // parse(tokens, html);
@@ -172,6 +171,8 @@ void streamy::lex_escapes(vector<pair<int, vector<string>>>& escapes, /* out */ 
             case TEXT:
                 break;
             case TAG:
+                // This is not working, need to assign value to line/tag, replacing expression with its value!
+                
                 // vector<string> tok_line;
                 // lex(p.second, tok_line);
                 // pair<int, vector<string>> np(p.first, tok_line);
@@ -191,16 +192,16 @@ void streamy::lex(const vector<string>& s, /* out */ vector<string>& tokens)
 
     while(std::regex_search(end_of_string, match, exp, std::regex_constants::match_default))
     {
-        // std::string fmt_match_beg = match.format("$`");
-        // std::string fmt_match = match.format("$&");
+        // beginning of string to match
         std::string fmt_match_beg = match.prefix();
+        // match
         std::string fmt_match = match.suffix();
         if(fmt_match_beg.size() > 0)
             tokens.push_back(fmt_match_beg);
         if(!std::isspace(fmt_match[0]))    
             tokens.push_back(fmt_match);
 
-        //end_of_string = match.format("$'");
+        // after match to end of string
         end_of_string = match.suffix();
         if(fmt_match == "*" || fmt_match == "#" || fmt_match == "\"" || fmt_match == "'")
         {
