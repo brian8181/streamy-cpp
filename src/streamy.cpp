@@ -56,12 +56,9 @@ void streamy::config_load(const string& path)
     {
         smatch match;
         string line = lines[i];
-        bool is_match = match_single(LOAD_CONFIG, line, match);
-        if(!is_match)
-        {
-            cout << "error loading config file \"" << path << "\"" << endl; 
-        }
-
+        regex rgx = regex(LOAD_CONFIG_PAIR);
+        regex_match(line, match, rgx);
+      
         string section_name = "global";
         if(match[2].matched)
         {
@@ -90,8 +87,6 @@ void streamy::display(const string& tmpl)
 {
     string _html;
     compile(tmpl, _html);
-    // stdout final
-    // cout << _html << endl;
 }
 
 string& streamy::fetch(const string& tmpl, const string& cache_id, const string& compile_id, /*out*/ string& html)
@@ -117,7 +112,6 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     // lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
     // parse(tokens, html);
-
     return html;
 }
 
@@ -141,22 +135,16 @@ void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, ve
     smatch match;
     while(std::regex_search(s, match, exp, std::regex_constants::match_default))
     {
-        //std::string fmt_match_beg = match.format("$`");
         std::string fmt_match_beg = match.prefix();
-        //std::string fmt_match = match.format("$&");
         string fmt_match = match.str();
         vector<string> begin_text = {fmt_match_beg};
         escapes.push_back(pair(TEXT, begin_text));
-        //cout << fmt_match_beg;
         vector<string> tag_match = {fmt_match};
         escapes.push_back(pair(TAG, tag_match));
         vector<vector<string>> tokens;
         lex_escapes(escapes, tokens);
-       
-        //s = match.format("$'");
         s = match.suffix();
     }
-    //escapes.push_back(pair(TEXT, s));
     cout << s;
 }
 
@@ -172,7 +160,7 @@ void streamy::lex_escapes(vector<pair<int, vector<string>>>& escapes, /* out */ 
                 break;
             case TAG:
                 // This is not working, need to assign value to line/tag, replacing expression with its value!
-                
+
                 // vector<string> tok_line;
                 // lex(p.second, tok_line);
                 // pair<int, vector<string>> np(p.first, tok_line);
@@ -196,6 +184,7 @@ void streamy::lex(const vector<string>& s, /* out */ vector<string>& tokens)
         std::string fmt_match_beg = match.prefix();
         // match
         std::string fmt_match = match.suffix();
+
         if(fmt_match_beg.size() > 0)
             tokens.push_back(fmt_match_beg);
         if(!std::isspace(fmt_match[0]))    

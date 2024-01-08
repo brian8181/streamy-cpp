@@ -24,7 +24,7 @@ bool match_single(const string& pattern, const string& text, /* out */ smatch& m
     regex rgx = regex(pattern);
     regex_match(text, match, rgx);
 
-    if(match.size() == 1 && text.size(), match.str().size())
+    if(match.size() == 1 && match.str().size() == text.size())
         return true;
 
     return false;
