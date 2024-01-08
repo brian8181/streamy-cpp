@@ -65,6 +65,8 @@ int parse_options(int argc, char* argv[])
 	map<string, map<string, string>>::iterator end = config.end();
 	for(map<string, map<string, string>>::iterator iter = config.begin(); iter != end; ++iter)
 	{
+		string section_name = iter->first;
+		cout << "[" + section_name + "]" << endl;
 		map<string, string> cfg_section = iter->second;
 		map<string, string>::iterator end = cfg_section.end();
 		for(map<string, string>::iterator section_iter = cfg_section.begin(); section_iter != end; ++section_iter)

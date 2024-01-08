@@ -47,31 +47,35 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
 
 void streamy::config_load(const string& path)
 {
-    const string LOAD_CONFIG = "(" + LOAD_CONFIG_PAIR + ")|(" + LOAD_CONFIG_SECTION+ ")";
+    const string LOAD_CONFIG = "(" + LOAD_CONFIG_PAIR + ")|(" + LOAD_CONFIG_SECTION + ")";
     vector<string> lines;
     lines = getlines(path, lines);
 
+    string section_name = "global";
+    map<string, string> section_map;
+    pair<string, map<string, string>> sp(section_name, section_map);
+    map_sections_config.insert(sp);
+    
     int len = lines.size();
     for(int i = 0; i < len; ++i)
     {
         smatch match;
         string line = lines[i];
-        regex rgx = regex(LOAD_CONFIG_PAIR);
+        regex rgx = regex(LOAD_CONFIG);
         regex_match(line, match, rgx);
       
-        string section_name = "global";
-        if(match[2].matched)
+        if(match[5].matched)
         {
             // add new section
-            section_name = match[2].str();
+            section_name = match[5].str();
             map<string, string> section_map;
             pair<string, map<string, string>> sp(section_name, section_map);
             map_sections_config.insert(sp);
         }
-        else
+        else if(match[1].matched)
         {
-            string symbol_name = match[3].str();
-            string value = match[4].str();
+            string symbol_name = match[2].str();
+            string value = match[3].str();
             pair<string, string> p(symbol_name, value);
             map_sections_config[section_name].insert(p);
         }
