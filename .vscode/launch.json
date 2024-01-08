@@ -22,7 +22,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "MAKE DEBUGGDB",
+            "preLaunchTask": "MAKE",
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
@@ -43,11 +43,11 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "MAKE DEBUGGDB",
+            "preLaunchTask": "MAKE",
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
-            "name": "Debug_streamy_lex",
+            "name": "streamy_lex",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/streamy_lex",
@@ -64,11 +64,11 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "MAKE DEBUGGDB",
+            "preLaunchTask": "MAKE",
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
-            "name": "Debug_index.cgi",
+            "name": "index.cgi",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/index.cgi",
@@ -85,7 +85,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "MAKE_EXAMPLES",
+            "preLaunchTask": "MAKE",
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
@@ -106,7 +106,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "MAKE_EXAMPLES",
+            "preLaunchTask": "MAKE",
             "miDebuggerPath": "/usr/bin/gdb"
         }
 

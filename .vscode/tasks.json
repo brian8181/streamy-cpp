@@ -1,7 +1,7 @@
 {
     "tasks": [
         {
-            "label": "MAKE DEBUGGDB",
+            "label": "MAKE",
             "type": "shell",
             "command": "make -f ${workspaceFolder}/makefile",
             "problemMatcher": [

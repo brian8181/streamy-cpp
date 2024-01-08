@@ -1,11 +1,8 @@
-A
 {$headers}
-{$page_title}
-BB 
 testing
-{$body} test 
-{$admin_email}
-CCCC
-VERSION ->{$version}
-WWWW
-**{$version_date}**
+{$page_title}
+testing
+test {$body} test
+{$admin_email} test
+test {$version} test
+{$version_date}

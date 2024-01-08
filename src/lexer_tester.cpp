@@ -49,7 +49,7 @@ int parse_options(int argc, char* argv[])
     
     // initial configuration ...
     const string project_folder = "/home/brian/src/streamy-cpp";
-    const string config_path = "/home/brian/src/streamy-cpp/test/config/test1.conf";
+    const string config_path = "/home/brian/src/streamy-cpp/test/config/lexer_tester.conf";
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     sm.config_load(config_path);
