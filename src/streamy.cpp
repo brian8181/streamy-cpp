@@ -47,6 +47,12 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
 
 void streamy::load_config(const string& path)
 {
+    const unsigned int ID_NAME_VALUE_PAIR = 0;
+    const unsigned int ID_NAME            = 1;
+    const unsigned int ID_VALUE           = 2;
+    const unsigned int ID_NUMERIC_LITERAL = 2;
+    const unsigned int ID_STRING_LITERAL  = 3;
+
     // get configuration file by lines
     vector<string> lines;
     lines = getlines(path, lines);
@@ -64,10 +70,14 @@ void streamy::load_config(const string& path)
         smatch match;
         regex_match(line, match, rgx);
                 
-        if(match[1].matched)
+        if(match[ID_NAME_VALUE_PAIR].matched)
         {
-            string symbol_name = match[1].str();
-            string value = (match[2].matched) ? match[2].str() : match[3].str();
+            // get name
+            string symbol_name = match[ID_NAME].str();
+            // get value
+            string value = (match[ID_VALUE].matched) ? 
+                match[ID_NUMERIC_LITERAL].str() : match[ID_STRING_LITERAL].str();
+            // create pair    
             pair<string, string> p(symbol_name, value);
             map_sections_config[section_name].insert(p);
         }
