@@ -64,18 +64,18 @@ void streamy::config_load(const string& path)
         regex rgx = regex(LOAD_CONFIG);
         regex_match(line, match, rgx);
       
-        if(match[5].matched)
+        if(match[6].matched)
         {
             // add new section
-            section_name = match[5].str();
+            section_name = match[6].str();
             map<string, string> section_map;
             pair<string, map<string, string>> sp(section_name, section_map);
             map_sections_config.insert(sp);
         }
-        else if(match[1].matched)
+        else if(match[2].matched)
         {
-            string symbol_name = match[2].str();
-            string value = match[3].str();
+            string symbol_name = match[3].str();
+            string value = match[4].str();
             pair<string, string> p(symbol_name, value);
             map_sections_config[section_name].insert(p);
         }
@@ -88,11 +88,6 @@ void streamy::config_load(const string& path, const string& section)
     const string SECTION_REGEX = "\\[" + section + "\\]";
     vector<string> lines;
     lines = getlines(path, lines);
-
-    string section_name = "global";
-    // map<string, string> section_map;
-    // pair<string, map<string, string>> sp(section_name, section_map);
-    // map_sections_config.insert(sp);
     
     int len = lines.size();
     for(int i = 0; i < len; ++i)
@@ -104,10 +99,9 @@ void streamy::config_load(const string& path, const string& section)
 
         if(match[1].matched)
         {
-            // add new section
-            section_name = match[1].str();
+            map_sections_config[section].clear();
             map<string, string> section_map;
-            pair<string, map<string, string>> sp(section_name, section_map);
+            pair<string, map<string, string>> sp(section, section_map);
             map_sections_config.insert(sp);
 
             for(; i < len; ++i)
@@ -116,12 +110,18 @@ void streamy::config_load(const string& path, const string& section)
                 string line = lines[i];
                 regex rgx = regex(LOAD_CONFIG);
                 regex_match(line, match, rgx); 
-                if(match[5].matched)  
-                    return;
-                string symbol_name = match[2].str();
-                string value = match[3].str();
-                pair<string, string> p(symbol_name, value);
-                map_sections_config[section_name].insert(p);
+              
+                if(match[1].matched)  
+                {
+                    string symbol_name = match[2].str();
+                    string value = match[3].str();
+                    pair<string, string> p(symbol_name, value);
+                    map_sections_config[section].insert(p);
+                }
+                else
+                {
+                    return;   // no match end section!
+                }
             }
             return;
         }

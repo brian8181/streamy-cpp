@@ -49,7 +49,7 @@ const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)|(foreachelse)|(literal)
 const string VAR_MODIFIER = "(capitalize)|(indent)|(lower)|(upper)|(spacify)|(string_format)|(truncate)|(date_format)|(escape)";
 const string CONFIG_COMMENT = "^#";
 const string LOAD_CONFIG_SECTION = "\\[([A-Za-z]" + VALID_SYMBOL_CHARS + "*)\\]";
-const string LOAD_CONFIG_PAIR = "(\\s*[A-Za-z]" + VALID_SYMBOL_CHARS + "*)\\s*=\\s*(" + VALID_SYMBOL_CHARS + "*)";
+const string LOAD_CONFIG_PAIR = "\\s*(([A-Za-z]" + VALID_SYMBOL_CHARS + "*)|(\"[A-Za-z]" + VALID_SYMBOL_CHARS + "*\"))\\s*=\\s*(" + VALID_SYMBOL_CHARS + "*)";
 // lexing
 // note to self: how about [space] & [word boundries] as delimiters could work good ... !
 const string DELIMIT_SPACE_AND_WORD_BOUNDARY = "\\s\\b";
