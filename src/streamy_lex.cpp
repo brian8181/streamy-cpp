@@ -10,6 +10,7 @@
 #include <fstream>
 #include <filesystem>
 #include <regex>
+#include "bash_color.h"
 #include "fileio.hpp"
 #include "streamy.hpp"
 

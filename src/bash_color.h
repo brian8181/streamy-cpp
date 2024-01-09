@@ -53,11 +53,11 @@ const string FMT_BG_LIGHT_MAGENTA  = "\033[105m";
 const string FMT_BG_LIGHT_CYAN     = "\033[106m";
 const string FMT_BG_WHITE          = "\033[107m";
 
-string& fmt_string(string& s, string& format)
-{
-    s = format + s + FMT_RESET;
-    return s;
-}
+// string& fmt_string(string& s, string& format)
+// {
+//     s = format + s + FMT_RESET;
+//     return s;
+// }
 
 #endif
 

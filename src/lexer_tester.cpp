@@ -24,6 +24,7 @@
 #include <string>
 #include <getopt.h>
 #include <filesystem>
+#include "bash_color.h"
 #include "utility.hpp"
 #include "streamy.hpp"
 
@@ -52,7 +53,7 @@ int parse_options(int argc, char* argv[])
     const string config_path = "/home/brian/src/streamy-cpp/test/config/lexer_tester.conf";
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
-    //sm.config_load(config_path);
+    sm.config_load(config_path);
     sm.assign("citys", citys);
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "*PAGE_TITLE*");
@@ -91,9 +92,10 @@ int parse_options(int argc, char* argv[])
 		return -1;
 	}
 
+	cout << endl << FMT_FG_RED << "{ Begin streamy standard out --> ...}" << FMT_RESET << endl;
     string tmpl(file.filename());
     sm.display(tmpl);	
-	cout << endl; // add line break just in case ther is not one 
+	cout << endl << FMT_FG_RED << "{ End streamy standard out --> ...}" << FMT_RESET << endl;
 
     return 0;
 }
