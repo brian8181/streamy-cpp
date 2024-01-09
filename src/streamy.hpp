@@ -56,6 +56,7 @@ private:
     
     // map    
     map<string, string> map_config;
+    // todo : revert to no configuration sections!
     map<string, map<string, string>> map_sections_config;
     map<string, string> map_vars;
     map<string, string> map_const;
