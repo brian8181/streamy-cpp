@@ -47,48 +47,29 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
 
 void streamy::load_config(const string& path)
 {
-    //const string LOAD_CONFIG = "(" + CONFIG_PAIR + ")|(" + CONFIG_SECTION + ")";
+    // get configuration file by lines
     vector<string> lines;
     lines = getlines(path, lines);
-
+    // create one only section (global)
     string section_name = "global";
     map<string, string> section_map;
     pair<string, map<string, string>> sp(section_name, section_map);
     map_sections_config.insert(sp);
-    
+
     int len = lines.size();
     for(int i = 0; i < len; ++i)
     {
-        smatch match;
         string line = lines[i];
         regex rgx = regex(CONFIG_PAIR);
+        smatch match;
         regex_match(line, match, rgx);
-      
-        // todo : revert NO SECTIONS!!
-        if(match[5].matched)
+                
+        if(match[1].matched)
         {
-            // add new section
-            section_name = match[5].str();
-            map<string, string> section_map;
-            pair<string, map<string, string>> sp(section_name, section_map);
-            map_sections_config.insert(sp);
-        }
-        else if(match[2].matched)
-        {
-            if(match[3].matched)
-            {
-                string symbol_name = match[2].str();
-                string value = match[3].str();
-                pair<string, string> p(symbol_name, value);
-                map_sections_config[section_name].insert(p);
-            }
-            else
-            {
-                string symbol_name = match[2].str();
-                string value = (match[4].matched) ? match[4].str() : match[5].str();
-                pair<string, string> p(symbol_name, value);
-                map_sections_config[section_name].insert(p);
-            }
+            string symbol_name = match[1].str();
+            string value = (match[2].matched) ? match[2].str() : match[3].str();
+            pair<string, string> p(symbol_name, value);
+            map_sections_config[section_name].insert(p);
         }
     }
 }

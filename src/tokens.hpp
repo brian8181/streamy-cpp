@@ -39,7 +39,8 @@ const string NOT_EQUAL_OPERATOR = "!=";
 // valid chars
 const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
 const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
-const string VALID_LITERAL_CHARS = "[A-Za-z0-9_.& ]";
+//const string VALID_LITERAL_CHARS = "[A-Za-z0-9_.& ]";
+const string VALID_LITERAL_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;'\\\\,()]";
 const string VALID_FILE_CHARS = "[A-Za-z0-9_. ]";
 const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
 // streamy functions, types, modifiers, keywords ...
