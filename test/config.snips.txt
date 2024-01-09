@@ -1,0 +1,157 @@
+void streamy::config_load(const string& path)
+{
+    const string LOAD_CONFIG = "(" + CONFIG_PAIR + ")|(" + CONFIG_SECTION + ")";
+    vector<string> lines;
+    lines = getlines(path, lines);
+
+    string section_name = "global";
+    map<string, string> section_map;
+    pair<string, map<string, string>> sp(section_name, section_map);
+    map_sections_config.insert(sp);
+    
+    int len = lines.size();
+    for(int i = 0; i < len; ++i)
+    {
+        smatch match;
+        string line = lines[i];
+        regex rgx = regex(LOAD_CONFIG);
+        regex_match(line, match, rgx);
+      
+        if(match[5].matched)
+        {
+            // add new section
+            section_name = match[5].str();
+            map<string, string> section_map;
+            pair<string, map<string, string>> sp(section_name, section_map);
+            map_sections_config.insert(sp);
+        }
+        else if(match[2].matched)
+        {
+            if(match[3].matched)
+            {
+                string symbol_name = match[2].str();
+                string value = match[3].str();
+                pair<string, string> p(symbol_name, value);
+                map_sections_config[section_name].insert(p);
+            }
+            else
+            {
+                string symbol_name = match[2].str();
+                string value = (match[4].matched) ? match[4].str() : match[5].str();
+                pair<string, string> p(symbol_name, value);
+                map_sections_config[section_name].insert(p);
+            }
+        }
+    }
+}
+
+void streamy::config_load(const string& path, const string& section)
+{
+    const string LOAD_CONFIG = "(" + CONFIG_PAIR + ")|(" + CONFIG_SECTION + ")";
+    const string SECTION_REGEX = "\\[" + section + "\\]";
+    vector<string> lines;
+    lines = getlines(path, lines);
+    
+    int len = lines.size();
+    for(int i = 0; i < len; ++i)
+    {
+        smatch match;
+        string line = lines[i];
+        regex rgx = regex(SECTION_REGEX);
+        regex_match(line, match, rgx);
+
+        if(match[1].matched)
+        {
+            map_sections_config[section].clear();
+            map<string, string> section_map;
+            pair<string, map<string, string>> sp(section, section_map);
+            map_sections_config.insert(sp);
+
+            for(; i < len; ++i)
+            {
+                smatch match;
+                string line = lines[i];
+                regex rgx = regex(LOAD_CONFIG);
+                regex_match(line, match, rgx); 
+              
+                if(match[1].matched)  
+                {
+                    string symbol_name = match[2].str();
+                    string value = match[3].str();
+                    pair<string, string> p(symbol_name, value);
+                    map_sections_config[section].insert(p);
+                }
+                else
+                {
+                    return;   // no match end section!
+                }
+            }
+            return;
+        }
+    }
+}
+
+void streamy::display(const string& tmpl)
+{
+    string _html;
+    compile(tmpl, _html);
+}
+
+string& streamy::fetch(const string& tmpl, const string& cache_id, const string& compile_id, /*out*/ string& html)
+{
+    compile(tmpl, html);
+    return html;
+}
+
+string& streamy::compile(const string& tmpl, /* out */ string& html)
+{
+    // open file the call parse function ...
+    string full_path = this->template_dir + "/" + tmpl;
+    // find escape sequences
+    vector<std::pair<int, vector<std::string>>> escapes;
+    find_escapes(full_path, escapes);
+
+    int len = escapes.size();
+    for(int i = 0; i < len; ++i)
+    {
+        cout << escapes[i].second[0];
+    }
+
+    // lex_escapes(escapes, tokens);
+    // parse the tokens appling agrammer rules
+    // parse(tokens, html);
+    return html;
+}
+
+void streamy::assign(const string& symbol_name, const string& val)
+{
+    pair<string, string> p(symbol_name, val);
+    map_vars.insert(p);
+}
+
+void streamy::assign(const string& symbol_name, const vector<string>& vec)
+{
+    pair<string, vector<string>> p(symbol_name, vec);
+    map_arrays.insert(p);
+}
+
+void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, vector<string>>>& escapes)
+{
+    string s;
+    read_stream(tmpl, s);
+    regex exp = regex(ESCAPE, std::regex::ECMAScript);
+    smatch match;
+    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
+    {
+        std::string fmt_match_beg = match.prefix();
+        string fmt_match = match.str();
+        vector<string> begin_text = {fmt_match_beg};
+        escapes.push_back(pair(TEXT, begin_text));
+        vector<string> tag_match = {fmt_match};
+        escapes.push_back(pair(TAG, tag_match));
+        vector<vector<string>> tokens;
+        lex_escapes(escapes, tokens);
+        s = match.suffix();
+    }
+    cout << s;
+}

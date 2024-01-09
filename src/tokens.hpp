@@ -39,7 +39,8 @@ const string NOT_EQUAL_OPERATOR = "!=";
 // valid chars
 const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
 const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
-const string VALID_FILE_CHARS = "[A-Za-z0-9_.]";
+const string VALID_LITERAL_CHARS = "[A-Za-z0-9_.& ]";
+const string VALID_FILE_CHARS = "[A-Za-z0-9_. ]";
 const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
 // streamy functions, types, modifiers, keywords ...
 const string VARIABLE_ESCAPES = "[*#$]";
@@ -49,7 +50,7 @@ const string KEY_WORDS = "(if)|(else)|(elseif)|(foreach)|(foreachelse)|(literal)
 const string VAR_MODIFIER = "(capitalize)|(indent)|(lower)|(upper)|(spacify)|(string_format)|(truncate)|(date_format)|(escape)";
 const string CONFIG_COMMENT = "^#";
 const string CONFIG_SECTION = "\\[([A-Za-z]" + VALID_SYMBOL_CHARS + "*)\\]";
-const string CONFIG_PAIR = "\\s*([A-Za-z]" + VALID_SYMBOL_CHARS + "*)\\s*=\\s*((" + VALID_SYMBOL_CHARS + "*)|(\"" + VALID_SYMBOL_CHARS + "*\"))";
+const string CONFIG_PAIR = "\\s*([A-Za-z]" + VALID_SYMBOL_CHARS + "*)\\s*=\\s*((" + VALID_SYMBOL_CHARS + "*)|(\"" + VALID_LITERAL_CHARS + "*\"))\\s*";
 // lexing
 // note to self: how about [space] & [word boundries] as delimiters could work good ... !
 const string DELIMIT_SPACE_AND_WORD_BOUNDARY = "\\s\\b";

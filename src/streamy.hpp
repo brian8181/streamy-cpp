@@ -26,8 +26,7 @@ class streamy
 public:
     streamy();
     streamy(const string& template_dir, const string& complie_dir, const string& config_dir, const string& cache_dir);
-    void config_load(const string& path);
-    void config_load(const string& path, const string& section);
+    void load_config(const string& path);
     void display(const string& file);
     void assign(const string& name, const string& val);
     void assign(const string& name, const vector<string>& vec);

@@ -53,7 +53,7 @@ int parse_options(int argc, char* argv[])
     const string config_path = "/home/brian/src/streamy-cpp/test/config/lexer_tester.conf";
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
-    sm.config_load(config_path);
+    sm.load_config(config_path);
     sm.assign("citys", citys);
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "*PAGE_TITLE*");

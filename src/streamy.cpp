@@ -45,7 +45,7 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
     this->cache_dir = cache_dir;
 }
 
-void streamy::config_load(const string& path)
+void streamy::load_config(const string& path)
 {
     const string LOAD_CONFIG = "(" + CONFIG_PAIR + ")|(" + CONFIG_SECTION + ")";
     vector<string> lines;
@@ -84,56 +84,10 @@ void streamy::config_load(const string& path)
             else
             {
                 string symbol_name = match[2].str();
-                string value = match[4].str();
+                string value = (match[4].matched) ? match[4].str() : match[5].str();
                 pair<string, string> p(symbol_name, value);
                 map_sections_config[section_name].insert(p);
             }
-        }
-    }
-}
-
-void streamy::config_load(const string& path, const string& section)
-{
-    const string LOAD_CONFIG = "(" + CONFIG_PAIR + ")|(" + CONFIG_SECTION + ")";
-    const string SECTION_REGEX = "\\[" + section + "\\]";
-    vector<string> lines;
-    lines = getlines(path, lines);
-    
-    int len = lines.size();
-    for(int i = 0; i < len; ++i)
-    {
-        smatch match;
-        string line = lines[i];
-        regex rgx = regex(SECTION_REGEX);
-        regex_match(line, match, rgx);
-
-        if(match[1].matched)
-        {
-            map_sections_config[section].clear();
-            map<string, string> section_map;
-            pair<string, map<string, string>> sp(section, section_map);
-            map_sections_config.insert(sp);
-
-            for(; i < len; ++i)
-            {
-                smatch match;
-                string line = lines[i];
-                regex rgx = regex(LOAD_CONFIG);
-                regex_match(line, match, rgx); 
-              
-                if(match[1].matched)  
-                {
-                    string symbol_name = match[2].str();
-                    string value = match[3].str();
-                    pair<string, string> p(symbol_name, value);
-                    map_sections_config[section].insert(p);
-                }
-                else
-                {
-                    return;   // no match end section!
-                }
-            }
-            return;
         }
     }
 }
