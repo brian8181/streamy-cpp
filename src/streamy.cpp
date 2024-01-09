@@ -64,20 +64,30 @@ void streamy::config_load(const string& path)
         regex rgx = regex(LOAD_CONFIG);
         regex_match(line, match, rgx);
       
-        if(match[6].matched)
+        if(match[5].matched)
         {
             // add new section
-            section_name = match[6].str();
+            section_name = match[5].str();
             map<string, string> section_map;
             pair<string, map<string, string>> sp(section_name, section_map);
             map_sections_config.insert(sp);
         }
         else if(match[2].matched)
         {
-            string symbol_name = match[3].str();
-            string value = match[4].str();
-            pair<string, string> p(symbol_name, value);
-            map_sections_config[section_name].insert(p);
+            if(match[3].matched)
+            {
+                string symbol_name = match[2].str();
+                string value = match[3].str();
+                pair<string, string> p(symbol_name, value);
+                map_sections_config[section_name].insert(p);
+            }
+            else
+            {
+                string symbol_name = match[2].str();
+                string value = match[4].str();
+                pair<string, string> p(symbol_name, value);
+                map_sections_config[section_name].insert(p);
+            }
         }
     }
 }
