@@ -47,7 +47,7 @@ streamy::streamy(const string& template_dir, const string& compile_dir, const st
 
 void streamy::config_load(const string& path)
 {
-    const string LOAD_CONFIG = "(" + LOAD_CONFIG_PAIR + ")|(" + LOAD_CONFIG_SECTION + ")";
+    const string LOAD_CONFIG = "(" + CONFIG_PAIR + ")|(" + CONFIG_SECTION + ")";
     vector<string> lines;
     lines = getlines(path, lines);
 
@@ -94,7 +94,7 @@ void streamy::config_load(const string& path)
 
 void streamy::config_load(const string& path, const string& section)
 {
-    const string LOAD_CONFIG = "(" + LOAD_CONFIG_PAIR + ")|(" + LOAD_CONFIG_SECTION + ")";
+    const string LOAD_CONFIG = "(" + CONFIG_PAIR + ")|(" + CONFIG_SECTION + ")";
     const string SECTION_REGEX = "\\[" + section + "\\]";
     vector<string> lines;
     lines = getlines(path, lines);
