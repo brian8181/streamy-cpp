@@ -53,10 +53,30 @@ const string FMT_BG_LIGHT_MAGENTA  = "\033[105m";
 const string FMT_BG_LIGHT_CYAN     = "\033[106m";
 const string FMT_BG_WHITE          = "\033[107m";
 
-// string& fmt_string(string& s, string& format)
+// string& FMT_STRING(string& s, const string& format)
 // {
 //     s = format + s + FMT_RESET;
 //     return s;
+// }
+
+// string& COLOR_RED(string& s)
+// {
+//     return FMT_STRING(s, FMT_FG_RED);
+// }
+
+// string& COLOR_BLUE(string& s)
+// {
+//      return FMT_STRING(s, FMT_FG_BLUE);
+// }
+
+// string& COLOR_YELLOW(string& s)
+// {
+//     return FMT_STRING(s, FMT_FG_YELLOW);
+// }
+
+// string& COLOR_GREEN(string& s)
+// {
+//     return FMT_STRING(s, FMT_FG_GREEN);
 // }
 
 #endif

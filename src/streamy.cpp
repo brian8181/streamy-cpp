@@ -102,7 +102,7 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     string full_path = this->template_dir + "/" + tmpl;
     // find escape sequences
     vector<std::pair<int, vector<std::string>>> escapes;
-    find_escapes(full_path, escapes);
+    find_code_blocks(full_path, escapes);
 
     int len = escapes.size();
     for(int i = 0; i < len; ++i)
@@ -113,6 +113,7 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     // lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
     // parse(tokens, html);
+
     return html;
 }
 
@@ -128,28 +129,34 @@ void streamy::assign(const string& symbol_name, const vector<string>& vec)
     map_arrays.insert(p);
 }
 
-void streamy::find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, vector<string>>>& escapes)
+void streamy::find_code_blocks(const string& tmpl, /* out*/ vector<pair<int, vector<string>>>& escapes)
 {
     string s;
     read_stream(tmpl, s);
     regex exp = regex(ESCAPE, std::regex::ECMAScript);
     smatch match;
-    while(std::regex_search(s, match, exp, std::regex_constants::match_default))
+    while(regex_search(s, match, exp, regex_constants::match_default))
     {
         std::string fmt_match_beg = match.prefix();
         string fmt_match = match.str();
+        //cout << fmt_match_beg << fmt_match;
+
         vector<string> begin_text = {fmt_match_beg};
         escapes.push_back(pair(TEXT, begin_text));
         vector<string> tag_match = {fmt_match};
         escapes.push_back(pair(TAG, tag_match));
         vector<vector<string>> tokens;
-        lex_escapes(escapes, tokens);
+        //lex_blocks(escapes, tokens);
         s = match.suffix();
     }
-    cout << s;
+    if(s.size() > 0)
+    {
+        vector<string> suffix = {s};
+        escapes.push_back(pair(TEXT, suffix));
+    }
 }
 
-void streamy::lex_escapes(vector<pair<int, vector<string>>>& escapes, /* out */ vector<vector<string>>& tokens)
+void streamy::lex_blocks(vector<pair<int, vector<string>>>& escapes, /* out */ vector<vector<string>>& tokens)
 {
     int len = escapes.size();
     for(int i = 0; i < len; ++i)
@@ -160,13 +167,12 @@ void streamy::lex_escapes(vector<pair<int, vector<string>>>& escapes, /* out */ 
             case TEXT:
                 break;
             case TAG:
-                // This is not working, need to assign value to line/tag, replacing expression with its value!
-
-                // vector<string> tok_line;
-                // lex(p.second, tok_line);
-                // pair<int, vector<string>> np(p.first, tok_line);
-                // escapes[p.first].second.clear();
-                // escapes[p.first].second.assign(tok_line.begin(), tok_line.end());
+                    // This is not working, need to assign value to line/tag, replacing expression with its value!
+                    vector<string> tok_line;
+                    lex(p.second, tok_line);
+                    pair<int, vector<string>> np(p.first, tok_line);
+                    //escapes[p.first].second.clear();
+                    //escapes[p.first].second.assign(tok_line.begin(), tok_line.end());
                 break;
         }
     }
@@ -176,19 +182,19 @@ void streamy::lex(const vector<string>& s, /* out */ vector<string>& tokens)
 {
     // note to self: how about [space] & [word boundries] as delimiters could work good ... !
     string end_of_string = s[0];
-    regex exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, std::regex::ECMAScript); 
+    regex exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
     smatch match;
 
-    while(std::regex_search(end_of_string, match, exp, std::regex_constants::match_default))
+    while(regex_search(end_of_string, match, exp, regex_constants::match_default))
     {
         // beginning of string to match
-        std::string fmt_match_beg = match.prefix();
+        string fmt_match_beg = match.prefix();
         // match
-        std::string fmt_match = match.suffix();
+        string fmt_match = match.suffix();
 
         if(fmt_match_beg.size() > 0)
             tokens.push_back(fmt_match_beg);
-        if(!std::isspace(fmt_match[0]))    
+        if(!isspace(fmt_match[0]))    
             tokens.push_back(fmt_match);
 
         // after match to end of string
@@ -326,7 +332,7 @@ map<string, map<string, string>>& streamy::get_map_config_sections()
     return map_sections_config;
 }
 
-std::map<string, string>& streamy::get_map_config()
+map<string, string>& streamy::get_map_config()
 {
     return map_config;
 }

@@ -54,6 +54,7 @@ int parse_options(int argc, char* argv[])
     sm.get_map_vars().insert(pair<string, string>("mail_message", "No Mail!"));
     sm.get_map_vars().insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
     sm.assign("headers", "HEADERS");
+    
     sm.assign("page_title", "*PAGE_TITLE*");
     sm.assign("body", "**THE BODY**");
     sm.assign("admin_email", "admin@something.com");

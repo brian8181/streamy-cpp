@@ -46,8 +46,8 @@ public:
     
 private:
     string& compile(const string& tmpl, /* out */ string& html);
-    void find_escapes(const string& tmpl, /* out*/ std::vector<pair<int, vector<string>>>& escapes);
-    void lex_escapes(vector<pair<int, vector<string>>>& escapes, /* out */ vector<vector<string>>& tokens);
+    void find_code_blocks(const string& tmpl, /* out*/ std::vector<pair<int, vector<string>>>& escapes);
+    void lex_blocks(vector<pair<int, vector<string>>>& escapes, /* out */ vector<vector<string>>& tokens);
     void lex(const vector<string>& s, /* out */ vector<string>& tokens);
     void parse(vector<std::vector<string>>& tokens, /* out */ string& html);
 

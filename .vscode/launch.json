@@ -93,7 +93,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/lexer_tester.cgi",
-            "args": ["lexer_all.tpl"],
+            "args": ["lexer_tester.tpl"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

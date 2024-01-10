@@ -11,7 +11,6 @@
 
 using std::string;
 
-
 enum token_id : unsigned long
 {
     ID_IF                 = 0x1ul,
@@ -58,8 +57,6 @@ enum token_id : unsigned long
     ID_MODIFIER_DATE_FORMAT    = 0x10000000000ul,
     ID_MODIFIER_ESCAPE         = 0x20000000000ul
 };
-
-
 
 
 // const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
