@@ -33,6 +33,7 @@ using namespace std;
 int parse_options(int argc, char* argv[])
 {
 	// test match_single
+
 	string exp = "abc";
 	string text = "abc";
 	bool match = match_single(exp, text);

@@ -20,6 +20,7 @@ using std::pair;
  // escapes
 const int TEXT = 0x1;
 const int TAG = 0x2;
+const int TOKEN = 0x4;
 
 class streamy
 {
@@ -46,9 +47,7 @@ public:
     
 private:
     string& compile(const string& tmpl, /* out */ string& html);
-    void find_code_blocks(const string& tmpl, /* out*/ std::vector<pair<int, vector<string>>>& escapes);
-    void lex_blocks(vector<pair<int, vector<string>>>& escapes, /* out */ vector<vector<string>>& tokens);
-    void lex(const vector<string>& s, /* out */ vector<string>& tokens);
+    void lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>& escapes);
     void parse(vector<std::vector<string>>& tokens, /* out */ string& html);
 
     // types

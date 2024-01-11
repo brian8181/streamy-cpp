@@ -101,16 +101,18 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     // open file the call parse function ...
     string full_path = this->template_dir + "/" + tmpl;
     // find escape sequences
-    vector<std::pair<int, vector<std::string>>> escapes;
-    find_code_blocks(full_path, escapes);
+    vector<vector<std::pair<int, string>>> escapes;
+    escapes.reserve(100);
+    
+    lex(full_path, escapes);
 
     int len = escapes.size();
     for(int i = 0; i < len; ++i)
     {
-        cout << escapes[i].second[0];
+        cout << escapes[0][i].second[0];
     }
-
     // lex_escapes(escapes, tokens);
+
     // parse the tokens appling agrammer rules
     // parse(tokens, html);
 
@@ -129,7 +131,7 @@ void streamy::assign(const string& symbol_name, const vector<string>& vec)
     map_arrays.insert(p);
 }
 
-void streamy::find_code_blocks(const string& tmpl, /* out*/ vector<pair<int, vector<string>>>& escapes)
+void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>& escapes)
 {
     string s;
     read_stream(tmpl, s);
@@ -137,75 +139,39 @@ void streamy::find_code_blocks(const string& tmpl, /* out*/ vector<pair<int, vec
     smatch match;
     while(regex_search(s, match, exp, regex_constants::match_default))
     {
-        std::string fmt_match_beg = match.prefix();
-        string fmt_match = match.str();
-        //cout << fmt_match_beg << fmt_match;
+        vector<string> begin_text = {match.prefix()};
+        pair<int, vector<string>> p(TEXT, begin_text);
+        escapes.push_back( vector<pair<int, string>>( {{TEXT, match.prefix()} }) );
+        // tokenize line
+        vector<string> tag_match = {match.str()};
+        string match_suffix = s;
+        exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
 
-        vector<string> begin_text = {fmt_match_beg};
-        escapes.push_back(pair(TEXT, begin_text));
-        vector<string> tag_match = {fmt_match};
-        escapes.push_back(pair(TAG, tag_match));
-        vector<vector<string>> tokens;
-        //lex_blocks(escapes, tokens);
+        while(regex_search(match_suffix, match, exp, regex_constants::match_default))
+        {
+            pair<int, vector<string>> match_pair = {TOKEN, vector<string>({match.str()})};
+            pair<int, vector<string>> prefix_pair = {TOKEN, vector<string>({match.prefix().str()})};
+            vector<pair<int, vector<string>>>( {{ TEXT, vector<string>({match.str()}) }});
+            escapes.push_back( vector<pair<int, string>>( {{ TEXT, match.str() }} ) );
+               
+            if(!isspace(match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TEXT, match.str() }} ) );
+
+            // after match to end of string
+            match_suffix = match.suffix();
+            if(match.str() == "*" || match.str() == "#" || match.str() == "\"" || match.str() == "'")
+            {
+                int pos = match_suffix.find_first_of("*#\"'");
+                escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(0, pos ) }} ));
+                escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(pos, 1 ) }} ));
+                match_suffix = match_suffix.substr(pos+1, 1);
+            }
+        }
         s = match.suffix();
     }
     if(s.size() > 0)
     {
         vector<string> suffix = {s};
-        escapes.push_back(pair(TEXT, suffix));
-    }
-}
-
-void streamy::lex_blocks(vector<pair<int, vector<string>>>& escapes, /* out */ vector<vector<string>>& tokens)
-{
-    int len = escapes.size();
-    for(int i = 0; i < len; ++i)
-    {
-        pair<int, vector<std::string>> p = escapes[i];
-        switch(p.first)
-        {
-            case TEXT:
-                break;
-            case TAG:
-                    // This is not working, need to assign value to line/tag, replacing expression with its value!
-                    vector<string> tok_line;
-                    lex(p.second, tok_line);
-                    pair<int, vector<string>> np(p.first, tok_line);
-                    //escapes[p.first].second.clear();
-                    //escapes[p.first].second.assign(tok_line.begin(), tok_line.end());
-                break;
-        }
-    }
-}
-
-void streamy::lex(const vector<string>& s, /* out */ vector<string>& tokens)
-{
-    // note to self: how about [space] & [word boundries] as delimiters could work good ... !
-    string end_of_string = s[0];
-    regex exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
-    smatch match;
-
-    while(regex_search(end_of_string, match, exp, regex_constants::match_default))
-    {
-        // beginning of string to match
-        string fmt_match_beg = match.prefix();
-        // match
-        string fmt_match = match.suffix();
-
-        if(fmt_match_beg.size() > 0)
-            tokens.push_back(fmt_match_beg);
-        if(!isspace(fmt_match[0]))    
-            tokens.push_back(fmt_match);
-
-        // after match to end of string
-        end_of_string = match.suffix();
-        if(fmt_match == "*" || fmt_match == "#" || fmt_match == "\"" || fmt_match == "'")
-        {
-            int pos = end_of_string.find_first_of("*#\"'");
-            tokens.push_back(end_of_string.substr(0, pos));
-            tokens.push_back(end_of_string.substr(pos, 1));
-            end_of_string = end_of_string.substr(pos+1, 1);
-        }
+        escapes.push_back( vector<pair<int, string>>( {{ TEXT,  s }} ));
     }
 }
 
@@ -233,7 +199,7 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                         string value = map_vars[symbol_name];
                         html = value;
                         vector<string> line_vec = { value };
-                        //tokens.erase(iter+i);
+                        //tokens.push_back
                         //tokens.insert(iter+i, line_vec); 
                         break;
                     }
