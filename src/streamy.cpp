@@ -99,20 +99,24 @@ string& streamy::fetch(const string& tmpl, const string& cache_id, const string&
 string& streamy::compile(const string& tmpl, /* out */ string& html)
 {
     // open file the call parse function ...
-    string full_path = this->template_dir + "/" + tmpl;
+    const string full_path = this->template_dir + "/" + tmpl;
     // find escape sequences
-    vector<vector<std::pair<int, string>>> escapes;
+
+    vector<vector<std::pair<int, string>>> escapes;    
     escapes.reserve(100);
-    
     lex(full_path, escapes);
 
     int len = escapes.size();
     for(int i = 0; i < len; ++i)
     {
-        cout << escapes[0][i].second[0];
+        int slen = escapes[i].size();
+        for(int j = 0; j < slen; ++i)
+        {
+              cout << escapes[i][j].second;
+        }
     }
-    // lex_escapes(escapes, tokens);
 
+    // lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
     // parse(tokens, html);
 
@@ -140,21 +144,23 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
     while(regex_search(s, match, exp, regex_constants::match_default))
     {
         vector<string> begin_text = {match.prefix()};
-        pair<int, vector<string>> p(TEXT, begin_text);
         escapes.push_back( vector<pair<int, string>>( {{TEXT, match.prefix()} }) );
+        // pair<int, vector<string>> match_pair = {TOKEN, vector<string>({match.str()})};
+        escapes.push_back(vector<pair<int, string>>( {{TAG, match.str()} }));
+
         // tokenize line
-        vector<string> tag_match = {match.str()};
+        vector<string> tag_match = {match.str()}; 
         string match_suffix = s;
         exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
 
         while(regex_search(match_suffix, match, exp, regex_constants::match_default))
         {
-            pair<int, vector<string>> match_pair = {TOKEN, vector<string>({match.str()})};
-            pair<int, vector<string>> prefix_pair = {TOKEN, vector<string>({match.prefix().str()})};
-            vector<pair<int, vector<string>>>( {{ TEXT, vector<string>({match.str()}) }});
-            escapes.push_back( vector<pair<int, string>>( {{ TEXT, match.str() }} ) );
+            // pair<int, vector<string>> match_pair = {TOKEN, vector<string>({match.str()})};
+            // pair<int, vector<string>> prefix_pair = {TOKEN, vector<string>({match.prefix().str()})};
+            //vector<pair<int, vector<string>>>( {{ TOKEN, vector<string>({match.str()}) }});
+            escapes.push_back( vector<pair<int, string>>( {{ TOKEN, match.str() }} ) );
                
-            if(!isspace(match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TEXT, match.str() }} ) );
+            if(!isspace(match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match.str() }} ) );
 
             // after match to end of string
             match_suffix = match.suffix();
