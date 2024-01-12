@@ -128,6 +128,7 @@ int main(int argc, char* argv[])
 			argv = argvtmp;
 			++argc;
 		}
+
 		return parse_options(argc, argv);
 	}
 	catch(std::logic_error& ex)

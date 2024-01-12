@@ -1,3 +1,4 @@
+
 ABC
 {* testing comments *}
 DEF

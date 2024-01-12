@@ -9,6 +9,7 @@
 #include <sstream>
 #include <map>
 #include <filesystem>
+#include <regex>
 #include "streamy.hpp"
 #include "utility.hpp"
 #include "tokens.hpp"
@@ -140,31 +141,28 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
     string s;
     read_stream(tmpl, s);
     regex exp = regex(ESCAPE, std::regex::ECMAScript);
-    smatch match;
-    while(regex_search(s, match, exp, regex_constants::match_default))
+    smatch _match;
+    while(regex_search(s, _match, exp, regex_constants::match_default))
     {
-        vector<string> begin_text = {match.prefix()};
-        escapes.push_back( vector<pair<int, string>>( {{TEXT, match.prefix()} }) );
-        // pair<int, vector<string>> match_pair = {TOKEN, vector<string>({match.str()})};
-        escapes.push_back(vector<pair<int, string>>( {{TAG, match.str()} }));
-
-        // tokenize line
-        vector<string> tag_match = {match.str()}; 
+        vector<string> begin_text = {_match.prefix()};
+        if(begin_text[0].size()) escapes.push_back( vector<pair<int, string>>( {{TEXT, begin_text[0]} }) ); 
+        if(!_match.size())
+            return;
+     
+        // now start lexing 
         string match_suffix = s;
         exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
-
-        while(regex_search(match_suffix, match, exp, regex_constants::match_default))
+        //
+        
+        //while(regex_search(_match, _match.str().c_str(), exp, regex_constants::match_default))
+        //while( regex_search(_match.str(), s, exp, std::regex::ECMAScript) )
         {
-            // pair<int, vector<string>> match_pair = {TOKEN, vector<string>({match.str()})};
-            // pair<int, vector<string>> prefix_pair = {TOKEN, vector<string>({match.prefix().str()})};
-            //vector<pair<int, vector<string>>>( {{ TOKEN, vector<string>({match.str()}) }});
-            escapes.push_back( vector<pair<int, string>>( {{ TOKEN, match.str() }} ) );
-               
-            if(!isspace(match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match.str() }} ) );
+            escapes.push_back( vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
+            if(!isspace(_match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
 
-            // after match to end of string
-            match_suffix = match.suffix();
-            if(match.str() == "*" || match.str() == "#" || match.str() == "\"" || match.str() == "'")
+            // after _match to end of string
+            match_suffix = s;
+            if(_match.str() == "*" || _match.str() == "#" || _match.str() == "\"" || _match.str() == "'")
             {
                 int pos = match_suffix.find_first_of("*#\"'");
                 escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(0, pos ) }} ));
@@ -172,12 +170,11 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
                 match_suffix = match_suffix.substr(pos+1, 1);
             }
         }
-        s = match.suffix();
+        s = _match.suffix();
     }
     if(s.size() > 0)
     {
-        vector<string> suffix = {s};
-        escapes.push_back( vector<pair<int, string>>( {{ TEXT,  s }} ));
+           escapes.push_back( vector<pair<int, string>>( {{ TEXT,  s }} ));
     }
 }
 
@@ -286,11 +283,6 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
             }
         }
     //}
-}
-
-vector<pair<string, string>>& streamy::get_registered_object(string object_name, /*out*/ vector<pair<string, string>>& registered_object)
-{
-    return registered_object;
 }
 
 void streamy::clear_cache()

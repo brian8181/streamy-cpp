@@ -36,7 +36,6 @@ public:
     map<string, string>& get_map_config();
     map<string, map<string, string>>& get_map_config_sections();
     map<string, vector<string>>& get_map_arrays();
-    vector<pair<string, string>>& get_registered_object(string object_name, /*out*/ vector<pair<string, string>>& registered_object);
     void clear_all();
     void clear_config();
     void clear_config(string name);
