@@ -5,7 +5,6 @@
 // Version:    0.0.2
 
 #include <iostream>
-#include <regex>
 #include <sstream>
 #include <map>
 #include <filesystem>
@@ -152,10 +151,7 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
         // now start lexing 
         string match_suffix = s;
         exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
-        //
-        
-        //while(regex_search(_match, _match.str().c_str(), exp, regex_constants::match_default))
-        //while( regex_search(_match.str(), s, exp, std::regex::ECMAScript) )
+        //while(regex_search(s, _match[0].str(), exp, regex_constants::match_default))
         {
             escapes.push_back( vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
             if(!isspace(_match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
