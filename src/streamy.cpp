@@ -140,10 +140,7 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
         vector<string> begin_text = { e_match.prefix() };
         if(begin_text[0].size()) escapes.push_back( vector<pair<int, string>>( {{TEXT, begin_text[0]}} ) ); 
         escapes.push_back( vector<pair<int, string>>( {{TAG, e_match.str()}} ) );
-        
-        // if(!e_match.size())
-        //     return;
-     
+       
         // // now start lexing 
         // regex oper_exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
         // smatch o_match;
