@@ -133,7 +133,7 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
     read_stream(tmpl, s);
     regex escape_exp = regex(ESCAPE, std::regex::ECMAScript);
     smatch e_match;
-    //while(regex_search(s, e_match, escape_exp, regex::ECMAScript))
+    while(regex_search(s, e_match, escape_exp, std::regex_constants::match_default))
     {
         vector<string> begin_text = { e_match.prefix() };
         if(begin_text[0].size()) escapes.push_back( vector<pair<int, string>>( {{TEXT, begin_text[0]}} ) ); 
@@ -144,25 +144,24 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
         // now start lexing 
         regex oper_exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
         smatch o_match;
+        string sub_str = e_match.str();
+        while(regex_search(sub_str, o_match, oper_exp, regex_constants::match_default))
+        {
+            // push back match as token
+            escapes.push_back( vector<pair<int, string>>( {{ TOKEN, o_match.str() }} ) );
+            if(!isspace(o_match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TOKEN, o_match.str() }} ) );
 
-        //char* pstr = &_match.str();
-        //regex_search(s, _match[0].str(), exp, regex_constants::match_default);
-        // while(regex_search(e_match.str(), _match[0].str(), exp, regex_constants::match_default))
-        // {
-        //     escapes.push_back( vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
-        //     if(!isspace(_match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
-
-        //     // after _match to end of string
-        //     match_suffix = s;
-        //     if(_match.str() == "*" || _match.str() == "#" || _match.str() == "\"" || _match.str() == "'")
-        //     {
-        //         int pos = match_suffix.find_first_of("*#\"'");
-        //         escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(0, pos ) }} ));
-        //         escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(pos, 1 ) }} ));
-        //         match_suffix = match_suffix.substr(pos+1, 1);
-        //     }
-        // }
-        // s = _match.suffix();
+            // after _match to end of string
+           string match_suffix = s;
+            if(o_match.str() == "*" || o_match.str() == "#" || o_match.str() == "\"" || o_match.str() == "'")
+            {
+                int pos = match_suffix.find_first_of("*#\"'");
+                escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(0, pos ) }} ));
+                escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(pos, 1 ) }} ));
+                match_suffix = s.substr(pos+1, 1);
+            }
+        }
+        s = e_match.suffix();
     }
     if(s.size() > 0)
     {

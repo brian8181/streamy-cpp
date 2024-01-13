@@ -1,12 +1,30 @@
 #include "stdio.h"
+#include "stddef.h"
 #include "string.h"
-#include "lex.h"
+#include "tools.h"
+#include "regex.h"
 
 void lex(char* s)
 {
     strchr(s, '{');
     char* opers = "+-=*";
     strpbrk(s, opers);
+}
+
+int regx(char* s, char* reg)
+{
+    // compile
+    regex_t rexp;
+    int ret;
+    ret = regcomp( &rexp, reg, 0);
+
+    // compile error
+    if(ret != 0)
+        return ret;
+
+    // match
+    regmatch_t match;
+    return regexec(&rexp, s, 0, &match, 0);
 }
 
 int _find(const char* s, const char c)
@@ -59,5 +77,11 @@ void main()
     char* name = "Boby";
     int len = str_len(name);
     printf("name len=%i\n", len);
+
+    char* s2 = "abc";
+    if(regx(s2, s2) != 0)
+    {
+        printf("regx: error, return %i\n", -1);
+    }
 
 }
