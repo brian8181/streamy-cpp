@@ -1,5 +1,3 @@
-# License:    GPL
-# Author:     Brian K Preston
 # File Name:  Makefile
 # Build Date: Thu Dec 21 09:06:55 AM CST 2023
 # Version:    0.0.2
@@ -7,14 +5,15 @@
 PREFIX = /usr/lib
 CXX = g++
 CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17 # -fmessage-length=100 -fverbose-asm
-CC = gcc -ggdb
+CC = gcc
+CCFLAGS = -ggdb -std=c11
 LEX = flex
 YACC = bison -d   
 SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a streamy_lexer index.cgi lexer_tester.cgi page_test.cgi streamy_lexer tokenizer
+all: libstreamy.so libstreamy.a streamy_lexer index.cgi lexer_tester.cgi page_test.cgi streamy_lexer tokenizer lex
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -80,7 +79,13 @@ streamy_lexer:
 	$(CXX) -g -DDEBUG -std=c++17 $(OBJ)/streamy_lexer.o -ll -o $(BLD)/streamy_lexer
 
 fileio.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o	
+	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o`
+
+lex: lex.o
+	$(CC) $(CCFLAGS) $(BLD)/lex.o -o $(BLD)/lex
+
+lex.o:
+	$(CC) $(CCFLAGS) -c $(SRC)/lex.c -o $(BLD)/lex.o
 
 tokenizer: tokenizer.yy.c
 	$(CC) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer

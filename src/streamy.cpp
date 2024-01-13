@@ -86,8 +86,8 @@ void streamy::load_config(const string& path)
 
 void streamy::display(const string& tmpl)
 {
-    string _html;
-    compile(tmpl, _html);
+    string html;
+    compile(tmpl, html);
 }
 
 string& streamy::fetch(const string& tmpl, const string& cache_id, const string& compile_id, /*out*/ string& html)
@@ -98,10 +98,7 @@ string& streamy::fetch(const string& tmpl, const string& cache_id, const string&
 
 string& streamy::compile(const string& tmpl, /* out */ string& html)
 {
-    // open file the call parse function ...
     const string full_path = this->template_dir + "/" + tmpl;
-    // find escape sequences
-
     vector<vector<std::pair<int, string>>> escapes;    
     escapes.reserve(100);
     lex(full_path, escapes);
@@ -115,11 +112,8 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
               cout << escapes[i][j].second;
         }
     }
-
-    // lex_escapes(escapes, tokens);
     // parse the tokens appling agrammer rules
     // parse(tokens, html);
-
     return html;
 }
 
@@ -139,34 +133,38 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
 {
     string s;
     read_stream(tmpl, s);
-    regex exp = regex(ESCAPE, std::regex::ECMAScript);
-    smatch _match;
-    while(regex_search(s, _match, exp, regex_constants::match_default))
+    regex escape_exp = regex(ESCAPE, std::regex::ECMAScript);
+    smatch e_match;
+    //while(regex_search(s, e_match, escape_exp, regex::ECMAScript))
     {
-        vector<string> begin_text = {_match.prefix()};
-        if(begin_text[0].size()) escapes.push_back( vector<pair<int, string>>( {{TEXT, begin_text[0]} }) ); 
-        if(!_match.size())
+        vector<string> begin_text = { e_match.prefix() };
+        if(begin_text[0].size()) escapes.push_back( vector<pair<int, string>>( {{TEXT, begin_text[0]}} ) ); 
+        
+        if(!e_match.size())
             return;
      
         // now start lexing 
-        string match_suffix = s;
-        exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
-        //while(regex_search(s, _match[0].str(), exp, regex_constants::match_default))
-        {
-            escapes.push_back( vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
-            if(!isspace(_match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
+        regex oper_exp = regex(HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS, regex::ECMAScript); 
+        smatch o_match;
 
-            // after _match to end of string
-            match_suffix = s;
-            if(_match.str() == "*" || _match.str() == "#" || _match.str() == "\"" || _match.str() == "'")
-            {
-                int pos = match_suffix.find_first_of("*#\"'");
-                escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(0, pos ) }} ));
-                escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(pos, 1 ) }} ));
-                match_suffix = match_suffix.substr(pos+1, 1);
-            }
-        }
-        s = _match.suffix();
+        //char* pstr = &_match.str();
+        //regex_search(s, _match[0].str(), exp, regex_constants::match_default);
+        // while(regex_search(e_match.str(), _match[0].str(), exp, regex_constants::match_default))
+        // {
+        //     escapes.push_back( vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
+        //     if(!isspace(_match.str()[0]))  escapes.push_back(vector<pair<int, string>>( {{ TOKEN, _match.str() }} ) );
+
+        //     // after _match to end of string
+        //     match_suffix = s;
+        //     if(_match.str() == "*" || _match.str() == "#" || _match.str() == "\"" || _match.str() == "'")
+        //     {
+        //         int pos = match_suffix.find_first_of("*#\"'");
+        //         escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(0, pos ) }} ));
+        //         escapes.push_back(vector<pair<int, string>>( {{ TOKEN, match_suffix.substr(pos, 1 ) }} ));
+        //         match_suffix = match_suffix.substr(pos+1, 1);
+        //     }
+        // }
+        // s = _match.suffix();
     }
     if(s.size() > 0)
     {

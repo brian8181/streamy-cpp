@@ -11,14 +11,7 @@
 
 using std::string;
 
-// literals
-const string INTEGER_LITERAL = "([0-9]+)";
-const string FLOAT_LITERAL = "([0-9]*\\.[0-9]+)";
-const string HEX_LITERAL = "(0x[0-9A-Fa-f]+)";
-// operator grouped
-const string LOGICAL_OPERATORS = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
-const string OPERATORS = "([\\s,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
-// operators
+// terminals
 const string OPEN_CURLY_BRACE = "\\{";
 const string CLOSE_CURLY_BRACE = "\\}";
 const string FORWARD_SLASH = "/";
@@ -36,10 +29,15 @@ const string NOT_OPERATOR = "!";
 const string LESS_THAN_EQUAL_OPERATOR = "<=";
 const string GREATER_THAN_EQUAL_OPERATOR = ">=";
 const string NOT_EQUAL_OPERATOR = "!=";
+// literals
+const string INTEGER_LITERAL = "([0-9]+)";
+const string FLOAT_LITERAL = "([0-9]*\\.[0-9]+)";
+const string HEX_LITERAL = "(0x[0-9A-Fa-f]+)";
+const string LOGICAL_OPERATORS = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
+const string OPERATORS = "([\\s,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
 // valid chars
 const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
 const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
-//const string VALID_LITERAL_CHARS = "[A-Za-z0-9_.& ]";
 const string VALID_LITERAL_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;'\\\\,()]";
 const string VALID_FILE_CHARS = "[A-Za-z0-9_. ]";
 const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
@@ -53,12 +51,7 @@ const string CONFIG_COMMENT = "^#";
 const string CONFIG_SECTION = "\\[([A-Za-z]" + VALID_SYMBOL_CHARS + "*)\\]";
 const string CONFIG_PAIR = "\\s*([A-Za-z]" + VALID_SYMBOL_CHARS + "*)\\s*=\\s*((" + VALID_SYMBOL_CHARS + "*)|(\"" + VALID_LITERAL_CHARS + "*\"))\\s*";
 // lexing
-// note to self: how about [space] & [word boundries] as delimiters could work good ... !
 const string DELIMIT_SPACE_AND_WORD_BOUNDARY = "\\s\\b";
-const string REGEXP_TOKENS = "(" + VARIABLE_ESCAPES + ")|(" + BUILTIN_FUNCTION + ")|(" + KEY_WORDS + ")";
-const string WHITE_SPACE = "[:[space]:]";
-const string EXPR_VARIABLE = "\\$(" + SYMBOL_NAME + ")(\\|" + VAR_MODIFIER +  ")?";
 const string ESCAPE = "\\{" + VALID_ESC_CHARS + "*\\}";
-const string TOKENS = "(" + EXPR_VARIABLE + ")|(" + BUILTIN_FUNCTION + ")";
 
 #endif
