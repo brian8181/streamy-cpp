@@ -1,5 +1,3 @@
-// License:    None
-// Author:     Brian K Preston
 // File Name:  streamy_lex.cpp
 // Build Date: Mon Dec 18 03:57:00 PM CST 2023
 // Version:    0.0.1

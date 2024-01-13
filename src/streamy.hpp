@@ -1,5 +1,3 @@
-// License:    None
-// Author:     Brian K Preston
 // File Name:  streamy.hpp
 // Build Date: Thu Dec 21 09:06:55 AM CST 2023
 // Version:    0.0.2

@@ -11,8 +11,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-// License:    GPL
-// Author:     Brian K Preston
 // File Name:  streamy_app.cpp
 // Build Date: Sun Oct  1 09:39:08 PM CDT 2023
 // Version:    3.6.7
