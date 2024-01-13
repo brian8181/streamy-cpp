@@ -113,7 +113,19 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     }
 
     // parse the tokens appling agrammer rules
-    // parse(tokens, html);
+    parse(escapes, html);
+
+    // debug !
+    len = escapes.size();
+    for(int i = 0; i < len; ++i)
+    {
+        int slen = escapes[i].size();
+        for(int j = 0; j < slen; ++j)
+        {
+              cout << escapes[i][j].second;
+        }
+    }
+
     return html;
 }
 
@@ -179,18 +191,19 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
     }
 }
 
-void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
+void streamy::parse(vector<vector<pair<int, string>>>& tokens, /* out */ string& html)
 {
-    //int ilen = tokens.size();
+    int ilen = tokens.size();
     string symbol_name;
-    //for(int i = 0; i < ilen; ++i)
-    //{
-        int jlen = tokens[0].size();
+    for(int i = 0; i < ilen; ++i)
+    {
+        int jlen = tokens[i].size();
         for(int j = 0; j < jlen; ++j)
         {
-            string token = tokens[0][j];
-            //if(token.size() == 1)
+            pair<int, string> token_pair = tokens[i][j];
+            if(token_pair.first == TOKEN)
             {
+                string token = token_pair.second;
                 switch(_token_map[token])
                 {
                     case ID_OPEN_CURLY_BRACE:
@@ -198,19 +211,24 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                         break;
                     case ID_DOLLAR_SIGN:
                     {
-                        //vector<vector<string>>::iterator iter = tokens.begin();
-                        symbol_name = tokens[0][j+1];
+                        symbol_name = tokens[i][++j].second;
                         string value = map_vars[symbol_name];
-                        html = value;
-                        vector<string> line_vec = { value };
-                        //tokens.push_back
-                        //tokens.insert(iter+i, line_vec); 
+                        //html = value;
+
+                        ++j;
+                        if((tokens[i][j].first == TOKEN) && (tokens[i][j].second == "}"))
+                        {
+                            tokens[i][j].second = value;
+                        }
                         break;
                     }
                     case ID_HASH_MARK:
                     {
                         //vector<vector<string>>::iterator iter = tokens.begin();
-                        symbol_name = tokens[0][j+1];
+                        symbol_name = tokens[i][++j].second;
+                        //vector<string> line_vec = { value };
+                        //tokens.push_back
+                        //tokens.insert(iter+i, line_vec); 
                         string value = map_config[symbol_name];
                         html = value;
                         vector<string> line_vec = { value };
@@ -283,7 +301,7 @@ void streamy::parse(vector<vector<string>>& tokens, /* out */ string& html)
                 }
             }
         }
-    //}
+    }
 }
 
 void streamy::clear_cache()

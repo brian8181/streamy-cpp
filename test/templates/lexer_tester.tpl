@@ -1,5 +1,4 @@
-{$headers}
-{#testing#}
+<h1>{$headers}</h1>
 {$page_title}
 {* extra headers *}
 {if isset($headers)}

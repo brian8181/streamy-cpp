@@ -45,7 +45,7 @@ public:
 private:
     string& compile(const string& tmpl, /* out */ string& html);
     void lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>& escapes);
-    void parse(vector<std::vector<string>>& tokens, /* out */ string& html);
+    void parse(vector<vector<pair<int, string>>>& tokens, /* out */ string& html);
 
     // types
     typedef vector<pair<int, string>> token_vector;
