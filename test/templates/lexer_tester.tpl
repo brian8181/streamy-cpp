@@ -1,5 +1,8 @@
+{* a comment *}
 <h1>{$headers}</h1>
-Testing{$page_title} ...
-{* extra headers *}
-{*ffff*}
+{* a comment *}
+<body>
 {#test#}
+{$page_title}
+</body>
+{$body}

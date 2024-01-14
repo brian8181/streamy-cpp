@@ -101,16 +101,16 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     escapes.reserve(100);
     lex(full_path, escapes);
 
-    // debug !
-    int len = escapes.size();
-    for(int i = 0; i < len; ++i)
-    {
-        int slen = escapes[i].size();
-        for(int j = 0; j < slen; ++j)
-        {
-              cout << escapes[i][j].second;
-        }
-    }
+    // // debug !
+    // int len = escapes.size();
+    // for(int i = 0; i < len; ++i)
+    // {
+    //     int slen = escapes[i].size();
+    //     for(int j = 0; j < slen; ++j)
+    //     {
+    //           cout << escapes[i][j].second;
+    //     }
+    // }
 
     // parse the tokens appling agrammer rules
     stringstream ss;
@@ -199,7 +199,6 @@ void streamy::parse(vector<vector<pair<int, string>>>& tokens, /* out */ strings
 {
     int ilen = tokens.size();
     string symbol_name;
-    //stringstream ss;
 
     // go through each escape
     for(int i = 0; i < ilen; ++i)
@@ -237,10 +236,15 @@ void streamy::parse(vector<vector<pair<int, string>>>& tokens, /* out */ strings
                 }
                 case ID_ASTERIK:       
                 {
-                     // move to name
-                    string comment_str = tokens[i][0].second;  
-                    ss << comment_str;
-                    ++i; // move to end *
+                    i++; // move to comment
+                    if(tokens[i][0].first == TOKEN)
+                        ++i; // move to *
+                    if(tokens[i][0].second[0] == '*')
+                        ++i; // move to end
+                    if(tokens[i][0].second[0] == '}')
+                        ++i; // move to \n
+                    if(tokens[i][0].second[0] == '\n')
+                        ++i; // go
                     break;
                 }
                 case ID_MODULUS:
