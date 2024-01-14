@@ -9,7 +9,7 @@
 #include <regex>
 #include "streamy.hpp"
 #include "utility.hpp"
-#include "tokens.hpp"
+#include "constants.hpp"
 #include "bash_color.h"
 
 using namespace std;
