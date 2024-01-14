@@ -10,7 +10,6 @@
 #include "streamy.hpp"
 #include "utility.hpp"
 #include "tokens.hpp"
-#include "grammer.hpp"
 #include "bash_color.h"
 
 using namespace std;
