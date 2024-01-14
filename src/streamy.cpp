@@ -98,27 +98,25 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     const string full_path = this->template_dir + "/" + tmpl;
 
     string s;
-    read_stream(tmpl, s);
+    read_stream(full_path, s);
 
     vector<std::pair<int, string>> escapes;    
     escapes.reserve(100);
     lex(s, escapes);
 
     // // debug !
-    // int len = escapes.size();
-    // for(int i = 0; i < len; ++i)
-    // {
-    //     int slen = escapes[i].size();
-    //     for(int j = 0; j < slen; ++j)
-    //     {
-    //           cout << escapes[i][j].second;
-    //     }
-    // }
+    cout << "finished lexing ... " << endl;
+    int len = escapes.size();
+    for(int i = 0; i < len; ++i)
+    {
+        cout << escapes[i].second;
+    }
 
     // parse the tokens appling agrammer rules
     stringstream ss;
     parse(escapes, ss);
 
+    cout << "Template parser finished ... " << endl;
     cout << ss.str();
 
     // // debug !
@@ -203,8 +201,10 @@ void streamy::parse(vector<pair<int, string>>& tokens, /* out */ stringstream& s
     string symbol_name;
 
     // go through each escape
-    for(int i = 0; i < ilen; ++i)
+    int i = 0;
+    while(i < ilen)
     {
+        ++i;
         pair<int, string> token_pair = tokens[i];
         unsigned long token = token_pair.first == TEXT ? ID_UNESCAPED_TEXT : _token_map[token_pair.second];
         switch(token)
@@ -285,39 +285,39 @@ void streamy::parse(vector<pair<int, string>>& tokens, /* out */ stringstream& s
             case ID_CLOSE_BRACE:
             case ID_EQUAL:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
                 break;
             }
             case ID_IF:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
                 break;
             }
             case ID_ELSE:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
                 break;
             }
             case ID_FOREACH:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
                 break;
             }
             case ID_FOREACHELSE:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
                 break;
             }
             
             case ID_BUILTIN_FUNCTION:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
                 break;
             }
             default:
             {
                 ss << FMT_FG_RED << "error " << FMT_RESET << FMT_BOLD << "unknown token: " 
-                    << FMT_FG_BLUE << token << FMT_RESET << endl;
+                    << FMT_FG_BLUE << std::hex << "0x" + token << FMT_RESET << endl;
                 break;
             }
         }

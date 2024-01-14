@@ -20,6 +20,13 @@ const string QUOTE_MARK = "\"";
 const string UNDERSCORE = "_";
 const string MINUS_SIGN = "-";
 const string EQUALS = "=";
+const string V_BAR = "|";
+const string COLON = ":";
+const string DOT   = ".";
+const string OPEN_BRACE = "[";
+const string CLOSE_BRACE = "]";
+const string OPEN_PAREN = "(";
+const string CLOSE_PAREN = ")";
 const string EQUALS_LOGICAL = "==";
 const string LESS_THAN_OPERATOR = "<";
 const string GREATER_THAN_OPERATOR = ">";
@@ -27,6 +34,7 @@ const string NOT_OPERATOR = "!";
 const string LESS_THAN_EQUAL_OPERATOR = "<=";
 const string GREATER_THAN_EQUAL_OPERATOR = ">=";
 const string NOT_EQUAL_OPERATOR = "!=";
+const string INDIRECT_SELECTION_OPERATOR   = "->";
 // valid chars
 const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
 const string VALID_ESC_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\"'\\\\,()]";
@@ -52,6 +60,21 @@ const string OPERATORS = "([\\s,/'\"$*#=+-:!%<>|.(){}\\]\\[])";
 const string FLOAT_LITERAL = "([0-9]*\\.[0-9]+)";
 const string INTEGER_LITERAL = "([0-9]+)";
 const string HEX_LITERAL = "(0x[0-9A-Fa-f]+)";
+const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
+const string LITERAL = "(" + STRING_LITERAL + ")|(" + INTEGER_LITERAL + ")|(" + FLOAT_LITERAL + ")";
+
+const string VARIABLE = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))";
+const string ATTRIBUTE = "(" + VALID_SYMBOL_CHARS + ")" + EQUALS + "(" + LITERAL + ")";
+const string FILE_ATTRIBUTE = "(file)" + EQUALS + "(" + LITERAL + ")";
+const string VARIABLE_ARRAY = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))\\[((" + LITERAL + ")|(" + VARIABLE +  "))\\]";
+const string VARIABLE_OBJECT = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))\\[((" + LITERAL + ")|(" + VARIABLE +  "))\\]";
+const string VARIABLE_MIX_EXPRESSION = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))\\[((" + LITERAL + ")|(" + VARIABLE +  "))\\]";
+
+//const string VARIABLE_ASSIGMENT = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + EQUALS + "(" + STRING_LITERAL + ")|(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))";
+const string VARIABLE_ASSIGMENT = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + EQUALS + "(" + STRING_LITERAL + ")|(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))";
+const string VARIABLE_MOD = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + V_BAR  + "(" + VAR_MODIFIER + ")";
+const string VARIABLE_MOD_AND_SET = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + V_BAR  + "(" + VAR_MODIFIER + COLON + LITERAL + ")";
+const string INCLUDE_FILE = "(include)*(" + FILE_ATTRIBUTE + ")";
 
 enum token_id : unsigned long
 {
