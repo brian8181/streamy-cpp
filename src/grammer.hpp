@@ -53,7 +53,19 @@ enum token_id : unsigned long
     ID_MODIFIER_STRINGF_FORMAT = 0x8000000000ul,
     ID_MODIFIER_DATE_FORMAT    = 0x10000000000ul,
     ID_MODIFIER_ESCAPE         = 0x20000000000ul,
-    ID_UNESCAPED_TEXT          = 0x40000000000ul
+    ID_UNESCAPED_TEXT          = 0x40000000000ul,
+    ID_INCLUDE_FILE            = 0x80000000000ul
 };
+
+// const char ESC_DOUBLE_QUOTE = '\"';
+// const char ESC_SINGLE_QUOTE = '\'';
+// const string VALID_LITERAL_CHARS = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\\\\,()]";
+// const string VALID_FILE_CHARS = "[A-Za-z0-9_. ]";
+// const string VALID_SYMBOL_CHARS = "[A-Za-z0-9_]";
+// const string FLOAT_LITERAL = "([0-9]*\\.[0-9]+)";
+// const string INTEGER_LITERAL = "([0-9]+)";
+// const string HEX_LITERAL = "(0x[0-9A-Fa-f]+)";
+// const string SYMBOL_NAME = "\\_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
+// const string STRING_LITERAL = "(" + VALID_ESC_CHARS + "*)";
 
 #endif

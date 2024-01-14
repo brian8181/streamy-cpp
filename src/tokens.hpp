@@ -28,8 +28,8 @@ const string LESS_THAN_EQUAL_OPERATOR = "<=";
 const string GREATER_THAN_EQUAL_OPERATOR = ">=";
 const string NOT_EQUAL_OPERATOR = "!=";
 // literals
-const string INTEGER_LITERAL = "([0-9]+)";
 const string FLOAT_LITERAL = "([0-9]*\\.[0-9]+)";
+const string INTEGER_LITERAL = "([0-9]+)";
 const string HEX_LITERAL = "(0x[0-9A-Fa-f]+)";
 const string LOGICAL_OPERATORS = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";
 const string OPERATORS = "([\\s,/'\"$*#=+-:!%<>|.(){}\\]\\[])";

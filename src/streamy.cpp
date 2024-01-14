@@ -24,7 +24,7 @@ map<string, unsigned int> _token_map = {  {"{", ID_OPEN_CURLY_BRACE}, {"}", ID_C
                                           {"include", ID_BUILTIN_FUNCTION }, {"config_load", ID_BUILTIN_FUNCTION }, {"insert", ID_BUILTIN_FUNCTION},
                                           {"assign", ID_BUILTIN_FUNCTION }, {"fetch", ID_BUILTIN_FUNCTION}, {"capture", ID_BUILTIN_FUNCTION },
                                           {"upper", ID_MODIFIER_UPPER}, {"lower", ID_MODIFIER_LOWER}, {"truncate", ID_MODIFIER_TRUNCATE}, {"capitalize", ID_MODIFIER_CAPATIALIZE},
-                                          {"indent", ID_MODIFIER_INDENT}, {"TEXT", ID_UNESCAPED_TEXT} };
+                                          {"indent", ID_MODIFIER_INDENT}, {"TEXT", ID_UNESCAPED_TEXT}, {"include", ID_INCLUDE_FILE} };
 unsigned int token_id = 0;
 
 streamy::streamy()
@@ -97,9 +97,13 @@ string& streamy::fetch(const string& tmpl, const string& cache_id, const string&
 string& streamy::compile(const string& tmpl, /* out */ string& html)
 {
     const string full_path = this->template_dir + "/" + tmpl;
-    vector<vector<std::pair<int, string>>> escapes;    
+
+    string s;
+    read_stream(tmpl, s);
+
+    vector<std::pair<int, string>> escapes;    
     escapes.reserve(100);
-    lex(full_path, escapes);
+    lex(s, escapes);
 
     // // debug !
     // int len = escapes.size();
@@ -144,10 +148,9 @@ void streamy::assign(const string& symbol_name, const vector<string>& vec)
     map_arrays.insert(p);
 }
 
-void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>& escapes)
+void streamy::lex(const string& src, /* out*/ vector<pair<int, string>>& escapes)
 {
-    string s;
-    read_stream(tmpl, s);
+    string s = src;
     regex esc_rexp = regex(ESCAPE, std::regex::ECMAScript);
     smatch esc_match;
     while(regex_search(s, esc_match, esc_rexp, std::regex_constants::match_default))
@@ -155,7 +158,7 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
         // push begin
         if(esc_match.prefix().str().size()) 
         {
-            escapes.push_back( vector<pair<int, string>>( {{TEXT, esc_match.prefix()}} ) ); 
+            escapes.push_back({TEXT, esc_match.prefix()}); 
         }
         // now start lexing 
         regex oper_rexp = regex("(" + HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS + ")", regex::ECMAScript); 
@@ -165,10 +168,10 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
         {
             // push back match as token
             if(oper_match.prefix().str().size() > 0)
-                escapes.push_back( vector<pair<int, string>>( {{ TOKEN, oper_match.prefix().str() }} ) );
+                escapes.push_back({TOKEN, oper_match.prefix().str()});
 
             if(oper_match.str().size() > 0)
-                escapes.push_back( vector<pair<int, string>>( {{ TOKEN, oper_match.str() }} ) );
+                escapes.push_back( { TOKEN, oper_match.str()} );
      
             // after oper_match to end of string
             string suffix = oper_match.suffix().str();
@@ -176,12 +179,12 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
             {
                 int pos = suffix.find_first_of("*#\"'");
                 int len = suffix.size();
-                escapes.push_back(vector<pair<int, string>>( {{ TOKEN, suffix.substr(0, pos ) }} ));
+                escapes.push_back({ TOKEN, suffix.substr(0, pos ) });
                 
                 len = len-(pos+1); 
                 if(len > 0)
                 {
-                    escapes.push_back(vector<pair<int, string>>( {{ TOKEN, suffix.substr(pos, 1 ) }} ));
+                    escapes.push_back({ TOKEN, suffix.substr(pos, 1 ) });
                     suffix = suffix.substr(pos+1, len);
                 }
             }
@@ -191,11 +194,11 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
     }
     if(s.size() > 0)
     {
-           escapes.push_back( vector<pair<int, string>>( {{ TEXT,  s }} ));
+           escapes.push_back( { TEXT,  s } );
     }
 }
 
-void streamy::parse(vector<vector<pair<int, string>>>& tokens, /* out */ stringstream& ss)
+void streamy::parse(vector<pair<int, string>>& tokens, /* out */ stringstream& ss)
 {
     int ilen = tokens.size();
     string symbol_name;
@@ -203,109 +206,131 @@ void streamy::parse(vector<vector<pair<int, string>>>& tokens, /* out */ strings
     // go through each escape
     for(int i = 0; i < ilen; ++i)
     {
-        // int jlen = tokens[i].size();
-        // for(int j = 0; j < jlen; ++j)
-        // {
-            pair<int, string> token_pair = tokens[i][0];
-            unsigned long token = token_pair.first == TEXT ? ID_UNESCAPED_TEXT : _token_map[token_pair.second];
-            switch(token)
+        pair<int, string> token_pair = tokens[i];
+        unsigned long token = token_pair.first == TEXT ? ID_UNESCAPED_TEXT : _token_map[token_pair.second];
+        switch(token)
+        {
+            case ID_UNESCAPED_TEXT:
+                ss << token_pair.second;
+                // do nothing
+                break;
+            case ID_OPEN_CURLY_BRACE:
+            case ID_CLOSE_CURLY_BRACE:
+                break;
+            case ID_DOLLAR_SIGN:
             {
-                case ID_UNESCAPED_TEXT:
-                    ss << token_pair.second;
-                    // do nothing
-                    break;
-                case ID_OPEN_CURLY_BRACE:
-                case ID_CLOSE_CURLY_BRACE:
-                    break;
-                case ID_DOLLAR_SIGN:
+                symbol_name = tokens[++i].second;
+                string value = map_vars[symbol_name];
+                ss << value;
+                break;
+            }
+            case ID_HASH_MARK:
+            {
+                // move to name
+                symbol_name = tokens[++i].second;  
+                string value = map_config[symbol_name];
+                ss << value;
+                // move to hash
+                ++i; // move to next (hash mark)
+                break;
+            }
+            case ID_ASTERIK:       
+            {
+                i++; // move to comment
+                if(tokens[i].first == TOKEN)
+                    ++i; // move to *
+                if(tokens[i].second[0] == '*')
+                    ++i; // move to end
+                if(tokens[i].second[0] == '}')
+                    ++i; // move to \n
+                if(tokens[i].second[0] == '\n')
+                    ++i; // go
+                break;
+            }
+            case ID_INCLUDE_FILE:
+                ++i;
+                if(tokens[i].second == "file")
+                    ++i;  // move to next
+                if(tokens[i].second[0] == '\"')
                 {
-                    symbol_name = tokens[++i][0].second;
-                    string value = map_vars[symbol_name];
-                    ss << value;
-                    break;
+                    ++i;
+                    if(tokens[i].second[0] == TOKEN)
+                    {
+                        string file_name = tokens[i].second;
+                        include_file(file_name, ss);
+                        ++i;  // move to closing "
+                    }
                 }
-                case ID_HASH_MARK:
-                {
-                    // move to name
-                    symbol_name = tokens[++i][0].second;  
-                    string value = map_config[symbol_name];
-                    ss << value;
-                    // move to hash
-                    ++i; // move to next (hash mark)
-                    break;
-                }
-                case ID_ASTERIK:       
-                {
-                    i++; // move to comment
-                    if(tokens[i][0].first == TOKEN)
-                        ++i; // move to *
-                    if(tokens[i][0].second[0] == '*')
-                        ++i; // move to end
-                    if(tokens[i][0].second[0] == '}')
-                        ++i; // move to \n
-                    if(tokens[i][0].second[0] == '\n')
-                        ++i; // go
-                    break;
-                }
-                case ID_MODULUS:
-                case ID_LOGICAL_AND:
-                case ID_LOGICAL_OR:
-                case ID_LOGICAL_NOT:
-                case ID_LESS_THAN:
-                case ID_GREATER_THAN:
-                case ID_DOUBLE_QUOTE:
-                case ID_SINGLE_QUOTE:
-                case ID_PLUS:
-                case ID_MINUS:
-                case ID_VBAR:
-                case ID_DOT:
-                case ID_COLON:
-                case ID_SEMI_COLON:
-                case ID_OPEN_PAREN:
-                case ID_CLOSE_PAREN:
-                case ID_OPEN_BRACE:
-                case ID_CLOSE_BRACE:
-                case ID_EQUAL:
-                {
-                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                    break;
-                }
-                case ID_IF:
-                {
-                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                    break;
-                }
-                case ID_ELSE:
-                {
-                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                    break;
-                }
-                case ID_FOREACH:
-                {
-                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                    break;
-                }
-                case ID_FOREACHELSE:
-                {
-                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                    break;
-                }
-                
-                case ID_BUILTIN_FUNCTION:
-                {
-                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                    break;
-                }
-                default:
-                {
-                    ss << FMT_FG_RED << "error " << FMT_RESET << FMT_BOLD << "unknown token: " 
-                        << FMT_FG_BLUE << token << FMT_RESET << endl;
-                    break;
-                }
+                if(tokens[i].second[0] == '}')
+                    ++i; // move to \n
+                if(tokens[i].second[0] == '\n')
+                    ++i; // go
+                break;
+            case ID_MODULUS:
+            case ID_LOGICAL_AND:
+            case ID_LOGICAL_OR:
+            case ID_LOGICAL_NOT:
+            case ID_LESS_THAN:
+            case ID_GREATER_THAN:
+            case ID_DOUBLE_QUOTE:
+            case ID_SINGLE_QUOTE:
+            case ID_PLUS:
+            case ID_MINUS:
+            case ID_VBAR:
+            case ID_DOT:
+            case ID_COLON:
+            case ID_SEMI_COLON:
+            case ID_OPEN_PAREN:
+            case ID_CLOSE_PAREN:
+            case ID_OPEN_BRACE:
+            case ID_CLOSE_BRACE:
+            case ID_EQUAL:
+            {
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                break;
+            }
+            case ID_IF:
+            {
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                break;
+            }
+            case ID_ELSE:
+            {
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                break;
+            }
+            case ID_FOREACH:
+            {
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                break;
+            }
+            case ID_FOREACHELSE:
+            {
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                break;
             }
             
-        //}
+            case ID_BUILTIN_FUNCTION:
+            {
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                break;
+            }
+            default:
+            {
+                ss << FMT_FG_RED << "error " << FMT_RESET << FMT_BOLD << "unknown token: " 
+                    << FMT_FG_BLUE << token << FMT_RESET << endl;
+                break;
+            }
+        }
     }
+}
+
+void streamy::include_file(const string& file_name, /* out */ stringstream& ss)
+{
+    const string full_path = this->template_dir + "/" + file_name;
+    string file_src;
+    read_stream(file_name, file_src);
+    ss << file_src;
 }
 
 void streamy::clear_cache()
