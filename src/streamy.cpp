@@ -24,7 +24,7 @@ map<string, unsigned int> _token_map = {  {"{", ID_OPEN_CURLY_BRACE}, {"}", ID_C
                                           {"include", ID_BUILTIN_FUNCTION }, {"config_load", ID_BUILTIN_FUNCTION }, {"insert", ID_BUILTIN_FUNCTION},
                                           {"assign", ID_BUILTIN_FUNCTION }, {"fetch", ID_BUILTIN_FUNCTION}, {"capture", ID_BUILTIN_FUNCTION },
                                           {"upper", ID_MODIFIER_UPPER}, {"lower", ID_MODIFIER_LOWER}, {"truncate", ID_MODIFIER_TRUNCATE}, {"capitalize", ID_MODIFIER_CAPATIALIZE},
-                                          {"indent", ID_MODIFIER_INDENT} };
+                                          {"indent", ID_MODIFIER_INDENT}, {"TEXT", ID_UNESCAPED_TEXT} };
 unsigned int token_id = 0;
 
 streamy::streamy()
@@ -113,18 +113,21 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     }
 
     // parse the tokens appling agrammer rules
-    parse(escapes, html);
+    stringstream ss;
+    parse(escapes, ss);
 
-    // debug !
-    len = escapes.size();
-    for(int i = 0; i < len; ++i)
-    {
-        int slen = escapes[i].size();
-        for(int j = 0; j < slen; ++j)
-        {
-              cout << escapes[i][j].second;
-        }
-    }
+    cout << ss.str();
+
+    // // debug !
+    // len = escapes.size();
+    // for(int i = 0; i < len; ++i)
+    // {
+    //     int slen = escapes[i].size();
+    //     for(int j = 0; j < slen; ++j)
+    //     {
+    //           cout << escapes[i][j].second;
+    //     }
+    // }
 
     return html;
 }
@@ -149,10 +152,11 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
     smatch esc_match;
     while(regex_search(s, esc_match, esc_rexp, std::regex_constants::match_default))
     {
-        //vector<string> begin_text = { esc_match.prefix() };
-        if(esc_match.prefix().str().size()) escapes.push_back( vector<pair<int, string>>( {{TEXT, esc_match.prefix()}} ) ); 
-        //escapes.push_back( vector<pair<int, string>>( {{TAG, esc_match.str()}} ) );
-       
+        // push begin
+        if(esc_match.prefix().str().size()) 
+        {
+            escapes.push_back( vector<pair<int, string>>( {{TEXT, esc_match.prefix()}} ) ); 
+        }
         // now start lexing 
         regex oper_rexp = regex("(" + HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS + ")", regex::ECMAScript); 
         smatch oper_match;
@@ -191,116 +195,112 @@ void streamy::lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>
     }
 }
 
-void streamy::parse(vector<vector<pair<int, string>>>& tokens, /* out */ string& html)
+void streamy::parse(vector<vector<pair<int, string>>>& tokens, /* out */ stringstream& ss)
 {
     int ilen = tokens.size();
     string symbol_name;
+    //stringstream ss;
+
+    // go through each escape
     for(int i = 0; i < ilen; ++i)
     {
-        int jlen = tokens[i].size();
-        for(int j = 0; j < jlen; ++j)
-        {
-            pair<int, string> token_pair = tokens[i][j];
-            if(token_pair.first == TOKEN)
+        // int jlen = tokens[i].size();
+        // for(int j = 0; j < jlen; ++j)
+        // {
+            pair<int, string> token_pair = tokens[i][0];
+            unsigned long token = token_pair.first == TEXT ? ID_UNESCAPED_TEXT : _token_map[token_pair.second];
+            switch(token)
             {
-                string token = token_pair.second;
-                switch(_token_map[token])
+                case ID_UNESCAPED_TEXT:
+                    ss << token_pair.second;
+                    // do nothing
+                    break;
+                case ID_OPEN_CURLY_BRACE:
+                case ID_CLOSE_CURLY_BRACE:
+                    break;
+                case ID_DOLLAR_SIGN:
                 {
-                    case ID_OPEN_CURLY_BRACE:
-                    case ID_CLOSE_CURLY_BRACE:
-                        break;
-                    case ID_DOLLAR_SIGN:
-                    {
-                        symbol_name = tokens[i][++j].second;
-                        string value = map_vars[symbol_name];
-                        //html = value;
-
-                        ++j;
-                        if((tokens[i][j].first == TOKEN) && (tokens[i][j].second == "}"))
-                        {
-                            tokens[i][j].second = value;
-                        }
-                        break;
-                    }
-                    case ID_HASH_MARK:
-                    {
-                        //vector<vector<string>>::iterator iter = tokens.begin();
-                        symbol_name = tokens[i][++j].second;
-                        //vector<string> line_vec = { value };
-                        //tokens.push_back
-                        //tokens.insert(iter+i, line_vec); 
-                        string value = map_config[symbol_name];
-                        html = value;
-                        vector<string> line_vec = { value };
-                        //tokens.erase(iter+i);
-                        //tokens.insert(iter+i, line_vec); 
-                        break;
-                    }
-                    case ID_ASTERIK:       
-                    {
-                        //vector<vector<string>>::iterator iter = tokens.begin();
-                        //html = ""; do nothing, comment are just not displayed
-                        //tokens.erase(iter+i);
-                        break;
-                    }
-                    case ID_MODULUS:
-                    case ID_LOGICAL_AND:
-                    case ID_LOGICAL_OR:
-                    case ID_LOGICAL_NOT:
-                    case ID_LESS_THAN:
-                    case ID_GREATER_THAN:
-                    case ID_DOUBLE_QUOTE:
-                    case ID_SINGLE_QUOTE:
-                    case ID_PLUS:
-                    case ID_MINUS:
-                    case ID_VBAR:
-                    case ID_DOT:
-                    case ID_COLON:
-                    case ID_SEMI_COLON:
-                    case ID_OPEN_PAREN:
-                    case ID_CLOSE_PAREN:
-                    case ID_OPEN_BRACE:
-                    case ID_CLOSE_BRACE:
-                    case ID_EQUAL:
-                    {
-                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                        break;
-                    }
-                    case ID_IF:
-                    {
-                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                        break;
-                    }
-                    case ID_ELSE:
-                    {
-                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                        break;
-                    }
-                    case ID_FOREACH:
-                    {
-                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                        break;
-                    }
-                    case ID_FOREACHELSE:
-                    {
-                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                        break;
-                    }
-                    
-                    case ID_BUILTIN_FUNCTION:
-                    {
-                        cout << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
-                        break;
-                    }
-                   default:
-                   {
-                        cout << FMT_FG_RED << "error " << FMT_RESET << FMT_BOLD << "unknown token: " 
-                            << FMT_FG_BLUE << token << FMT_RESET << endl;
-                        break;
-                   }
+                    symbol_name = tokens[++i][0].second;
+                    string value = map_vars[symbol_name];
+                    ss << value;
+                    break;
+                }
+                case ID_HASH_MARK:
+                {
+                    // move to name
+                    symbol_name = tokens[++i][0].second;  
+                    string value = map_config[symbol_name];
+                    ss << value;
+                    // move to hash
+                    ++i; // move to next (hash mark)
+                    break;
+                }
+                case ID_ASTERIK:       
+                {
+                     // move to name
+                    string comment_str = tokens[i][0].second;  
+                    ss << comment_str;
+                    ++i; // move to end *
+                    break;
+                }
+                case ID_MODULUS:
+                case ID_LOGICAL_AND:
+                case ID_LOGICAL_OR:
+                case ID_LOGICAL_NOT:
+                case ID_LESS_THAN:
+                case ID_GREATER_THAN:
+                case ID_DOUBLE_QUOTE:
+                case ID_SINGLE_QUOTE:
+                case ID_PLUS:
+                case ID_MINUS:
+                case ID_VBAR:
+                case ID_DOT:
+                case ID_COLON:
+                case ID_SEMI_COLON:
+                case ID_OPEN_PAREN:
+                case ID_CLOSE_PAREN:
+                case ID_OPEN_BRACE:
+                case ID_CLOSE_BRACE:
+                case ID_EQUAL:
+                {
+                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                    break;
+                }
+                case ID_IF:
+                {
+                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                    break;
+                }
+                case ID_ELSE:
+                {
+                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                    break;
+                }
+                case ID_FOREACH:
+                {
+                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                    break;
+                }
+                case ID_FOREACHELSE:
+                {
+                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                    break;
+                }
+                
+                case ID_BUILTIN_FUNCTION:
+                {
+                    ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << token << FMT_RESET << endl; 
+                    break;
+                }
+                default:
+                {
+                    ss << FMT_FG_RED << "error " << FMT_RESET << FMT_BOLD << "unknown token: " 
+                        << FMT_FG_BLUE << token << FMT_RESET << endl;
+                    break;
                 }
             }
-        }
+            
+        //}
     }
 }
 

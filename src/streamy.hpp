@@ -6,10 +6,12 @@
 #define _streamy_HPP
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <map>
 #include <regex>
 
+using std::stringstream;
 using std::string;
 using std::map;
 using std::vector;
@@ -45,10 +47,10 @@ public:
 private:
     string& compile(const string& tmpl, /* out */ string& html);
     void lex(const string& tmpl, /* out*/ vector<vector<pair<int, string>>>& escapes);
-    void parse(vector<vector<pair<int, string>>>& tokens, /* out */ string& html);
+    void parse(vector<vector<pair<int, string>>>& tokens, /* out */ stringstream& ss);
 
     // types
-    typedef vector<pair<int, string>> token_vector;
+    //typedef vector<pair<int, string>> token_vector;
     
     // map    
     map<string, string> map_config;

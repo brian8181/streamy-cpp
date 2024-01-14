@@ -45,7 +45,6 @@ int _str_len(const char* s)
     return _find(s, '\0');
 }
 
-
 // get str len of null terminated string
 int str_len(const char* s)
 {
@@ -64,6 +63,20 @@ int find(const char* s, const char c)
         if(s[i] ==  c)
             return i;
     }
+    return -1;
+}
+    
+int find_any(const char* s, const char* chars)
+{
+    int ret = -1;
+    int len = str_len(chars);
+    for(int i = 0; i < len; ++i)
+    {
+        ret = find(s, chars[i]);
+        if(ret > 0)
+            break;
+    }
+    return ret;
 }
 
 void main()

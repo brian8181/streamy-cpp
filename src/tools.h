@@ -4,6 +4,7 @@
 void lex(char* s);
 
 int find(const char* s, const char c);
+int find_any(const char* s, const char* chars);
 int str_len(const char* s);
 
 

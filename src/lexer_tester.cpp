@@ -40,6 +40,7 @@ int parse_options(int argc, char* argv[])
 
     streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     sm.load_config(config_path);
+	sm.get_map_config()["test"] = "TESTING";
     sm.assign("citys", citys);
     sm.assign("headers", "HEADERS");
     sm.assign("page_title", "*PAGE_TITLE*");
