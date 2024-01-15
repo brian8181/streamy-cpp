@@ -13,12 +13,15 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a streamy_lexer index.cgi lexer_tester.cgi page_test.cgi streamy_lexer tokenizer tools
+all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi lexer_tester.cgi page_test.cgi streamy_lexer tokenizer tools
 
 yacc_lex: streamy_lexer tokenizer
 
-streamy.o:
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
+streamy.o: compiler.o
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp $(OBJ)/compiler.o -o $(OBJ)/streamy.o
+
+compiler.o:
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
 
 utility.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
@@ -52,11 +55,10 @@ lexer_tester.o:
 	$(CXX) $(CXXFLAGS) -I$(SRC) -c $(SRC)/lexer_tester.cpp -o $(OBJ)/lexer_tester.o
 
 libstreamy.so: streamy.o
-	$(CXX) $(CXXFLAGS) -fPIC --shared $(OBJ)/streamy.o -o $(BLD)/libstreamy.so
+	$(CXX) $(CXXFLAGS) -fPIC --shared $(OBJ)/streamy.o $(OBJ)/compiler.o -o $(BLD)/libstreamy.so
 	chmod 755 $(BLD)/libstreamy.so
 
-libstreamy.a: streamy.o
-	ar rcs $(BLD)/libstreamy.a $(OBJ)/streamy.o
+libstreamy.a: streamy.o streamy.o
 	#ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
 	chmod 755 $(BLD)/libstreamy.a
 

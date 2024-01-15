@@ -62,15 +62,12 @@ const string INTEGER_LITERAL = "([0-9]+)";
 const string HEX_LITERAL = "(0x[0-9A-Fa-f]+)";
 const string SYMBOL_NAME = "\\$?_*[A-Za-z]" + VALID_SYMBOL_CHARS + "*";
 const string LITERAL = "(" + STRING_LITERAL + ")|(" + INTEGER_LITERAL + ")|(" + FLOAT_LITERAL + ")";
-
 const string VARIABLE = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))";
 const string ATTRIBUTE = "(" + VALID_SYMBOL_CHARS + ")" + EQUALS + "(" + LITERAL + ")";
 const string FILE_ATTRIBUTE = "(file)" + EQUALS + "(" + LITERAL + ")";
 const string VARIABLE_ARRAY = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))\\[((" + LITERAL + ")|(" + VARIABLE +  "))\\]";
 const string VARIABLE_OBJECT = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))\\[((" + LITERAL + ")|(" + VARIABLE +  "))\\]";
 const string VARIABLE_MIX_EXPRESSION = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))\\[((" + LITERAL + ")|(" + VARIABLE +  "))\\]";
-
-//const string VARIABLE_ASSIGMENT = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + EQUALS + "(" + STRING_LITERAL + ")|(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))";
 const string VARIABLE_ASSIGMENT = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + EQUALS + "(" + STRING_LITERAL + ")|(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))";
 const string VARIABLE_MOD = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + V_BAR  + "(" + VAR_MODIFIER + ")";
 const string VARIABLE_MOD_AND_SET = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + V_BAR  + "(" + VAR_MODIFIER + COLON + LITERAL + ")";
