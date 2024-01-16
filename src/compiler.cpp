@@ -11,3 +11,22 @@ void create_alteration(const long int& flags, /* out */ string& pattern)
 
 }
 
+compiler::compiler()
+{
+
+}
+
+void compiler::complie(const string& file)
+{
+
+}
+
+void compiler::recomplie(const string& file)
+{
+
+}
+
+void compiler::clean()
+{
+
+}

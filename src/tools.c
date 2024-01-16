@@ -27,6 +27,23 @@ int regx(char* s, char* reg)
     return regexec(&rexp, s, 0, &match, 0);
 }
 
+int regx2(char* s, char* reg, int cflags)
+{
+    // compile
+    regex_t rexp;
+    int ret;
+    ret = regcomp( &rexp, reg, cflags);
+
+    // compile error
+    if(ret != 0)
+        return ret;
+
+    // match
+    regmatch_t match;
+    return regexec(&rexp, s, 0, &match, 0);
+}
+
+
 int _find(const char* s, const char c)
 {
     int i = 0;
@@ -65,7 +82,7 @@ int find(const char* s, const char c)
     }
     return -1;
 }
-    
+
 int find_any(const char* s, const char* chars)
 {
     int ret = -1;

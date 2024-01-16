@@ -11,4 +11,23 @@
 
 void create_alteration(const long int& flags, /* out */ string& pattern);
 
+#include <string>
+#include <map>
+
+using std::string;
+using std::map;
+
+class compiler
+{
+public:
+    compiler();
+    void complie(const string& file);
+    void recomplie(const string&  file);
+    void clean();
+
+private:
+    map<long, string> expresion_map;
+
+};
+
 #endif

@@ -6,14 +6,14 @@ PREFIX = /usr/local
 CXX = g++
 CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17 # -fmessage-length=100 -fverbose-asm
 CC = gcc
-CCFLAGS = -ggdb -std=c11
+CCFLAGS = -ggdb -std=c99
 LEX = flex
 YACC = bison -d
 SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi lexer_tester.cgi page_test.cgi streamy_lexer tokenizer tools
+all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi lexer_tester.cgi page_test.cgi streamy_lexer tokenizer tools file.o
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -81,6 +81,9 @@ tools: tools.o
 
 tools.o:
 	$(CC) $(CCFLAGS) -c $(SRC)/tools.c -o $(BLD)/tools.o
+
+file.o:
+	$(CC) $(CCFLAGS) -c $(SRC)/file.c -o $(BLD)/file.o
 
 tokenizer: tokenizer.yy.c
 	$(CC) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
