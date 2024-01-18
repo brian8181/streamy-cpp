@@ -4,7 +4,8 @@
 
 PREFIX = /usr/local
 CXX = g++
-CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17 # -fmessage-length=100 -fverbose-asm
+CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17
+# CXXEXTRA = -Wshadow -fstats -fno-rtti fmessage-length=100 -fverbose-asm
 CC = gcc
 CCFLAGS = -ggdb -std=c99
 LEX = flex
@@ -18,7 +19,7 @@ all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi lexer_tester.
 yacc_lex: streamy_lexer tokenizer
 
 streamy.o: compiler.o
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy.cpp $(OBJ)/compiler.o -o $(OBJ)/streamy.o
+	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(SRC)/streamy.cpp $(OBJ)/compiler.o -o $(OBJ)/streamy.o
 
 compiler.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
@@ -27,11 +28,11 @@ utility.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
 
 page_test.cgi: utility.o libstreamy.so libstreamy.a page_test.o
-	$(CXX) $(CXXFLAGS) -fPIC -L$(PREFIX) $(OBJ)/page_test.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/page_test.cgi
+	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/page_test.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/page_test.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/page_test.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/page_test_a.cgi
 
 index.cgi: utility.o libstreamy.so libstreamy.a index.o
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
+	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi
 
@@ -54,7 +55,7 @@ lexer_tester.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/lexer_tester.cpp -o $(OBJ)/lexer_tester.o
 
 libstreamy.so: streamy.o
-	$(CXX) $(CXXFLAGS) -fPIC --shared $(OBJ)/streamy.o $(OBJ)/compiler.o -o $(BLD)/libstreamy.so
+	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC --shared $(OBJ)/streamy.o $(OBJ)/compiler.o -o $(BLD)/libstreamy.so
 	chmod 755 $(BLD)/libstreamy.so
 
 libstreamy.a: streamy.o streamy.o

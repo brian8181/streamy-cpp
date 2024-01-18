@@ -71,7 +71,7 @@ const string VARIABLE_MIX_EXPRESSION = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "
 const string VARIABLE_ASSIGMENT = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + EQUALS + "(" + STRING_LITERAL + ")|(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))";
 const string VARIABLE_MOD = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + V_BAR  + "(" + VAR_MODIFIER + ")";
 const string VARIABLE_MOD_AND_SET = "(" + DOLLAR_SIGN + "(" + SYMBOL_NAME + "))" + V_BAR  + "(" + VAR_MODIFIER + COLON + LITERAL + ")";
-const string INCLUDE_FILE = "(include)*(" + FILE_ATTRIBUTE + ")";
+const string INCLUDE_FILE = "(include)(" + FILE_ATTRIBUTE + ")";
 
 enum token_id : unsigned long
 {
