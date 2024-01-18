@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi lexer_tester.cgi page_test.cgi streamy_lexer tokenizer tools file.o
+all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi lexer_tester.cgi page_test.cgi streamy_lexer tokenizer
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -76,15 +76,6 @@ streamy_lexer:
 
 fileio.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o`
-
-tools: tools.o
-	$(CC) $(CCFLAGS) $(BLD)/tools.o -o $(BLD)/tools
-
-tools.o:
-	$(CC) $(CCFLAGS) -c $(SRC)/tools.c -o $(BLD)/tools.o
-
-file.o:
-	$(CC) $(CCFLAGS) -c $(SRC)/file.c -o $(BLD)/file.o
 
 tokenizer: tokenizer.yy.c
 	$(CC) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
