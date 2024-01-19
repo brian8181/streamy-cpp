@@ -23,6 +23,7 @@ const string UNDERSCORE = "_";
 const string AT_SIGN = "@";
 const string PLUS_SIGN = "+";
 const string MINUS_SIGN = "-";
+const string BACKWARD_SLASH = "\\";
 const string EQUALS = "=";
 const string V_BAR = "|";
 const string COLON = ":";
