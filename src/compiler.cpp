@@ -6,22 +6,17 @@
 #include <regex>
 #include "compiler.hpp"
 
-void create_alteration(const long int& flags, /* out */ string& pattern)
+// void create_alteration(const long int& flags, /* out */ string& pattern)
+// {
+
+// }
+
+void compiler::compile(const string& file)
 {
 
 }
 
-compiler::compiler()
-{
-
-}
-
-void compiler::complie(const string& file)
-{
-
-}
-
-void compiler::recomplie(const string& file)
+void compiler::recompile(const string& file)
 {
 
 }

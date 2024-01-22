@@ -7,12 +7,11 @@
 
 #include <iostream>
 #include <regex>
-#include "constants.hpp"
-
-void create_alteration(const long int& flags, /* out */ string& pattern);
-
 #include <string>
 #include <map>
+#include "constants.hpp"
+
+//void create_alteration(const long int& flags, /* out */ string& pattern);
 
 using std::string;
 using std::map;
@@ -20,9 +19,8 @@ using std::map;
 class compiler
 {
 public:
-    compiler();
-    void complie(const string& file);
-    void recomplie(const string&  file);
+    void compile(const string& file);
+    void recompile(const string&  file);
     void clean();
 
 private:

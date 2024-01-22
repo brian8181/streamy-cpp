@@ -10,6 +10,7 @@
 #include <vector>
 #include <map>
 #include <regex>
+#include "compiler.hpp"
 
 using std::stringstream;
 using std::string;
@@ -43,7 +44,7 @@ public:
     void clear_assign(string name);
     void clear_cache();
     unsigned int get_state();
-    
+
 private:
     string& compile(const string& tmpl, /* out */ string& html);
     void lex(const string& src, /* out*/ vector<pair<int, string>>& escapes);
@@ -52,8 +53,8 @@ private:
 
     // types
     //typedef vector<pair<int, string>> token_vector;
-    
-    // map    
+
+    // map
     map<string, string> map_config;
     // todo : revert to no configuration sections!
     map<string, map<string, string>> map_sections_config;
@@ -81,6 +82,3 @@ private:
 };
 
 #endif
-
-
-

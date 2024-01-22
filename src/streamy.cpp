@@ -11,12 +11,13 @@
 #include "utility.hpp"
 #include "constants.hpp"
 #include "bash_color.h"
+#include "compiler.hpp"
 
 using namespace std;
 
-map<string, unsigned int> _token_map = {  {"{", ID_OPEN_CURLY_BRACE}, {"}", ID_CLOSE_CURLY_BRACE}, {"#", ID_HASH_MARK}, {"*", ID_ASTERIK}, {"$", ID_DOLLAR_SIGN}, 
+map<string, unsigned int> _token_map = {  {"{", ID_OPEN_CURLY_BRACE}, {"}", ID_CLOSE_CURLY_BRACE}, {"#", ID_HASH_MARK}, {"*", ID_ASTERIK}, {"$", ID_DOLLAR_SIGN},
                                           {"=", ID_EQUAL}, {"|", ID_VBAR}, {":", ID_COLON}, {"\"", ID_DOUBLE_QUOTE}, {"'", ID_SINGLE_QUOTE}, {".", ID_DOT},
-                                          {"+", ID_PLUS}, {"-", ID_MINUS}, {"%", ID_MODULUS}, 
+                                          {"+", ID_PLUS}, {"-", ID_MINUS}, {"%", ID_MODULUS},
                                           {"[", ID_OPEN_BRACE}, {"]", ID_CLOSE_BRACE}, {";", ID_SEMI_COLON},
                                           {"&&", ID_LOGICAL_AND}, {"||", ID_LOGICAL_OR}, {"!", ID_LOGICAL_NOT},
                                           {"if", ID_IF}, {"ELSEIF", ID_ELSEIF}, {"ELSE", ID_ELSE}, {"foreach", ID_FOREACH}, {"foreachelse", ID_FOREACHELSE},
@@ -66,15 +67,15 @@ void streamy::load_config(const string& path)
         regex rgx = regex(CONFIG_PAIR);
         smatch match;
         regex_match(line, match, rgx);
-                
+
         if(match[ID_NAME_VALUE_PAIR].matched)
         {
             // get name
             string symbol_name = match[ID_NAME].str();
             // get value
-            string value = (match[ID_VALUE].matched) ? 
+            string value = (match[ID_VALUE].matched) ?
                 match[ID_NUMERIC_LITERAL].str() : match[ID_STRING_LITERAL].str();
-            // create pair    
+            // create pair
             pair<string, string> p(symbol_name, value);
             map_sections_config[section_name].insert(p);
         }
@@ -95,12 +96,16 @@ string& streamy::fetch(const string& tmpl, const string& cache_id, const string&
 
 string& streamy::compile(const string& tmpl, /* out */ string& html)
 {
+    // todo
+    // compiler streamy_compiler;
+    // streamy_compiler.compile(tmpl);
+
     const string full_path = this->template_dir + "/" + tmpl;
 
     string s;
     read_stream(full_path, s);
 
-    vector<std::pair<int, string>> escapes;    
+    vector<std::pair<int, string>> escapes;
     escapes.reserve(100);
     lex(s, escapes);
 
@@ -153,12 +158,12 @@ void streamy::lex(const string& src, /* out*/ vector<pair<int, string>>& escapes
     while(regex_search(s, esc_match, esc_rexp, std::regex_constants::match_default))
     {
         // push begin
-        if(esc_match.prefix().str().size()) 
+        if(esc_match.prefix().str().size())
         {
-            escapes.push_back({TEXT, esc_match.prefix()}); 
+            escapes.push_back({TEXT, esc_match.prefix()});
         }
-        // now start lexing 
-        regex oper_rexp = regex("(" + HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS + ")", regex::ECMAScript); 
+        // now start lexing
+        regex oper_rexp = regex("(" + HEX_LITERAL + "|" + FLOAT_LITERAL + "|" + LOGICAL_OPERATORS + "|" + OPERATORS + ")", regex::ECMAScript);
         smatch oper_match;
         string e_sub_match = esc_match.str();
         while(regex_search(e_sub_match, oper_match, oper_rexp, regex_constants::match_default))
@@ -169,7 +174,7 @@ void streamy::lex(const string& src, /* out*/ vector<pair<int, string>>& escapes
 
             if(oper_match.str().size() > 0)
                 escapes.push_back( { TOKEN, oper_match.str()} );
-     
+
             // after oper_match to end of string
             string suffix = oper_match.suffix().str();
             if(oper_match.str() == "*" || oper_match.str() == "#" || oper_match.str() == "\"" || oper_match.str() == "'")
@@ -177,8 +182,8 @@ void streamy::lex(const string& src, /* out*/ vector<pair<int, string>>& escapes
                 int pos = suffix.find_first_of("*#\"'");
                 int len = suffix.size();
                 escapes.push_back({ TOKEN, suffix.substr(0, pos ) });
-                
-                len = len-(pos+1); 
+
+                len = len-(pos+1);
                 if(len > 0)
                 {
                     escapes.push_back({ TOKEN, suffix.substr(pos, 1 ) });
@@ -226,14 +231,14 @@ void streamy::parse(vector<pair<int, string>>& tokens, /* out */ stringstream& s
             case ID_HASH_MARK:
             {
                 // move to name
-                symbol_name = tokens[++i].second;  
+                symbol_name = tokens[++i].second;
                 string value = map_config[symbol_name];
                 ss << value;
                 // move to hash
                 ++i; // move to next (hash mark)
                 break;
             }
-            case ID_ASTERIK:       
+            case ID_ASTERIK:
             {
                 i++; // move to comment
                 if(tokens[i].first == TOKEN)
@@ -285,38 +290,38 @@ void streamy::parse(vector<pair<int, string>>& tokens, /* out */ stringstream& s
             case ID_CLOSE_BRACE:
             case ID_EQUAL:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl;
                 break;
             }
             case ID_IF:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl;
                 break;
             }
             case ID_ELSE:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl;
                 break;
             }
             case ID_FOREACH:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl;
                 break;
             }
             case ID_FOREACHELSE:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl;
                 break;
             }
-            
+
             case ID_BUILTIN_FUNCTION:
             {
-                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl; 
+                ss << FMT_FG_YELLOW << "todo: built in fucntion: " << FMT_RESET << FMT_FG_MAGENTA << std::hex << "0x" + token << FMT_RESET << endl;
                 break;
             }
             default:
             {
-                ss << FMT_FG_RED << "error " << FMT_RESET << FMT_BOLD << "unknown token: " 
+                ss << FMT_FG_RED << "error " << FMT_RESET << FMT_BOLD << "unknown token: "
                     << FMT_FG_BLUE << std::hex << "0x" + token << FMT_RESET << endl;
                 break;
             }
