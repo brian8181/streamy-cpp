@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi lexer_tester.cgi page_test.cgi streamy_lexer tokenizer
+all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi index2.cgi index3.cgi streamy_lexer tokenizer
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -27,39 +27,39 @@ compiler.o:
 utility.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
 
-page_test.cgi: utility.o libstreamy.so libstreamy.a page_test.o
-	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/page_test.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/page_test.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/page_test.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/page_test_a.cgi
+index2.cgi: utility.o libstreamy.so libstreamy.a index2.o
+	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/index2.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index2.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index2.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index2_a.cgi
 
 index.cgi: utility.o libstreamy.so libstreamy.a index.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi
 
-lexer_tester.cgi: utility.o libstreamy.so libstreamy.a lexer_tester.o
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/lexer_tester.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/lexer_tester.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/lexer_tester.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/lexer_tester_a.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/lexer_tester.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/lexer_tester_so.cgi
+index3.cgi: utility.o libstreamy.so libstreamy.a index3.o
+	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index3.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index3_a.cgi
+	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index3_so.cgi
 
 index_soso.cgi: install
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/utility.o -lstreamy -L$(PREFIX) -o $(BLD)/index_soso.cgi
 	cp $(SRC)/index.conf $(BLD)/index.conf
 
-page_test.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/page_test.cpp -o $(OBJ)/page_test.o
-
 index.o:
 	$(CXX) $(CXXFLAGS) -c $(SRC)/index.cpp -o $(OBJ)/index.o
 
-lexer_tester.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/lexer_tester.cpp -o $(OBJ)/lexer_tester.o
+index2.o:
+	$(CXX) $(CXXFLAGS) -c $(SRC)/index2.cpp -o $(OBJ)/index2.o
+
+index3.o:
+	$(CXX) $(CXXFLAGS) -c $(SRC)/index3.cpp -o $(OBJ)/index3.o
 
 libstreamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC --shared $(OBJ)/streamy.o $(OBJ)/compiler.o -o $(BLD)/libstreamy.so
 	chmod 755 $(BLD)/libstreamy.so
 
 libstreamy.a: streamy.o streamy.o
-	#ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
+	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
 	chmod 755 $(BLD)/libstreamy.a
 
 streamy_lex: fileio.o libstreamy.a libstreamy.so
