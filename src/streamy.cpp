@@ -97,8 +97,8 @@ string& streamy::fetch(const string& tmpl, const string& cache_id, const string&
 string& streamy::compile(const string& tmpl, /* out */ string& html)
 {
     // todo
-    // compiler streamy_compiler;
-    // streamy_compiler.compile(tmpl);
+    compiler streamy_compiler;
+    //streamy_compiler.compile(tmpl);
 
     const string full_path = this->template_dir + "/" + tmpl;
 

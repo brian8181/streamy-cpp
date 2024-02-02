@@ -19,7 +19,7 @@ all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi index2.cgi in
 yacc_lex: streamy_lexer tokenizer
 
 streamy.o: compiler.o
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(SRC)/streamy.cpp $(OBJ)/compiler.o -o $(OBJ)/streamy.o
+	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
 compiler.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
@@ -59,7 +59,7 @@ libstreamy.so: streamy.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC --shared $(OBJ)/streamy.o $(OBJ)/compiler.o -o $(BLD)/libstreamy.so
 	chmod 755 $(BLD)/libstreamy.so
 
-libstreamy.a: streamy.o streamy.o
+libstreamy.a: streamy.o
 	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
 	chmod 755 $(BLD)/libstreamy.a
 
