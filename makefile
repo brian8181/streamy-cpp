@@ -7,20 +7,20 @@ CXX = g++
 CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17
 # CXXEXTRA = -Wshadow -fstats -fno-rtti fmessage-length=100 -fverbose-asm
 CC = gcc
-CCFLAGS = -ggdb -std=c99
+CCFLAGS = -ggdb -std=c99 -DDEBUG
 LEX = flex
 YACC = bison -d
 SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi index2.cgi index3.cgi streamy_lexer tokenizer
+all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi index2.cgi index3.cgi streamy_lexer tokenizer parser
 
 yacc_lex: streamy_lexer tokenizer
 
 streamy.o: compiler.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
-
+++ -g -DDEBUG -std=c++17 -c build/streamy.yy.c -o build/streamy_lexer.o
 compiler.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
 
@@ -92,6 +92,15 @@ streamy-cpp.yy.c:
 
 bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
+
+parser: streamy.yy.c streamy.tab.c
+	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/streamy
+
+streamy.yy.c:streamy.tab.c
+	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
+
+streamy.tab.c:
+	$(YACC) --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
 
 complie:
 	g++ -c $(SRC)/*.cpp

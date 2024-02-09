@@ -13,7 +13,7 @@ BLD=./build
 all: parser
 
 parser: streamy.yy.c streamy.tab.c
-	$(CC) $(CX) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -lfl -o $(BLD)/streamy
+	$(CC) $(CX) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/streamy
 
 streamy.yy.c:
 	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c streamy.l
