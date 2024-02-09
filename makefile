@@ -20,7 +20,7 @@ yacc_lex: streamy_lexer tokenizer
 
 streamy.o: compiler.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
-++ -g -DDEBUG -std=c++17 -c build/streamy.yy.c -o build/streamy_lexer.o
+
 compiler.o:
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
 
