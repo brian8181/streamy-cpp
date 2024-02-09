@@ -1,5 +1,5 @@
 %{
-    
+
 %}
 
 DIGIT                       [0-9]
@@ -87,13 +87,13 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 int main(int argc, char** argv)
 {
     /* skip over program name */
-    ++argv, --argc;  
-    
+    ++argv, --argc;
+
     if ( argc > 0 )
     {
         yyin = fopen( argv[0], "r" );
-    } 
-    else
+    }
+    else {
     {
         yyin = stdin;
     }

@@ -36,7 +36,7 @@ int yyerror(char *s)
     return 0;
 }
 
-int main(int argc, char* argv[])
+/* int main(int argc, char* argv[])
 {
     int tok;
     FILE* f = fopen(argv[1], "r");
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
     }
     yyparse();
     return 0;
-}
+} */
 
 
 /* main(int argc, char **argv)

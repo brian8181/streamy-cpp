@@ -94,7 +94,7 @@ bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
 
 parser: streamy.yy.c streamy.tab.c
-	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/streamy
+	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/streamy.exe
 
 streamy.yy.c:streamy.tab.c
 	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
