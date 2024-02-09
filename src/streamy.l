@@ -70,6 +70,7 @@ ELSE                        "else"
 ELSE_IF                     "elseif"
 FOREACH                     "foreach"
 FOREACHELSE                 "foreachelse"
+FILE                        "file"
 VARIABLE                    "$"[a-zA-Z]+[a-zA-Z0-9]*
 TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 
@@ -107,13 +108,14 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {QUESTION}                  printf( "QUESTION: %s\n", yytext );
 {DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
 {NUMBER}                    printf( "NUMBER: %s\n", yytext );
+{FILE}                      printf( "FILE: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
 [ \t\n]                     {};
 .                           printf( "Unrecognized character: %s\n", yytext );
 
 %%
 
-main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     if(argc < 2)
     {
@@ -125,10 +127,10 @@ main(int argc, char **argv)
         yylex();
 }
 
-int newfile(char *fn)
+int newfile(char* fn)
 {
-    FILE *f = fopen(fn, "r");
-    struct bufstack *bs = malloc(sizeof(struct bufstack));
+    FILE* f = fopen(fn, "r");
+    struct bufstack* bs = (struct bufstack*)malloc(sizeof(struct bufstack));
 
     /* die if no file or no room */
     if(!f)

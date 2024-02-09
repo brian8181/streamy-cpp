@@ -8,11 +8,20 @@
 %%
 
 page:
-    page stmt '\n' { printf("%d\n", $2); }
+    text '\n' { printf("%d\n", $2); }
     |
+    tag
+    |
+    page text
+    |
+    page tag
+    |
+    '\n'
     ;
 
-stmt:
+text:
+
+tag:
     ';'
     | expr ';'
     ;
@@ -35,35 +44,3 @@ int yyerror(char *s)
     fprintf(stderr, "%s\n", s);
     return 0;
 }
-
-/* int main(int argc, char* argv[])
-{
-    int tok;
-    FILE* f = fopen(argv[1], "r");
-    if(!f)
-    {
-        perror(argv[1]);
-        return -1;
-    }
-
-    while((tok = yylex()))
-    {
-        printf("%d", tok);
-        if(tok == NUMBER)
-            printf(" = %d\n", yylval);
-        else
-            printf("\n");
-    }
-    yyparse();
-    return 0;
-} */
-
-
-/* main(int argc, char **argv)
-{
-    yyparse();
-}
-yyerror(char *s)
-{
-    fprintf(stderr, "error: %s\n", s);
-} */

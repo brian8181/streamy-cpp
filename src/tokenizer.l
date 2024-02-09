@@ -93,7 +93,7 @@ int main(int argc, char** argv)
     {
         yyin = fopen( argv[0], "r" );
     }
-    else {
+    else
     {
         yyin = stdin;
     }
