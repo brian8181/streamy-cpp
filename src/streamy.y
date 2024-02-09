@@ -1,53 +1,69 @@
-
-%token INTEGER VARIABLE LITERAL
-%left '+' '-'
-%left '*' '/'
-%right '$'
-
 %{
-
-
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include "y.tab.h"
-
-int yyerror(char *);
-int yylex(void);
-int sym[26];
-
+#include "streamy.tab.h"
+#include "streamy.yy.h"
 %}
 
+%token INTEGER VARIABLE NUMBER LITERAL_TEXT
 %%
 
-program: program statement '\n'
+page:
+    page stmt '\n' { printf("%d\n", $2); }
     |
-;
-statement: expr
-expr:
-INTEGER
-    |  LITERAL
-    | expr '+' expr
-    | expr '-' expr
-    | expr '*' expr
-    | expr '/' expr
-    | '(' expr ')'
+    ;
+
+stmt:
+    ';'
+    | expr ';'
     ;
 
 
+expr:
+    INTEGER         { $$ = $1; }
+    | expr '+' INTEGER { $$ = $1 + $3; }
+    | expr '+' VARIABLE { $$ = $1 + $3; }
+    | expr '-' INTEGER { $$ = $1 + $3; }
+    | expr '-' VARIABLE { $$ = $1 + $3; }
+    | expr '*' INTEGER { $$ = $1 + $3; }
+    | expr '*' VARIABLE { $$ = $1 + $3; }
+    ;
+
 %%
 
-#include <stdio.h>
-#include "y.tab.h"
 int yyerror(char *s)
 {
     fprintf(stderr, "%s\n", s);
     return 0;
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
+    int tok;
+    FILE* f = fopen(argv[1], "r");
+    if(!f)
+    {
+        perror(argv[1]);
+        return -1;
+    }
+
+    while((tok = yylex()))
+    {
+        printf("%d", tok);
+        if(tok == NUMBER)
+            printf(" = %d\n", yylval);
+        else
+            printf("\n");
+    }
     yyparse();
     return 0;
 }
+
+
+/* main(int argc, char **argv)
+{
+    yyparse();
+}
+yyerror(char *s)
+{
+    fprintf(stderr, "error: %s\n", s);
+} */
