@@ -32,7 +32,7 @@ $site_name = "Music Web";
 $style = "style.css";
 
 ////  Directory Locations ///////////////////////
-// art location, relative to document root 
+//    art location, relative to document root
 $art_location = "./.album_art";
 // music location, relative to document root
 $music_location = "/music";
@@ -43,7 +43,7 @@ $music_location = "/music";
 // actual functionality but they are disaplyed.   //
 ////////////////////////////////////////////////////
 $mail_message = "for further information please email us @";
-// global version 
+// global version
 $version_date = "Sunday July 20 4:37 AM CDT 2008";
 $index_title = "Music Database";
 $search_title = "Search Database";
@@ -65,5 +65,5 @@ $enable_security = false;
 // 0 or less = umlimited
 $page_result_limit = 0;
 $default_order = "artist ASC,album ASC,track ASC,title ASC";
-	
+
 ?>

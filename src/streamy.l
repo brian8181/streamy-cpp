@@ -9,8 +9,6 @@
     void yyerror(char *);
     int TEXT_LITERAL;
 
-
-
     struct bufstack
     {
         struct bufstack *prev;
@@ -25,6 +23,7 @@
     /* saved line number */
     /* name of this file */
     /* current file */
+
     char *curfilename;
     /* name of current input file */
     int newfile(char *fn);
@@ -96,21 +95,13 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {BAR}                       printf( "BAR: %s\n", yytext );
 {HASH}                      printf( "HASH: %s\n", yytext );
 {UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
-{SEMI_COLON}                printf( "SEMI_COLON: %s\n", yytext );
-{COLON}                     printf( "COLON: %s\n", yytext );
-{AMPERSAND}                 printf( "AMPERSAND: %s\n", yytext );
-{TILDE}                     printf( "TILDE: %s\n", yytext );
-{TICK_MARK}                 printf( "TICK_MARK: %s\n", yytext );
-{AT_SYMBOL}                 printf( "AT_SYMBOL: %s\n", yytext );
-{EXCLAMATION}               printf( "EXCLAMATION: %s\n", yytext );
-{PERCENT}                   printf( "PERCENT: %s\n", yytext );
-{COMMA}                     printf( "COMMA: %s\n", yytext );
+{SEMI_COLON}                printf( "SEMI_COLON: yylex () );
 {QUESTION}                  printf( "QUESTION: %s\n", yytext );
 {DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
 {NUMBER}                    printf( "NUMBER: %s\n", yytext );
 {FILE}                      printf( "FILE: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
-[ \t\n]                     {};
+[ \t\n]                     printf( "end line");
 .                           printf( "Unrecognized character: %s\n", yytext );
 
 %%
@@ -132,15 +123,16 @@ int newfile(char* fn)
     FILE* f = fopen(fn, "r");
     struct bufstack* bs = (struct bufstack*)malloc(sizeof(struct bufstack));
 
-    /* die if no file or no room */
     if(!f)
     {
-        perror(fn); return 0;
+        perror(f);
+        return 0;
     }
 
     if(!bs)
     {
-        perror("malloc"); exit(1);
+        perror("malloc")
+        exit(1);
     }
 
     /* remember state */
@@ -163,16 +155,20 @@ int popfile(void)
 {
     struct bufstack *bs = curbs;
     struct bufstack *prevbs;
+
     if(!bs)
         return 1;
+
     /* get rid of current entry */
     fclose(bs->f);
     yy_delete_buffer(bs->bs);
     /* switch back to previous */
     prevbs = bs->prev;
     free(bs);
+
     if(!prevbs)
         return 1;
+
     yy_switch_to_buffer(prevbs->bs);
     curbs = prevbs;
     yylineno = curbs->lineno;

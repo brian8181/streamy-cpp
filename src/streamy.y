@@ -2,42 +2,32 @@
 #include <stdio.h>
 #include "streamy.tab.h"
 #include "streamy.yy.h"
+//#define YYDEBUG 1
+
 %}
 
-%token INTEGER VARIABLE NUMBER LITERAL_TEXT
+%token INTEGER
+%token TEXT
+%token VARIABLE NUMBER LITERAL_TEXT
 %%
 
-page:
-    text '\n' { printf("%d\n", $2); }
+start: x
+        |
+        y
+        ;
+    TEXT '\n' { printf("%d\n", $2); }
     |
-    tag
-    |
-    page text
-    |
-    page tag
-    |
-    '\n'
     ;
-
-text:
-
-tag:
-    ';'
-    | expr ';'
-    ;
-
-
-expr:
-    INTEGER         { $$ = $1; }
-    | expr '+' INTEGER { $$ = $1 + $3; }
-    | expr '+' VARIABLE { $$ = $1 + $3; }
-    | expr '-' INTEGER { $$ = $1 + $3; }
-    | expr '-' VARIABLE { $$ = $1 + $3; }
-    | expr '*' INTEGER { $$ = $1 + $3; }
-    | expr '*' VARIABLE { $$ = $1 + $3; }
-    ;
-
+    x: INTEGER;
+    y: INTEGER;
 %%
+
+int fileno;
+
+int parse()
+{
+
+}
 
 int yyerror(char *s)
 {
