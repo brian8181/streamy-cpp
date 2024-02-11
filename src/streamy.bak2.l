@@ -73,18 +73,9 @@ FILE                        "file"
 VARIABLE                    "$"[a-zA-Z]+[a-zA-Z0-9]*
 TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 
+
 %%
 
-{OPEN_CURLY}                printf( "OPEN_CURLY: %s\n", yytext );
-{CLOSE_CURLY}               printf( "CLOSE_CURLY: %s\n", yytext );
-{OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
-{CLOSE_BRACE}               printf( "CLOSE_BRACE: %s\n", yytext );
-{OPEN_PAREN}                printf( "OPEN_PAREN: %s\n", yytext );
-{CLOSE_PAREN}               printf( "CLOSE_PAREN: %s\n", yytext );
-{LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
-{GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
-{SINGLE_QUOTE}              printf( "SINGLE_QOUTE: %s\n", yytext );
-{DOUBLE_QUOTE}              printf( "DOUBLE_QOUTE: %s\n", yytext );
 {EQUAL}                     printf( "EQUAL: %s\n", yytext );
 {DOT}                       printf( "DOT: %s\n", yytext );
 {PLUS}                      printf( "PLUS: %s\n", yytext );
@@ -95,7 +86,7 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {BAR}                       printf( "BAR: %s\n", yytext );
 {HASH}                      printf( "HASH: %s\n", yytext );
 {UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
-{SEMI_COLON}                printf( "SEMI_COLON:", yytext );
+{SEMI_COLON}                printf( "SEMI_COLON:" yytext );
 {QUESTION}                  printf( "QUESTION: %s\n", yytext );
 {DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
 {NUMBER}                    printf( "NUMBER: %s\n", yytext );

@@ -92,6 +92,7 @@ streamy.yy.c:
 
 streamy.bak.yy.c:
 	$(LEX) -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l
+	$(LEX) -o $(BLD)/streamy.bak2.yy.c $(SRC)/streamy.bak2.l
 
 streamy.tab.c:
 	$(YACC) --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
