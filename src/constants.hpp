@@ -32,14 +32,17 @@ const string OPEN_BRACE = "[";
 const string CLOSE_BRACE = "]";
 const string OPEN_PAREN = "(";
 const string CLOSE_PAREN = ")";
-const string LESS_THAN = "<";
-const string GREATER_THAN = ">";
+// binary operators
 const string MODULO = "%";
+// left unary "bitwise" operator
 const string BIT_WISE_NOT = "~";
+// binary "bitwise" operators
 const string BIT_WISE_EXCLISIVE_OR = "^";
 const string BIT_WISE_AND = "&";
 const string BIT_WISE_OR = "|";
+// left unary "logical" operators
 const string LOGICAL_NOT = "!";
+// binary "logical" operators
 const string LOGICAL_AND = "&&";
 const string LOGICAL_OR = "||";
 const string EQUALS_LOGICAL = "==";
@@ -66,8 +69,6 @@ const string CONFIG_PAIR = "\\s*([A-Za-z]" + VALID_SYMBOL_CHARS + "*)\\s*=\\s*((
 // lexing
 const string DELIMIT_SPACE_AND_WORD_BOUNDARY = "\\s\\b";
 const string ESCAPE = "\\{" + VALID_ESC_CHARS + "*\\}";
-
-
 // parser & grammer constants
 const string STRING_LITERAL = "[\\w\\s\\[\\]+-=|$><^/#@~&*.%!~`_:;\\\\,()]*";
 const string LOGICAL_OPERATORS = "((->)|(=>)|(==)|(!=)|(<=)|(>=)|(===))";

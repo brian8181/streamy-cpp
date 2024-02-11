@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi index2.cgi index3.cgi streamy_lexer tokenizer parser
+all: libstreamy.so libstreamy.a compiler.o streamy_lexer index.cgi index2.cgi index3.cgi streamy_lexer tokenizer streamy.bak.yy.c
 
 yacc_lex: streamy_lexer tokenizer
 
@@ -84,23 +84,17 @@ tokenizer: tokenizer.yy.c
 tokenizer.yy.c:
 	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
-streamy-cpp.o: streamy-cpp.yy.c
-	$(CXX) $(CXXFLAGS) -c $(BLD)/streamy-cpp.yy.c -o $(BLD)/streamy-cpp.yy.o
-
-streamy-cpp.yy.c:
-	$(LEX) -o $(BLD)/streamy-cpp.yy.c $(SRC)/streamy-cpp
-
 bison_incl_skel:
 	$(YACC) $(SRC)/bison_incl_skel.y
 
-parser: streamy.yy.c streamy.tab.c
-	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/streamy.exe
+# parser: streamy.yy.c streamy.tab.c
+# 	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/streamy.exe
 
-streamy.yy.c:
-	$(LEX)  (SRC)/streamy.l
+# streamy.yy.c:
+# 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
 
 streamy.bak.yy.c:
-	flex -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l
+	$(LEX) -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l
 
 streamy.tab.c:
 	$(YACC) --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
