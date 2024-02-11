@@ -1,57 +1,177 @@
+/* streamy.l */
+%option noyywrap
+%x IFILE
+
 %{
     #include <stdio.h>
     #include "streamy.tab.h"
     int yylex(void);
     void yyerror(char *);
-    int DIGIT;
-    int LETTER;
     int TEXT_LITERAL;
-    const unsigned int EQUAL = 1;
-    const unsigned int PLUS = 2;
-    const unsigned int ASTERISK = 3;
-    const unsigned int T_PLUS = 4;
-    const unsigned int T_MULTIPLY = 5;
-    const unsigned int T_DIVIDE = 6;
-    const unsigned int T_LEFT = 7;
-    const unsigned int T_RIGHT = 8;
-    const unsigned int SINGLE_QUOTE = 9;
-    const unsigned int DOUBLE_QUOTE = 10;
-    const unsigned int COMMA = 11;
-    const unsigned int COLON = 12;
-    const unsigned int SEMI_COLON = 13;
-    const unsigned int BACK_SLASH = 14;
-    const unsigned int TICK_MARK = 15;
-    const unsigned int DOLLAR_SIGN = 16;
-    const unsigned int T_POUND = 17;
-    const unsigned int T_OPEN_CURLY = 18;
-    const unsigned int T_CLOSE_CURLY = 19;
-    const unsigned int T_OPEN_BRACE = 20;
-    const unsigned int T_CLOSE_BRACE = 21
 
-%};
+    struct bufstack
+    {
+        struct bufstack *prev;
+        YY_BUFFER_STATE bs;
+        int lineno;
+        char *filename;
+        FILE *f;
+    } *curbs = 0;
 
-DIGIT    [0-9]
-LETTER   [A-Za-z]
+    /* previous entry */
+    /* saved buffer */
+    /* saved line number */
+    /* name of this file */
+    /* current file */
+
+    char *curfilename;
+    /* name of current input file */
+    int newfile(char *fn);
+    int popfile(void);
+%}
+
+DIGIT                       [0-9]
+NUMBER                      [0-9]+
+OPEN_CURLY                  "{"
+CLOSE_CURLY                 "}"
+OPEN_BRACE                  "["
+CLOSE_BRACE                 "]"
+OPEN_PAREN                  "("
+CLOSE_PAREN                 ")"
+LESS_THAN                   "<"
+GREATER_THAN                ">"
+SINGLE_QUOTE                "'"
+DOUBLE_QUOTE                "\""
+EQUAL                       "="
+DOT                         "."
+PLUS                        "+"
+MINUS                       "-"
+MULTIPLY                    "*"
+EXPONET                     "^"
+FOREWARD_SLASH              "/"
+BACKWARD_SLASH              "\\"
+BAR                         "|"
+HASH                        "#"
+UNDERSCORE                  "_"
+SEMI_COLON                  ";"
+COLON                       ":"
+AMPERSAND                   "&"
+TILDE                       "~"
+TICK_MARK                   "`"
+AT_SYMBOL                   "@"
+EXCLAMATION                 "!"
+PERCENT                     "%"
+COMMA                       ","
+QUESTION                    "?"
+DOLLAR_SIGN                 "$"
+IF                          "if"
+ELSE                        "else"
+ELSE_IF                     "elseif"
+FOREACH                     "foreach"
+FOREACHELSE                 "foreachelse"
+FILE                        "file"
+VARIABLE                    "$"[a-zA-Z]+[a-zA-Z0-9]*
+TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 
 %%
 
-{DIGIT}+     printf( "DIGIT: %s\n", yytext );
-{LETTER}+    printf( "LETTER: %s\n", yytext );
-[ \t\n]+
-.   printf( "Unrecognized character: %s\n", yytext );
+{OPEN_CURLY}                printf( "OPEN_CURLY: %s\n", yytext );
+{CLOSE_CURLY}               printf( "CLOSE_CURLY: %s\n", yytext );
+{OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
+{CLOSE_BRACE}               printf( "CLOSE_BRACE: %s\n", yytext );
+{OPEN_PAREN}                printf( "OPEN_PAREN: %s\n", yytext );
+{CLOSE_PAREN}               printf( "CLOSE_PAREN: %s\n", yytext );
+{LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
+{GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
+{SINGLE_QUOTE}              printf( "SINGLE_QOUTE: %s\n", yytext );
+{DOUBLE_QUOTE}              printf( "DOUBLE_QOUTE: %s\n", yytext );
+{EQUAL}                     printf( "EQUAL: %s\n", yytext );
+{DOT}                       printf( "DOT: %s\n", yytext );
+{PLUS}                      printf( "PLUS: %s\n", yytext );
+{MINUS}                     printf( "MINUS: %s\n", yytext );
+{MULTIPLY}                  printf( "MULTIPLY: %s\n", yytext );
+{FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
+{BACKWARD_SLASH}            printf( "BACKWARD_SLASH: %s\n", yytext );
+{BAR}                       printf( "BAR: %s\n", yytext );
+{HASH}                      printf( "HASH: %s\n", yytext );
+{UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
+{SEMI_COLON}                printf( "SEMI_COLON:", yytext );
+{QUESTION}                  printf( "QUESTION: %s\n", yytext );
+{DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
+{NUMBER}                    printf( "NUMBER: %s\n", yytext );
+{FILE}                      printf( "FILE: %s\n", yytext );
+{TEXT}                      printf( "TEXT: %s\n",  yytext );
+[ \t\n]                     printf( "end line");
+.                           printf( "Unrecognized character: %s\n", yytext );
 
 %%
 
-int main( int argc, char **argv )
+int main(int argc, char** argv)
 {
-    /* skip over program name */
-    if ( argc > 0 )
+    if(argc < 2)
     {
-        yyin = fopen( argv[0], "r" );
+        fprintf(stderr, "need filename\n");
+        return 1;
     }
-    else
+
+    if(newfile(argv[1]))
+        yylex();
+}
+
+int newfile(char* fn)
+{
+    FILE* f = fopen(fn, "r");
+    struct bufstack* bs = (struct bufstack*)malloc(sizeof(struct bufstack));
+
+    if(!f)
     {
-        yyin = stdin;
+        perror(f);
+        return 0;
     }
-    yylex();
+
+    if(!bs)
+    {
+        perror("malloc")
+        exit(1);
+    }
+
+    /* remember state */
+    if(curbs)
+        curbs->lineno = yylineno;
+
+    bs->prev = curbs;
+    bs->bs = yy_create_buffer(f, YY_BUF_SIZE);
+    bs->f = f;
+    bs->filename = fn;
+    yy_switch_to_buffer(bs->bs);
+    curbs = bs;
+    yylineno = 1;
+    curfilename = fn;
+
+    return 1;
+}
+
+int popfile(void)
+{
+    struct bufstack *bs = curbs;
+    struct bufstack *prevbs;
+
+    if(!bs)
+        return 1;
+
+    /* get rid of current entry */
+    fclose(bs->f);
+    yy_delete_buffer(bs->bs);
+    /* switch back to previous */
+    prevbs = bs->prev;
+    free(bs);
+
+    if(!prevbs)
+        return 1;
+
+    yy_switch_to_buffer(prevbs->bs);
+    curbs = prevbs;
+    yylineno = curbs->lineno;
+    curfilename = curbs->filename;
+    return 1;
 }
