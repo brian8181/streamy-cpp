@@ -100,6 +100,9 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
 {NUMBER}                    printf( "NUMBER: %s\n", yytext );
 {FILE}                      printf( "FILE: %s\n", yytext );
+{IF}                        printf( "IF: %s\n", yytext );
+{ELSE}                      printf( "ELSE: %s\n", yytext );
+{ELSE_IF}                   printf( "ELSE_IF: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
 [ \t\n]                     printf( "end line");
 .                           printf( "Unrecognized character: %s\n", yytext );
