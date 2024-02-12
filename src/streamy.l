@@ -71,6 +71,7 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 
 %%
 
+{NUMBER}                    printf( "NUMBER: %s\n", yytext );
 {OPEN_CURLY}                printf( "OPEN_CURLY: %s\n", yytext );
 {CLOSE_CURLY}               printf( "CLOSE_CURLY: %s\n", yytext );
 {OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
@@ -82,15 +83,18 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {PLUS}                      printf( "PLUS: %s\n", yytext );
 {MINUS}                     printf( "MINUS: %s\n", yytext );
 {MULTIPLY}                  printf( "MULTIPLY: %s\n", yytext );
+{EXPONET}                   printf( "EXPONET: %s\n", yytext );
 {FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
 {BACKWARD_SLASH}            printf( "BACKWARD_SLASH: %s\n", yytext );
 {BAR}                       printf( "BAR: %s\n", yytext );
 {HASH}                      printf( "HASH: %s\n", yytext );
 {UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
 {SEMI_COLON}                printf( "SEMI_COLON:", yytext );
+{COLON}                     printf( "COLON: %s\n", yytext );
+{AMPERSAND}                 printf( "AMPERSAND: %s\n", yytext );
+{TILDE}                     printf( "TILDE: %s\n", yytext );
 {QUESTION}                  printf( "QUESTION: %s\n", yytext );
 {DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
-{NUMBER}                    printf( "NUMBER: %s\n", yytext );
 {FILE}                      printf( "FILE: %s\n", yytext );
 {IF}                        printf( "IF: %s\n", yytext );
 {ELSE}                      printf( "ELSE: %s\n", yytext );
