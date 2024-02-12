@@ -39,7 +39,8 @@ CLOSE_BRACE                 "]"
 OPEN_PAREN                  "("
 CLOSE_PAREN                 ")"
 LESS_THAN                   "<"
-GREATER_THAN                "+"
+GREATER_THAN                ">"
+PLUS                        "+"
 MINUS                       "-"
 MULTIPLY                    "*"
 EXPONET                     "^"
@@ -78,6 +79,7 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {CLOSE_PAREN}               printf( "CLOSE_PAREN: %s\n", yytext );
 {LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
 {GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
+{PLUS}                      printf( "PLUS: %s\n", yytext );
 {MINUS}                     printf( "MINUS: %s\n", yytext );
 {MULTIPLY}                  printf( "MULTIPLY: %s\n", yytext );
 {FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
