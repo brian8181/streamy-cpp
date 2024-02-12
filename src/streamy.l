@@ -39,12 +39,7 @@ CLOSE_BRACE                 "]"
 OPEN_PAREN                  "("
 CLOSE_PAREN                 ")"
 LESS_THAN                   "<"
-GREATER_THAN                ">"
-SINGLE_QUOTE                "'"
-DOUBLE_QUOTE                "\""
-EQUAL                       "="
-DOT                         "."
-PLUS                        "+"
+GREATER_THAN                "+"
 MINUS                       "-"
 MULTIPLY                    "*"
 EXPONET                     "^"
@@ -83,11 +78,6 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {CLOSE_PAREN}               printf( "CLOSE_PAREN: %s\n", yytext );
 {LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
 {GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
-{SINGLE_QUOTE}              printf( "SINGLE_QOUTE: %s\n", yytext );
-{DOUBLE_QUOTE}              printf( "DOUBLE_QOUTE: %s\n", yytext );
-{EQUAL}                     printf( "EQUAL: %s\n", yytext );
-{DOT}                       printf( "DOT: %s\n", yytext );
-{PLUS}                      printf( "PLUS: %s\n", yytext );
 {MINUS}                     printf( "MINUS: %s\n", yytext );
 {MULTIPLY}                  printf( "MULTIPLY: %s\n", yytext );
 {FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
@@ -134,7 +124,7 @@ int newfile(char* fn)
 
     if(!bs)
     {
-        perror("malloc")
+        perror("malloc");
         exit(1);
     }
 

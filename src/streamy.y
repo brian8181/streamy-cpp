@@ -15,7 +15,6 @@ start: x
         |
         y
         ;
-    TEXT '\n' { printf("%d\n", $2); }
     |
     ;
     x: INTEGER;
