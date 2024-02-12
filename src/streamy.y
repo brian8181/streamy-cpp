@@ -3,7 +3,6 @@
 #include "streamy.tab.h"
 #include "streamy.yy.h"
 //#define YYDEBUG 1
-
 %}
 
 %token INTEGER

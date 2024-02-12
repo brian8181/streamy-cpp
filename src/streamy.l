@@ -93,6 +93,7 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {COLON}                     printf( "COLON: %s\n", yytext );
 {AMPERSAND}                 printf( "AMPERSAND: %s\n", yytext );
 {TILDE}                     printf( "TILDE: %s\n", yytext );
+{TICK_MARK}                 printf( "TICK_MARK: %s\n", yytext );
 {QUESTION}                  printf( "QUESTION: %s\n", yytext );
 {DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
 {FILE}                      printf( "FILE: %s\n", yytext );
@@ -100,7 +101,7 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {ELSE}                      printf( "ELSE: %s\n", yytext );
 {ELSE_IF}                   printf( "ELSE_IF: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
-[ \t\n]                     printf( "end line");
+[ \t\n]                     printf( "END_LINE\n" );
 .                           printf( "Unrecognized character: %s\n", yytext );
 
 %%
@@ -124,7 +125,7 @@ int newfile(char* fn)
 
     if(!f)
     {
-        perror(f);
+        //perror(f);
         return 0;
     }
 
