@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a index.cgi index2.cgi index3.cgi
+all: libstreamy.so libstreamy.a index.cgi index2.cgi index3.cgi parser
 
 yacc: tokenizer streamy.bak.yy.c streamy.yy.c
 
