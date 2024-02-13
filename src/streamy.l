@@ -100,10 +100,10 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {COMMA}                     printf( "COMMA: %s\n", yytext );
 {QUESTION}                  printf( "QUESTION: %s\n", yytext );
 {DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
-{FILE}                      printf( "FILE: %s\n", yytext );
 {IF}                        printf( "IF: %s\n", yytext );
 {ELSE}                      printf( "ELSE: %s\n", yytext );
 {ELSE_IF}                   printf( "ELSE_IF: %s\n", yytext );
+{FILE}                      printf( "FILE: %s\n", yytext );
 {VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
 [ \t\n]                     printf( "END_LINE\n" );
