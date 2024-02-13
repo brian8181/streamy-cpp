@@ -88,7 +88,7 @@ parser: streamy.yy.c streamy.tab.c
 	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/streamy.exe
 
 streamy.yy.c:
-	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
+	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
 
 streamy.bak.yy.c:
 	$(LEX) -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l
