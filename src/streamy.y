@@ -17,7 +17,7 @@ start: x
     |
     ;
     x: INTEGER;
-    y: INTEGER;
+    y: TEXT;
 %%
 
 int fileno;
