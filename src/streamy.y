@@ -14,10 +14,10 @@ start:  x
         |
         y
         ;
-    |
-    ;
-    x: INTEGER;
-    y: TEXT;
+        |
+        ;
+        x: INTEGER;
+        y: TEXT;
 %%
 
 int fileno;
