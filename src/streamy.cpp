@@ -98,6 +98,7 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
 {
     // todo
     compiler streamy_compiler;
+    // todo testing
     //streamy_compiler.compile(tmpl);
 
     const string full_path = this->template_dir + "/" + tmpl;

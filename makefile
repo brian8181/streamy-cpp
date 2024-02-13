@@ -1,5 +1,5 @@
-# File Name:  Makefile
-# Build Date: Thu Dec 21 09:06:55 AM CST 2023
+# File Name:  makefile
+# Build Date: Mon Feb 12 06:50:58 PM CST 2024
 # Version:    0.0.2
 
 PREFIX = /usr/local
