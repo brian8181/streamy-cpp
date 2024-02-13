@@ -38,6 +38,9 @@ OPEN_BRACE                  "["
 CLOSE_BRACE                 "]"
 OPEN_PAREN                  "("
 CLOSE_PAREN                 ")"
+DOUBLE_QUOTE                "\""
+SINGLE_QUOTE                "'"
+EQUALS                      "="
 LESS_THAN                   "<"
 GREATER_THAN                ">"
 PLUS                        "+"
@@ -78,6 +81,9 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {CLOSE_BRACE}               printf( "CLOSE_BRACE: %s\n", yytext );
 {OPEN_PAREN}                printf( "OPEN_PAREN: %s\n", yytext );
 {CLOSE_PAREN}               printf( "CLOSE_PAREN: %s\n", yytext );
+{DOUBLE_QUOTE}              printf( "DOUBLE_QUOTE: %s\n", yytext );
+{SINGLE_QUOTE}              printf( "SINGLE_QUOTE: %s\n", yytext );
+{EQUALS}                    printf( "EQUALS: %s\n", yytext );
 {LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
 {GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
 {PLUS}                      printf( "PLUS: %s\n", yytext );
@@ -89,7 +95,7 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {BAR}                       printf( "BAR: %s\n", yytext );
 {HASH}                      printf( "HASH: %s\n", yytext );
 {UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
-{SEMI_COLON}                printf( "SEMI_COLON:", yytext );
+{SEMI_COLON}                printf( "SEMI_COLON: %s\n", yytext );
 {COLON}                     printf( "COLON: %s\n", yytext );
 {AMPERSAND}                 printf( "AMPERSAND: %s\n", yytext );
 {TILDE}                     printf( "TILDE: %s\n", yytext );

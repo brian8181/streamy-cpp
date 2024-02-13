@@ -85,7 +85,8 @@ tokenizer.yy.c:
 	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
 parser: streamy.yy.c streamy.tab.c
-	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/streamy.exe
+	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/parser.exe
+	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c -I./build -lfl -o $(BLD)/lex.exe
 
 streamy.yy.c:
 	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
