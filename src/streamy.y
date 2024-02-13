@@ -10,7 +10,7 @@
 %token VARIABLE NUMBER LITERAL_TEXT
 %%
 
-start: x
+start:  x
         |
         y
         ;
