@@ -94,12 +94,17 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {AMPERSAND}                 printf( "AMPERSAND: %s\n", yytext );
 {TILDE}                     printf( "TILDE: %s\n", yytext );
 {TICK_MARK}                 printf( "TICK_MARK: %s\n", yytext );
+{AT_SYMBOL}                 printf( "AT_SYMBOL: %s\n", yytext );
+{EXCLAMATION}               printf( "EXCLAMATION: %s\n", yytext );
+{PERCENT}                   printf( "PERCENT: %s\n", yytext );
+{COMMA}                     printf( "COMMA: %s\n", yytext );
 {QUESTION}                  printf( "QUESTION: %s\n", yytext );
 {DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
 {FILE}                      printf( "FILE: %s\n", yytext );
 {IF}                        printf( "IF: %s\n", yytext );
 {ELSE}                      printf( "ELSE: %s\n", yytext );
 {ELSE_IF}                   printf( "ELSE_IF: %s\n", yytext );
+{VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
 [ \t\n]                     printf( "END_LINE\n" );
 .                           printf( "Unrecognized character: %s\n", yytext );
