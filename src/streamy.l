@@ -139,7 +139,7 @@ int newfile(char* fn)
 
     if(!f)
     {
-        //perror(f);
+        perror(0);
         return 0;
     }
 
