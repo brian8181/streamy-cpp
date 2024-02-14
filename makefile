@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a index.cgi index2.cgi index3.cgi parser
+all: libstreamy.so libstreamy.a index.cgi index2.cgi index3.cgi streamy_lex parser
 
 yacc: tokenizer streamy.bak.yy.c streamy.yy.c
 
@@ -63,20 +63,15 @@ libstreamy.a: streamy.o
 	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
 	chmod 755 $(BLD)/libstreamy.a
 
-# streamy_lex: fileio.o libstreamy.a libstreamy.so
-# 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
-# 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(OBJ)/streamy.o -o $(BLD)/streamy_lex
-# 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(BLD)/libstreamy.a -o $(BLD)/streamy_lex_a
-# 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX) -o $(BLD)/streamy_lex_so
-# 	cp $(SRC)/streamy_lex.conf $(BLD)/streamy_lex.conf
-
-# streamy_lexer:
-# 	$(LEX) -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
-# 	$(CXX) -g -DDEBUG -std=c++17 -c $(BLD)/streamy.yy.c -o $(BLD)/streamy_lexer.o
-# 	$(CXX) -g -DDEBUG -std=c++17 $(OBJ)/streamy_lexer.o -ll -o $(BLD)/streamy_lexer
+streamy_lex: fileio.o libstreamy.a libstreamy.so
+	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
+	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(OBJ)/streamy.o -o $(BLD)/streamy_lex
+	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(BLD)/libstreamy.a -o $(BLD)/streamy_lex_a
+	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX) -o $(BLD)/streamy_lex_so
+	# cp $(SRC)/streamy_lex.conf $(BLD)/streamy_lex.conf
 
 fileio.o:
-	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o`
+	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o
 
 tokenizer: tokenizer.yy.c
 	$(CC) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
