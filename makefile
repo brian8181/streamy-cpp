@@ -5,7 +5,7 @@
 PREFIX = /usr/local
 CXX = g++
 CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17
-# CXXEXTRA = -Wshadow -fstats -fno-rtti fmessage-length=100 -fverbose-asm
+#CXXEXTRA = -Wshadow -fstats -fno-rtti fmessage-length=100 -fverbose-asm
 CC = gcc
 CCFLAGS = -ggdb -std=c99 -DDEBUG
 LEX = flex
