@@ -123,7 +123,8 @@ int main(int argc, char** argv)
 {
     if(argc < 2)
     {
-        fprintf(stderr, "need filename\n");
+        fprintf(stderr, "Error: missing paramter\n");
+        fprintf(stderr, "lex [OPTION]... [FilE]...\n");
         return 1;
     }
 

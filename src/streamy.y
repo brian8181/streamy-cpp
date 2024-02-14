@@ -14,8 +14,6 @@ start:  x
         |
         y
         ;
-        |
-        ;
         x: INTEGER;
         y: TEXT;
 %%
