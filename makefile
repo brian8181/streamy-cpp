@@ -1,6 +1,6 @@
-# File Name:  makefile
-# Build Date: Mon Feb 12 06:50:58 PM CST 2024
-# Version:    0.0.2
+# File Name:  streamy-cpp/makefile
+# Build Date: Wed Feb 14 03:28:42 PM CST 2024
+# Version:    0.1.0
 
 PREFIX = /usr/local
 CXX = g++

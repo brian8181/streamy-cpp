@@ -14,9 +14,9 @@ using namespace std;
 
 int parse_options(int argc, char* argv[])
 {
-    // testing values ...  
-    vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London", 
-                             "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas", 
+    // testing values ...
+    vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London",
+                             "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas",
                              "Garland",   "Richardson", "Plano"};
 
     // initial configuration ...
@@ -73,8 +73,8 @@ int main(int argc, char* argv[])
 	{
 		if(stdin_ready(STDIN_FILENO))
 		{
-			std::string buffer;     
-                 std::cin >> buffer;
+			std::string buffer;
+            std::cin >> buffer;
 			// add piped buffer to end of argv ...
 			char* argvtmp[sizeof(char*) * argc+1];
 			memcpy(argvtmp, argv, sizeof(char*) * argc);
@@ -89,4 +89,3 @@ int main(int argc, char* argv[])
 	 	std::cout << ex.what() << std::endl;
 	}
 }
-
