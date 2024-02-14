@@ -1,4 +1,8 @@
-/* streamy.l */
+/*
+   File Name:  streamy.l
+   Build Date: Wed Feb 14 12:02:37 AM CST 2024
+   Version:    0.0.1
+*/
 %option noyywrap
 %x IFILE
 
