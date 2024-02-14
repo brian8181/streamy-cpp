@@ -1,0 +1,8 @@
+blah blah
+123 123
+blah 123
+2 + 3
+file="123"
+c='A';
+if(a==b)
+$a = 123

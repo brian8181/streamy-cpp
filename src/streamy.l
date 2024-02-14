@@ -30,8 +30,8 @@
     int popfile(void);
 %}
 
-DIGIT                       [0-9]
 NUMBER                      [0-9]+
+DIGIT                       [0-9]
 OPEN_CURLY                  "{"
 CLOSE_CURLY                 "}"
 OPEN_BRACE                  "["
@@ -40,7 +40,8 @@ OPEN_PAREN                  "("
 CLOSE_PAREN                 ")"
 DOUBLE_QUOTE                "\""
 SINGLE_QUOTE                "'"
-EQUALS                      "="
+EQUALS                      "=="
+ASSIGNMENT                  "="
 LESS_THAN                   "<"
 GREATER_THAN                ">"
 PLUS                        "+"
@@ -84,6 +85,7 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {DOUBLE_QUOTE}              printf( "DOUBLE_QUOTE: %s\n", yytext );
 {SINGLE_QUOTE}              printf( "SINGLE_QUOTE: %s\n", yytext );
 {EQUALS}                    printf( "EQUALS: %s\n", yytext );
+{ASSIGNMENT}                printf( "ASSIGNMENT: %s\n", yytext );
 {LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
 {GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
 {PLUS}                      printf( "PLUS: %s\n", yytext );
@@ -112,7 +114,7 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {FILE}                      printf( "FILE: %s\n", yytext );
 {VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
-[ \t\n]                     printf( "END_LINE\n" );
+[ \t\n]                     printf( "END_LINE\n"  );
 .                           printf( "Unrecognized character: %s\n", yytext );
 
 %%
