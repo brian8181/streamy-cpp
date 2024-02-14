@@ -97,6 +97,14 @@ streamy.bak.yy.c:
 streamy.tab.c:
 	$(YACC) --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
 
+.PHONY: lex_yacc_ex
+lex_yacc_ex:
+	$(LEX) -o $(BLD)/ex1.yy.c $(SRC)/ex1.l
+	$(CC) $(BLD)/ex1.yy.c -o $(BLD)/ex1
+	$(LEX) -o $(BLD)/ex2.yy.c $(SRC)/ex2.l
+	$(CC) $(BLD)/ex2.yy.c -o $(BLD)/ex2
+
+.PHONY: install
 install:
 	mkdir -p /usr/local/lib
 	mkdir -p /usr/local/include
@@ -105,12 +113,15 @@ install:
 	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
 	chmod 755 $(PREFIX)/include/streamy.hpp $(PREFIX)/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
 
+.PHONY: uninstall
 uninstall:
 	rm $(PREFIX)/include/streamy.hpp
 	rm -rf $(PREFIX)/libstreamy.a $(PREFIX)/lib/libstreamy.so
 
+.PHONY: clean
 clean:
 	-rm $(BLD)/*
 
+.PHONY: clean_src
 clean_src:
 	-rm ./*.o
