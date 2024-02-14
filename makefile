@@ -14,82 +14,83 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: libstreamy.so libstreamy.a index.cgi index2.cgi index3.cgi streamy_lex parser
+all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parser.exe
 
-yacc: tokenizer streamy.bak.yy.c streamy.yy.c
+.PHONY: yacc
+yacc: $(BLD)/tokenizer $(BLD)/streamy.bak.yy.c $(BLD)/streamy.yy.c
 
-streamy.o: compiler.o
+$(BLD)/streamy.o: $(BLD)/compiler.o $(SRC)/streamy.cpp
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
-compiler.o:
+$(BLD)/compiler.o: $(SRC)/compiler.cpp
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
 
-utility.o:
+$(BLD)/utility.o: $(SRC)/utility.cpp
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
 
-index.cgi: utility.o libstreamy.so libstreamy.a index.o
+$(BLD)/index.cgi: $(BLD)/utility.o $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi
 
-index2.cgi: utility.o libstreamy.so libstreamy.a index2.o
+$(BLD)/index2.cgi: $(BLD)/utility.o $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index2.o
 	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/index2.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index2.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index2.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index2_a.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index2.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/inde23_so.cgi
 
-index3.cgi: utility.o libstreamy.so libstreamy.a index3.o
+$(BLD)/index3.cgi: $(BLD)/utility.o $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index3.o
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index3.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index3_a.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index3_so.cgi
 
-index_soso.cgi: install
+$(BLD)/index_soso.cgi: install
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/utility.o -lstreamy -L$(PREFIX) -o $(BLD)/index_soso.cgi
 	cp $(SRC)/index.conf $(BLD)/index.conf
 
-index.o:
+$(BLD)/index.o: $(SRC)/index.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/index.cpp -o $(OBJ)/index.o
 
-index2.o:
+$(BLD)/index2.o: $(SRC)/index2.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/index2.cpp -o $(OBJ)/index2.o
 
-index3.o:
+$(BLD)/index3.o: $(SRC)/index3.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/index3.cpp -o $(OBJ)/index3.o
 
-libstreamy.so: streamy.o
+$(BLD)/libstreamy.so: $(BLD)/streamy.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC --shared $(OBJ)/streamy.o $(OBJ)/compiler.o -o $(BLD)/libstreamy.so
 	chmod 755 $(BLD)/libstreamy.so
 
-libstreamy.a: streamy.o
+$(BLD)/libstreamy.a: $(BLD)/streamy.o
 	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
 	chmod 755 $(BLD)/libstreamy.a
 
-streamy_lex: fileio.o libstreamy.a libstreamy.so
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
+$(BLD)/streamy_lex: $(SRC)/fileio.o $(BLD)/libstreamy.a $(BLD)/libstreamy.so
+	# $(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
 	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(OBJ)/streamy.o -o $(BLD)/streamy_lex
 	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(BLD)/libstreamy.a -o $(BLD)/streamy_lex_a
 	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX) -o $(BLD)/streamy_lex_so
 	# cp $(SRC)/streamy_lex.conf $(BLD)/streamy_lex.conf
 
-fileio.o:
+$(BLD)/fileio.o: $(SRC)/fileio.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o
 
-tokenizer: tokenizer.yy.c
+$(BLD)/tokenizer: $(BLD)/tokenizer.yy.c
 	$(CC) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
 
-tokenizer.yy.c:
+$(BLD)/tokenizer.yy.c: $(SRC)/tokenizer.l
 	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
-parser: streamy.yy.c streamy.tab.c
+$(BLD)/parser.exe: $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c
 	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/parser.exe
 	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c -I./build -lfl -o $(BLD)/lex.exe
 
-streamy.yy.c:
+$(BLD)/streamy.yy.c: $(SRC)/streamy.l
 	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
 
-streamy.bak.yy.c:
+$(BLD)/streamy.bak.yy.c: $(SRC)/streamy.bak.l
 	$(LEX) -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l
 
-streamy.tab.c:
+$(BLD)/streamy.tab.c: $(SRC)/streamy.y
 	$(YACC) --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
 
 .PHONY: lex_yacc_ex
@@ -113,10 +114,13 @@ uninstall:
 	rm $(PREFIX)/include/streamy.hpp
 	rm -rf $(PREFIX)/libstreamy.a $(PREFIX)/lib/libstreamy.so
 
+.PHONY: rebuild
+rebuild: clean all
+
 .PHONY: clean
 clean:
-	-rm $(BLD)/*
+	-rm ./$(BLD)/*
 
 .PHONY: clean_src
 clean_src:
-	-rm ./*.o
+	-rm .$(SRC)/*.o
