@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parser.exe
+all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parser $(BLD)/lex
 
 .PHONY: yacc
 yacc: $(BLD)/tokenizer $(BLD)/streamy.bak.yy.c $(BLD)/streamy.yy.c
@@ -80,9 +80,11 @@ $(BLD)/tokenizer: $(BLD)/tokenizer.yy.c
 $(BLD)/tokenizer.yy.c: $(SRC)/tokenizer.l
 	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
 
-$(BLD)/parser.exe: $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c
-	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/parser.exe
-	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c -I./build -lfl -o $(BLD)/lex.exe
+$(BLD)/parser: $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c
+	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/parser
+
+$(BLD)/lex: $(BLD)/streamy.yy.c
+	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c -I./build -lfl -o $(BLD)/lex
 
 $(BLD)/streamy.yy.c: $(SRC)/streamy.l
 	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.l

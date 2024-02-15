@@ -34,17 +34,21 @@
     int popfile(void);
 %}
 
+INCLUDE                     ^"#"[ \t]*include[ \t]*[\"<]
+DOT                         "."
 NUMBER                      [0-9]+
 DIGIT                       [0-9]
-OPEN_CURLY                  "{"
-CLOSE_CURLY                 "}"
-OPEN_BRACE                  "["
-CLOSE_BRACE                 "]"
+OPEN_BRACE                  "{"
+CLOSE_BRACE                 "}"
+OPEN_BRACKET                "["
+CLOSE_BRACKET               "]"
 OPEN_PAREN                  "("
 CLOSE_PAREN                 ")"
 DOUBLE_QUOTE                "\""
 SINGLE_QUOTE                "'"
 EQUALS                      "=="
+LESS_THAN_EQUALS            "<="
+GREATER_THAN_EQUALS         ">="
 ASSIGNMENT                  "="
 LESS_THAN                   "<"
 GREATER_THAN                ">"
@@ -79,16 +83,20 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 
 %%
 
+{INCLUDE}                   printf( "INCLUDE: %s\n", yytext );
+{DOT}                       printf( "DOT: %s\n", yytext );
 {NUMBER}                    printf( "NUMBER: %s\n", yytext );
-{OPEN_CURLY}                printf( "OPEN_CURLY: %s\n", yytext );
-{CLOSE_CURLY}               printf( "CLOSE_CURLY: %s\n", yytext );
 {OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
 {CLOSE_BRACE}               printf( "CLOSE_BRACE: %s\n", yytext );
+{OPEN_BRACKET}              printf( "OPEN_BRACKET: %s\n", yytext );
+{CLOSE_BRACKET}             printf( "CLOSE_BRACKET: %s\n", yytext );
 {OPEN_PAREN}                printf( "OPEN_PAREN: %s\n", yytext );
 {CLOSE_PAREN}               printf( "CLOSE_PAREN: %s\n", yytext );
 {DOUBLE_QUOTE}              printf( "DOUBLE_QUOTE: %s\n", yytext );
 {SINGLE_QUOTE}              printf( "SINGLE_QUOTE: %s\n", yytext );
 {EQUALS}                    printf( "EQUALS: %s\n", yytext );
+{LESS_THAN_EQUALS}          printf( "LESS_THAN_EQUALS: %s\n", yytext );
+{GREATER_THAN_EQUALS}       printf( "GREATER_THAN_EQUALS: %s\n", yytext );
 {ASSIGNMENT}                printf( "ASSIGNMENT: %s\n", yytext );
 {LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
 {GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
