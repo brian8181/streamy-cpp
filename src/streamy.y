@@ -19,7 +19,7 @@ start:  x
         |
         y
         ;
-        x: INTEGER;
+        x: INTEGER { printf("INT"); };
         y: TEXT;
 %%
 
