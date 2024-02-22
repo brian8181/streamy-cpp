@@ -86,8 +86,8 @@ $(BLD)/parse: $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c
 $(BLD)/lex: $(BLD)/streamy.yy.c
 	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c -I./build -lfl -o $(BLD)/lex
 
-$(BLD)/streamy.yy.c: $(SRC)/streamy.l
-	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.l
+$(BLD)/streamy.yy.c: $(SRC)/streamy.lex
+	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.lex
 
 $(BLD)/streamy.bak.yy.c: $(SRC)/streamy.bak.l
 	$(LEX) -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l

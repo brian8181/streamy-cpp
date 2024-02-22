@@ -19,8 +19,9 @@ start:  x
         |
         y
         ;
-        x: INTEGER { printf("INT"); };
-        y: TEXT;
+x: INTEGER { printf("INT"); }
+y: TEXT    { printf("TEXT"); }
+
 %%
 
 int fileno;
@@ -35,3 +36,9 @@ int yyerror(char *s)
     fprintf(stderr, "%s\n", s);
     return 0;
 }
+
+/* int main(void)
+{
+    yyparse();
+    return 0;
+} */
