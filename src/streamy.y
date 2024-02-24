@@ -12,6 +12,8 @@ int fileno(char *);
 //#define YYDEBUG 1
 
 int yyerror(char *);
+int yylex(void);
+
 
 %}
 
@@ -45,8 +47,8 @@ int yyerror(char *s)
     return 0;
 }
 
-/* int main(void)
+int main(void)
 {
     yyparse();
     return 0;
-} */
+}

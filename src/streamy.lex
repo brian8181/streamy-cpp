@@ -20,7 +20,7 @@
     int yylex(void);
     void yyerror(char *);
     int fileno(FILE *);
-    
+
     int TEXT_LITERAL;
 
     struct bufstack
@@ -141,6 +141,11 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 
 %%
 
+/* int yywrap()
+{
+    return 1;
+}
+
 int main(int argc, char** argv)
 {
     if(argc < 2)
@@ -152,7 +157,7 @@ int main(int argc, char** argv)
 
     if(newfile(argv[1]))
         yylex();
-}
+} */
 
 int newfile(char* fn)
 {
