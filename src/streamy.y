@@ -9,12 +9,13 @@
 #include "streamy.yy.h"
 
 int fileno(char *);
+int newfile(char* fn);
 int yyerror(char *);
 int yylex(void);
 
 %}
 
-
+%token NEWLINE
 %token PLUS
 %token MINUS
 %token NUMBER
@@ -26,23 +27,24 @@ program:
         ;
 
 statement:
-        expr    { printf("%d\n", $1); }
+        expr    { printf("STMT %d\n", $1); }
         |
         ;
 expr:
         NUMBER
             {
                 $$ = $1;
-                printf("%d\n", $$);
+                printf("NUMBER %d\n", $$);
             }
         |   NUMBER PLUS expr
             {
                 $$ = $1 + $3;
-                printf("%d\n", $1);
+                printf("PLUS %d\n", $1);
             }
         |   NUMBER MINUS expr
             {
                 $$ = $1 - $3;
+                printf("MINUS %d\n", $1);
             }
         ;
 
@@ -59,8 +61,19 @@ int yyerror(char *s)
     return 0;
 }
 
-int main(void)
+int main(int argc , char* argv[])
 {
-    yyparse();
+    if(argc < 2)
+    {
+        fprintf(stderr, "Error: missing paramter\n");
+        fprintf(stderr, "lex [OPTION]... [FilE]...\n");
+        // commnad line
+        yyparse();
+        return 1;
+    }
+
+    if(newfile(argv[1]))
+        yyparse();
+
     return 0;
 }

@@ -10,19 +10,6 @@
     #include <stdio.h>
     #include "streamy.tab.h"
 
-
-    #define YYERROR(str) yyerror("%s\n", str);
-
-    extern char *yytext;
-    extern int yyleng;
-    extern int yylineno;
-
-    int yylex(void);
-    void yyerror(char *);
-    int fileno(FILE *);
-
-    int TEXT_LITERAL;
-
     struct bufstack
     {
         struct bufstack *prev;
@@ -42,6 +29,16 @@
     /* name of current input file */
     int newfile(char *fn);
     int popfile(void);
+
+
+    #define YYERROR(str) yyerror("%s\n", str);
+    extern char *yytext;
+    extern int yyleng;
+    extern int yylineno;
+    int yylex(void);
+    void yyerror(char *);
+    int fileno(FILE *);
+
 %}
 
 INCLUDE                     ^"#"[ \t]*include[ \t]*[\"<]
@@ -96,7 +93,7 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {INCLUDE}                   printf( "INCLUDE: %s\n", yytext );
 {DOT}                       printf( "DOT: %s\n", yytext );
 {NUMBER}                    {
-                                printf( "NUMBER: %s\n", yytext );
+                                //printf( "NUMBER: %s\n", yytext );
                                 return NUMBER;
                             }
 {OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
@@ -114,11 +111,11 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
 {GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
 {PLUS}                      {
-                                printf( "PLUS: %s\n", yytext );
+                                //printf( "PLUS: %s\n", yytext );
                                 return PLUS;
                             }
 {MINUS}                     {
-                                printf( "MINUS: %s\n", yytext );
+                                //printf( "MINUS: %s\n", yytext );
                                 return MINUS;
                             }
 {MULTIPLY}                  printf( "MULTIPLY: %s\n", yytext );
@@ -145,7 +142,10 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {FILE}                      printf( "FILE: %s\n", yytext );
 {VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
-[ \t\n]                     printf( "END_LINE\n"  );
+[ \t\n]                     {
+                                //printf( "END_LINE\n"  );
+                                return NEWLINE;
+                            }
 .                           printf( "Unrecognized character: %s\n", yytext );
 
 %%
