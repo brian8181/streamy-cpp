@@ -24,13 +24,13 @@ extern void* pyyval;
 
 %%
 program:
-        program statement NEWLINE { printf("End\n"); }
+        program statement NEWLINE { printf("Pop %d\n", $2); }
         |
         ;
 statement:
             expr
                 {
-                    printf("EXPR %d\n", $$);
+                    //printf("EXPR %d\n", $$);
                 }
                 |
             ;
@@ -38,17 +38,18 @@ expr:
         NUMBER
             {
                 $$ = *((int*)pyyval);
-                printf("NUMBER %d\n", $$);
+                printf("pushing %d\n", $$);
+                //printf("NUMBER %d\n", $$);
             }
         |   expr PLUS expr
             {
                 $$ = $1 + $3;
-                printf("PLUS %d\n", $$);
+                printf("Adding: %d + %d = %d\n",$1, $3, $$);
             }
         |   expr MINUS expr
             {
                 $$ = $1 - $3;
-                printf("MINUS %d\n", $$);
+                printf("Subtracting: %d + %d = %d\n",$1, $3, $$);
             }
         ;
 
