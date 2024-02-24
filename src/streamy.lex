@@ -95,7 +95,10 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 
 {INCLUDE}                   printf( "INCLUDE: %s\n", yytext );
 {DOT}                       printf( "DOT: %s\n", yytext );
-{NUMBER}                    printf( "NUMBER: %s\n", yytext );
+{NUMBER}                    {
+                                printf( "NUMBER: %s\n", yytext );
+                                return NUMBER;
+                            }
 {OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
 {CLOSE_BRACE}               printf( "CLOSE_BRACE: %s\n", yytext );
 {OPEN_BRACKET}              printf( "OPEN_BRACKET: %s\n", yytext );
@@ -110,8 +113,14 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {ASSIGNMENT}                printf( "ASSIGNMENT: %s\n", yytext );
 {LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
 {GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
-{PLUS}                      printf( "PLUS: %s\n", yytext );
-{MINUS}                     printf( "MINUS: %s\n", yytext );
+{PLUS}                      {
+                                printf( "PLUS: %s\n", yytext );
+                                return PLUS;
+                            }
+{MINUS}                     {
+                                printf( "MINUS: %s\n", yytext );
+                                return MINUS;
+                            }
 {MULTIPLY}                  printf( "MULTIPLY: %s\n", yytext );
 {EXPONET}                   printf( "EXPONET: %s\n", yytext );
 {FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
