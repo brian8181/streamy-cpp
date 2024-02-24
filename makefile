@@ -126,3 +126,10 @@ clean:
 .PHONY: clean_src
 clean_src:
 	-rm .$(SRC)/*.o
+
+.PHONY: help
+help:
+	@echo  '  all         - build all'
+	@echo  '  install     - copy files to /usr/local'
+	@echo  '  uninstall   - remove files to /usr/local'
+	@echo  '  clean       - remove most generated files but keep the config'

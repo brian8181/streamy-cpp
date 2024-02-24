@@ -5,9 +5,14 @@
 */
 %{
 #include <stdio.h>
-#include "streamy.tab.h"
 #include "streamy.yy.h"
+
+
+int fileno(char *);
 //#define YYDEBUG 1
+
+int yyerror(char *);
+
 %}
 
 %token INTEGER
@@ -24,7 +29,10 @@ y: TEXT    { printf("TEXT"); }
 
 %%
 
-int fileno;
+int fileno(char *)
+{
+    return 0;
+}
 
 int parse()
 {

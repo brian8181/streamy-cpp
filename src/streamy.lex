@@ -9,8 +9,18 @@
 %{
     #include <stdio.h>
     #include "streamy.tab.h"
+
+
+    #define YYERROR(str) yyerror("%s\n", str);
+
+    extern char *yytext;
+    extern int yyleng;
+    extern int yylineno;
+
     int yylex(void);
     void yyerror(char *);
+    int fileno(FILE *);
+    
     int TEXT_LITERAL;
 
     struct bufstack
