@@ -3,12 +3,16 @@
    Build Date: Wed Feb 14 12:02:37 AM CST 2024
    Version:    0.0.1
 */
-%option noyywrap
-%x IFILE
-
 %{
+    #include <string.h>
+    #include <stdlib.h>
     #include <stdio.h>
     #include "streamy.tab.h"
+
+    // #include <stdio.h>
+    // #include "y.tab.h"
+
+    void count();
 
     struct bufstack
     {
@@ -32,13 +36,16 @@
 
 
     #define YYERROR(str) yyerror("%s\n", str);
-    extern char *yytext;
-    extern int yyleng;
-    extern int yylineno;
-    int yylex(void);
-    void yyerror(char *);
-    int fileno(FILE *);
+    // extern char *yytext;
+    // extern int yyleng;
+    // extern int yylineno;
+    // int yylex(void);
+    // void yyerror(char *);
+    //extern YYSTYPE yylval;
+     int fileno(FILE *);
 
+    //YYSTYPE yylval;
+    void* pyyval;
 %}
 
 INCLUDE                     ^"#"[ \t]*include[ \t]*[\"<]
@@ -94,6 +101,8 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {DOT}                       printf( "DOT: %s\n", yytext );
 {NUMBER}                    {
                                 //printf( "NUMBER: %s\n", yytext );
+                                int n = atoi(yytext);
+                                pyyval = (void*)&n;
                                 return NUMBER;
                             }
 {OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
@@ -167,6 +176,26 @@ int main(int argc, char** argv)
     if(newfile(argv[1]))
         yylex();
 } */
+
+int column;
+char* lex_text[256];
+int buffer_size;
+
+void count()
+{
+	int i;
+
+	for (i = 0; yytext[i] != '\0'; i++)
+		if (yytext[i] == '\n')
+			column = 0;
+		else if (yytext[i] == '\t')
+			column += 8 - (column % 8);
+		else
+			column++;
+
+	ECHO;
+}
+
 
 int newfile(char* fn)
 {

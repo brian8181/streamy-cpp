@@ -12,43 +12,54 @@ int fileno(char *);
 int newfile(char* fn);
 int yyerror(char *);
 int yylex(void);
+extern void* pyyval;
 
 %}
 
-%token NEWLINE
-%token PLUS
-%token MINUS
+
 %token NUMBER
+%left PLUS
+%left MINUS
+%token NEWLINE
 
 %%
 program:
-        program statement '\n'
+        program statement '\n' { printf("program %d\n", $$); }
         |
         ;
-
 statement:
-        expr    { printf("STMT %d\n", $1); }
+        expr    {
+                    $$ = $1;
+                    printf("STMT %d\n", $$);
+                }
         |
         ;
 expr:
         NUMBER
             {
-                $$ = $1;
+                $$ = *((int*)pyyval);
                 printf("NUMBER %d\n", $$);
             }
-        |   NUMBER PLUS expr
+        |   expr PLUS expr
             {
                 $$ = $1 + $3;
-                printf("PLUS %d\n", $1);
+                printf("PLUS %d\n", $$);
             }
-        |   NUMBER MINUS expr
+        |   expr MINUS expr
             {
                 $$ = $1 - $3;
-                printf("MINUS %d\n", $1);
+                printf("MINUS %d\n", $$);
             }
         ;
 
 %%
+
+#include <stdio.h>
+
+//extern void* pyyval;
+extern char* yytext;
+extern int column;
+
 
 int fileno(char *)
 {
