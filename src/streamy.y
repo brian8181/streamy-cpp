@@ -24,16 +24,16 @@ extern void* pyyval;
 
 %%
 program:
-        program statement '\n' { printf("program %d\n", $$); }
+        program statement NEWLINE { printf("End\n"); }
         |
         ;
 statement:
-        expr    {
-                    $$ = $1;
-                    printf("STMT %d\n", $$);
+            expr
+                {
+                    printf("EXPR %d\n", $$);
                 }
-        |
-        ;
+                |
+            ;
 expr:
         NUMBER
             {

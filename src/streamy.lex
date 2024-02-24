@@ -94,6 +94,7 @@ FOREACHELSE                 "foreachelse"
 FILE                        "file"
 VARIABLE                    "$"[a-zA-Z]+[a-zA-Z0-9]*
 TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
+SPACE                       [ \t]
 
 %%
 
@@ -151,7 +152,8 @@ TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
 {FILE}                      printf( "FILE: %s\n", yytext );
 {VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
-[ \t\n]                     {
+[ \t]                       printf( "SPACE: %s\n",  yytext );
+[\n]                        {
                                 //printf( "END_LINE\n"  );
                                 return NEWLINE;
                             }
