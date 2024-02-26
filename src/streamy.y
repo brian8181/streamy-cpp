@@ -10,47 +10,30 @@
 
 int fileno(char *);
 int newfile(char* fn);
-int yyerror(char *);
+void yyerror(char *);
 int yylex(void);
 extern void* pyyval;
 
 %}
 
-
-%token NUMBER
-%left PLUS
-%left MINUS
+%token TEXT
+%token OPEN_BRACE
+%token CLOSE_BRACE
 %token NEWLINE
+%token CHAR
+%token SPACE
 
 %%
 program:
-        program statement NEWLINE { printf("Pop %d\n", $2); }
+
+        NEWLINE CHAR
         |
-        ;
-statement:
-            expr
-                {
-                    //printf("EXPR %d\n", $$);
-                }
-                |
-            ;
-expr:
-        NUMBER
-            {
-                $$ = *((int*)pyyval);
-                printf("pushing %d\n", $$);
-                //printf("NUMBER %d\n", $$);
-            }
-        |   expr PLUS expr
-            {
-                $$ = $1 + $3;
-                printf("Adding: %d + %d = %d\n",$1, $3, $$);
-            }
-        |   expr MINUS expr
-            {
-                $$ = $1 - $3;
-                printf("Subtracting: %d + %d = %d\n",$1, $3, $$);
-            }
+        CHAR
+        {
+            $$ = $1;
+            printf("%s", $$);
+        }
+
         ;
 
 %%
@@ -67,10 +50,9 @@ int fileno(char *)
     return 0;
 }
 
-int yyerror(char *s)
+void yyerror(char *s)
 {
-    fprintf(stderr, "%s\n", s);
-    return 0;
+    fprintf(stderr, "line %d: %s\n", yylineno, s);
 }
 
 int main(int argc , char* argv[])

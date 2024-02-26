@@ -46,118 +46,21 @@
 
     //YYSTYPE yylval;
     void* pyyval;
+    char* lex_text[256];
 %}
 
-INCLUDE                     ^"#"[ \t]*include[ \t]*[\"<]
-DOT                         "."
-NUMBER                      [0-9]+
-DIGIT                       [0-9]
 OPEN_BRACE                  "{"
 CLOSE_BRACE                 "}"
-OPEN_BRACKET                "["
-CLOSE_BRACKET               "]"
-OPEN_PAREN                  "("
-CLOSE_PAREN                 ")"
-DOUBLE_QUOTE                "\""
-SINGLE_QUOTE                "'"
-EQUALS                      "=="
-LESS_THAN_EQUALS            "<="
-GREATER_THAN_EQUALS         ">="
-ASSIGNMENT                  "="
-LESS_THAN                   "<"
-GREATER_THAN                ">"
-PLUS                        "+"
-MINUS                       "-"
-MULTIPLY                    "*"
-EXPONET                     "^"
-FOREWARD_SLASH              "/"
-BACKWARD_SLASH              "\\"
-BAR                         "|"
-HASH                        "#"
-UNDERSCORE                  "_"
-SEMI_COLON                  ";"
-COLON                       ":"
-AMPERSAND                   "&"
-TILDE                       "~"
-TICK_MARK                   "`"
-AT_SYMBOL                   "@"
-EXCLAMATION                 "!"
-PERCENT                     "%"
-COMMA                       ","
-QUESTION                    "?"
-DOLLAR_SIGN                 "$"
-IF                          "if"
-ELSE                        "else"
-ELSE_IF                     "elseif"
-FOREACH                     "foreach"
-FOREACHELSE                 "foreachelse"
-FILE                        "file"
-VARIABLE                    "$"[a-zA-Z]+[a-zA-Z0-9]*
-TEXT                        [a-zA-Z0-9]+[a-zA-Z0-9]*
-SPACE                       [ \t]
 
 %%
 
-{INCLUDE}                   printf( "INCLUDE: %s\n", yytext );
-{DOT}                       printf( "DOT: %s\n", yytext );
-{NUMBER}                    {
-                                //printf( "NUMBER: %s\n", yytext );
-                                int n = atoi(yytext);
-                                pyyval = (void*)&n;
-                                return NUMBER;
-                            }
 {OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
 {CLOSE_BRACE}               printf( "CLOSE_BRACE: %s\n", yytext );
-{OPEN_BRACKET}              printf( "OPEN_BRACKET: %s\n", yytext );
-{CLOSE_BRACKET}             printf( "CLOSE_BRACKET: %s\n", yytext );
-{OPEN_PAREN}                printf( "OPEN_PAREN: %s\n", yytext );
-{CLOSE_PAREN}               printf( "CLOSE_PAREN: %s\n", yytext );
-{DOUBLE_QUOTE}              printf( "DOUBLE_QUOTE: %s\n", yytext );
-{SINGLE_QUOTE}              printf( "SINGLE_QUOTE: %s\n", yytext );
-{EQUALS}                    printf( "EQUALS: %s\n", yytext );
-{LESS_THAN_EQUALS}          printf( "LESS_THAN_EQUALS: %s\n", yytext );
-{GREATER_THAN_EQUALS}       printf( "GREATER_THAN_EQUALS: %s\n", yytext );
-{ASSIGNMENT}                printf( "ASSIGNMENT: %s\n", yytext );
-{LESS_THAN}                 printf( "LESS_THAN: %s\n", yytext );
-{GREATER_THAN}              printf( "GREATER_THAN: %s\n", yytext );
-{PLUS}                      {
-                                //printf( "PLUS: %s\n", yytext );
-                                return PLUS;
-                            }
-{MINUS}                     {
-                                //printf( "MINUS: %s\n", yytext );
-                                return MINUS;
-                            }
-{MULTIPLY}                  printf( "MULTIPLY: %s\n", yytext );
-{EXPONET}                   printf( "EXPONET: %s\n", yytext );
-{FOREWARD_SLASH}            printf( "FOREWARD_SLASH: %s\n", yytext );
-{BACKWARD_SLASH}            printf( "BACKWARD_SLASH: %s\n", yytext );
-{BAR}                       printf( "BAR: %s\n", yytext );
-{HASH}                      printf( "HASH: %s\n", yytext );
-{UNDERSCORE}                printf( "UNDERSCORE: %s\n", yytext );
-{SEMI_COLON}                printf( "SEMI_COLON: %s\n", yytext );
-{COLON}                     printf( "COLON: %s\n", yytext );
-{AMPERSAND}                 printf( "AMPERSAND: %s\n", yytext );
-{TILDE}                     printf( "TILDE: %s\n", yytext );
-{TICK_MARK}                 printf( "TICK_MARK: %s\n", yytext );
-{AT_SYMBOL}                 printf( "AT_SYMBOL: %s\n", yytext );
-{EXCLAMATION}               printf( "EXCLAMATION: %s\n", yytext );
-{PERCENT}                   printf( "PERCENT: %s\n", yytext );
-{COMMA}                     printf( "COMMA: %s\n", yytext );
-{QUESTION}                  printf( "QUESTION: %s\n", yytext );
-{DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
-{IF}                        printf( "IF: %s\n", yytext );
-{ELSE}                      printf( "ELSE: %s\n", yytext );
-{ELSE_IF}                   printf( "ELSE_IF: %s\n", yytext );
-{FILE}                      printf( "FILE: %s\n", yytext );
-{VARIABLE}                  printf( "VARIABLE: %s\n", yytext );
-{TEXT}                      printf( "TEXT: %s\n",  yytext );
-[ \t]                       printf( "SPACE: %s\n",  yytext );
-[\n]                        {
-                                //printf( "END_LINE\n"  );
-                                return NEWLINE;
-                            }
-.                           printf( "Unrecognized character: %s\n", yytext );
+[ \t\n]                     { return SPACE; }
+.*                           {
+    char* text = yytext;
+    return CHAR;
+}
 
 %%
 
@@ -180,7 +83,7 @@ int main(int argc, char** argv)
 } */
 
 int column;
-char* lex_text[256];
+
 int buffer_size;
 
 void count()
