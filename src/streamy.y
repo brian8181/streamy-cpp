@@ -22,12 +22,17 @@ extern void* pyyval;
 %%
 
 program:
-
         html NEWLINE
         {
             $$ = $1;
             printf("program %s\n", yytext );
             exit(0);
+        }
+        |
+        html '{'
+        {
+             $$ = $1;
+            printf("program %s\n", yytext );
         }
         ;
 html:
@@ -35,12 +40,6 @@ html:
         {
             $$ = *yytext;
             printf("PT %s\n", yytext);
-        }
-        |
-        NEWLINE
-        {
-            $$ = *yytext;
-            printf("PN %s\n", yytext);
         }
         |
         html TEXT
