@@ -54,13 +54,10 @@ CLOSE_BRACE                 "}"
 
 %%
 
-{OPEN_BRACE}                printf( "OPEN_BRACE: %s\n", yytext );
-{CLOSE_BRACE}               printf( "CLOSE_BRACE: %s\n", yytext );
-[ \t\n]                     { return SPACE; }
-.*                           {
-    char* text = yytext;
-    return CHAR;
-}
+[0-9]                       { printf("TEXT: %s\n", yytext ); return TEXT; }
+\n                          { printf("NEWLINE: %s\n", yytext ); return NEWLINE; }
+.                           { printf("error: %s\n", yytext ); }
+
 
 %%
 

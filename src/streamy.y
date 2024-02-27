@@ -17,24 +17,39 @@ extern void* pyyval;
 %}
 
 %token TEXT
-%token OPEN_BRACE
-%token CLOSE_BRACE
 %token NEWLINE
-%token CHAR
-%token SPACE
 
 %%
+
 program:
 
-        NEWLINE CHAR
-        |
-        CHAR
+        html NEWLINE
         {
             $$ = $1;
-            printf("%s", $$);
+            printf("program %s\n", yytext );
+            exit(0);
         }
-
         ;
+html:
+        TEXT
+        {
+            $$ = *yytext;
+            printf("PT %s\n", yytext);
+        }
+        |
+        NEWLINE
+        {
+            $$ = *yytext;
+            printf("PN %s\n", yytext);
+        }
+        |
+        html TEXT
+        {
+            $$ = *yytext;
+            printf("PHT %s\n", yytext);
+        }
+        ;
+
 
 %%
 

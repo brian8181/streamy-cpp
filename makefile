@@ -14,7 +14,7 @@ SRC = src
 BLD = build
 OBJ = build
 
-all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex $(BLD)/parse2
+all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex
 
 .PHONY: yacc
 yacc: $(BLD)/tokenizer $(BLD)/streamy.bak.yy.c $(BLD)/streamy.yy.c
@@ -83,18 +83,11 @@ $(BLD)/tokenizer.yy.c: $(SRC)/tokenizer.l
 $(BLD)/parse: $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c
 	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/parse
 
-$(BLD)/parse2: $(BLD)/streamy2.yy.c $(BLD)/streamy.tab.c
-	$(CC) $(CCFLAGS) $(BLD)/streamy2.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/parse2
-
-
 $(BLD)/lex: $(BLD)/streamy.yy.c
 	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c -I./build -lfl -o $(BLD)/lex
 
 $(BLD)/streamy.yy.c: $(SRC)/streamy.lex
-	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.lex
-
-$(BLD)/streamy2.yy.c: $(SRC)/streamy2.lex
-	$(LEX) --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy2.yy.c $(SRC)/streamy2.lex
+	$(LEX) --yylineno --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.lex
 
 $(BLD)/streamy.bak.yy.c: $(SRC)/streamy.bak.l
 	$(LEX) -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l
@@ -128,7 +121,8 @@ rebuild: clean all
 
 .PHONY: clean
 clean:
-	-rm ./$(BLD)/*
+	-rm -f ./$(OBJ)/*
+	-rm -f ./$(BLD)/*
 
 .PHONY: clean_src
 clean_src:
