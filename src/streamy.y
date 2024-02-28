@@ -18,6 +18,8 @@ extern void* pyyval;
 
 %token TEXT
 %token NEWLINE
+%token OPEN_BRACE CLOSE_BRACE
+%token VARIABLE
 
 %%
 
@@ -29,9 +31,18 @@ program:
             exit(0);
         }
         |
-        html '{'
+        html OPEN_BRACE
         {
+
              $$ = $1;
+            printf("program %s\n", yytext );
+        }
+        |
+        OPEN_BRACE VARIABLE CLOSE_BRACE
+        {
+            $$ = $1;
+            $$ = $2;
+            $$ = $3;
             printf("program %s\n", yytext );
         }
         ;
@@ -47,22 +58,21 @@ html:
             $$ = *yytext;
             printf("PHT %s\n", yytext);
         }
+        |
+        OPEN_BRACE
+        {
+            $$ = *yytext;
+            printf("PHT %s\n", yytext);
+            //unput(yytext);
+        }
         ;
 
 
 %%
 
 #include <stdio.h>
-
-//extern void* pyyval;
 extern char* yytext;
 extern int column;
-
-
-int fileno(char *)
-{
-    return 0;
-}
 
 void yyerror(char *s)
 {
@@ -75,13 +85,25 @@ int main(int argc , char* argv[])
     {
         fprintf(stderr, "Error: missing paramter\n");
         fprintf(stderr, "lex [OPTION]... [FilE]...\n");
-        // commnad line
-        yyparse();
-        return 1;
     }
 
-    if(newfile(argv[1]))
-        yyparse();
-
+    // commnad line
+    yyparse();
     return 0;
 }
+/*
+int maint_()
+{
+    extern FILE *yyin;
+    if(argc > 1)
+    {
+        if((yyin = fopen(argv[1], "r")) == NULL)
+        {
+            perror(argv[1]);
+            exit(1);
+        }
+    }
+    filename = argv[1];
+    yyparse();
+
+}  */
