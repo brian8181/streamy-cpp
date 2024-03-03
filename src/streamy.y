@@ -18,7 +18,8 @@ extern void* pyyval;
 
 %token TEXT
 %token NEWLINE
-%token OPEN_BRACE CLOSE_BRACE NAME
+%token OPEN_BRACE CLOSE_BRACE NAME TAG
+/* 0%token <d> NUMBERn */
 /* %token <symp> NAME */
 
 %%
@@ -30,34 +31,46 @@ program:
             exit(0);
         }
         |
-        html OPEN_BRACE
+        NAME
+        {
+            printf("NAME %s\n", yytext );
+        }
+        |
+        tag
+        {
+            printf("TAG %s\n", yytext );
+        }
+        |
+        html tag
         {
             printf("program %s\n", yytext );
         }
         ;
+tag:
+        OPEN_BRACE NAME
+        {
+            printf("name%s\n", yytext );
+        }
 html:
         TEXT
         {
-            /* $$ = *yytext; */
             printf("PT %s\n", yytext);
         }
         |
         html TEXT
         {
-                    /* $$ = *yytext; */
             printf("PHT %s\n", yytext);
         }
         |
         OPEN_BRACE
         {
-                    /* $$ = *yytext; */
             printf("PHT %s\n", yytext);
             //unput(yytext);
         }
         |
-        NAME
+        CLOSE_BRACE
         {
-            /* $$ = $1->value; */
+            printf("PHT %s\n", yytext);
         }
         ;
 

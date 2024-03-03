@@ -51,7 +51,8 @@
 
 OPEN_BRACE                  "{"
 CLOSE_BRACE                 "}"
-NAME                   "$"[A-Za-z]+[A-Za-z0-9]*
+TEXT                         [^{]
+NAME                        "$"[A-Z]
 
 %%
 
@@ -67,9 +68,12 @@ NAME                   "$"[A-Za-z]+[A-Za-z0-9]*
                                 yymore();
                                 return CLOSE_BRACE;
                             }
+{TEXT}                      {
+                                printf("TEXT: %s\n", yytext );
+                                return TEXT;
+                            }
 {NAME}                      {
-                                 /* return symbol pointer */
-                                //yylval.symp = symlook(yytext);
+                                printf(": %s\n", yytext );
                                 return NAME;
                             }
 \n                          { printf("NEWLINE: %s\n", yytext ); return NEWLINE; }
