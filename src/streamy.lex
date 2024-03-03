@@ -31,27 +31,27 @@
 
     char *curfilename;
     /* name of current input file */
-    int newfile(char *fn);
-    int popfile(void);
+    // int newfile(char *fn);
+    // int popfile(void);
 
 
-    #define YYERROR(str) yyerror("%s\n", str);
+    // #define YYERROR(str) yyerror("%s\n", str);
     // extern char *yytext;
     // extern int yyleng;
     // extern int yylineno;
     // int yylex(void);
     // void yyerror(char *);
-    //extern YYSTYPE yylval;
-     int fileno(FILE *);
+    // extern YYSTYPE yylval;
+    int fileno(FILE *);
 
     //YYSTYPE yylval;
-    void* pyyval;
-    char* lex_text[256];
+    // void* pyyval;
+    // char* lex_text[256];
 %}
 
 OPEN_BRACE                  "{"
 CLOSE_BRACE                 "}"
-VARIABLE                    "$"[A-Za-z]+[A-Za-z0-9]*
+NAME                   "$"[A-Za-z]+[A-Za-z0-9]*
 
 %%
 
@@ -63,17 +63,35 @@ VARIABLE                    "$"[A-Za-z]+[A-Za-z0-9]*
                             }
 {CLOSE_BRACE}               {
                                 printf("CLOSE_BRACE: %s\n", yytext );
-                                // yyless(yyleng-1); /* return last quote */
-                                // yymore();
+                                yyless(yyleng-1); /* return last quote */
+                                yymore();
                                 return CLOSE_BRACE;
                             }
-{VARIABLE}
-                            {
-                                return yytext;
+{NAME}                      {
+                                 /* return symbol pointer */
+                                //yylval.symp = symlook(yytext);
+                                return NAME;
                             }
-[0-9]                       { printf("TEXT: %s\n", yytext ); return TEXT; }
 \n                          { printf("NEWLINE: %s\n", yytext ); return NEWLINE; }
 .                           { printf("error: %s\n", yytext ); }
 
 
 %%
+
+
+int yywrap()
+{
+    return 1;
+}
+
+/* int main(int argc, char** argv)
+{
+    if(argc < 2)
+    {
+        fprintf(stderr, "need filename\n");
+        return 1;
+    }
+
+    if(newfile(argv[1]))
+        yylex();
+} */

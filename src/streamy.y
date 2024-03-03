@@ -9,61 +9,55 @@
 #include "streamy.yy.h"
 
 int fileno(char *);
-int newfile(char* fn);
 void yyerror(char *);
 int yylex(void);
 extern void* pyyval;
 
 %}
 
+
 %token TEXT
 %token NEWLINE
-%token OPEN_BRACE CLOSE_BRACE
-%token VARIABLE
+%token OPEN_BRACE CLOSE_BRACE NAME
+/* %token <symp> NAME */
 
 %%
 
 program:
         html NEWLINE
         {
-            $$ = $1;
             printf("program %s\n", yytext );
             exit(0);
         }
         |
         html OPEN_BRACE
         {
-
-             $$ = $1;
-            printf("program %s\n", yytext );
-        }
-        |
-        OPEN_BRACE VARIABLE CLOSE_BRACE
-        {
-            $$ = $1;
-            $$ = $2;
-            $$ = $3;
             printf("program %s\n", yytext );
         }
         ;
 html:
         TEXT
         {
-            $$ = *yytext;
+            /* $$ = *yytext; */
             printf("PT %s\n", yytext);
         }
         |
         html TEXT
         {
-            $$ = *yytext;
+                    /* $$ = *yytext; */
             printf("PHT %s\n", yytext);
         }
         |
         OPEN_BRACE
         {
-            $$ = *yytext;
+                    /* $$ = *yytext; */
             printf("PHT %s\n", yytext);
             //unput(yytext);
+        }
+        |
+        NAME
+        {
+            /* $$ = $1->value; */
         }
         ;
 
@@ -79,20 +73,21 @@ void yyerror(char *s)
     fprintf(stderr, "line %d: %s\n", yylineno, s);
 }
 
-int main(int argc , char* argv[])
+/* int main(int argc , char* argv[])
 {
     if(argc < 2)
     {
-        fprintf(stderr, "Error: missing paramter\n");
+        fprintf(stderr, "Missing filename paramter\n interactive mode");
         fprintf(stderr, "lex [OPTION]... [FilE]...\n");
+        fprintf(stderr, "Interactive mode...\n");
     }
 
     // commnad line
     yyparse();
     return 0;
-}
-/*
-int maint_()
+} */
+
+int main(int argc , char* argv[])
 {
     extern FILE *yyin;
     if(argc > 1)
@@ -103,7 +98,11 @@ int maint_()
             exit(1);
         }
     }
-    filename = argv[1];
+    else
+    {
+        fprintf(stderr, "Missing filename paramter\n interactive mode");
+        fprintf(stderr, "lex [OPTION]... [FilE]...\n");
+        fprintf(stderr, "Interactive mode...\n");
+    }
     yyparse();
-
-}  */
+}

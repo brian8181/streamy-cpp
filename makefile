@@ -16,8 +16,6 @@ OBJ = build
 
 all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex
 
-.PHONY: yacc
-yacc: $(BLD)/tokenizer $(BLD)/streamy.bak.yy.c $(BLD)/streamy.yy.c
 
 $(BLD)/streamy.o: $(BLD)/compiler.o $(SRC)/streamy.cpp
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
