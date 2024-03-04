@@ -18,9 +18,10 @@ extern void* pyyval;
 
 %token TEXT
 %token NEWLINE
-%token OPEN_BRACE CLOSE_BRACE NAME TAG
-/* 0%token <d> NUMBERn */
-/* %token <symp> NAME */
+%token OPEN_BRACE
+%token CLOSE_BRACE
+%token SYMBOL
+
 
 %%
 
@@ -31,9 +32,9 @@ program:
             exit(0);
         }
         |
-        NAME
+        SYMBOL
         {
-            printf("NAME %s\n", yytext );
+            printf("SYMBOL x%s\n", yytext );
         }
         |
         tag
@@ -47,9 +48,9 @@ program:
         }
         ;
 tag:
-        OPEN_BRACE NAME
+        OPEN_BRACE SYMBOL
         {
-            printf("name%s\n", yytext );
+            printf("SYMBOL%s\n", yytext );
         }
 html:
         TEXT

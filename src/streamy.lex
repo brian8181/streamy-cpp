@@ -51,30 +51,30 @@
 
 OPEN_BRACE                  "{"
 CLOSE_BRACE                 "}"
+SYMBOL                       "$"[A-Z]
 TEXT                         [^{]
-NAME                        "$"[A-Z]
 
 %%
 
 {OPEN_BRACE}                {
-                                printf("OPEN_BRACE: %s\n", yytext );
-                                yyless(yyleng-1); /* return last quote */
-                                yymore();
+                                //rintf("OPEN_BRACE: %s\n", yytext );
+                                // yyless(yyleng-1); /* return last quote */
+                                // yymore();
                                 return OPEN_BRACE;
                             }
 {CLOSE_BRACE}               {
-                                printf("CLOSE_BRACE: %s\n", yytext );
+                                //printf("CLOSE_BRACE: %s\n", yytext );
                                 yyless(yyleng-1); /* return last quote */
                                 yymore();
                                 return CLOSE_BRACE;
                             }
 {TEXT}                      {
-                                printf("TEXT: %s\n", yytext );
+                                //printf("TEXT: %s\n", yytext );
                                 return TEXT;
                             }
-{NAME}                      {
-                                printf(": %s\n", yytext );
-                                return NAME;
+{SYMBOL}                      {
+                                //printf("SYMBOL: %s\n", yytext );
+                                return SYMBOL;
                             }
 \n                          { printf("NEWLINE: %s\n", yytext ); return NEWLINE; }
 .                           { printf("error: %s\n", yytext ); }
