@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.2)
 project(streamy)
 
-set(BUILD_SHARED_LIBS YES)
+#set(BUILD_SHARED_LIBS YES)
 
 add_executable(index.cgi
     streamy.cpp
@@ -26,12 +26,12 @@ add_executable(index3.cgi
 )
 
 
-# add_library(streamy SHARED
-#     streamy.cpp
-# )
+add_library(streamyso SHARED
+    streamy.cpp
+)
 
 
-add_library(streamy STATIC
+add_library(streamya STATIC
     streamy.cpp
 )
 
