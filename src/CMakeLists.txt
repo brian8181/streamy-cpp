@@ -1,5 +1,5 @@
 # File Name:  streamy/src/CMakeLists.txt
-# Build Date: Mon Mar  4 09:11:39 AM CST 2024
+# Build Date: Wed Mar  6 08:41:13 AM CST 2024
 # Version:    0.1.0
 
 cmake_minimum_required(VERSION 3.2)
@@ -25,16 +25,13 @@ add_executable(index3.cgi
     utility.cpp
 )
 
-
-add_library(streamyso SHARED
+add_library(streamy_so SHARED
     streamy.cpp
 )
 
-
-add_library(streamya STATIC
+add_library(streamy_a STATIC
     streamy.cpp
 )
-
 
 #[=[
     # Add Library
