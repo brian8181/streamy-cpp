@@ -93,7 +93,7 @@ $(BLD)/streamy.bak.yy.c: $(SRC)/streamy.bak.l
 	$(LEX) -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l
 
 $(BLD)/streamy.tab.c: $(SRC)/streamy.y
-	$(YACC) --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
+	$(YACC) -Wcounterexamples --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
 
 .PHONY: lex_yacc_ex
 lex_yacc_ex:

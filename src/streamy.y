@@ -15,7 +15,7 @@ extern void* pyyval;
 
 %}
 
-
+//%type  escape
 %token TEXT
 %token NEWLINE
 %token OPEN_BRACE
@@ -26,20 +26,32 @@ extern void* pyyval;
 %%
 
 program:
-        html NEWLINE
+        program NEWLINE
         {
             printf("program %s\n", yytext );
             exit(0);
         }
         |
+        escape
+        |
+        html
+        {
+            printf("html %s\n", yytext );
+            //exit(0);
+        }
+        |
+        escape html
+        ;
+
+escape:
         OPEN_BRACE SYMBOL CLOSE_BRACE
         {
             $$ =  '{' + $1 + '}';
             printf("SYMBOL%s\n", $1);
+             printf("ESCAPE%s\n", $1);
             printf("SYMBOL%s\n", yytext );
         }
         ;
-
 html:
 
         TEXT
