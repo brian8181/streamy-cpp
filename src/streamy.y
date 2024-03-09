@@ -4,14 +4,34 @@
    Version:    0.0.1
 */
 %{
+// %{ /* -*- C++ -*- */
+// # include <cerrno>
+// # include <climits>
+// # include <cstdlib>
+// # include <cstring> // strerror
+// # include <string>
+// # include "driver.hh"
+// # include "parser.hh"
+// %}%{ /* -*- C++ -*- */
+# include <cerrno>
+# include <climits>
+# include <cstdlib>
+# include <cstring> // strerror
+# include <string>
+// # include "driver.hh"
+// # include "parser.hh"
 
-#include <stdio.h>
+%}
+
+//#include <stdio.h>
 #include "streamy.yy.h"
 
 int fileno(char *);
 void yyerror(char *);
 int yylex(void);
 extern void* pyyval;
+char* argv[255];
+char* str;
 
 %}
 
@@ -20,8 +40,10 @@ extern void* pyyval;
 %token NEWLINE
 %token OPEN_BRACE
 %token CLOSE_BRACE
+//%token api.vakue.type SYMBOL
+%define api.value.type {double}
+%parse-param
 %token SYMBOL
-
 
 %%
 
@@ -33,28 +55,44 @@ program:
         }
         |
         escape
+        {
+            char* a[1];
+            a[0]= YSYMBOL_YYEMPTY;
+            printf("esc %s\n", yytext );
+        }
         |
         html escape
         {
-            printf("html %s\n", yytext );
+            $$ = $1;
+            printf("html esc %s\n", yytext );
             //exit(0);
         }
         |
         escape html
-        ;
-
+        {
+            printf("esc html %s\n", yytext );
+        }
+        ;%parse-param
 escape:
-
-        OPEN_BRACE SYMBOL CLOSE_BRACE { $$ = $1;
-        yytext--;
-        yytext--;
-        printf("v=%s", yytext); }
+        OPEN_BRACE SYMBOL CLOSE_BRACE
+        {
+            $$ = $1;
+            yytext--;
+            yytext--;
+            yytext--;
+            argv[0] = yytext;
+            argv[1] = yytext;
+            argv[2] = yytext;
+            printf("v=%s", yytext);
+            printf("OUT %s, %s", argv[0], argv[1]);
+        }
         ;
 html:
-
         TEXT
         {
-            printf("PT %s\n", yytext);
+            str = yytext;
+
+            printf("HTML= %s\n", yytext);
         }
         |
         html TEXT
@@ -89,7 +127,7 @@ void yyerror(char *s)
     return 0;
 } */
 
-int main(int argc , char* argv[])
+/* int main(int argc , char* argv[])
 {
     extern FILE *yyin;
     if(argc > 1)
@@ -108,3 +146,22 @@ int main(int argc , char* argv[])
     }
     yyparse();
 }
+
+void
+driver::scan_begin ()
+{
+  yy_flex_debug = trace_scanning;
+  if (file.empty () || file == "-")
+    yyin = stdin;
+  else if (!(yyin = fopen (file.c_str (), "r")))
+    {
+      std::cerr << "cannot open " << file << ": " << strerror (errno) << '\n';
+      exit (EXIT_FAILURE);
+    }
+}
+
+void
+driver::scan_end ()
+{
+  fclose (yyin);
+} */
