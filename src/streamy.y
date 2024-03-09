@@ -34,7 +34,7 @@ program:
         |
         escape
         |
-        html
+        html escape
         {
             printf("html %s\n", yytext );
             //exit(0);
@@ -44,13 +44,11 @@ program:
         ;
 
 escape:
-        OPEN_BRACE SYMBOL CLOSE_BRACE
-        {
-            $$ =  '{' + $1 + '}';
-            printf("SYMBOL%s\n", $1);
-             printf("ESCAPE%s\n", $1);
-            printf("SYMBOL%s\n", yytext );
-        }
+
+        OPEN_BRACE SYMBOL CLOSE_BRACE { $$ = $1;
+        yytext--;
+        yytext--;
+        printf("v=%s", yytext); }
         ;
 html:
 
