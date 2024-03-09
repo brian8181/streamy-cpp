@@ -29,11 +29,11 @@ int parse_options(int argc, char* argv[])
 	match = match_single(exp, text);
 	cout << "exp: " << "\"" << exp << "\"" << " matching " << "\"" << text << "\"" " : matched=" << (match ? "true":"false") << endl;
 
-    // array of values ...  
-    vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London", 
-                             "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas", 
+    // array of values ...
+    vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London",
+                             "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas",
                              "Garland",   "Richardson", "Plano"};
-    
+
     // initial configuration ...
     const string project_folder = "/home/brian/src/streamy-cpp";
     const string config_path = "/home/brian/src/streamy-cpp/test/config/lexer_tester.conf";
@@ -66,7 +66,7 @@ int parse_options(int argc, char* argv[])
 	if(argc < 2)
     {
         cout << "No file parameter." << endl;
-        cout << "usage: "  << "lex_tester.cgi " << "[path to template file]" << endl; 
+        cout << "usage: "  << "lex_tester.cgi " << "[path to template file]" << endl;
         return -1;
     }
 
@@ -75,13 +75,13 @@ int parse_options(int argc, char* argv[])
 	if(!file_exist(file.string()))
 	{
 		cout << file.filename() << " : file not found ..." << endl;
-        cout << "usage: "  << "lex_tester.cgi " << "[path to template file]" << endl; 
+        cout << "usage: "  << "lex_tester.cgi " << "[path to template file]" << endl;
 		return -1;
 	}
 
 	cout << endl << FMT_FG_RED << "{ Begin streamy standard out --> ...}" << FMT_RESET << endl;
     string tmpl(file.filename());
-    sm.display(tmpl);	
+    sm.display(tmpl);
 	cout << endl << FMT_FG_RED << "{ End streamy standard out --> ...}" << FMT_RESET << endl;
 
     return 0;
@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
 	{
 		if(stdin_ready(STDIN_FILENO))
 		{
-			std::string buffer;     
+			std::string buffer;
             std::cin >> buffer;
 			// add piped buffer to end of argv ...
 			char* argvtmp[sizeof(char*) * argc+1] = {0};
@@ -122,4 +122,3 @@ int main(int argc, char* argv[])
 	 	std::cout << ex.what() << std::endl;
 	}
 }
-

@@ -40,3 +40,11 @@ add_library(streamy_a STATIC
     source1 [source2 ...]
 )
 ]=]
+
+#[=[
+install(TARGETS MyApp AlgoRuntime AlgoSDK
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+]=]

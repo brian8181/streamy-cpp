@@ -32,44 +32,22 @@ program:
             exit(0);
         }
         |
-        SYMBOL
+        OPEN_BRACE SYMBOL CLOSE_BRACE
         {
-            printf("SYMBOL x%s\n", yytext );
-        }
-        |
-        tag
-        {
-            printf("TAG %s\n", yytext );
-        }
-        |
-        html tag
-        {
-            printf("program %s\n", yytext );
-        }
-        ;
-tag:
-        OPEN_BRACE SYMBOL
-        {
+            $$ =  '{' + $1 + '}';
+            printf("SYMBOL%s\n", $1);
             printf("SYMBOL%s\n", yytext );
         }
+        ;
+
 html:
+
         TEXT
         {
             printf("PT %s\n", yytext);
         }
         |
         html TEXT
-        {
-            printf("PHT %s\n", yytext);
-        }
-        |
-        OPEN_BRACE
-        {
-            printf("PHT %s\n", yytext);
-            //unput(yytext);
-        }
-        |
-        CLOSE_BRACE
         {
             printf("PHT %s\n", yytext);
         }

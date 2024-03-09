@@ -14,12 +14,14 @@ SRC = src
 BLD = build
 OBJ = build
 
+# do linking dip fucing shit fuck bastard shit
 all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex
 
 
 $(BLD)/streamy.o: $(BLD)/compiler.o $(SRC)/streamy.cpp
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
+# do linking
 $(BLD)/compiler.o: $(SRC)/compiler.cpp
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
 
@@ -119,8 +121,8 @@ rebuild: clean all
 
 .PHONY: clean
 clean:
-	-rm -f ./$(OBJ)/*
-	-rm -f ./$(BLD)/*
+	-rm -rf ./$(OBJ)/*
+	-rm -rf ./$(BLD)/*
 
 .PHONY: clean_src
 clean_src:
