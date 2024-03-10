@@ -4,24 +4,24 @@
    Version:    0.0.1
 */
 %{
-    #include <string.h>
     #include <stdlib.h>
     #include <stdio.h>
+    #include <string.h>
     #include "streamy.tab.h"
 
     // #include <stdio.h>
     // #include "y.tab.h"
 
-    void count();
+    // void count();
 
-    struct bufstack
-    {
-        struct bufstack *prev;
-        YY_BUFFER_STATE bs;
-        int lineno;
-        char *filename;
-        FILE *f;
-    } *curbs = 0;
+    // struct bufstack
+    // {
+    //     struct bufstack *prev;
+    //     YY_BUFFER_STATE bs;
+    //     int lineno;
+    //     char *filename;
+    //     FILE *f;
+    // } *curbs = 0;
 
     /* previous entry */
     /* saved buffer */
@@ -29,7 +29,7 @@
     /* name of this file */
     /* current file */
 
-    char *curfilename;
+    // char *curfilename;
     /* name of current input file */
     // int newfile(char *fn);
     // int popfile(void);
@@ -51,13 +51,15 @@
 
 OPEN_BRACE                  "{"
 CLOSE_BRACE                 "}"
+EQUALS_EQUALS               "=="
 SYMBOL                       $[A-Za-z]+[A-Za-z0-9]*
 TEXT                         [\\w\\s\\=$><^/#@~&*.%!~`_:\"'\\\\,]*
+STRING_LITERAL               "\"[\\w\\s\\=$><^/#@~&*.%!~`_:\"'\\\\,]\""
+NUMERIC_LITERAL              "[\\d]+.[\\d]*"
 
 %%
 
 {OPEN_BRACE}                {
-                                //rintf("OPEN_BRACE: %s\n", yytext );
                                 // yyless(yyleng-1); /* return last quote */
                                 // yymore();
                                 return OPEN_BRACE;
@@ -68,20 +70,28 @@ TEXT                         [\\w\\s\\=$><^/#@~&*.%!~`_:\"'\\\\,]*
                                 // yymore();
                                 return CLOSE_BRACE;
                             }
+{EQUALS_EQUALS}             {
+                                //printf("SYMBOL: %s\n", yytext );
+                                return EQUALS_EQUALS;
+                            }
+
 {TEXT}                      {
                                 //printf("TEXT: %s\n", yytext );
                                 return TEXT;
                             }
-{SYMBOL}                      {
+{SYMBOL}                    {
                                 //printf("SYMBOL: %s\n", yytext );
                                 return SYMBOL;
                             }
-\n                          { printf("NEWLINE: %s\n", yytext ); return NEWLINE; }
-
-
+{STRING_LITERAL}            {
+                                //printf("SYMBOL: %s\n", yytext );
+                                return STRING_LITERAL;
+                            }
+{NUMERIC_LITERAL}           {
+                                return NUMERIC_LITERAL;
+                            }
 
 %%
-
 
 int yywrap()
 {
