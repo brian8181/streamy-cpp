@@ -24,10 +24,13 @@ extern void* pyyval;
 %token EQUALS_EQUALS
 %token STRING_LITERAL
 %token NUMERIC_LITERAL
+%type escape
 
 %%
 
-program:
+program: /* nothing */
+        NEWLINE { exit(0); }
+        |
         program NEWLINE
         {
             printf("program %s\n", yytext );
@@ -47,8 +50,12 @@ program:
         {
             printf("html %s\n", yytext );
         }
+        |
+        token
+        {
+            printf("token %s\n", yytext );
+        }
         ;
-
 escape:
         OPEN_BRACE SYMBOL CLOSE_BRACE
         {
@@ -59,7 +66,6 @@ escape:
         }
         ;
 html:
-
         html TEXT
         {
             printf("HTML%s\n", yytext);
@@ -71,7 +77,13 @@ html:
         }
         ;
 
-
+token:
+        EQUALS_EQUALS
+        |
+        STRING_LITERAL
+        |
+        NUMERIC_LITERAL
+        ;
 %%
 
 #include <stdio.h>
@@ -96,7 +108,7 @@ int main(int argc , char* argv[])
     }
     else
     {
-        fprintf(stderr, "Missing filename paramter\n interactive mode");
+        fprintf(stderr, "Missing filename paramter, help ->\n");
         fprintf(stderr, "lex [OPTION]... [FilE]...\n");
         fprintf(stderr, "Interactive mode...\n");
     }
