@@ -4,20 +4,17 @@
    Version:    0.0.1
 */
 %{
-    #include <stdlib.h>
     #include <stdio.h>
+    #include <stdlib.h>
     #include <string.h>
-    //#include "streamy.yy.h"
     #include "streamy.tab.h"
 
     extern char *yytext;
-    // extern int yyleng;
     extern int yylineno;
     // int yylex(void);
     // void yyerror(char *);
     // extern YYSTYPE yylval;
     int fileno(FILE *);
-
 %}
 
 NEWLINE                     '\n'

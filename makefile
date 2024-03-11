@@ -2,26 +2,23 @@
 # Build Date: Wed Feb 14 03:28:42 PM CST 2024
 # Version:    0.1.0
 
-PREFIX = /usr/local
-CXX = g++
-CXXFLAGS = -ggdb -Wall -DDEBUG -std=c++17
+CXX=g++
+CXXFLAGS=-ggdb -Wall -DDEBUG -std=c++17
+CC=gcc
+CCFLAGS=-ggdb -std=c99 -DDEBUG
+LEX=flex
+YACC=bison -d
+SRC=src
+BLD=build
+OBJ=build
+PREFIX=/usr/local
 #CXXEXTRA = -Wshadow -fstats -fno-rtti fmessage-length=100 -fverbose-asm
-CC = gcc
-CCFLAGS = -ggdb -std=c99 -DDEBUG
-LEX = flex
-YACC = bison -d
-SRC = src
-BLD = build
-OBJ = build
 
-# do linking dip fucing shit fuck bastard shit
 all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex
-
 
 $(BLD)/streamy.o: $(BLD)/compiler.o $(SRC)/streamy.cpp
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
 
-# do linking
 $(BLD)/compiler.o: $(SRC)/compiler.cpp
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
 
@@ -104,8 +101,8 @@ lex_yacc_ex:
 
 .PHONY: install
 install:
-	mkdir -p /usr/local/lib
-	mkdir -p /usr/local/include
+	mkdir -p $(PREFIX)/lib
+	mkdir -p $(PREFIX)/include
 	cp $(SRC)/streamy.hpp $(PREFIX)/include/streamy.hpp
 	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
 	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
@@ -130,7 +127,14 @@ clean_src:
 
 .PHONY: help
 help:
-	@echo  '  all         - build all'
-	@echo  '  install     - copy files to /usr/local'
-	@echo  '  uninstall   - remove files to /usr/local'
-	@echo  '  clean       - remove most generated files but keep the config'
+	@echo  ' stream-cpp * template library'
+	@echo  ' Sun Mar 10 07:10:06 PM CDT 2024'
+	@echo .
+	@echo  ' *options*'
+	@echo .
+	@echo  ' all           - build all'
+	@echo  ' install       - copy files to /usr/local'
+	@echo  ' uninstall     - remove files to /usr/local'
+	@echo  ' clean         - remove most generated files but keep the config'
+	@echo  ' libstreamy.a  - build static lib'
+	@echo  ' libstreamy.so - build shared lib'
