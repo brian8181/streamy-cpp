@@ -18,8 +18,8 @@
 %}
 
 NEWLINE                     '\n'
-OPEN_BRACE                  "{"
-CLOSE_BRACE                 "}"
+OPEN_BRACE                  '{'
+CLOSE_BRACE                 '}'
 EQUALS_EQUALS               "=="
 SYMBOL                       $[A-Za-z]+[A-Za-z0-9]*
 TEXT                         [\\w\\s\\=$><^/#@~&*.%!~`_:\"'\\\\,]*
@@ -28,13 +28,12 @@ NUMERIC_LITERAL              [\\d]+.[\\d]*
 
 %%
 
-{NEWLINE} return NEWLINE;
-{OPEN_BRACE} return OPEN_BRACE;
-{CLOSE_BRACE} return CLOSE_BRACE;
-{EQUALS_EQUALS} return EQUALS_EQUALS;
-{SYMBOL} return SYMBOL;
-{TEXT} return TEXT;
-{STRING_LITERAL} return STRING_LITERAL;
-{NUMERIC_LITERAL} return NUMERIC_LITERAL;
+{NEWLINE} { return NEWLINE; }
+{OPEN_BRACE} { return OPEN_BRACE; }
+{CLOSE_BRACE} { return CLOSE_BRACE; }
+{EQUALS_EQUALS} { return EQUALS_EQUALS; }
+{SYMBOL} { return SYMBOL; }
+{TEXT} { return TEXT; }
+
 
 %%

@@ -11,11 +11,13 @@
 int fileno(char *);
 void yyerror(char *);
 int yylex(void);
-extern void* pyyval;
+char* argv[255];
+char* str;
 
 %}
 
-//%type  escape
+%type program
+%type  escape
 %token TEXT
 %token NEWLINE
 %token OPEN_BRACE
@@ -24,7 +26,6 @@ extern void* pyyval;
 %token EQUALS_EQUALS
 %token STRING_LITERAL
 %token NUMERIC_LITERAL
-%type escape
 
 %%
 
@@ -38,16 +39,30 @@ program: /* nothing */
         |
         escape
         {
+            // char* a[1];
+            // a[0]= YSYMBOL_YYEMPTY;
+            // printf("esc %s\n", yytext );
+
             printf("Escape %s\n", yytext );
         }
         |
         html
         {
+            //  $$ = $1;
+            // printf("html esc %s\n", yytext );
+            // //exit(0);
+            // printf("html %s\n", yytext );
+
             printf("html %s\n", yytext );
         }
         |
         escape html
         {
+
+            // printf("html %s\n", yytext );
+            // $$ = $1;
+            // printf("html esc %s\n", yytext );
+
             printf("html %s\n", yytext );
         }
         |
@@ -59,6 +74,16 @@ program: /* nothing */
 escape:
         OPEN_BRACE SYMBOL CLOSE_BRACE
         {
+            //  $$ = $1;
+            // yytext--;
+            // yytext--;
+            // yytext--;
+            // argv[0] = yytext;
+            // argv[1] = yytext;
+            // argv[2] = yytext;
+            // printf("v=%s", yytext);
+            // printf("OUT %s, %s", argv[0], argv[1]);
+
             $$ = $1;
             yytext--;
             yytext--;

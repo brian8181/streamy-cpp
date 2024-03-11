@@ -127,14 +127,17 @@ clean_src:
 
 .PHONY: help
 help:
-	@echo  ' stream-cpp * template library'
+	@echo  ' Streamy Templates / library'
 	@echo  ' Sun Mar 10 07:10:06 PM CDT 2024'
-	@echo .
-	@echo  ' *options*'
-	@echo .
-	@echo  ' all           - build all'
-	@echo  ' install       - copy files to /usr/local'
-	@echo  ' uninstall     - remove files to /usr/local'
-	@echo  ' clean         - remove most generated files but keep the config'
-	@echo  ' libstreamy.a  - build static lib'
-	@echo  ' libstreamy.so - build shared lib'
+	@echo
+	@echo -n "\033[32m"
+	@echo  -n '** Build Targets **'
+	@echo -n "\033[0m"
+	@echo
+	@echo  ' * all           - build all'
+	@echo  ' * install       - copy files to /usr/local'
+	@echo  ' * uninstall     - remove files to /usr/local'
+	@echo  ' * clean         - remove most generated files but keep the config'
+	@echo  ' * $(BLD)/libstreamy.a  - build static lib'
+	@echo  ' * $(BLD)/libstreamy.so - build shared lib'
+	@echo  ' * $(BLD)/tokenizer - build shared lib'
