@@ -1,0 +1,31 @@
+#// License:    None
+#// File Name:  ./project_template/makefile
+#// Build Date: Wed Feb 14 03:58:51 PM CST 2024
+#// Version:    0.1.0
+
+CXX=g++
+CXXFLAGS=-Wall -std=c++17 -DDEBUG -g
+APPNAME= @@APP_NAME@@
+BLD=build
+OBJ=build
+SRC=src
+
+debug: all
+
+all: $(BLD)/@@APP_NAME@@
+
+$(BLD)/@@APP_NAME@@: $(BLD)/@@APP_NAME@@.o main.o #@@PREREQUISTE@@
+	 $(CXX) $(CXXFLAGS) $(BLD)/@@APP_NAME@@.o $(BLD)/main.o -o $(BLD)/@@APP_NAME@@ #@@CLASS_NAME@@
+
+$(BLD)/@@APP_NAME@@.o: $(SRC)/@@APP_NAME@@.cpp
+	$(CXX) $(CXXFLAGS) -c $(SRC)/@@APP_NAME@@.cpp -o $(BLD)/@@APP_NAME@@.o
+
+$(BLD)/main.o: $(SRC)/main.cpp
+	$(CXX) $(CXXFLAGS) -c $(SRC)/main.cpp -o $(BLD)/main.o
+
+#AUTO_INSERT_POINT_DO_NOT_REMOVE#
+
+.PHONY: clean
+clean:
+	-rm -f $(OBJ)/*.
+	-rm -f $(BLD)/*

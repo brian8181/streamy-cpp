@@ -1,0 +1,2 @@
+# automake for bison_test 
+SUBDIRS = src

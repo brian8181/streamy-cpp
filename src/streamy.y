@@ -16,8 +16,7 @@ char* str;
 
 %}
 
-%type program
-%type  escape
+%type<text>  escape
 %token TEXT
 %token NEWLINE
 %token OPEN_BRACE

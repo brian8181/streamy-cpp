@@ -33,6 +33,11 @@ add_library(streamy_a STATIC
     streamy.cpp
 )
 
+# target_link_libraries(streamy_a
+#     STATIC index.cgi
+#     STATIC index2.cgi
+# )
+
 #[=[
     # Add Library
     add_library(targetName [STATIC | SHARED | MODULE]

@@ -14,9 +14,9 @@ using namespace std;
 
 int parse_options(int argc, char* argv[])
 {
-    // testing values ...  
-    vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London", 
-                             "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas", 
+    // testing values ...
+    vector<string> citys = { "Mesquite",  "Dallas", "Addison", "New York",     "London",
+                             "Barcelona", "Madrid", "Paris",   "Las Angelels", "Las Vegas",
                              "Garland",   "Richardson", "Plano"};
 
     // initial configuration ...
@@ -39,7 +39,7 @@ int parse_options(int argc, char* argv[])
     sm.get_map_vars().insert(pair<string, string>("mail_message", "No Mail!"));
     sm.get_map_vars().insert(pair<string, string>("admin_email", "webmaster@streamy-cpp.com"));
     sm.assign("headers", "HEADERS");
-    
+
     sm.assign("page_title", "*PAGE_TITLE*");
     sm.assign("body", "**THE BODY**");
     sm.assign("admin_email", "admin@something.com");
@@ -88,6 +88,12 @@ int main(int argc, char* argv[])
 	catch(std::logic_error& ex)
 	{
 	 	std::cout << ex.what() << std::endl;
+
+        int* arr[10];
+
+        // int** pp; &
+        // int* pa = &arr[0];
+        // int* pb+=(&pa-&pb)
+
 	}
 }
-
