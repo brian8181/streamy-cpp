@@ -1,4 +1,0 @@
-## Process this file with automake to produce Makefile.in 
-bin_PROGRAMS = bison_test
-bison_test_SOURCES = main.cpp bison_test.cpp
-#bison_test_LDFLAGS = -static -lcppunit -L/usr/local/lib/

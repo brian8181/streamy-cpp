@@ -1,2 +1,0 @@
-# automake for bison_test 
-man_MANS = bison_test.1

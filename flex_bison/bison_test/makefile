@@ -25,7 +25,6 @@ $(BLD)/parse.tab.c: $(SRC)/parse.y
 $(BLD)/lexer.yy.c: $(SRC)/lexer.l
 	$(LEX) --yylineno --header-file=$(BLD)/lexer.yy.h -o $(BLD)/lexer.yy.c $(SRC)/lexer.l
 
-
 .PHONY: clean
 clean:
 	-rm -f $(OBJ)/*.
