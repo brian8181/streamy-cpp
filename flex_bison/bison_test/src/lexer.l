@@ -1,10 +1,10 @@
 %{
+    #define YYSTYPE int;
     #include "parse.tab.h"
     #include "stdlib.h"
-    //extern double yylval;
+    extern int yylval;
 %}
 
-DIGIT                       [0-9]
 NUMBER                      [0-9]+
 OPEN_CURLY                  "{"
 CLOSE_CURLY                 "}"
@@ -21,7 +21,6 @@ DOT                         "."
 PLUS                        "+"
 MINUS                       "-"
 MULTIPLY                    "*"
-EXPONET                     "^"
 FOREWARD_SLASH              "/"
 BACKWARD_SLASH              "\\"
 BAR                         "|"
@@ -63,8 +62,7 @@ NEWLINE                     '\n'
 {EQUAL}                     printf( "EQUAL: %s\n", yytext );
 {DOT}                       printf( "DOT: %s\n", yytext );
 {PLUS}                      {
-                                //printf( "PLUS: %s\n", yytext );
-
+                                printf( "PLUS: %s\n", yytext );
                                 return PLUS;
                             }
 {MINUS}                     printf( "MINUS: %s\n", yytext );
@@ -86,15 +84,16 @@ NEWLINE                     '\n'
 {QUESTION}                  printf( "QUESTION: %s\n", yytext );
 {DOLLAR_SIGN}               printf( "DOLLAR_SIGN: %s\n", yytext );
 {NUMBER}                    {
-                                sscanf( yytext, "%lf", &yylval.num);
+                                printf( "NUMBER: %s\n",  yytext );
+                                //sscanf( yytext, "%lf", &yylval.num);
                                 return NUMBER;
                             }
-{SPACE}                     {
-                                //printf("SPACE");
-                                return SPACE;
-                            }
+{SPACE}
 {TEXT}                      printf( "TEXT: %s\n",  yytext );
-{NEWLINE}                   { return NEWLINE; };
+{NEWLINE}                   {
+                                 printf( "NEWLINE:\n");
+                                 return NEWLINE;
+                            }
 .                           printf( "Unrecognized character: %s\n", yytext );
 
 %%

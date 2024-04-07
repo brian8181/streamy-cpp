@@ -3,7 +3,7 @@
 #// Build Date: Wed Feb 14 03:58:51 PM CST 2024
 #// Version:    0.1.0
 
-XX=g++
+CXX=g++
 CXXFLAGS=-ggdb -Wall -DDEBUG -std=c++17
 CC=gcc
 CCFLAGS=-ggdb -std=c99 -DDEBUG
@@ -14,7 +14,7 @@ BLD=build
 OBJ=build
 PREFIX=/usr/local
 
-all: $(BLD)/parse
+all: $(BLD)/parse $(BLD)/parse2
 
 $(BLD)/parse: $(BLD)/lexer.yy.c $(BLD)/parse.tab.c
 	$(CC) $(CCFLAGS) $(BLD)/lexer.yy.c $(BLD)/parse.tab.c -I./build -lfl -o $(BLD)/parse
@@ -24,6 +24,15 @@ $(BLD)/parse.tab.c: $(SRC)/parse.y
 
 $(BLD)/lexer.yy.c: $(SRC)/lexer.l
 	$(LEX) --yylineno --header-file=$(BLD)/lexer.yy.h -o $(BLD)/lexer.yy.c $(SRC)/lexer.l
+
+$(BLD)/parse2: $(BLD)/lexer2.yy.c $(BLD)/parse2.tab.c
+	$(CC) $(CCFLAGS) $(BLD)/lexer2.yy.c $(BLD)/parse2.tab.c -I./build -lfl -o $(BLD)/parse2
+
+$(BLD)/parse2.tab.c: $(SRC)/parse2.y
+	$(YACC) --header $(SRC)/parse2.y -o $(BLD)/parse2.tab.c
+
+$(BLD)/lexer2.yy.c: $(SRC)/lexer2.l
+	$(LEX) --yylineno --header-file=$(BLD)/lexer2.yy.h -o $(BLD)/lexer2.yy.c $(SRC)/lexer2.l
 
 .PHONY: clean
 clean:

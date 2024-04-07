@@ -1,5 +1,6 @@
+#line 1 "build/calc.yy.c"
 
-#line 2 "lex.yy.c"
+#line 3 "build/calc.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -351,8 +352,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 36
-#define YY_END_OF_BUFFER 37
+#define YY_NUM_RULES 6
+#define YY_END_OF_BUFFER 7
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -360,31 +361,28 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[44] =
+static const flex_int16_t yy_accept[12] =
     {   0,
-        0,    0,   37,   35,   36,   27,   10,   19,   31,   28,
-       23,    9,    5,    6,   15,   13,   29,   14,   12,   16,
-       32,   22,   21,    7,   11,    8,   30,   26,   33,    3,
-       17,    4,   20,   25,    1,   18,    2,   24,    0,   32,
-       33,   34,    0
+        0,    0,    7,    5,    4,    3,    3,    2,    1,    2,
+        0
     } ;
 
 static const YY_CHAR yy_ec[256] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    2,
+        1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    3,    4,    5,    6,    7,    8,    9,   10,
-       11,   12,   13,   14,   15,   16,   17,   18,   18,   18,
-       18,   18,   18,   18,   18,   18,   18,   19,   20,   21,
-       22,   23,   24,   25,   26,   26,   26,   26,   26,   26,
-       26,   26,   26,   26,   26,   26,   26,   26,   26,   26,
-       26,   26,   26,   26,   26,   26,   26,   26,   26,   26,
-       27,   28,   29,    1,   30,   31,   26,   26,   26,   26,
+        1,    2,    1,    1,    1,    1,    1,    1,    1,    4,
+        4,    4,    4,    1,    4,    1,    4,    5,    5,    5,
+        5,    5,    5,    5,    5,    5,    5,    1,    1,    1,
+        4,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    6,    6,    6,    6,
 
-       26,   26,   26,   26,   26,   26,   26,   26,   26,   26,
-       26,   26,   26,   26,   26,   26,   26,   26,   26,   26,
-       26,   26,   32,   33,   34,   35,    1,    1,    1,    1,
+        6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+        6,    6,    6,    6,    6,    6,    6,    6,    6,    6,
+        6,    6,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -401,56 +399,33 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[36] =
+static const YY_CHAR yy_meta[7] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1
+        1,    1,    1,    1,    2,    1
     } ;
 
-static const flex_int16_t yy_base[44] =
+static const flex_int16_t yy_base[13] =
     {   0,
-        0,    0,   42,   48,   48,   48,   48,   48,   48,   48,
-       48,   39,   48,   48,   48,   48,   48,   48,   48,   48,
-       18,   48,   48,   48,   48,   48,   48,   48,   19,   48,
-       48,   48,   48,   48,   48,   48,   48,   48,   31,   20,
-       21,   48,   48
+        0,    0,    8,    9,    9,    9,    9,    0,    9,    0,
+        9,    5
     } ;
 
-static const flex_int16_t yy_def[44] =
+static const flex_int16_t yy_def[13] =
     {   0,
-       43,    1,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,    0
+       11,    1,   11,   11,   11,   11,   11,   12,   11,   12,
+        0,   11
     } ;
 
-static const flex_int16_t yy_nxt[84] =
+static const flex_int16_t yy_nxt[16] =
     {   0,
-        4,    5,    6,    7,    8,    9,   10,   11,   12,   13,
-       14,   15,   16,   17,   18,   19,   20,   21,   22,   23,
-       24,   25,   26,   27,   28,   29,   30,   31,   32,   33,
-       34,   35,   36,   37,   38,   40,   41,   40,   41,   42,
-       39,   43,   43,   41,   41,   41,   41,    3,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43
+        4,    5,    6,    7,    8,    9,   10,   11,    3,   11,
+       11,   11,   11,   11,   11
     } ;
 
-static const flex_int16_t yy_chk[84] =
+static const flex_int16_t yy_chk[16] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,   21,   29,   40,   41,   39,
-       12,    3,    0,   21,   29,   40,   41,   43,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   43,   43,   43,
-       43,   43,   43
+        1,    1,    1,    1,    1,    1,   12,    3,   11,   11,
+       11,   11,   11,   11,   11
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -467,11 +442,15 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "tokenizer.l"
-#line 2 "tokenizer.l"
-    #include "parse.tab.h"
-#line 473 "lex.yy.c"
-#line 474 "lex.yy.c"
+#line 1 "./calc.l"
+#line 2 "./calc.l"
+    #include "calc.tab.h"
+    int yyerror(char *s);
+    char *yytext;
+    int yylex();
+
+#line 452 "build/calc.yy.c"
+#line 453 "build/calc.yy.c"
 
 #define INITIAL 0
 
@@ -688,10 +667,10 @@ YY_DECL
 		}
 
 	{
-#line 48 "tokenizer.l"
+#line 9 "./calc.l"
 
 
-#line 694 "lex.yy.c"
+#line 673 "build/calc.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -718,13 +697,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 44 )
+				if ( yy_current_state >= 12 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 48 );
+		while ( yy_base[yy_current_state] != 9 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -750,192 +729,42 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 50 "tokenizer.l"
-printf( "OPEN_CURLY: %s\n", yytext );
+#line 11 "./calc.l"
+{
+            yylval = *yytext - 'a';
+            return VARIABLE;
+         }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 51 "tokenizer.l"
-printf( "CLOSE_CURLY: %s\n", yytext );
+#line 16 "./calc.l"
+{
+            yylval = atoi(yytext);
+            return INTEGER;
+        }
 	YY_BREAK
 case 3:
+/* rule 3 can match eol */
 YY_RULE_SETUP
-#line 52 "tokenizer.l"
-printf( "OPEN_BRACE: %s\n", yytext );
+#line 21 "./calc.l"
+{ return *yytext; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 53 "tokenizer.l"
-printf( "CLOSE_BRACE: %s\n", yytext );
+#line 23 "./calc.l"
+;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 54 "tokenizer.l"
-printf( "OPEN_PAREN: %s\n", yytext );
+#line 25 "./calc.l"
+yyerror("invalid character");
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 55 "tokenizer.l"
-printf( "CLOSE_PAREN: %s\n", yytext );
-	YY_BREAK
-case 7:
-YY_RULE_SETUP
-#line 56 "tokenizer.l"
-printf( "LESS_THAN: %s\n", yytext );
-	YY_BREAK
-case 8:
-YY_RULE_SETUP
-#line 57 "tokenizer.l"
-printf( "GREATER_THAN: %s\n", yytext );
-	YY_BREAK
-case 9:
-YY_RULE_SETUP
-#line 58 "tokenizer.l"
-printf( "SINGLE_QOUTE: %s\n", yytext );
-	YY_BREAK
-case 10:
-YY_RULE_SETUP
-#line 59 "tokenizer.l"
-printf( "DOUBLE_QOUTE: %s\n", yytext );
-	YY_BREAK
-case 11:
-YY_RULE_SETUP
-#line 60 "tokenizer.l"
-printf( "EQUAL: %s\n", yytext );
-	YY_BREAK
-case 12:
-YY_RULE_SETUP
-#line 61 "tokenizer.l"
-printf( "DOT: %s\n", yytext );
-	YY_BREAK
-case 13:
-YY_RULE_SETUP
-#line 62 "tokenizer.l"
-{
-                                printf( "PLUS: %s\n", yytext );
-                                return PLUS;
-                            }
-	YY_BREAK
-case 14:
-YY_RULE_SETUP
-#line 66 "tokenizer.l"
-printf( "MINUS: %s\n", yytext );
-	YY_BREAK
-case 15:
-YY_RULE_SETUP
-#line 67 "tokenizer.l"
-printf( "MULTIPLY: %s\n", yytext );
-	YY_BREAK
-case 16:
-YY_RULE_SETUP
-#line 68 "tokenizer.l"
-printf( "FOREWARD_SLASH: %s\n", yytext );
-	YY_BREAK
-case 17:
-YY_RULE_SETUP
-#line 69 "tokenizer.l"
-printf( "BACKWARD_SLASH: %s\n", yytext );
-	YY_BREAK
-case 18:
-YY_RULE_SETUP
-#line 70 "tokenizer.l"
-printf( "BAR: %s\n", yytext );
-	YY_BREAK
-case 19:
-YY_RULE_SETUP
-#line 71 "tokenizer.l"
-printf( "HASH: %s\n", yytext );
-	YY_BREAK
-case 20:
-YY_RULE_SETUP
-#line 72 "tokenizer.l"
-printf( "UNDERSCORE: %s\n", yytext );
-	YY_BREAK
-case 21:
-YY_RULE_SETUP
-#line 73 "tokenizer.l"
-printf( "SEMI_COLON: %s\n", yytext );
-	YY_BREAK
-case 22:
-YY_RULE_SETUP
-#line 74 "tokenizer.l"
-printf( "COLON: %s\n", yytext );
-	YY_BREAK
-case 23:
-YY_RULE_SETUP
-#line 75 "tokenizer.l"
-printf( "AMPERSAND: %s\n", yytext );
-	YY_BREAK
-case 24:
-YY_RULE_SETUP
-#line 76 "tokenizer.l"
-printf( "TILDE: %s\n", yytext );
-	YY_BREAK
-case 25:
-YY_RULE_SETUP
-#line 77 "tokenizer.l"
-printf( "TICK_MARK: %s\n", yytext );
-	YY_BREAK
-case 26:
-YY_RULE_SETUP
-#line 78 "tokenizer.l"
-printf( "AT_SYMBOL: %s\n", yytext );
-	YY_BREAK
-case 27:
-YY_RULE_SETUP
-#line 79 "tokenizer.l"
-printf( "EXCLAMATION: %s\n", yytext );
-	YY_BREAK
-case 28:
-YY_RULE_SETUP
-#line 80 "tokenizer.l"
-printf( "PERCENT: %s\n", yytext );
-	YY_BREAK
-case 29:
-YY_RULE_SETUP
-#line 81 "tokenizer.l"
-printf( "COMMA: %s\n", yytext );
-	YY_BREAK
-case 30:
-YY_RULE_SETUP
-#line 82 "tokenizer.l"
-printf( "QUESTION: %s\n", yytext );
-	YY_BREAK
-case 31:
-YY_RULE_SETUP
-#line 83 "tokenizer.l"
-printf( "DOLLAR_SIGN: %s\n", yytext );
-	YY_BREAK
-case 32:
-YY_RULE_SETUP
-#line 84 "tokenizer.l"
-{
-                                printf( "NUMBER: %s\n", yytext );
-                                return NUMBER;
-                            }
-	YY_BREAK
-case 33:
-YY_RULE_SETUP
-#line 88 "tokenizer.l"
-printf( "TEXT: %s\n",  yytext );
-	YY_BREAK
-case 34:
-/* rule 34 can match eol */
-YY_RULE_SETUP
-#line 89 "tokenizer.l"
-{ return NEWLINE; };
-	YY_BREAK
-case 35:
-YY_RULE_SETUP
-#line 90 "tokenizer.l"
-printf( "Unrecognized character: %s\n", yytext );
-	YY_BREAK
-case 36:
-YY_RULE_SETUP
-#line 92 "tokenizer.l"
+#line 27 "./calc.l"
 ECHO;
 	YY_BREAK
-#line 938 "lex.yy.c"
+#line 767 "build/calc.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1232,7 +1061,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 44 )
+			if ( yy_current_state >= 12 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1260,11 +1089,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 44 )
+		if ( yy_current_state >= 12 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 43);
+	yy_is_jam = (yy_current_state == 11);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1940,22 +1769,10 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 92 "tokenizer.l"
+#line 27 "./calc.l"
 
 
-int main(int argc, char** argv)
+int yywrap(void)
 {
-    /* skip over program name */
-    ++argv, --argc;
-
-    if ( argc > 0 )
-    {
-        yyin = fopen( argv[0], "r" );
-    }
-    else
-    {
-        yyin = stdin;
-    }
-    yylex();
+    return 1;
 }
-

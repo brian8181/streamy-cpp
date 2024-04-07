@@ -1,19 +1,17 @@
-/*
-   File Name:  streamy.y
-   Build Date: Wed Feb 14 12:02:37 AM CST 2024
-   Version:    0.0.1
-*/
 %{
 
 #include <stdio.h>
 #include "stdlib.h"
-#include "tokenizer.yy.h"
+//#include "lexer.yy.h"
+#define YYSTYPE int
+
 
 int fileno(char *);
 void yyerror(char *);
 // int yylex(void);`
 // char* argv[255];
 // char* str;
+//int yylval;
 
 %}
 
@@ -29,33 +27,32 @@ void yyerror(char *);
 
 %token PLUS
 %token NEWLINE
-%token SPACE
+
 %union
 {
     int num;
 }
-
 %type<num> expr
 %token<num> NUMBER
 
-
 %%
 
-program: /* nothing */
-        expr { printf("PRG\n"); }
+program:
+        expr  { printf("PROGRAM\n"); }
         |
-        NEWLINE { printf("END\n"); return 0; }
+        expr NEWLINE { printf("END\n"); }
         ;
 expr:
-        NUMBER { printf("NUMBER %d\n", $1); }
-        |
-        NUMBER SPACE PLUS SPACE NUMBER
+        NUMBER PLUS NUMBER
         {
-            $$ = $1 + $5;
-            printf("EXPR\n");
-            printf("PLUS %d\n", $1);
+            printf("NUMBER PLUS NUMBER\n");
         }
+        |
+        NUMBER { printf("NUMBER\n"); }
+        |
+        PLUS  { printf("PLUS\n"); }
         ;
+
 %%
 
 #include <stdio.h>
