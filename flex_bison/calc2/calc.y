@@ -1,15 +1,13 @@
 %token INTEGER VARIABLE
+%type expr
 %left '+' '-'
 %left '*' '/'
 
 %{
     #include <stdio.h>
-
     int sym[26];
     int yyerror(char *s);
     int yylex();
-
-
 %}
 
 %%
