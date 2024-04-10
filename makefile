@@ -130,9 +130,7 @@ help:
 	@echo  ' Streamy Templates / library'
 	@echo  ' Sun Mar 10 07:10:06 PM CDT 2024'
 	@echo
-	@echo -n "\033[32m"
 	@echo  -n '** Build Targets **'
-	@echo -n "\033[0m"
 	@echo
 	@echo  ' * all           - build all'
 	@echo  ' * install       - copy files to /usr/local'
