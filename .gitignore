@@ -2,6 +2,6 @@
 # Mon Oct  2 05:06:26 PM CDT 2023
 
 build/*
-bison_flex/calc/build/*
-bison_flex/calc2/build/*
+lex/calc/build/*
+lex/calc2/build/*
 *.log
