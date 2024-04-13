@@ -1,3 +1,12 @@
+/* %union
+{
+    int num;
+    char[] str;
+}
+
+%token<num> INTEGER
+%token<str> VARIABLE */
+
 %token INTEGER VARIABLE
 %type expr
 %left '+' '-'
