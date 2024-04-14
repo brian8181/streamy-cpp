@@ -1,0 +1,19 @@
+    /* C and parser declarations */
+%%
+    /* Grammar rules and actions */
+%%
+
+main( int argc, char *argv[] )
+{
+    extern FILE *yyin;
+    ++argv; −−argc;
+    yyin = fopen( argv[0], ”r” );
+    yydebug = 1;
+    errors = 0;
+    yyparse ();
+}
+
+yyerror (char *s) /* Called by yyparse on error */
+{
+    printf (”%s\n”, s);
+}
