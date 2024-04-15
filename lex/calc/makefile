@@ -9,7 +9,6 @@ BLD=build
 SRC=.
 YYACFLAGS=-Wcounterexamples
 
-
 all: $(BLD)/calc $(BLD)/calc.yy.c $(BLD)/calc.tab.c
 
 $(BLD)/calc: $(BLD)/calc.tab.c $(BLD)/calc.yy.c
