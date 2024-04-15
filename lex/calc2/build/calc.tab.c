@@ -1102,19 +1102,19 @@ yyreduce:
 
   case 9: /* expr: expr '-' expr  */
 #line 36 "calc.y"
-                            { yyval = yyvsp[-2] + yyvsp[0]; }
+                            { yyval = yyvsp[-2] - yyvsp[0]; }
 #line 1107 "build/calc.tab.c"
     break;
 
   case 10: /* expr: expr '*' expr  */
 #line 37 "calc.y"
-                            { yyval = yyvsp[-2] + yyvsp[0]; }
+                            { yyval = yyvsp[-2] * yyvsp[0]; }
 #line 1113 "build/calc.tab.c"
     break;
 
   case 11: /* expr: expr '/' expr  */
 #line 38 "calc.y"
-                            { yyval = yyvsp[-2] + yyvsp[0]; }
+                            { yyval = yyvsp[-2] / yyvsp[0]; }
 #line 1119 "build/calc.tab.c"
     break;
 

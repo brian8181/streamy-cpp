@@ -7,7 +7,7 @@ LEX=flex
 YACC=bison
 BLD=build
 SRC=.
-YYACFLAGS=-Wcounterexamples
+YFLAGS=-Wcounterexamples
 
 all: $(BLD)/ch3 $(BLD)/ch3.yy.c $(BLD)/ch3.tab.c
 
@@ -18,7 +18,7 @@ $(BLD)/ch3.yy.c: $(SRC)/ch3.l
 	$(LEX) -o $(BLD)/ch3.yy.c $(SRC)/ch3.l
 
 $(BLD)/ch3.tab.c: $(SRC)/ch3.y
-	$(YACC) $(YYACFLAGS) -o $(BLD)/ch3.tab.c -d ch3.y
+	$(YACC) $(YFLAGS) -o $(BLD)/ch3.tab.c -d ch3.y
 
 .PHONY: clean
 clean:
