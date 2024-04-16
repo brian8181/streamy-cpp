@@ -66,6 +66,14 @@
 
 
 
+/* First part of user prologue.  */
+#line 1 "ch3.y"
+
+
+	#include <stdio.h>
+	int yylex();
+
+#line 77 "build/ch3.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -489,7 +497,7 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,     3,     3,     4,     7,     8,     9
+       0,    10,    10,    11,    14,    15,    16
 };
 #endif
 
@@ -1051,31 +1059,31 @@ yyreduce:
   switch (yyn)
     {
   case 3: /* statement: expression  */
-#line 4 "ch3.y"
+#line 11 "ch3.y"
                                         { printf("= %d\n", yyvsp[0]); }
-#line 1057 "build/ch3.tab.c"
+#line 1065 "build/ch3.tab.c"
     break;
 
   case 4: /* expression: expression '+' NUMBER  */
-#line 7 "ch3.y"
+#line 14 "ch3.y"
                                         { yyval = yyvsp[-2] + yyvsp[0]; }
-#line 1063 "build/ch3.tab.c"
+#line 1071 "build/ch3.tab.c"
     break;
 
   case 5: /* expression: expression '-' NUMBER  */
-#line 8 "ch3.y"
+#line 15 "ch3.y"
                                         { yyval = yyvsp[-2] - yyvsp[0]; }
-#line 1069 "build/ch3.tab.c"
+#line 1077 "build/ch3.tab.c"
     break;
 
   case 6: /* expression: NUMBER  */
-#line 9 "ch3.y"
+#line 16 "ch3.y"
                                         { yyval = yyvsp[0]; }
-#line 1075 "build/ch3.tab.c"
+#line 1083 "build/ch3.tab.c"
     break;
 
 
-#line 1079 "build/ch3.tab.c"
+#line 1087 "build/ch3.tab.c"
 
       default: break;
     }
@@ -1268,10 +1276,9 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 12 "ch3.y"
+#line 19 "ch3.y"
 
 
-#include <stdio.h>
 
 int yyerror(char *s)
 {

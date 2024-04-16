@@ -441,10 +441,13 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "./ch3.l"
 #line 2 "./ch3.l"
+
+#include <stdio.h>
 #include "ch3.tab.h"
 extern int yylval;
-#line 446 "build/ch3.yy.c"
-#line 447 "build/ch3.yy.c"
+int yylex();
+#line 449 "build/ch3.yy.c"
+#line 450 "build/ch3.yy.c"
 
 #define INITIAL 0
 
@@ -661,10 +664,10 @@ YY_DECL
 		}
 
 	{
-#line 6 "./ch3.l"
+#line 9 "./ch3.l"
 
 
-#line 667 "build/ch3.yy.c"
+#line 670 "build/ch3.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -723,31 +726,31 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 8 "./ch3.l"
+#line 11 "./ch3.l"
 { yylval = atoi(yytext); return NUMBER; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 9 "./ch3.l"
+#line 12 "./ch3.l"
 ;		/* ignore white space */
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 10 "./ch3.l"
+#line 13 "./ch3.l"
 return 0;	/* logical EOF */
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 11 "./ch3.l"
+#line 14 "./ch3.l"
 return yytext[0];
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 13 "./ch3.l"
+#line 16 "./ch3.l"
 ECHO;
 	YY_BREAK
-#line 750 "build/ch3.yy.c"
+#line 753 "build/ch3.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1752,7 +1755,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 13 "./ch3.l"
+#line 16 "./ch3.l"
 
 
 int yywrap(void)

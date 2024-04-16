@@ -7,9 +7,9 @@ LEX=flex
 YACC=bison
 BLD=build
 SRC=.
-YFLAGS=-Wcounterexamples
+#YFLAGS=-Wcounterexamples
 
-all: $(BLD)/ch3 $(BLD)/ch3.yy.c $(BLD)/ch3.tab.c
+all: $(BLD)/ch3 #$(BLD)/symbol_table
 
 $(BLD)/ch3: $(BLD)/ch3.tab.c $(BLD)/ch3.yy.c
 	$(CC) $(BLD)/ch3.yy.c $(BLD)/ch3.tab.c -o $(BLD)/ch3
@@ -19,6 +19,15 @@ $(BLD)/ch3.yy.c: $(SRC)/ch3.l
 
 $(BLD)/ch3.tab.c: $(SRC)/ch3.y
 	$(YACC) $(YFLAGS) -o $(BLD)/ch3.tab.c -d ch3.y
+
+$(BLD)/symbol_table: $(BLD)/symbol_table.tab.c $(BLD)/symbol_table.yy.c
+	$(CC) $(BLD)/symbol_table.yy.c $(BLD)/symbol_table.tab.c -o $(BLD)/symbol_table
+
+$(BLD)/symbol_table.yy.c: $(SRC)/symbol_table.l
+	$(LEX) -o $(BLD)/symbol_table.yy.c $(SRC)/symbol_table.l
+
+$(BLD)/symbol_table.tab.c: $(SRC)/symbol_table.y
+	$(YACC) $(YFLAGS) -o $(BLD)/symbol_table.tab.c -d symbol_table.y
 
 .PHONY: clean
 clean:

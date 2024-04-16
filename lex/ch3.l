@@ -1,6 +1,9 @@
 %{
+
+#include <stdio.h>
 #include "ch3.tab.h"
 extern int yylval;
+int yylex();
 %}
 
 %%

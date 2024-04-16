@@ -49,7 +49,7 @@ the |
 this |
 to
 /* ignore */
-[a-z]+(\'(s|t))? { addref(yylineno, curfilename, yytext, 0); }
+"[a-z]+(\'(s|t))?" { addref(yylineno, curfilename, yytext, 0); }
 .|\n
 %%
 { addref(yylineno, curfilename, yytext, 0); }
