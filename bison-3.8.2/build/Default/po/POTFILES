@@ -1,0 +1,24 @@
+     /home/brian/tmp/bison-3.8.2/examples/c/bistromathic/parse.y \
+     /home/brian/tmp/bison-3.8.2/examples/java/calc/Calc.y \
+     /home/brian/tmp/bison-3.8.2/src/complain.c \
+     /home/brian/tmp/bison-3.8.2/src/conflicts.c \
+     /home/brian/tmp/bison-3.8.2/src/counterexample.c \
+     /home/brian/tmp/bison-3.8.2/src/files.c \
+     /home/brian/tmp/bison-3.8.2/src/fixits.c \
+     /home/brian/tmp/bison-3.8.2/src/getargs.c \
+     /home/brian/tmp/bison-3.8.2/src/gram.c \
+     /home/brian/tmp/bison-3.8.2/src/graphviz.c \
+     /home/brian/tmp/bison-3.8.2/src/i18n-strings.c \
+     /home/brian/tmp/bison-3.8.2/src/location.c \
+     /home/brian/tmp/bison-3.8.2/src/main.c \
+     /home/brian/tmp/bison-3.8.2/src/muscle-tab.c \
+     /home/brian/tmp/bison-3.8.2/src/parse-gram.y \
+     /home/brian/tmp/bison-3.8.2/src/print-graph.c \
+     /home/brian/tmp/bison-3.8.2/src/print-xml.c \
+     /home/brian/tmp/bison-3.8.2/src/print.c \
+     /home/brian/tmp/bison-3.8.2/src/reader.c \
+     /home/brian/tmp/bison-3.8.2/src/reduce.c \
+     /home/brian/tmp/bison-3.8.2/src/scan-code.l \
+     /home/brian/tmp/bison-3.8.2/src/scan-gram.l \
+     /home/brian/tmp/bison-3.8.2/src/scan-skel.l \
+     /home/brian/tmp/bison-3.8.2/src/symtab.c
