@@ -1,0 +1,201 @@
+**
+
+**
+%union
+{
+int ival;
+const char *sval;
+}
+%token <ival> NUM
+%nterm <ival> exp
+
+**
+%require "3.2"
+/home/brian/src/smartycpp/doc/bison.pdf
+
+**
+compound:
+’{’ declarations statements ’}’
+| ’{’ statements ’}’
+;
+
+**
+compound:
+’{’ { prepare_for_local_variables (); }
+declarations statements ’}’
+| ’{’ statements ’}’
+;
+
+**
+subroutine:
+%empty { prepare_for_local_variables (); }
+;
+
+compound:
+subroutine ’{’ declarations statements ’}’
+| subroutine ’{’ statements ’}’
+;
+
+**
+%union
+{
+int ival;
+const char *sval;
+}
+%token <ival> NUM
+%nterm <ival> exp
+
+**
+%require "3.2"
+%language "c++"
+
+**
+%nterm <std::string> item;
+%token <std::string> TEXT;
+%token <int> NUMBER;
+item:
+TEXT
+| NUMBER { $$ = std::to_string ($1); }
+;
+
+%%
+result:
+list { std::cout << $1 << ’\n’; }
+;
+%nterm <std::vector<std::string>> list;
+list:
+%empty
+{ /* Generates an empty string list */ }
+| list item { $$ = $1; $$.push_back ($2); }
+;
+
+**
+$ bison simple.yy -o simple.cc
+$ g++ -std=c++14 simple.cc -o simple
+$ ./simple
+{I have three numbers for you., 1, 2, 3, And that’s all!}
+
+**
+token_kind_type
+/// Token kinds.
+struct token
+{
+enum token_kind_type
+{
+YYEMPTY = -2,
+YYEOF = 0,
+YYerror = 256,
+YYUNDEF = 257,
+PLUS = 258,
+MINUS = 259,
+[...]
+VAR = 271,
+NEG = 272
+};
+};
+// No token.
+// "end of file"
+// error
+// "invalid token"
+// "+"
+// "-"
+// "variable"
+// NEG
+
+**
+[0-9]+ {
+            yylval->ival = text_to_int (yytext);
+            return yy::parser::token::INTEGER;
+        }
+[a-z]+ {
+            yylval->sval = new std::string (yytext);
+            return yy::parser::token::IDENTIFIER;
+        }
+
+    **
+    [0-9]+
+{
+yylval->emplace<int> () = text_to_int (yytext);
+return yy::parser::token::INTEGER;
+[a-z]+
+}
+{
+yylval->emplace<std::string> () = yytext;
+return yy::parser::token::IDENTIFIER;
+}
+or
+[0-9]+
+{
+yylval->emplace (text_to_int (yytext));
+return yy::parser::token::INTEGER;
+[a-z]+
+}
+{
+yylval->emplace (yytext);
+return yy::parser::token::IDENTIFIER;
+}
+
+**
+%skeleton "lalr1.cc" // -*- C++ -*-
+%require "3.8.1"
+%header
+%define api.token.raw
+%define api.token.constructor
+%define api.value.type variant
+%define parse.assert
+%define parse.trace
+%define parse.error detailed
+%define parse.lac full
+
+%define api.token.prefix {TOK_}
+%token
+ASSIGN ":="
+MINUS
+"-"
+PLUS
+"+"
+STAR
+"*"
+SLASH
+"/"
+LPAREN "("
+RPAREN ")"
+;
+%token <std::string> IDENTIFIER "identifier"
+%token <int> NUMBER "number"
+%nterm <int> exp
+%printer { yyo << $$; } <*>;
+
+%%
+%start unit;
+unit: assignments exp
+{ drv.result = $2; };
+assignments:
+%empty
+{}
+| assignments assignment {};
+assignment:
+"identifier" ":=" exp { drv.variables[$1] = $3; };
+%left "+" "-";
+%left "*" "/";
+exp:
+"number"
+| "identifier"
+| exp "+" exp
+| exp "-" exp
+| exp "*" exp
+| exp "/" exp
+| "(" exp ")"
+{ $$ = drv.variables[$1]; }
+{ $$ = $1 + $3; }
+{ $$ = $1 - $3; }
+{ $$ = $1 * $3; }
+{ $$ = $1 / $3; }
+{ $$ = $2; }
+%%
+
+void
+yy::parser::error (const location_type& l, const std::string& m)
+{
+std::cerr << l << ": " << m << ’\n’;
+}

@@ -18,7 +18,7 @@
 %}
 
 NEWLINE                     '\n'
-OPEN_BRACE                  '{'
+OPEN_BRACE                  "{"
 CLOSE_BRACE                 '}'
 EQUALS_EQUALS               "=="
 SYMBOL                       $[A-Za-z]+[A-Za-z0-9]*
