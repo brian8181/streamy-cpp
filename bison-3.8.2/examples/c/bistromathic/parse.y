@@ -148,24 +148,21 @@
     RPAREN ")"
     EQUAL  "="
     EXIT   "exit"
-  <double>
-    NUM _("number")
-  <symrec*>
-    FUN _("function")
-    VAR _("variable")
+  <double> NUM _("number")
+  <symrec*> FUN _("function")
+     VAR _("variable")
 
 %nterm <double>  exp
 
-// Enable run-time traces (yydebug).
+// enable run-time traces (yydebug).
 %define parse.trace
 
-// Formatting semantic values in debug traces.
+// formatting semantic values in debug traces.
 %printer { fprintf (yyo, "%s", $$->name); } VAR;
 %printer { fprintf (yyo, "%s()", $$->name); } FUN;
 %printer { fprintf (yyo, "%g", $$); } <double>;
 
-
-// Precedence (from lowest to highest) and associativity.
+// precedence (from lowest to highest) and associativity.
 %precedence "="
 %left "+" "-"
 %left "*" "/"
@@ -174,34 +171,34 @@
 
 %% // The grammar follows.
 input:
-  %empty
-| exp     { printf ("%.10g\n", $exp); }
-| "exit"  { done = 1; }
-;
+        %empty
+      | exp     { printf ("%.10g\n", $exp); }
+      | "exit"  { done = 1; }
+      ;
 
 exp:
-  NUM
-| VAR               { $$ = $VAR->value.var; }
-| VAR "=" exp       { $$ = $3; $VAR->value.var = $3; }
-| FUN "(" exp ")"   { $$ = $FUN->value.fun ($3); }
-| exp[l] "+" exp[r] { $$ = $l + $r; }
-| exp[l] "-" exp[r] { $$ = $l - $r; }
-| exp[l] "*" exp[r] { $$ = $l * $r; }
-| exp[l] "/" exp[r]
-  {
-    if ($r == 0)
-      {
-        yyerror (&@$, uctx, _("error: division by zero"));
-        YYERROR;
-      }
-    else
-      $$ = $l / $r;
-  }
-| "-" exp  %prec NEG { $$ = -$2; }
-| exp[l] "^" exp[r]  { $$ = pow ($l, $r); }
-| "(" exp ")"        { $$ = $2; }
-| "(" error ")"      { $$ = 666; }
-;
+        NUM
+      | VAR               { $$ = $VAR->value.var; }
+      | VAR "=" exp       { $$ = $3; $VAR->value.var = $3; }
+      | FUN "(" exp ")"   { $$ = $FUN->value.fun ($3); }
+      | exp[l] "+" exp[r] { $$ = $l + $r; }
+      | exp[l] "-" exp[r] { $$ = $l - $r; }
+      | exp[l] "*" exp[r] { $$ = $l * $r; }
+      | exp[l] "/" exp[r]
+        {
+          if ($r == 0)
+          {
+              yyerror(&@$, uctx, _("error: division by zero"));
+              YYERROR;
+          }
+        else
+          $$ = $l / $r;
+        }
+        | "-" exp  %prec NEG { $$ = -$2; }
+        | exp[l] "^" exp[r]  { $$ = pow ($l, $r); }
+        | "(" exp ")"        { $$ = $2; }
+        | "(" error ")"      { $$ = 666; }
+        ;
 
 // End of grammar.
 %%
@@ -212,8 +209,8 @@ exp:
 
 struct init
 {
-  char const *name;
-  func_t *fun;
+    char const *name;
+    func_t *fun;
 };
 
 static struct init const funs[] =
@@ -230,46 +227,48 @@ static struct init const funs[] =
 // The symbol table: a chain of 'struct symrec'.
 static symrec *sym_table;
 
-// Put functions in table.
-static void
-init_table (void)
+// put functions in table.
+static void init_table (void)
 {
-  for (int i = 0; funs[i].name; i++)
+    for (int i = 0; funs[i].name; i++)
     {
-      symrec *ptr = putsym (funs[i].name, TOK_FUN);
-      ptr->value.fun = funs[i].fun;
+        symrec *ptr = putsym (funs[i].name, TOK_FUN);
+        ptr->value.fun = funs[i].fun;
     }
 }
 
-symrec *
-putsym (char const *name, int sym_type)
+symrec *putsym (char const *name, int sym_type)
 {
-  symrec *res = (symrec *) malloc (sizeof (symrec));
-  res->name = strdup (name);
-  res->type = sym_type;
-  res->value.var = 0; // Set value to 0 even if fun.
-  res->next = sym_table;
-  sym_table = res;
-  return res;
+    symrec *res = (symrec *) malloc (sizeof (symrec));
+    res->name = strdup (name);
+    res->type = sym_type;
+    res->value.var = 0;       // set value to 0 even if fun.
+    res->next = sym_table;
+    sym_table = res;
+    return res;
 }
 
-symrec *
-getsym (char const *name)
+symrec *getsym(char const *name)
 {
-  for (symrec *p = sym_table; p; p = p->next)
-    if (strcmp (p->name, name) == 0)
-      return p;
-  return NULL;
+    for(symrec *p = sym_table; p; p = p->next)
+    {
+        if (strcmp (p->name, name) == 0)
+        {
+            return p;
+        }
+    }
+    return NULL;
 }
 
 // How many symbols are registered.
-static int
-symbol_count (void)
+static int symbol_count (void)
 {
-  int res = 0;
-  for (symrec *p = sym_table; p; p = p->next)
-    ++res;
-  return res;
+    int res = 0;
+    for(symrec *p = sym_table; p; p = p->next)
+    {
+        ++res;
+    }
+    return res;
 }
 
 
@@ -280,16 +279,14 @@ symbol_count (void)
 
 // Print *LOC on OUT.  Do it in a compact way, that avoids redundancy.
 
-static void
-location_print (FILE *out, YYLTYPE const * const loc)
+static void location_print(FILE *out, YYLTYPE const * const loc)
 {
-  fprintf (out, "%d.%d", loc->first_line, loc->first_column);
-
-  int end_col = 0 != loc->last_column ? loc->last_column - 1 : 0;
-  if (loc->first_line < loc->last_line)
-    fprintf (out, "-%d.%d", loc->last_line, end_col);
-  else if (loc->first_column < end_col)
-    fprintf (out, "-%d", end_col);
+    fprintf(out, "%d.%d", loc->first_line, loc->first_column);
+    int end_col = 0 != loc->last_column ? loc->last_column - 1 : 0;
+    if(loc->first_line < loc->last_line)
+       fprintf (out, "-%d.%d", loc->last_line, end_col);
+    else if(loc->first_column < end_col)
+       fprintf(out, "-%d", end_col);
 }
 
 
@@ -297,23 +294,20 @@ location_print (FILE *out, YYLTYPE const * const loc)
 | Scanner.  |
 `----------*/
 
-yytoken_kind_t
-yylex (const char **line, YYSTYPE *yylval, YYLTYPE *yylloc,
-       const user_context *uctx)
+yytoken_kind_t yylex (const char **line, YYSTYPE *yylval, YYLTYPE *yylloc, const user_context *uctx)
 {
   int c;
-
-  // Ignore white space, get first nonwhite character.
-  do {
-    // Move the first position onto the last.
+  // ignore white space, get first nonwhite character
+  do
+  {
+    // move the first position onto the last
     yylloc->first_line = yylloc->last_line;
     yylloc->first_column = yylloc->last_column;
-
     yylloc->last_column += 1;
     c = *((*line)++);
   } while (c == ' ' || c == '\t');
 
-  switch (c)
+    switch (c)
     {
     case '+': return TOK_PLUS;
     case '-': return TOK_MINUS;
@@ -323,49 +317,46 @@ yylex (const char **line, YYSTYPE *yylval, YYLTYPE *yylloc,
     case '=': return TOK_EQUAL;
     case '(': return TOK_LPAREN;
     case ')': return TOK_RPAREN;
-
     case '!': return TOK_YYUNDEF;
-
     case '\0': return TOK_YYEOF;
-
-      // Numbers.
+    //numbers.
     case '.':
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
-      {
-        int nchars = 0;
-        if (sscanf (*line - 1, "%lf%n", &yylval->TOK_NUM, &nchars) != 1)
-          abort ();
-        *line += nchars - 1;
-        yylloc->last_column += nchars - 1;
-        return TOK_NUM;
-      }
+    {
+          int nchars = 0;
+          if(sscanf(*line - 1, "%lf%n", &yylval->TOK_NUM, &nchars) != 1)
+              abort ();
+          *line += nchars - 1;
+          yylloc->last_column += nchars - 1;
+          return TOK_NUM;
+    }
 
-      // Identifiers.
+      // identifiers.
     case 'a': case 'b': case 'c': case 'd': case 'e':
     case 'f': case 'g': case 'h': case 'i': case 'j':
     case 'k': case 'l': case 'm': case 'n': case 'o':
     case 'p': case 'q': case 'r': case 's': case 't':
     case 'u': case 'v': case 'w': case 'x': case 'y':
     case 'z':
-      {
+    {
         int nchars = 0;
         char buf[100];
-        if (sscanf (*line - 1, "%99[a-z]%n", buf, &nchars) != 1)
-          abort ();
+        if(sscanf(*line - 1, "%99[a-z]%n", buf, &nchars) != 1)
+            abort();
         *line += nchars - 1;
         yylloc->last_column += nchars - 1;
         if (strcmp (buf, "exit") == 0)
-          return TOK_EXIT;
+            return TOK_EXIT;
         else
-          {
+        {
             symrec *s = getsym (buf);
             if (!s)
               s = putsym (buf, TOK_VAR);
             yylval->TOK_VAR = s;
             return s->type;
-          }
-      }
+        }
+    }
 
       // Stray characters.
     default:
