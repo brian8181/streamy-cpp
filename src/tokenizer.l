@@ -2,13 +2,13 @@
 
 %}
 
+ASCII [^}{\n]*
 
 %%
 
-"{"[a-z]*"} "                 printf( "TEXT: %s\n", yytext );
-"{"[0-9]*"}"                     printf( "NUMBER: %s\n", yytext );
-^[^}{\n]*                  printf( "NON_ESCAPED: %s\n", yytext );
-.                      printf( "ANYTHING ELSE: %s\n", yytext );
+{ASCII}            printf( "ASCII: %s\n", yytext );
+"{"[a-z]*"}"           printf( "TEXT: %s\n", yytext );
+"{"[0-9]*"}"           printf( "NUMBER: %s\n", yytext );
 
 %%
 

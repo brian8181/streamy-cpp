@@ -148,7 +148,7 @@ yylex ()
       switch (int c = input->get ())
         {
         case EOF:
-          return yy::parser::make_YYEOF (loc);
+          return yy::parser::make_yyEOF (loc);
         case '\t':
           loc.end.column = (loc.end.column + 7) & ~7;
           loc.step ();

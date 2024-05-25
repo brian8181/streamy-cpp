@@ -50,11 +50,11 @@ map<string, string> get_config(string path)
     map<string, string> config;
     pair<string, string> config_pair;
 
-    if (file.is_open()) 
-    {   
+    if (file.is_open())
+    {
         string line;
         while(getline(file, line))
-        { 
+        {
             size_t pos = line.find('=');
             string name = line.substr(0, pos-1);
             name = trim(name);
@@ -77,7 +77,7 @@ string& ltrim(std::string &s)
         if(!std::isspace(s[i]))
             break;
     }
-    string::iterator beg = s.begin(); 
+    string::iterator beg = s.begin();
     s.erase(beg, beg+i);
     return s;
 }
@@ -91,7 +91,7 @@ string& rtrim(std::string &s)
         if(!std::isspace(s[i-1]))
             break;
     }
-    string::iterator end = s.end(); 
+    string::iterator end = s.end();
     s.erase(end-(len-i), end);
     return s;
 }

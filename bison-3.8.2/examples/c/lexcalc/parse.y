@@ -86,32 +86,32 @@
 %%
 // Rules.
 input:
-  %empty
-| input line
-;
+          %empty
+        | input line
+        ;
 
 line:
-  exp EOL   { printf ("%d\n", $exp); }
-| error EOL { yyerrok; }
-;
+          exp EOL   { printf ("%d\n", $exp); }
+        | error EOL { yyerrok; }
+        ;
 
 exp:
-  exp "+" exp   { $$ = $1 + $3; }
-| exp "-" exp   { $$ = $1 - $3; }
-| exp "*" exp   { $$ = $1 * $3; }
-| exp "/" exp
-  {
-    if ($3 == 0)
-      {
-        yyerror (&@$, nerrs, "error: division by zero");
-        YYERROR;
-      }
-    else
-      $$ = $1 / $3;
-  }
-| "(" exp ")"   { $$ = $2; }
-| NUM           { $$ = $1; }
-;
+          exp "+" exp   { $$ = $1 + $3; }
+        | exp "-" exp   { $$ = $1 - $3; }
+        | exp "*" exp   { $$ = $1 * $3; }
+        | exp "/" exp
+          {
+            if ($3 == 0)
+              {
+                yyerror (&@$, nerrs, "error: division by zero");
+                YYERROR;
+              }
+            else
+              $$ = $1 / $3;
+          }
+        | "(" exp ")"   { $$ = $2; }
+        | NUM           { $$ = $1; }
+        ;
 %%
 // Epilogue (C code).
 
