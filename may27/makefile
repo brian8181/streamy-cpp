@@ -16,7 +16,7 @@ SRC=.
 
 debug: all
 
-all: $(BLD)/lex $(BLD)/lexer $(BLD)/lex_escape2
+all: $(BLD)/lex $(BLD)/lexer
 
 $(BLD)/lex: $(BLD)/lex.yy.c
 	$(CC) $(CCFLAGS) $(BLD)/lex.yy.c -I./build -lfl -o $(BLD)/lex

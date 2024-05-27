@@ -1,6 +1,6 @@
-#line 1 "build/lex_escape2.yy.c"
+#line 1 "build/calc.yy.c"
 
-#line 3 "build/lex_escape2.yy.c"
+#line 3 "build/calc.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -163,27 +163,8 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
     
-    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
-     *       access to the local variable yy_act. Since yyless() is a macro, it would break
-     *       existing scanners that call yyless() from OUTSIDE yylex.
-     *       One obvious solution it to make yy_act a global. I tried that, and saw
-     *       a 5% performance hit in a non-yylineno scanner, because yy_act is
-     *       normally declared as a register variable-- so it is not worth it.
-     */
-    #define  YY_LESS_LINENO(n) \
-            do { \
-                int yyl;\
-                for ( yyl = n; yyl < yyleng; ++yyl )\
-                    if ( yytext[yyl] == '\n' )\
-                        --yylineno;\
-            }while(0)
-    #define YY_LINENO_REWIND_TO(dst) \
-            do {\
-                const char *p;\
-                for ( p = yy_cp-1; p >= (dst); --p)\
-                    if ( *p == '\n' )\
-                        --yylineno;\
-            }while(0)
+    #define YY_LESS_LINENO(n)
+    #define YY_LINENO_REWIND_TO(ptr)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -371,8 +352,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 6
-#define YY_END_OF_BUFFER 7
+#define YY_NUM_RULES 5
+#define YY_END_OF_BUFFER 6
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -380,28 +361,28 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[13] =
+static const flex_int16_t yy_accept[12] =
     {   0,
-        0,    0,    7,    5,    6,    2,    5,    3,    4,    0,
-        1,    0
+        0,    0,    6,    4,    4,    2,    2,    1,    3,    1,
+        0
     } ;
 
 static const YY_CHAR yy_ec[256] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    2,
+        1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    3,    1,    1,    1,    1,
+        1,    2,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    4,    1,    4,    1,    1,    5,    5,    5,
+        5,    5,    5,    5,    5,    5,    5,    1,    6,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    4,    5,    6,    1,
 
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    7,    1,    8,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -418,39 +399,34 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[9] =
+static const YY_CHAR yy_meta[7] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1
+        1,    1,    1,    1,    2,    3
     } ;
 
-static const flex_int16_t yy_base[13] =
+static const flex_int16_t yy_base[14] =
     {   0,
-        0,    0,   11,   12,   12,   12,    5,   12,   12,    3,
-       12,   12
+        0,    0,    9,   10,    0,   10,   10,    0,   10,    0,
+       10,    5,    5
     } ;
 
-static const flex_int16_t yy_def[13] =
+static const flex_int16_t yy_def[14] =
     {   0,
-       12,    1,   12,   12,   12,   12,   12,   12,   12,   12,
-       12,    0
+       11,    1,   11,   11,   12,   11,   11,   13,   11,   13,
+        0,   11,   11
     } ;
 
-static const flex_int16_t yy_nxt[21] =
+static const flex_int16_t yy_nxt[17] =
     {   0,
-        4,    5,    6,    7,    4,    4,    8,    9,   11,   10,
-       12,    3,   12,   12,   12,   12,   12,   12,   12,   12
+        4,    5,    6,    7,    8,    4,   10,    9,   11,    3,
+       11,   11,   11,   11,   11,   11
     } ;
 
-static const flex_int16_t yy_chk[21] =
+static const flex_int16_t yy_chk[17] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,   10,    7,
-        3,   12,   12,   12,   12,   12,   12,   12,   12,   12
+        1,    1,    1,    1,    1,    1,   13,   12,    3,   11,
+       11,   11,   11,   11,   11,   11
     } ;
-
-/* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[7] =
-    {   0,
-0, 0, 0, 0, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -466,13 +442,15 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "./lex_escape2.l"
-#line 2 "./lex_escape2.l"
-    extern char *yytext;
-    extern int yylineno;
-    int fileno(FILE *);
-#line 474 "build/lex_escape2.yy.c"
-#line 475 "build/lex_escape2.yy.c"
+#line 1 "./calc.l"
+#line 2 "./calc.l"
+    #include "calc.tab.h"
+    int yyerror(char *s);
+    char *yytext;
+    int yylex();
+
+#line 452 "build/calc.yy.c"
+#line 453 "build/calc.yy.c"
 
 #define INITIAL 0
 
@@ -689,11 +667,9 @@ YY_DECL
 		}
 
 	{
-#line 12 "./lex_escape2.l"
+#line 9 "./calc.l"
 
-
-
-#line 696 "build/lex_escape2.yy.c"
+#line 672 "build/calc.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -720,13 +696,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 13 )
+				if ( yy_current_state >= 12 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 12 );
+		while ( yy_base[yy_current_state] != 10 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -738,16 +714,6 @@ yy_find_action:
 			}
 
 		YY_DO_BEFORE_ACTION;
-
-		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
-			{
-			int yyl;
-			for ( yyl = 0; yyl < yyleng; ++yyl )
-				if ( yytext[yyl] == '\n' )
-					
-    yylineno++;
-;
-			}
 
 do_action:	/* This label is used only to access EOF actions. */
 
@@ -762,45 +728,34 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 15 "./lex_escape2.l"
+#line 10 "./calc.l"
 {
-                            printf( "ASCII: %s\n", yytext );
-                        }
+           yylval.num = atoi(yytext);
+           return INTEGER;
+        }
 	YY_BREAK
 case 2:
+/* rule 2 can match eol */
 YY_RULE_SETUP
-#line 19 "./lex_escape2.l"
-{
-                            printf( "found a dollar sign...\n" );
-                        }
+#line 14 "./calc.l"
+return *yytext;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 23 "./lex_escape2.l"
-{
-
-                            printf( "found a opening brace...\n" );
-                        }
+#line 15 "./calc.l"
+/* skip whitespace */
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 28 "./lex_escape2.l"
-{
-
-                            printf( "found a closing brace...\n" );
-                        }
+#line 16 "./calc.l"
+yyerror("invalid character");
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 33 "./lex_escape2.l"
-printf( "Unrecognized character: %s\n", yytext );
-	YY_BREAK
-case 6:
-YY_RULE_SETUP
-#line 34 "./lex_escape2.l"
+#line 18 "./calc.l"
 ECHO;
 	YY_BREAK
-#line 803 "build/lex_escape2.yy.c"
+#line 758 "build/calc.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1097,7 +1052,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 13 )
+			if ( yy_current_state >= 12 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1125,11 +1080,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 13 )
+		if ( yy_current_state >= 12 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 12);
+	yy_is_jam = (yy_current_state == 11);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1167,10 +1122,6 @@ static int yy_get_next_buffer (void)
 		}
 
 	*--yy_cp = (char) c;
-
-    if ( c == '\n' ){
-        --yylineno;
-    }
 
 	(yytext_ptr) = yy_bp;
 	(yy_hold_char) = *yy_cp;
@@ -1248,11 +1199,6 @@ static int yy_get_next_buffer (void)
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
 	*(yy_c_buf_p) = '\0';	/* preserve yytext */
 	(yy_hold_char) = *++(yy_c_buf_p);
-
-	if ( c == '\n' )
-		
-    yylineno++;
-;
 
 	return c;
 }
@@ -1720,9 +1666,6 @@ static int yy_init_globals (void)
      * This function is called from yylex_destroy(), so don't allocate here.
      */
 
-    /* We do not touch yylineno unless the option is enabled. */
-    yylineno =  1;
-    
     (yy_buffer_stack) = NULL;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
@@ -1817,26 +1760,10 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 34 "./lex_escape2.l"
+#line 18 "./calc.l"
 
 
 int yywrap(void)
 {
     return 1;
-}
-
-int main(int argc, char** argv)
-{
-    /* skip over program name */
-    ++argv, --argc;
-
-    if ( argc > 0 )
-    {
-        yyin = fopen( argv[0], "r" );
-    }
-    else
-    {
-        yyin = stdin;
-    }
-    yylex();
 }
