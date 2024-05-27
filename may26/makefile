@@ -16,7 +16,7 @@ $(BLD)/parser: $(BLD)/lex.yy.c $(BLD)/parser.tab.c
 	$(CC) $(CX) $(BLD)/lex.yy.c $(BLD)/parser.tab.c -lfl -o $(BLD)/parser
 
 $(BLD)/lex.yy.c: tokenizer.l
-	$(LEX) --header-file=$(BLD)/parser.yy.h -o $(BLD)/parser.yy.c tokenizer.l
+	$(LEX) --header-file=$(BLD)/lex.yy.h -o $(BLD)/lex.yy.c tokenizer.l
 
 $(BLD)/parser.tab.c: parser.y
 	$(YACC) --header parser.y -o $(BLD)/parser.tab.c

@@ -2,9 +2,9 @@
 #define yyHEADER_H 1
 #define yyIN_HEADER 1
 
-#line 5 "./build/parser.yy.h"
+#line 5 "build/lexer.yy.h"
 
-#line 7 "./build/parser.yy.h"
+#line 7 "build/lexer.yy.h"
 
 #define  YY_INT_ALIGNED short int
 
@@ -213,6 +213,8 @@ extern char *yytext;
 
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0
+#define streaming 1
+#define escape 2
 
 #endif
 
@@ -466,9 +468,9 @@ extern int yylex (void);
 #undef yyTABLES_NAME
 #endif
 
-#line 13 "tokenizer.l"
+#line 45 "./lexer.l"
 
 
-#line 472 "./build/parser.yy.h"
+#line 474 "build/lexer.yy.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */

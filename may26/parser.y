@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
-#include "streamy.tab.h"
-#include "streamy.yy.h"
+#include "parser.tab.h"
+#include "lex.yy.h"
 %}
 
 %token INTEGER VARIABLE NUMBER LITERAL_TEXT

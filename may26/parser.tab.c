@@ -70,8 +70,8 @@
 #line 1 "parser.y"
 
 #include <stdio.h>
-#include "streamy.tab.h"
-#include "streamy.yy.h"
+#include "parser.tab.h"
+#include "lex.yy.h"
 
 #line 77 "parser.tab.c"
 

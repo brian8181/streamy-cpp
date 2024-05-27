@@ -1,9 +1,9 @@
 %{
-
+#include "parser.tab.h"
 %}
 
 ASCII [^}{\n]*
-
+    
 %%
 
 {ASCII}         printf( "ASCII: %s\n", yytext );

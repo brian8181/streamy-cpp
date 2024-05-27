@@ -1,0 +1,55 @@
+%{
+    extern char *yytext;
+    extern int yylineno;
+    int fileno(FILE *);
+%}
+
+ASCII "abc"
+DOLLAR_SIGN "$"
+OPEN_BRACE "{"
+CLOSE_BRACE "}"
+
+%%
+
+
+{ASCII}                 {
+                            printf( "ASCII: %s\n", yytext );
+                        }
+
+{DOLLAR_SIGN}           {
+                            printf( "found a dollar sign...\n" );
+                        }
+
+{OPEN_BRACE}            {
+
+                            printf( "found a opening brace...\n" );
+                        }
+
+{CLOSE_BRACE}           {
+
+                            printf( "found a closing brace...\n" );
+                        }
+
+.                       printf( "Unrecognized character: %s\n", yytext );
+%%
+
+int yywrap(void)
+{
+    return 1;
+}
+
+int main(int argc, char** argv)
+{
+    /* skip over program name */
+    ++argv, --argc;
+
+    if ( argc > 0 )
+    {
+        yyin = fopen( argv[0], "r" );
+    }
+    else
+    {
+        yyin = stdin;
+    }
+    yylex();
+}
