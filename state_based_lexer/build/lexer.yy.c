@@ -780,7 +780,7 @@ YY_RULE_SETUP
 {
                             BEGIN(escape);
                             printf( "Start ASCII: %s\n", yytext );
-                            return ASCII;
+                            //return ASCII;
                         }
 	YY_BREAK
 case 2:
@@ -790,46 +790,49 @@ YY_RULE_SETUP
 {
                             BEGIN(escape);
                             printf( "ASCII: %s\n", yytext );
-                            return ASCII;
+                            //return ASCII;
                         }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 33 "./lexer.l"
+#line 32 "./lexer.l"
 {
                             printf( "found a opening brace...\n" );
-                            return OPEN_BRACE;
+                            //return OPEN_BRACE;
                         }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 38 "./lexer.l"
+#line 36 "./lexer.l"
 {
                             BEGIN(streaming);
                             printf( "found a closing brace...\n" );
-                            return CLOSE_BRACE;
+                            //return CLOSE_BRACE;
                         }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 44 "./lexer.l"
+#line 41 "./lexer.l"
 {
                             printf( "symbol: %s\n", yytext );
-                            return SYMBOL;
+                            //return SYMBOL;
                         }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(streaming):
 case YY_STATE_EOF(escape):
-#line 48 "./lexer.l"
-{ yyterminate(); }
+#line 45 "./lexer.l"
+{
+                            printf( "EOF\n");
+                            yyterminate();
+                        }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 50 "./lexer.l"
 ECHO;
 	YY_BREAK
-#line 832 "build/lexer.yy.c"
+#line 835 "build/lexer.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{

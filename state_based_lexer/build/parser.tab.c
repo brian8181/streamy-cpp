@@ -507,8 +507,8 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    11,    11,    12,    16,    17,    22,    23,    24,    25,
-      26,    27,    28
+       0,    20,    20,    21,    25,    26,    31,    32,    33,    34,
+      35,    36,    37
 };
 #endif
 
@@ -1073,49 +1073,49 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* page: page stmt '\n'  */
-#line 11 "./parser.y"
+#line 20 "./parser.y"
                    { printf("%d\n", yyvsp[-1]); }
 #line 1079 "build/parser.tab.c"
     break;
 
   case 6: /* expr: INTEGER  */
-#line 22 "./parser.y"
+#line 31 "./parser.y"
                     { yyval = yyvsp[0]; }
 #line 1085 "build/parser.tab.c"
     break;
 
   case 7: /* expr: expr '+' INTEGER  */
-#line 23 "./parser.y"
+#line 32 "./parser.y"
                        { yyval = yyvsp[-2] + yyvsp[0]; }
 #line 1091 "build/parser.tab.c"
     break;
 
   case 8: /* expr: expr '+' VARIABLE  */
-#line 24 "./parser.y"
+#line 33 "./parser.y"
                         { yyval = yyvsp[-2] + yyvsp[0]; }
 #line 1097 "build/parser.tab.c"
     break;
 
   case 9: /* expr: expr '-' INTEGER  */
-#line 25 "./parser.y"
+#line 34 "./parser.y"
                        { yyval = yyvsp[-2] + yyvsp[0]; }
 #line 1103 "build/parser.tab.c"
     break;
 
   case 10: /* expr: expr '-' VARIABLE  */
-#line 26 "./parser.y"
+#line 35 "./parser.y"
                         { yyval = yyvsp[-2] + yyvsp[0]; }
 #line 1109 "build/parser.tab.c"
     break;
 
   case 11: /* expr: expr '*' INTEGER  */
-#line 27 "./parser.y"
+#line 36 "./parser.y"
                        { yyval = yyvsp[-2] + yyvsp[0]; }
 #line 1115 "build/parser.tab.c"
     break;
 
   case 12: /* expr: expr '*' VARIABLE  */
-#line 28 "./parser.y"
+#line 37 "./parser.y"
                         { yyval = yyvsp[-2] + yyvsp[0]; }
 #line 1121 "build/parser.tab.c"
     break;
@@ -1314,7 +1314,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 31 "./parser.y"
+#line 40 "./parser.y"
 
 
 int yyerror(char *s)

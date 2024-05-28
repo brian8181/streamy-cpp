@@ -22,30 +22,30 @@ SYMBOL "$"[A-Za-z]+[A-Za-z0-9_]*
 {ASCII}                 {
                             BEGIN(escape);
                             printf( "Start ASCII: %s\n", yytext );
-                            return ASCII;
+                            //return ASCII;
                         }
 <streaming>{ASCII}      {
                             BEGIN(escape);
                             printf( "ASCII: %s\n", yytext );
-                            return ASCII;
+                            //return ASCII;
                         }
-
 <escape>{OPEN_BRACE}    {
                             printf( "found a opening brace...\n" );
-                            return OPEN_BRACE;
+                            //return OPEN_BRACE;
                         }
-
 <escape>{CLOSE_BRACE}   {
                             BEGIN(streaming);
                             printf( "found a closing brace...\n" );
-                            return CLOSE_BRACE;
+                            //return CLOSE_BRACE;
                         }
-
 <escape>{SYMBOL}        {
                             printf( "symbol: %s\n", yytext );
-                            return SYMBOL;
+                            //return SYMBOL;
                         }
-<<EOF>>                 { yyterminate(); }
+<<EOF>>                 {
+                            printf( "EOF\n");
+                            yyterminate();
+                        }
 
 %%
 

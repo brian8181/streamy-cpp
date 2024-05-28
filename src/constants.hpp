@@ -139,3 +139,14 @@ enum token_id : unsigned long
 };
 
 #endif
+
+/* OCTAL_LITERAL 0[0-7]*{ILEN}?
+DECIMAL_LITERAL [1-9][0-9]*{ILEN}?
+HEXDECIMAL_LITERAL 0[Xx][0-9a-fA-F]+{ILEN}?
+
+FLOAT_LITERAL ([0-9]*\.[0-9]+|[0-9]+\.){EXP}?[flFL]?
+SCI_LITERAL [0-9]+{EXP}[flFL]?
+
+HEX_FLOAT 0[Xx]([0-9a-fA-F]*\.[0-9a-fA-F]+|[0-9a-fA-F]+\.?)[Pp][-+]?[0-9]+[flFL]?
+CONST_CHAR \'([^'\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})+\'
+STRING_LITERAL L?\"([^"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})*\" */

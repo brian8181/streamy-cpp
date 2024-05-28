@@ -4,6 +4,15 @@
 #include "lex.yy.h"
 %}
 
+/*
+%union
+{
+    int ival;
+    std::string* sval;
+}
+%token <ival> NUMBER;
+%token <sval> STRING; */
+
 %token INTEGER VARIABLE NUMBER LITERAL_TEXT OPEN_BRACE CLOSE_BRACE ASCII SYMBOL
 %%
 

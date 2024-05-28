@@ -1,5 +1,5 @@
 # CHANGE DATE:
 # Mon Oct  2 05:06:26 PM CDT 2023
 
-*build/**
-may27/build/*
+build/**
+state_based_lexer/build/*
