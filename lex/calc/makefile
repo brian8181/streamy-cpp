@@ -7,7 +7,7 @@ LEX=flex
 YACC=bison
 BLD=build
 SRC=.
-YYACFLAGS=-Wcounterexamples
+YYACFLAGS=-v -Wcounterexamples --color=always --html=$(BLD)/bison.out.html --report-file=$(BLD)/report.txt
 
 all: $(BLD)/calc $(BLD)/calc.yy.c $(BLD)/calc.tab.c
 

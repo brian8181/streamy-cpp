@@ -1,1 +1,2 @@
-<html><h1>{$TITLE}<h1></html>
+abc{$foo} 123
+${boo} 456

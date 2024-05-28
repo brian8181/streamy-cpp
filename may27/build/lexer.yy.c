@@ -474,12 +474,17 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "./lexer.l"
 #line 2 "./lexer.l"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "parser.tab.h"
+
     extern char *yytext;
     extern int yylineno;
     int fileno(FILE *);
-#line 480 "build/lexer.yy.c"
+#line 485 "build/lexer.yy.c"
 
-#line 482 "build/lexer.yy.c"
+#line 487 "build/lexer.yy.c"
 
 #define INITIAL 0
 #define streaming 1
@@ -698,10 +703,10 @@ YY_DECL
 		}
 
 	{
-#line 15 "./lexer.l"
+#line 20 "./lexer.l"
 
 
-#line 704 "build/lexer.yy.c"
+#line 709 "build/lexer.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -771,58 +776,60 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 17 "./lexer.l"
+#line 22 "./lexer.l"
 {
                             BEGIN(escape);
                             printf( "Start ASCII: %s\n", yytext );
+                            return ASCII;
                         }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 21 "./lexer.l"
+#line 27 "./lexer.l"
 {
                             BEGIN(escape);
                             printf( "ASCII: %s\n", yytext );
+                            return ASCII;
                         }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 26 "./lexer.l"
+#line 33 "./lexer.l"
 {
-
                             printf( "found a opening brace...\n" );
+                            return OPEN_BRACE;
                         }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 31 "./lexer.l"
+#line 38 "./lexer.l"
 {
                             BEGIN(streaming);
                             printf( "found a closing brace...\n" );
+                            return CLOSE_BRACE;
                         }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 36 "./lexer.l"
+#line 44 "./lexer.l"
 {
                             printf( "symbol: %s\n", yytext );
+                            return SYMBOL;
                         }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(streaming):
 case YY_STATE_EOF(escape):
-#line 40 "./lexer.l"
-{
-                            printf( "EOF: %s\n", yytext );
-                        }
+#line 48 "./lexer.l"
+{ yyterminate(); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 45 "./lexer.l"
+#line 50 "./lexer.l"
 ECHO;
 	YY_BREAK
-#line 825 "build/lexer.yy.c"
+#line 832 "build/lexer.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1837,7 +1844,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 45 "./lexer.l"
+#line 50 "./lexer.l"
 
 
 int yywrap(void)
@@ -1845,12 +1852,16 @@ int yywrap(void)
     return 1;
 }
 
+/* int main()
+{
+    while (yylex() != 0) ;
+    return 0;
+} */
+
+
 int main(int argc, char** argv)
 {
-    /* skip over program name */
-    ++argv, --argc;
-
-    if ( argc > 0 )
+    if ( argc > 1 )
     {
         yyin = fopen( argv[1], "r" );
     }

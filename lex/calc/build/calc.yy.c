@@ -667,7 +667,7 @@ YY_DECL
 		}
 
 	{
-#line 9 "./calc.l"
+#line 10 "./calc.l"
 
 #line 672 "build/calc.yy.c"
 
@@ -728,7 +728,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 10 "./calc.l"
+#line 11 "./calc.l"
 {
            yylval.num = atoi(yytext);
            return INTEGER;
@@ -737,22 +737,22 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 14 "./calc.l"
+#line 15 "./calc.l"
 return *yytext;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 15 "./calc.l"
+#line 16 "./calc.l"
 /* skip whitespace */
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 16 "./calc.l"
+#line 17 "./calc.l"
 yyerror("invalid character");
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 18 "./calc.l"
+#line 19 "./calc.l"
 ECHO;
 	YY_BREAK
 #line 758 "build/calc.yy.c"
@@ -1760,7 +1760,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 18 "./calc.l"
+#line 19 "./calc.l"
 
 
 int yywrap(void)

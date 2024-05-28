@@ -16,7 +16,10 @@ SRC=.
 
 debug: all
 
-all: $(BLD)/lex $(BLD)/lexer
+all: $(BLD)/parser.tab.c $(BLD)/lex $(BLD)/lexer
+
+$(BLD)/parser: $(BLD)/lexer.yy.c $(BLD)/parser.tab.c
+	$(CC) $(CX) $(BLD)/lexer.yy.c $(BLD)/parser.tab.c -lfl -o $(BLD)/parser
 
 $(BLD)/lex: $(BLD)/lex.yy.c
 	$(CC) $(CCFLAGS) $(BLD)/lex.yy.c -I./build -lfl -o $(BLD)/lex
@@ -29,6 +32,9 @@ $(BLD)/lexer: $(BLD)/lexer.yy.c
 
 $(BLD)/lexer.yy.c: $(SRC)/lexer.l
 	$(LEX) --yylineno --header-file=$(BLD)/lexer.yy.h -o $(BLD)/lexer.yy.c $(SRC)/lexer.l
+
+$(BLD)/parser.tab.c: $(SRC)/parser.y
+	$(YACC) -Wcounterexamples --header $(SRC)/parser.y -o $(BLD)/parser.tab.c
 
 .PHONY: clean
 clean:

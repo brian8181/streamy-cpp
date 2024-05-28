@@ -1,0 +1,68 @@
+/*
+   File Name:  streamy.y
+   Build Date: Wed Feb 14 12:02:37 AM CST 2024
+   Version:    0.0.1
+*/
+%{
+
+#include <stdio.h>
+#include "streamy.yy.h"
+
+int fileno(char *);
+void yyerror(char *);
+int yylex(void);
+char* argv[255];
+char* str;
+
+%}
+
+%token<num> INTEGER
+%token<str> VARIABLE */
+
+%token INTEGER VARIABLE TEXT
+%type escape
+%left '+' '-'
+%left '*' '/'
+%token OPEN_BRACE '{'
+%token CLOSE_BRACE '}'
+%token eof <<EOF>>
+
+%{
+    #include <stdio.h>
+    int sym[26];
+    int yyerror(char *s);
+    int yylex();
+%}
+
+%%
+
+document:
+            document TEXT eof
+            |
+            ;
+TEXT:
+            escape
+			|
+			escape TEXT
+			;
+
+escape:
+			TEXT
+			|
+			VARIABLE;
+			|
+			OPEN_BRACE VARIABLE CLOSE_BRACE { $$ = $2; }
+			;
+%%
+
+int yyerror(char *s)
+{
+    fprintf(stderr, "%s\n", s);
+    return 0;
+}
+
+int main(void)
+{
+    yyparse();
+    return 0;
+}
