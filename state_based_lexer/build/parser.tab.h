@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_BUILD_STEXT_TAB_H_INCLUDED
-# define YY_YY_BUILD_STEXT_TAB_H_INCLUDED
+#ifndef YY_YY_BUILD_PARSER_TAB_H_INCLUDED
+# define YY_YY_BUILD_PARSER_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -54,28 +54,21 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    OPEN_BRACE = 258,              /* OPEN_BRACE  */
-    CLOSE_BRACE = 259,             /* CLOSE_BRACE  */
-    DOLLAR_SIGN = 260,             /* DOLLAR_SIGN  */
-    NEWLINE = 261,                 /* NEWLINE  */
-    TEXT = 262                     /* TEXT  */
+    INTEGER = 258,                 /* INTEGER  */
+    VARIABLE = 259,                /* VARIABLE  */
+    NUMBER = 260,                  /* NUMBER  */
+    LITERAL_TEXT = 261,            /* LITERAL_TEXT  */
+    OPEN_BRACE = 262,              /* OPEN_BRACE  */
+    CLOSE_BRACE = 263,             /* CLOSE_BRACE  */
+    ASCII = 264,                   /* ASCII  */
+    SYMBOL = 265                   /* SYMBOL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 16 "stext.y"
-
-	int num;
-	char* str;
-
-#line 76 "build/stext.tab.h"
-
-};
-typedef union YYSTYPE YYSTYPE;
+typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -87,4 +80,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_BUILD_STEXT_TAB_H_INCLUDED  */
+#endif /* !YY_YY_BUILD_PARSER_TAB_H_INCLUDED  */
