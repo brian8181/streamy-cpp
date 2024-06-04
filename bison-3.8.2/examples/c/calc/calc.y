@@ -52,34 +52,35 @@ fact:
 int yylex(void)
 {
     int c;
-    while((c = getchar()) == ' ' || c == '\t') /* ignore white space, get first nonwhite character  */
+    while((c = getchar()) == ' ' || c == '\t')
         continue;
 
     if(c == EOF)
-        eturn 0;
+        return 0;
 
-    if (c == '.' || isdigit(c)) /* char starts a number => parse the number  */
+    if (c == '.' || isdigit(c))
     {
         ungetc(c, stdin);
         if(scanf("%lf", &yylval.NUM) != 1)
+        {
             abort();
+        }
         return NUM;
     }
 
-    /* any other character is a token by itself */
     return c;
 }
 
-void yyerror(char const *s) /* called by yyparse on error */
+void yyerror(char const *s)
 {
-    fprintf stderr, "%s\n", s);
+    fprintf(stderr, "%s\n", s);
 }
 
 int main(int argc, char const* argv[])
 {
-    for int i = 1; i < argc; ++i) /* enable parse traces on option -p */
+    for(int i = 1; i < argc; ++i)
     {
-        if (!strcmp(argv[i], "-p"))
+        if(!strcmp(argv[i], "-p"))
         {
             yydebug = 1;
         }

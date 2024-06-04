@@ -12,7 +12,15 @@
 ASCII [^{}]*
 OPEN_BRACE "{"
 CLOSE_BRACE "}"
+COLON       ":"
+PIPE         "|"
+FUNCTION  [A-Za-z]+[A-Za-z0-9_]*
 SYMBOL "$"[A-Za-z]+[A-Za-z0-9_]*
+BAR                         "|"
+PLUS                        "+"
+MINUS                       "-"
+MULTIPLY                    "*"
+
 
 %x streaming
 %x escape
@@ -38,7 +46,28 @@ SYMBOL "$"[A-Za-z]+[A-Za-z0-9_]*
                             printf( "found a closing brace...\n" );
                             //return CLOSE_BRACE;
                         }
+<escape>{FUNCTION}    {
+                            printf( "FUNCTION...\n" );
+                            //return OPEN_BRACE;
+                        }
+<escape>{BAR}   {
+                            BEGIN(streaming);
+                            printf( "BAR...\n" );
+                            //return CLOSE_BRACE;
+                        }
 <escape>{SYMBOL}        {
+                            printf( "symbol: %s\n", yytext );
+                            //return SYMBOL;
+                        }
+<escape>{PLUS}          {
+                            printf( "symbol: %s\n", yytext );
+                            //return SYMBOL;
+                        }
+<escape>{MINUS}         {
+                            printf( "symbol: %s\n", yytext );
+                            //return SYMBOL;
+                        }
+<escape>{MULTIPLY}      {
                             printf( "symbol: %s\n", yytext );
                             //return SYMBOL;
                         }
@@ -53,13 +82,6 @@ int yywrap(void)
 {
     return 1;
 }
-
-/* int main()
-{
-    while (yylex() != 0) ;
-    return 0;
-} */
-
 
 int main(int argc, char** argv)
 {

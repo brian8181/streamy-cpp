@@ -10,35 +10,53 @@
 
 %pure_parser
 
-%token NUMBER
-
+%token OPEN_BRACE CLOSE_BRACE ASCII SYMBOL PLUS MINUS MULTIPLY INTEGER
+%type escape
+%type expr
 %left '+' '-'
 %left '*' '/'
 
 %%
 
-start:	lines;
-
-lines: /* empty */
-	| lines line
+document:
+        ASCII
+        |
         ;
 
-line	: expr '\n' { printf("%d\n", $1); }
-	| '\n' { printf("(empty line ignored)\n"); }
-	| error '\n'
-	;
+escape:
+        expr
+        |
+        OPEN_BRACE expr CLOSE_BRACE { $$ = $2; }
+        ;
 
-expr	: expr '+' expr { $$ = $1 + $3; }
-	| expr '-' expr { $$ = $1 - $3; }
-	| expr '*' expr { $$ = $1 * $3; }
-	| expr '/' expr { $$ = $1 / $3; }
-	| '(' expr ')' { $$ = $2; }
-	| NUMBER { $$ = $1; }
-	;
+expr:
+        INTEGER         { $$ = $1; }
+        | expr '+' INTEGER { $$ = $1 + $3; }
+        | expr '+' SYMBOL { $$ = $1 + $3; }
+        | expr '-' INTEGER { $$ = $1 + $3; }
+        | expr '-' SYMBOL { $$ = $1 + $3; }
+        | expr '*' INTEGER { $$ = $1 + $3; }
+        | expr '*' SYMBOL { $$ = $1 + $3; }
+        ;
 
+TOKINIZED:
+        ASCII
+        |
+        ESC_TOKEN
+        |
+        TOKINIZED ESC_TOKEN
+        ;
+
+ESC_TOKEN:
+        SYMBOL
+        |
+        PLUS
+        |
+        MINUS
+        |
+        MULTIPLY
+        ;
 %%
-
-
 
 #if YYPURE
 #define YYLEXARGS YYSTYPE *yylvalp
@@ -76,8 +94,8 @@ int yylex(YYLEXARGS)
 }
 
 int yyerror(s)
-char *s;
 {
+    char *s;
     fprintf(stderr, "%s\n", s);
 }
 

@@ -16,16 +16,10 @@ SRC=.
 
 debug: all
 
-all: $(BLD)/parser.tab.c $(BLD)/lex $(BLD)/lexer
+all: $(BLD)/parser.tab.c $(BLD)/lexer
 
 $(BLD)/parser: $(BLD)/lexer.yy.c $(BLD)/parser.tab.c
 	$(CC) $(CX) $(BLD)/lexer.yy.c $(BLD)/parser.tab.c -lfl -o $(BLD)/parser
-
-$(BLD)/lex: $(BLD)/lex.yy.c
-	$(CC) $(CCFLAGS) $(BLD)/lex.yy.c -I./build -lfl -o $(BLD)/lex
-
-$(BLD)/lex.yy.c: $(SRC)/lex.l
-	$(LEX) --yylineno --header-file=$(BLD)/lex.yy.h -o $(BLD)/lex.yy.c $(SRC)/lex.l
 
 $(BLD)/lexer: $(BLD)/lexer.yy.c
 	$(CC) $(CCFLAGS) $(BLD)/lexer.yy.c -I./build -lfl -o $(BLD)/lexer

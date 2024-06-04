@@ -35,11 +35,11 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_BUILD_CH3_TAB_H_INCLUDED
-# define YY_YY_BUILD_CH3_TAB_H_INCLUDED
+#ifndef YY_YY_CALC_H_INCLUDED
+# define YY_YY_CALC_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -54,15 +54,24 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NAME = 258,                    /* NAME  */
-    NUMBER = 259                   /* NUMBER  */
+    NUM = 258                      /* "number"  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+  double NUM;                              /* "number"  */
+  double expr;                             /* expr  */
+  double term;                             /* term  */
+  double fact;                             /* fact  */
+
+#line 72 "calc.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -74,4 +83,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_BUILD_CH3_TAB_H_INCLUDED  */
+#endif /* !YY_YY_CALC_H_INCLUDED  */

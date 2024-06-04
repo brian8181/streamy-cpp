@@ -1,7 +1,9 @@
 %{
+
 #include <stdio.h>
 #include "parser.tab.h"
 #include "lex.yy.h"
+
 %}
 
 /*
@@ -13,29 +15,33 @@
 %token <ival> NUMBER;
 %token <sval> STRING; */
 
-%token INTEGER VARIABLE NUMBER LITERAL_TEXT OPEN_BRACE CLOSE_BRACE ASCII SYMBOL
+%token INTEGER SYMBOL PLAIN_TEXT OPEN_BRACE CLOSE_BRACE FUNCTION BAR
+%type escape
+%type expression
+%start document
+
 %%
 
-page:
-    page stmt '\n' { printf("%d\n", $2); }
-    |
-    ;
+document:
+        document expression '\n' { printf("%d\n", $2); }
+        |
+        ;
 
-stmt:
-    ';'
-    | expr ';'
-    ;
+escape:
+        expression CLOSE_BRACE { $$ = $2; }
+        ;
 
+expression:
+        OPEN_BRACE expression CLOSE_BRACE
+        SYMBOL
+        |
+        SYMBOL BAR FUNCTION
+        ;
 
-expr:
-    INTEGER         { $$ = $1; }
-    | expr '+' INTEGER { $$ = $1 + $3; }
-    | expr '+' VARIABLE { $$ = $1 + $3; }
-    | expr '-' INTEGER { $$ = $1 + $3; }
-    | expr '-' VARIABLE { $$ = $1 + $3; }
-    | expr '*' INTEGER { $$ = $1 + $3; }
-    | expr '*' VARIABLE { $$ = $1 + $3; }
-    ;
+stream:
+       PLAIN_TEXT;
+       |
+       stream PLAIN_TEXT
 
 %%
 
@@ -66,13 +72,3 @@ int main(int argc, char* argv[])
     yyparse();
     return 0;
 }
-
-
-/* main(int argc, char **argv)
-{
-    yyparse();
-}
-yyerror(char *s)
-{
-    fprintf(stderr, "error: %s\n", s);
-} */
