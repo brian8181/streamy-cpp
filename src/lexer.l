@@ -46,11 +46,11 @@ MULTIPLY                    "*"
                             printf( "found a closing brace...\n" );
                             //return CLOSE_BRACE;
                         }
-<escape>{FUNCTION}    {
+<escape>{FUNCTION}      {
                             printf( "FUNCTION...\n" );
                             //return OPEN_BRACE;
                         }
-<escape>{BAR}   {
+<escape>{BAR}           {
                             BEGIN(streaming);
                             printf( "BAR...\n" );
                             //return CLOSE_BRACE;
