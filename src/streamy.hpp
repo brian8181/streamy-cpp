@@ -10,6 +10,7 @@
 #include <vector>
 #include <map>
 #include <regex>
+#include "fileio.hpp"
 #include "compiler.hpp"
 
 using std::stringstream;

@@ -17,11 +17,11 @@ using std::smatch;
 
 bool match_single(const string& pattern, const string& text, /* out */ smatch& match);
 bool match_single(const string& pattern, const string& text);
-vector<string>& getlines(const string& path, /*out*/ vector<string>& lines);
+//vector<string>& getlines_(const string& path, /*out*/ vector<string>& lines);
 int read_bits(const smatch& m);
 bool file_exist(const string& path);
 map<string, string>& get_name_value_pairs(string path, /* out */ map<string, string>& pairs);
-string& read_stream(const string& path, /* out */ string& s_out);
+//string& read_stream(const string& path, /* out */ string& s_out);
 string& trim(string& s, char c);
 string& ltrim(string& s);
 string& rtrim(string& s);

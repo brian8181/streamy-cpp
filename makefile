@@ -3,7 +3,7 @@
 # Version:    0.1.0
 
 CXX=g++
-CXXFLAGS=-ggdb -Wall -DDEBUG -std=c++17
+CXXFLAGS=-ggdb -Wall -DDEBUG -std=c++20
 CC=gcc
 CCFLAGS=-ggdb -std=c99 -DDEBUG
 LEX=flex
@@ -13,6 +13,26 @@ BLD=build
 OBJ=build
 PREFIX=/usr/local
 #CXXEXTRA = -Wshadow -fstats -fno-rtti fmessage-length=100 -fverbose-asm
+
+LIBS = -L/usr/local/lib/
+INCLUDES = -I/usr/local/include/cppunit/ -I/home/brian/src/inflex/makes/ -I/home/brian/src/inflex/src/
+LDFLAGS = $(LIBS) $(INCLUDES)
+
+ifndef RELEASE
+	CXXFLAGS +=-ggdb -DDEBUG
+endif
+
+ifdef CYGWIN
+	CXXFLAGS +=-DCYGWIN
+	LDFLAGS += /usr/lib/libcppunit.dll.a
+endif
+
+ifdef REFLEX
+	FLEX=reflex
+	CXXFLAGS +=-DREFLEX
+	LDFLAGS += /usr/local/lib/libcppunit.a /usr/local/lib/libreflex.a
+	REFLEXFLAGS=-I/usr/local/include/reflex
+endif
 
 all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/tokenizer $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex
 
@@ -25,7 +45,10 @@ $(BLD)/compiler.o: $(SRC)/compiler.cpp
 $(BLD)/utility.o: $(SRC)/utility.cpp
 	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
 
-$(BLD)/index.cgi: $(BLD)/utility.o $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.o
+$(BLD)/scanner: $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/scanner.o $(BLD)/compiler.o $(BLD)/streamy.o
+	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $^ -o $@
+
+$(BLD)/index.cgi: $(BLD)/utility.omake clean $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi
@@ -53,8 +76,8 @@ $(BLD)/index2.o: $(SRC)/index2.cpp
 $(BLD)/index3.o: $(SRC)/index3.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/index3.cpp -o $(OBJ)/index3.o
 
-$(BLD)/libstreamy.so: $(BLD)/streamy.o
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC --shared $(OBJ)/streamy.o $(OBJ)/compiler.o -o $(BLD)/libstreamy.so
+$(BLD)/libstreamy.so: $(OBJ)/fileio.o $(OBJ)/compiler.o $(BLD)/streamy.o
+	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC --shared $(OBJ)/fileio.o $(OBJ)/compiler.o $(OBJ)/streamy.o -o $(BLD)/libstreamy.so
 	chmod 755 $(BLD)/libstreamy.so
 
 $(BLD)/libstreamy.a: $(BLD)/streamy.o
@@ -98,6 +121,9 @@ lex_yacc_ex:
 	$(CC) $(BLD)/ex1.yy.c -o $(BLD)/ex1
 	$(LEX) -o $(BLD)/ex2.yy.c $(SRC)/ex2.l
 	$(CC) $(BLD)/ex2.yy.c -o $(BLD)/ex2
+
+$(OBJ)/%.o: $(SRC)/%.cpp
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
 .PHONY: install
 install:

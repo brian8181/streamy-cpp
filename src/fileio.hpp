@@ -11,13 +11,13 @@
 
 using namespace std;
 
-vector<string> getlines(string path);
-string ifs_read_all(string path);
-string &ifs_read_all(const string &path, /* out */string &out);
+vector<string>& get_lines(const string& path, vector<string>& lines);
+//string& read_stream(const string& path);
+string& read_stream(const string& path, /* out */string& out);
 map<string, string> get_config(string path);
 
-string &ltrim(string &s);
-string &rtrim(string &s);
-string &trim(string &s);
+// string& ltrim(string& s);
+// string& rtrim(string& s);
+// string& trim(string& s);
 
 #endif

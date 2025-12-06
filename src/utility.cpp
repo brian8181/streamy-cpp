@@ -15,6 +15,7 @@ using std::string;
 using std::map;
 using std::vector;
 using std::ostringstream;
+using std::ifstream;
 
 // returns true if only one match & match string size equals text size
 bool match_single(const string& pattern, const string& text, /* out */ smatch& match)
@@ -41,23 +42,23 @@ bool match_single(const string& pattern, const string& text)
     return false;
 }
 
-// get file lines as vector
-vector<string>& getlines(const string& path, /* out */ vector<string>& lines)
-{
-    std::ifstream file;
-    file.open(path, std::ios::in);
+// // get file lines as vector
+// vector<string>& get_lines(const string& path, vector<string>& lines)
+// {
+//     ifstream file;
+//     file.open(path, std::ios::in);
+//     if (file.is_open())
+//     {
+//         string line;
+//         while (getline(file, line))
+//         {
+//             lines.push_back(line);
+//         }
+//         file.close();
+//     }
+//     return lines;
+// }
 
-    if (file.is_open())
-    {
-        string line;
-        while (getline(file, line))
-        {
-            lines.push_back(line);
-        }
-        file.close();   
-    }
-    return lines;
-}
 
 int read_bits(const smatch& m)
 {
@@ -70,13 +71,13 @@ int read_bits(const smatch& m)
     return bits;
 }
 
-string& read_stream(const string& path, /* out */ string& s_out)
-{
-    std::ifstream ifstrm(path);
-    std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
-    s_out = output;
-    return s_out;
-}
+// string& read_stream(const string& path, /* out */ string& s_out)
+// {
+//     std::ifstream ifstrm(path);
+//     std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
+//     s_out = output;
+//     return s_out;
+// }
 
 bool file_exist(const string& path)
 {
@@ -92,11 +93,11 @@ map<string, string>& get_name_value_pairs(string path, /* out */ map<string, str
     std::ifstream file;
     file.open(path, std::ios::in); //open a file
 
-    if (file.is_open()) 
-    {   
+    if (file.is_open())
+    {
         string line;
         while(getline(file, line))
-        { 
+        {
             size_t pos = line.find('=');
             string name = line.substr(0, pos-1);
             name = trim(name);
@@ -127,7 +128,7 @@ string& ltrim(std::string &s)
         if(!std::isspace(s[i]))
             break;
     }
-    string::iterator beg = s.begin(); 
+    string::iterator beg = s.begin();
     s.erase(beg, beg+i);
     return s;
 }
@@ -141,7 +142,7 @@ string& rtrim(std::string &s)
         if(!std::isspace(s[i-1]))
             break;
     }
-    string::iterator end = s.end(); 
+    string::iterator end = s.end();
     s.erase(end-(len-i), end);
     return s;
 }

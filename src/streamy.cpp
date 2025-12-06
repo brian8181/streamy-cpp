@@ -8,10 +8,10 @@
 #include <filesystem>
 #include <regex>
 #include "streamy.hpp"
-#include "utility.hpp"
 #include "constants.hpp"
 #include "bash_color.h"
 #include "compiler.hpp"
+#include "fileio.hpp"
 
 using namespace std;
 
@@ -53,7 +53,7 @@ void streamy::load_config(const string& path)
 
     // get configuration file by lines
     vector<string> lines;
-    lines = getlines(path, lines);
+    lines = get_lines(path, lines);
     // create one only section (global)
     string section_name = "global";
     map<string, string> section_map;
@@ -252,25 +252,25 @@ void streamy::parse(vector<pair<int, string>>& tokens, /* out */ stringstream& s
                     ++i; // go
                 break;
             }
-            case ID_INCLUDE_FILE:
-                ++i;
-                if(tokens[i].second == "file")
-                    ++i;  // move to next
-                if(tokens[i].second[0] == '\"')
-                {
-                    ++i;
-                    if(tokens[i].second[0] == TOKEN)
-                    {
-                        string file_name = tokens[i].second;
-                        include_file(file_name, ss);
-                        ++i;  // move to closing "
-                    }
-                }
-                if(tokens[i].second[0] == '}')
-                    ++i; // move to \n
-                if(tokens[i].second[0] == '\n')
-                    ++i; // go
-                break;
+            // case ID_INCLUDE_FILE:
+            //     ++i;
+            //     if(tokens[i].second == "file")
+            //         ++i;  // move to next
+            //     if(tokens[i].second[0] == '\"')
+            //     {
+            //         ++i;
+            //         if(tokens[i].second[0] == TOKEN)
+            //         {
+            //             string file_name = tokens[i].second;
+            //             include_file(file_name, ss);
+            //             ++i;  // move to closing "
+            //         }
+            //     }
+            //     if(tokens[i].second[0] == '}')
+            //         ++i; // move to \n
+            //     if(tokens[i].second[0] == '\n')
+            //         ++i; // go
+            //     break;
             case ID_MODULUS:
             case ID_LOGICAL_AND:
             case ID_LOGICAL_OR:

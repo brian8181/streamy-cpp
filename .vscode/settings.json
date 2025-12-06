@@ -9,7 +9,9 @@
         "deque": "cpp",
         "unordered_map": "cpp",
         "vector": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "xstring": "cpp",
+        "iterator": "cpp"
     },
     "cmake.sourceDirectory": "/home/brian/src/streamy-cpp/src"
 }
