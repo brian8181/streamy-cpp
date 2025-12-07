@@ -1,6 +1,6 @@
-#line 1 "build/esc_only.yy.c"
+#line 1 "build/incl.yy.c"
 
-#line 3 "build/esc_only.yy.c"
+#line 3 "build/incl.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -352,8 +352,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 4
-#define YY_END_OF_BUFFER 5
+#define YY_NUM_RULES 6
+#define YY_END_OF_BUFFER 7
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -361,27 +361,29 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[11] =
+static const flex_int16_t yy_accept[25] =
     {   0,
-        0,    0,    0,    0,    5,    4,    1,    2,    3,    0
+        3,    3,    4,    4,    7,    3,    3,    2,    2,    5,
+        4,    6,    3,    3,    2,    2,    5,    4,    2,    2,
+        2,    2,    1,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
     {   0,
+        1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    2,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    4,    4,    5,    6,
 
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    2,    1,    3,    1,    1,    1,    1,    1,
+        7,    4,    4,    4,    8,    4,    4,    9,    4,   10,
+        4,    4,    4,    4,    4,    4,   11,    4,    4,    4,
+        4,    4,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -398,33 +400,42 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[4] =
+static const YY_CHAR yy_meta[12] =
     {   0,
-        1,    1,    1
+        1,    2,    2,    3,    3,    3,    3,    3,    3,    3,
+        3
     } ;
 
-static const flex_int16_t yy_base[13] =
+static const flex_int16_t yy_base[30] =
     {   0,
-        5,    4,    2,    1,    3,    8,    8,    8,    8,    8,
-        1,    0
+        0,    8,   15,   17,   36,   32,   37,    0,   24,    0,
+       31,   37,   29,   37,    0,   25,    0,   13,    5,    2,
+        6,    0,    0,   37,   20,   23,   26,    1,   28
     } ;
 
-static const flex_int16_t yy_def[13] =
+static const flex_int16_t yy_def[30] =
     {   0,
-       11,   11,   12,   12,   10,   10,   10,   10,   10,    0,
-       10,   10
+       25,   25,   26,   26,   24,   27,   24,   28,   28,   29,
+       24,   24,   27,   24,   28,   28,   29,   24,   28,   28,
+       28,   28,   28,    0,   24,   24,   24,   24,   24
     } ;
 
-static const flex_int16_t yy_nxt[12] =
+static const flex_int16_t yy_nxt[49] =
     {   0,
-        8,    6,   10,    9,    9,    7,    7,    5,   10,   10,
-       10
+        6,    6,    7,   15,   24,   24,   23,    9,    6,    6,
+        7,   22,   21,   20,   18,    9,   11,   12,   11,   12,
+        8,    8,    8,   10,   10,   10,   13,   13,   17,   19,
+       17,   14,   18,   16,   14,   24,    5,   24,   24,   24,
+       24,   24,   24,   24,   24,   24,   24,   24
     } ;
 
-static const flex_int16_t yy_chk[12] =
+static const flex_int16_t yy_chk[49] =
     {   0,
-       12,   11,    5,    4,    3,    2,    1,   10,   10,   10,
-       10
+        1,    1,    1,   28,    0,    0,   22,    1,    2,    2,
+        2,   21,   20,   19,   18,    2,    3,    3,    4,    4,
+       25,   25,   25,   26,   26,   26,   27,   27,   29,   16,
+       29,   13,   11,    9,    6,    5,   24,   24,   24,   24,
+       24,   24,   24,   24,   24,   24,   24,   24
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -441,16 +452,20 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "src/esc_only.l"
-#line 2 "src/esc_only.l"
-    int yylex(void);
-    int yyerror(char* s);
-#line 448 "build/esc_only.yy.c"
+#line 1 "src/incl.l"
+/* the "incl" state is used for picking up the name
+* of an include file
+*/
 
-#line 450 "build/esc_only.yy.c"
+#line 6 "src/incl.l"
+    #define MAX_INCLUDE_DEPTH 10
+    YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
+    int include_stack_ptr = 0;
+#line 464 "build/incl.yy.c"
+#line 465 "build/incl.yy.c"
 
 #define INITIAL 0
-#define ESCAPED 1
+#define incl 1
 
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -665,10 +680,11 @@ YY_DECL
 		}
 
 	{
-#line 7 "src/esc_only.l"
+#line 11 "src/incl.l"
 
 
-#line 671 "build/esc_only.yy.c"
+
+#line 687 "build/incl.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -695,13 +711,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 11 )
+				if ( yy_current_state >= 25 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 8 );
+		while ( yy_base[yy_current_state] != 37 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -727,29 +743,69 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 9 "src/esc_only.l"
-{ printf("\n'{ "); BEGIN ESCAPED; }
+#line 14 "src/incl.l"
+{ BEGIN(incl); }
 	YY_BREAK
 case 2:
-/* rule 2 can match eol */
 YY_RULE_SETUP
-#line 10 "src/esc_only.l"
+#line 15 "src/incl.l"
 { ECHO; }
 	YY_BREAK
 case 3:
+/* rule 3 can match eol */
 YY_RULE_SETUP
-#line 11 "src/esc_only.l"
-{ printf(" }'\n"); BEGIN INITIAL; }
+#line 16 "src/incl.l"
+{ ECHO; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 13 "src/esc_only.l"
+#line 17 "src/incl.l"
+{ /* eat the whitespace */ }
+	YY_BREAK
+case 5:
+YY_RULE_SETUP
+#line 18 "src/incl.l"
+{
+                        /* got the include file name */
+                        if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
+                        {
+                            fprintf( stderr, "Includes nested too deeply" );
+                            exit( 1 );
+                        }
+                        include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+
+                        yyin = fopen( yytext, "r" );
+                        if ( ! yyin )
+                        {
+                            printf( "could not open file, %s", yytext );
+                        }
+
+                        yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
+                        BEGIN(INITIAL);
+                    }
+	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+case YY_STATE_EOF(incl):
+#line 36 "src/incl.l"
+{
+                        if ( --include_stack_ptr < 0 )
+                        {
+                            yyterminate();
+                        }
+                        else
+                        {
+                            yy_delete_buffer( YY_CURRENT_BUFFER );
+                            yy_switch_to_buffer(
+                            include_stack[include_stack_ptr] );
+                        }
+                    }
+	YY_BREAK
+case 6:
+YY_RULE_SETUP
+#line 49 "src/incl.l"
 ECHO;
 	YY_BREAK
-#line 749 "build/esc_only.yy.c"
-case YY_STATE_EOF(INITIAL):
-case YY_STATE_EOF(ESCAPED):
-	yyterminate();
+#line 808 "build/incl.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1044,7 +1100,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 11 )
+			if ( yy_current_state >= 25 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1072,11 +1128,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 11 )
+		if ( yy_current_state >= 25 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 10);
+	yy_is_jam = (yy_current_state == 24);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1752,7 +1808,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 13 "src/esc_only.l"
+#line 49 "src/incl.l"
 
 
 int yywrap(void)
@@ -1760,32 +1816,19 @@ int yywrap(void)
     return 1;
 }
 
-int yyerror(char *s)
-{
-    fprintf(stderr, "%s\n", s);
-    return 0;
-};
-
 int main(int argc, char** argv)
 {
-    if(argc < 2)
+    /* skip over program name */
+    ++argv, --argc;
+
+    if ( argc > 0 )
     {
-        /* just read stdin */
-        yylex();
-        return 0;
+        yyin = fopen( argv[0], "r" );
     }
-    for(int i = 1; i < argc; i++)
+    else
     {
-        FILE *f = fopen(argv[i], "r");
-        if(!f)
-        {
-            perror(argv[i]);
-            return (1);
-        }
-        yyrestart(f);
-        yylex();
-        fclose(f);
+        yyin = stdin;
     }
-    return 0;
+    yylex();
 }
 

@@ -1,1 +1,1 @@
-aaa{$b}aaa
+bbb{$c}ccc
