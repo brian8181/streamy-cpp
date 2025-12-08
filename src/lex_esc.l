@@ -45,10 +45,18 @@ ASTERIK         "*"
 EQUAL          "="
 DOT             "."
 PERCENT         "%"
-AMPERSAND         "&"
-LOGICAL_AND         "&&"
-LOGICAL_OR         "||"
+AMPERSAND       "&"
+LOGICAL_AND      "&&"
+LOGICAL_OR      "||"
 NUMBER          [0-9]+
+
+HTTP            "get|post|cookies|env|request|session"
+CONFIG          "config_load|config|section|template|ldelim|rdelim|version|file|include|cycle|counter"
+FUNCTIONS       "assign|const|debug|eval|fetch|textformat|math"
+ACCSESSORS      "index|index_prev|index_next|iteration|first|last|show|total"
+HTML            "html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time"
+MODIFIER        "tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br""
+MORE            "captialize|regex_replace|count_characters|count_sentences|count_paragraphs|count_words|strip_tags|escape"
 
 %x ESCAPED
 %x IF_BLOCK
@@ -56,7 +64,6 @@ NUMBER          [0-9]+
 
 {COMMENT}                               { /* eat up comment */ }
 [{]                                     { printf("'{ "); BEGIN ESCAPED; }
-<ESCAPED,IF_BLOCK>{AMPERSAND}               { printf(" AMPERSAND "); }
 <ESCAPED,IF_BLOCK>{LOGICAL_AND}           { printf(" LOGICAL_AND "); }
 <ESCAPED,IF_BLOCK>{LOGICAL_OR}           { printf(" LOGICAL_OR "); }
 <ESCAPED,IF_BLOCK>{SLASH}               { printf(" SLASH "); }
