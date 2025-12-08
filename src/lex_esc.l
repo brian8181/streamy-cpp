@@ -1,13 +1,16 @@
 %{
+    #define LBRACKET 1
+    #define RBRACKET 2
+    #define NUMBER 3
+    #define IF    4
+    #define ELSE  5
+
+    #define MAX_INCLUDE_DEPTH 10
+
+    YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
+    int include_stack_ptr = 0;
     int yylex(void);
     int yyerror(char* s);
-
-#define LBRACKET 1
-#define RBRACKET 2
-#define NUMBER 3
-#define IF    4
-#define ELSE  5
-
 %}
 
 IDENTIFIER      _*[A-Za-z][A-Za-z0-9_]*
@@ -50,19 +53,22 @@ LOGICAL_AND      "&&"
 LOGICAL_OR      "||"
 NUMBER          [0-9]+
 HTTP            get|post|cookies|env|request|session
-CONFIG          config_load|config|section|template|ldelim|rdelim|version|file|include|cycle|counter
+CONFIG          config_load|config|section|template|ldelim|rdelim|version|file|cycle|counter
 FUNCTIONS       const|debug|eval|fetch|textformat|math
 ACCSESSORS      assign|isset|index|index_prev|index_next|iteration|first|last|show|total|from|item
 HTML            "html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time"
 MODIFIER        tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br
 MORE            "captialize|regex_replace|count_characters|count_sentences|count_paragraphs|count_words|strip_tags|escape"
-
+INCLUDE         include
 %x ESCAPED
 %x IF_BLOCK
+%x incl
+%x OFF
 %%
 
 {COMMENT}                               { /* eat up comment */ }
 [{]                                     { printf("'{ "); BEGIN ESCAPED; }
+<OFF>{INCLUDE}                          { printf(" INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
 <ESCAPED,IF_BLOCK>{CONFIG}              { printf(" CONFIG "); }
@@ -95,6 +101,37 @@ MORE            "captialize|regex_replace|count_characters|count_sentences|count
 <ESCAPED,IF_BLOCK>[}]                   { printf(" }'"); BEGIN INITIAL; }
 <ESCAPED>{CONST_ID}                     { printf(" [CONST_ID:%s] ", yytext); }
 <ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); }
+<incl>[ \t]*        { /* eat the whitespace */ }
+<incl>[^ \t\n]+     {
+                        /* got the include file name */
+                        if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
+                        {
+                            fprintf( stderr, "Includes nested too deeply" );
+                            exit( 1 );
+                        }
+                        include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+
+                        yyin = fopen( yytext, "r" );
+                        if ( ! yyin )
+                        {
+                            printf( "could not open file, %s", yytext );
+                        }
+
+                        yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
+                        BEGIN(INITIAL);
+                    }
+<<EOF>>             {
+                        if ( --include_stack_ptr < 0 )
+                        {
+                            yyterminate();
+                        }
+                        else
+                        {
+                            yy_delete_buffer( YY_CURRENT_BUFFER );
+                            yy_switch_to_buffer(
+                            include_stack[include_stack_ptr] );
+                        }
+                    }
 %%
 
 int yywrap(void)
