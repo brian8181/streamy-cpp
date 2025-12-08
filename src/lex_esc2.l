@@ -9,11 +9,12 @@ CONST_ID        #{IDENTIFIER}#
 QUALAFIED_ID    {ID}(("."|"->"){IDENTIFIER})+
 FUNCTION        {IDENTIFIER}(("."|"->"){IDENTIFIER})*[ /t]?\([^)]*\)
 ARRAY           {ID}\[[^\]]\]
+COMMENT         \{[ \t]*\*[^*}]*\*[ \t]*\}
 
 %x ESCAPED
 %%
 
-
+{COMMENT}                { /* eat up comment */ }
 [{]                      { printf("'{ "); BEGIN ESCAPED; }
 <ESCAPED>[}]             { printf(" }'"); BEGIN INITIAL; }
 <ESCAPED>{FUNCTION}      { printf(" [FUNCTION:%s] ", yytext); }

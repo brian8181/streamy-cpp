@@ -6,30 +6,22 @@
 IDENTIFIER      _*[A-Za-z][A-Za-z0-9_]*
 ID              \${IDENTIFIER}
 CONST_ID        #{IDENTIFIER}#
-QUALAFIED_ID    {ID}\("."|"->"\){IDENTIFIER}
-COLON           ":"
-FUNCTION        {IDENTIFIER}[ /t]?(.*)
-BAR                         "|"
-PLUS                        "+"
-MINUS                       "-"
-MULTIPLY                    "*"
-COMMENT                     <*>"\/\/"[^\n]*
+QUALAFIED_ID    {ID}(("."|"->"){IDENTIFIER})+
+FUNCTION        {IDENTIFIER}(("."|"->"){IDENTIFIER})*[ /t]?\([^)]*\)
+ARRAY           {ID}\[[^\]]\]
+COMMENT         \{[ \t]*\*[^*}]*\*[ \t]*\}
 
 %x ESCAPED
 %%
 
-[{]             { printf("\n'**{ "); BEGIN ESCAPED; }
-<ESCAPED>{COLON}      { ECHO; }
-<ESCAPED>{FUNCTION}   { ECHO; }
-<ESCAPED>{BAR}        { ECHO; }
-<ESCAPED>{PLUS}       { ECHO; }
-<ESCAPED>{MINUS}      { ECHO; }
-<ESCAPED>{MULTIPLY}   { ECHO; }
-<ESCAPED>[}]            { printf(" }**'\n"); BEGIN INITIAL; }
-<ESCAPED>{CONST_ID}     { printf(" [CONST_ID:%s] ", yytext); }
-<ESCAPED>{ID}           { printf(" [ID:%s] ", yytext); }
-<ESCAPED>{QUALAFIED_ID} { printf(" [QUALAFIED_ID:%s] ", yytext); }
-
+{COMMENT}                { /* eat up comment */ }
+[{]                      { printf("'{ "); BEGIN ESCAPED; }
+<ESCAPED>[}]             { printf(" }'"); BEGIN INITIAL; }
+<ESCAPED>{FUNCTION}      { printf(" [FUNCTION:%s] ", yytext); }
+<ESCAPED>{ARRAY}         { printf(" [ARRAY:%s] ", yytext); }
+<ESCAPED>{QUALAFIED_ID}  { printf(" [QUALAFIED_ID:%s] ", yytext); }
+<ESCAPED>{CONST_ID}      { printf(" [CONST_ID:%s] ", yytext); }
+<ESCAPED>{ID}            { printf(" [ID:%s] ", yytext); }
 %%
 
 int yywrap(void)
