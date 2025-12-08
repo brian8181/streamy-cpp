@@ -14,6 +14,12 @@
 {$test($test)}
 {$name|cat}
 {$path|lower}
+{$test|truncate}
+{$test|upper}
+{$test|strip}
+{$test|spacify}
+{$test|nl2br}
+{$test|default:blah}
 {if "test"|test:0}
 {if $flag}
     //do this

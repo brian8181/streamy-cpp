@@ -49,13 +49,12 @@ AMPERSAND       "&"
 LOGICAL_AND      "&&"
 LOGICAL_OR      "||"
 NUMBER          [0-9]+
-
-HTTP            "get|post|cookies|env|request|session"
-CONFIG          "config_load|config|section|template|ldelim|rdelim|version|file|include|cycle|counter"
-FUNCTIONS       "assign|const|debug|eval|fetch|textformat|math"
-ACCSESSORS      "index|index_prev|index_next|iteration|first|last|show|total"
+HTTP            get|post|cookies|env|request|session
+CONFIG          config_load|config|section|template|ldelim|rdelim|version|file|include|cycle|counter
+FUNCTIONS       const|debug|eval|fetch|textformat|math
+ACCSESSORS      assign|isset|index|index_prev|index_next|iteration|first|last|show|total|from|item
 HTML            "html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time"
-MODIFIER        "tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br""
+MODIFIER        tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br
 MORE            "captialize|regex_replace|count_characters|count_sentences|count_paragraphs|count_words|strip_tags|escape"
 
 %x ESCAPED
@@ -64,18 +63,22 @@ MORE            "captialize|regex_replace|count_characters|count_sentences|count
 
 {COMMENT}                               { /* eat up comment */ }
 [{]                                     { printf("'{ "); BEGIN ESCAPED; }
-<ESCAPED,IF_BLOCK>{LOGICAL_AND}           { printf(" LOGICAL_AND "); }
-<ESCAPED,IF_BLOCK>{LOGICAL_OR}           { printf(" LOGICAL_OR "); }
+<ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
+<ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
+<ESCAPED,IF_BLOCK>{CONFIG}              { printf(" CONFIG "); }
+<ESCAPED,IF_BLOCK>{HTTP}                { printf(" HTTP "); }
+<ESCAPED,IF_BLOCK>{LOGICAL_AND}         { printf(" LOGICAL_AND "); }
+<ESCAPED,IF_BLOCK>{LOGICAL_OR}          { printf(" LOGICAL_OR "); }
 <ESCAPED,IF_BLOCK>{SLASH}               { printf(" SLASH "); }
-<ESCAPED,IF_BLOCK>{BACK_SLASH}               { printf(" BACK_SLASH "); }
+<ESCAPED,IF_BLOCK>{BACK_SLASH}          { printf(" BACK_SLASH "); }
 <ESCAPED,IF_BLOCK>{VBAR}                { printf(" VBAR "); }
 <ESCAPED,IF_BLOCK>{AT}                  { printf(" AT "); }
-<ESCAPED,IF_BLOCK>{PLUS}               { printf(" PLUS "); }
+<ESCAPED,IF_BLOCK>{PLUS}                { printf(" PLUS "); }
 <ESCAPED,IF_BLOCK>{MINUS}               { printf(" MINUS "); }
-<ESCAPED,IF_BLOCK>{ASTERIK}               { printf(" ASTERIK "); }
+<ESCAPED,IF_BLOCK>{ASTERIK}             { printf(" ASTERIK "); }
 <ESCAPED,IF_BLOCK>{EQUAL}               { printf(" EQUAL "); }
-<ESCAPED,IF_BLOCK>{DOT}               { printf(" DOT "); }
-<ESCAPED,IF_BLOCK>{PERCENT}               { printf(" PERCENT "); }
+<ESCAPED,IF_BLOCK>{DOT}                 { printf(" DOT "); }
+<ESCAPED,IF_BLOCK>{PERCENT}             { printf(" PERCENT "); }
 <ESCAPED,IF_BLOCK>{COLON}               { printf(" COLON "); }
 <ESCAPED,IF_BLOCK>{LBRACKET}            { printf(" LBRACKET "); }
 <ESCAPED,IF_BLOCK>{RBRACKET}            { printf(" RBRACKET "); }
