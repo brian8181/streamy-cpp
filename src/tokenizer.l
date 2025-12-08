@@ -12,6 +12,12 @@ ASCII [^}{\n]*
 
 %%
 
+int yywrap(void)
+{
+    return 1;
+}
+
+
 int main(int argc, char** argv)
 {
     /* skip over program name */

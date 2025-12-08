@@ -1,155 +1,108 @@
-// File Name:  ./utility.cpp
-// Build Date: Thu Dec 21 09:06:55 AM CST 2023
-// Version:    0.0.2
-
-#include <sstream>
-#include <fstream>
-#include <map>
 #include <string>
-#include <vector>
-#include <regex>
+#include <sstream>
+#include <cstring>
 #include "utility.hpp"
 
-using std::regex;
 using std::string;
-using std::map;
-using std::vector;
-using std::ostringstream;
-using std::ifstream;
+using std::stringstream;
 
-// returns true if only one match & match string size equals text size
-bool match_single(const string& pattern, const string& text, /* out */ smatch& match)
+void replace_all(string& s, const string& sub_str, const string& replace_str)
 {
-    regex rgx = regex(pattern);
-    regex_match(text, match, rgx);
+    size_t pos = 0;
+    size_t len = s.length();
 
-    if(match.size() == 1 && match.str().size() == text.size())
-        return true;
-
-    return false;
+    pos = s.find(sub_str, pos);
+    while(pos < len)
+    {
+        s.replace(pos, sub_str.length(), replace_str);
+        pos += replace_str.length();
+        pos = s.find(sub_str, pos);
+    }
 }
 
-// returns true if only one match & match string size equals text size
-bool match_single(const string& pattern, const string& text)
+void reverse(char str[], int length)
 {
-    regex rgx = regex(pattern);
-    smatch match;
-    regex_match(text, match, rgx);
-
-    if(match.size() == 1 && text.size(), match.str().size())
-        return true;
-
-    return false;
+    int start = 0;
+    int end = length - 1;
+    while (start < end) {
+        char temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        end--;
+        start++;
+    }
 }
 
-// // get file lines as vector
-// vector<string>& get_lines(const string& path, vector<string>& lines)
+// void to_str<T>(T num, std::string& str)
 // {
-//     ifstream file;
-//     file.open(path, std::ios::in);
-//     if (file.is_open())
-//     {
-//         string line;
-//         while (getline(file, line))
-//         {
-//             lines.push_back(line);
-//         }
-//         file.close();
-//     }
-//     return lines;
+
 // }
 
-
-int read_bits(const smatch& m)
+void long_to_str(long num, std::string& str)
 {
-    int len = m.size();
-    unsigned int bits = 0;
-    for(int i = 0; i < len && i < 32; ++i)
-    {
-        bits |= (int(m[i].matched) << i);
+    stringstream ss;
+    ss << num;
+    str = ss.str();
+}
+
+void int_to_str(int num, std::string& str)
+{
+    stringstream ss;
+    ss << num;
+    str = ss.str();
+}
+
+void str_to_int(const std::string& str, int& num)
+{
+   stringstream ss(str);
+   ss >> num;
+   if (ss.fail()) {
+       throw std::invalid_argument("Invalid input string: " + str);
+   }
+}
+
+char* citoa(int num, char* str, int base)
+{
+    int i = 0;
+    bool isNegative = false;
+
+    /* Handle 0 explicitly, otherwise empty string is
+        * printed for 0 */
+    if (num == 0) {
+        str[i++] = '0';
+        str[i] = '\0';
+        return str;
     }
-    return bits;
-}
 
-// string& read_stream(const string& path, /* out */ string& s_out)
-// {
-//     std::ifstream ifstrm(path);
-//     std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
-//     s_out = output;
-//     return s_out;
-// }
-
-bool file_exist(const string& path)
-{
-    std::fstream strm(path);
-    strm.open(path, std::ios::in);
-    bool ret = strm.is_open();
-    strm.close();
-    return ret;
-}
-
-map<string, string>& get_name_value_pairs(string path, /* out */ map<string, string>& pairs)
-{
-    std::ifstream file;
-    file.open(path, std::ios::in); //open a file
-
-    if (file.is_open())
-    {
-        string line;
-        while(getline(file, line))
-        {
-            size_t pos = line.find('=');
-            string name = line.substr(0, pos-1);
-            name = trim(name);
-            string value = line.substr(pos+1);
-            value = trim(value);
-            std::pair<string, string> p(name, value);
-            pairs.insert(p);
-        }
-        file.close(); //close the file
+    // In standard itoa(), negative numbers are handled
+    // only with base 10. Otherwise numbers are
+    // considered unsigned.
+    if (num < 0 && base == 10) {
+        isNegative = true;
+        num = -num;
     }
-    return pairs;
-}
 
-string& trim(string &s, char c)
-{
-    if(s.at(s.length()-1) == c)
-        s.pop_back();
-
-    return s;
-}
-
-string& ltrim(std::string &s)
-{
-    int len = s.size();
-    int i;
-    for(i = 0; i < len; ++i)
-    {
-        if(!std::isspace(s[i]))
-            break;
+    // Process individual digits
+    while (num != 0) {
+        int rem = num % base;
+        str[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
+        num = num / base;
     }
-    string::iterator beg = s.begin();
-    s.erase(beg, beg+i);
-    return s;
+
+    // If number is negative, append '-'
+    if (isNegative)
+        str[i++] = '-';
+
+    str[i] = '\0'; // Append string terminator
+
+    // Reverse the string
+    reverse(str, i);
+
+    return str;
 }
 
-string& rtrim(std::string &s)
+int stoi(const string& s, int& n)
 {
-    int len = s.size();
-    int i = len;
-    for(;i > 0; --i)
-    {
-        if(!std::isspace(s[i-1]))
-            break;
-    }
-    string::iterator end = s.end();
-    s.erase(end-(len-i), end);
-    return s;
-}
-
-string& trim(std::string &s)
-{
-    rtrim(s);
-    ltrim(s);
-    return s;
+    n = std::stoi(s);
+    return n;
 }

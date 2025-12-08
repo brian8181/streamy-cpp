@@ -9,7 +9,7 @@
 #include <regex>
 #include "streamy.hpp"
 #include "constants.hpp"
-#include "bash_color.h"
+#include "bash_color.hpp"
 #include "compiler.hpp"
 #include "fileio.hpp"
 
@@ -53,7 +53,7 @@ void streamy::load_config(const string& path)
 
     // get configuration file by lines
     vector<string> lines;
-    lines = get_lines(path, lines);
+    read_lines(path, lines);
     // create one only section (global)
     string section_name = "global";
     map<string, string> section_map;
@@ -104,7 +104,7 @@ string& streamy::compile(const string& tmpl, /* out */ string& html)
     const string full_path = this->template_dir + "/" + tmpl;
 
     string s;
-    read_stream(full_path, s);
+    read_str(full_path, s);
 
     vector<std::pair<int, string>> escapes;
     escapes.reserve(100);
@@ -334,7 +334,7 @@ void streamy::include_file(const string& file_name, /* out */ stringstream& ss)
 {
     const string full_path = this->template_dir + "/" + file_name;
     string file_src;
-    read_stream(file_name, file_src);
+    read_str(file_name, file_src);
     ss << file_src;
 }
 

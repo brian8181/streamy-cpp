@@ -11,6 +11,17 @@
     int include_stack_ptr = 0;
     int yylex(void);
     int yyerror(char* s);
+
+    char buf[100];
+    char *s;
+
+    //char *yylval;
+    // #include <string.h>   //   \"[^"\n]*["\n]
+    //
+    // yylval = strdup(yytext+1);
+    // if (yylval[yyleng-2] != '"')
+    //     warning("improperly terminated string");
+    // else yylval[yyleng-2] = 0;
 %}
 
 IDENTIFIER      _*[A-Za-z][A-Za-z0-9_]*
@@ -54,12 +65,14 @@ LOGICAL_OR      "||"
 NUMBER          [0-9]+
 HTTP            get|post|cookies|env|request|session
 CONFIG          config_load|config|section|template|ldelim|rdelim|version|file|cycle|counter
-FUNCTIONS       const|debug|eval|fetch|textformat|math
+UTILITY         const|debug|eval|fetch|textformat|math
 ACCSESSORS      assign|isset|index|index_prev|index_next|iteration|first|last|show|total|from|item
-HTML            "html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time"
+HTML            html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time
 MODIFIER        tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br
 MORE            "captialize|regex_replace|count_characters|count_sentences|count_paragraphs|count_words|strip_tags|escape"
 INCLUDE         include
+
+%x STRING
 %x ESCAPED
 %x IF_BLOCK
 %x incl
@@ -68,7 +81,17 @@ INCLUDE         include
 
 {COMMENT}                               { /* eat up comment */ }
 [{]                                     { printf("'{ "); BEGIN ESCAPED; }
+
 <OFF>{INCLUDE}                          { printf(" INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
+<OFF>\"          { BEGIN STRING; s = buf; }
+<STRING>\\n     { *s++ = '\n'; }
+<STRING>\\t     { *s++ = '\t'; }
+<STRING>\\\"    { *s++ = '\"'; }
+<STRING>\"      {*s = 0; BEGIN 0; printf("found '%s'\n", buf); }
+<STRING>\n      { printf("invalid string"); exit(1); }
+<STRING>.       { *s++ = *yytext; }
+<ESCAPED,IF_BLOCK>{HTML}                { printf(" HTML "); }
+<ESCAPED,IF_BLOCK>{UTILITY}             { printf(" UTILITY "); }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
 <ESCAPED,IF_BLOCK>{CONFIG}              { printf(" CONFIG "); }

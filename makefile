@@ -34,7 +34,7 @@ ifdef REFLEX
 	REFLEXFLAGS=-I/usr/local/include/reflex
 endif
 
-all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/tokenizer $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex $(BLD)/lex_esc
+all: $(BLD)/libstreamy.a $(BLD)/tokenizer $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex $(BLD)/lex_esc
 
 $(BLD)/streamy.o: $(BLD)/compiler.o $(SRC)/streamy.cpp
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
@@ -48,7 +48,7 @@ $(BLD)/utility.o: $(SRC)/utility.cpp
 $(BLD)/scanner: $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/scanner.o $(BLD)/compiler.o $(BLD)/streamy.o
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $^ -o $@
 
-$(BLD)/index.cgi: $(BLD)/utility.omake clean $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.o
+$(BLD)/index.cgi: $(BLD)/utility.o $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
 	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi
@@ -95,7 +95,7 @@ $(BLD)/fileio.o: $(SRC)/fileio.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o
 
 $(BLD)/tokenizer: $(BLD)/tokenizer.yy.c
-	$(CC) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
+	$(CC) $(BLD)/tokenizer.yy.c -o $(BLD)/tokenizer
 
 $(BLD)/tokenizer.yy.c: $(SRC)/tokenizer.l
 	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
