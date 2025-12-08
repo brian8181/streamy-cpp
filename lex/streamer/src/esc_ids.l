@@ -3,12 +3,15 @@
     int yyerror(char* s);
 %}
 
+ID \$_*[A-Za-z][A-Za-z0-9_]*
+
 %x ESCAPED
 %%
 
 [{]             { printf("\n'**{ "); BEGIN ESCAPED; }
-<ESCAPED>[^}]   { ECHO; }
+<ESCAPED>{ID}   { printf(" [ID:%s] ", yytext); }
 <ESCAPED>[}]    { printf(" }**'\n"); BEGIN INITIAL; }
+<*>"//"[^\n]*   /* eat up one-line comments */
 
 %%
 

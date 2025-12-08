@@ -39,3 +39,8 @@
 </table>
 </body>
 </html>
+{$foo[7] $boo[3]}
+
+{$foo.bar}
+{$foo->bar}
+{foo() foo () foo( )}

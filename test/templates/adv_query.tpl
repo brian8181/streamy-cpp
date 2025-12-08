@@ -1,3 +1,4 @@
+// testing
 <center>
 <form action="results.php" method="get">
 <table>
@@ -38,9 +39,9 @@
 		<div align="center">
 		<fieldset>
 		<legend>Boolean Modifier</legend>
-			All&nbsp;<i>(AND)</i>&nbsp;<input type="radio" name="and" value="true" 
+			All&nbsp;<i>(AND)</i>&nbsp;<input type="radio" name="and" value="true"
 			{if !isset($and) || $and=="true"}"checked="checked"{/if}/>
-			Any<i>&nbsp;(OR)</i>&nbsp;<input type="radio" name="and" value="false" 
+			Any<i>&nbsp;(OR)</i>&nbsp;<input type="radio" name="and" value="false"
 			{if isset($and) && $and=="false" } "checked="checked" {/if} />
 		</fieldset>
 		</div>
@@ -52,4 +53,4 @@
 Use&nbsp;wildcards:&nbsp;<input name="wildcard" type="checkbox" value="on"{if isset($wildcard)}"checked="checked"{/if}/>
 <br />
 </form>
-</center>
+</center> // test comment

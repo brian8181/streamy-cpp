@@ -34,7 +34,7 @@ ifdef REFLEX
 	REFLEXFLAGS=-I/usr/local/include/reflex
 endif
 
-all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/tokenizer $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex
+all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/tokenizer $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex $(BLD)/lex_esc
 
 $(BLD)/streamy.o: $(BLD)/compiler.o $(SRC)/streamy.cpp
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
@@ -114,6 +114,26 @@ $(BLD)/streamy.bak.yy.c: $(SRC)/streamy.bak.l
 
 $(BLD)/streamy.tab.c: $(SRC)/streamy.y
 	$(YACC) -Wcounterexamples --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
+
+$(BLD)/lex_esc: $(BLD)/lex_esc.yy.c
+	$(CC) $(BLD)/lex_esc.yy.c -o $(BLD)/lex_esc
+
+$(BLD)/lex_esc.yy.c: $(SRC)/lex_esc.l
+	$(LEX) -o $(BLD)/lex_esc.yy.c $(SRC)/lex_esc.l
+
+
+$(BLD)/lex_esc2: $(BLD)/lex_esc2.yy.c
+	$(CC) $(BLD)/lex_esc2.yy.c -o $(BLD)/lex_esc2
+
+$(BLD)/lex_esc2.yy.c: $(SRC)/lex_esc2.l
+	$(LEX) -o $(BLD)/lex_esc2.yy.c $(SRC)/lex_esc2.l
+
+$(BLD)/lex_esc3: $(BLD)/lex_esc3.yy.c
+	$(CC) $(BLD)/lex_esc3.yy.c -o $(BLD)/lex_esc3
+
+$(BLD)/lex_esc3.yy.c: $(SRC)/lex_esc3.l
+	$(LEX) -o $(BLD)/lex_esc3.yy.c $(SRC)/lex_esc3.l
+
 
 .PHONY: lex_yacc_ex
 lex_yacc_ex:
