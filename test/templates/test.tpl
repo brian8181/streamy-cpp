@@ -14,7 +14,7 @@
 {$test($test)}
 {$name|cat}
 {$path|lower}
-{if "test"}
+{if "test"|test:0}
 {if $flag}
     //do this
     {elseif $flag2}
@@ -40,7 +40,7 @@
 </table>
 </body>
 </html>
-{$foo[7] $boo[3]}
+{$foo[7]|test:3 $boo[3]}
 
 {$foo.bar}
 {$foo->bar}
