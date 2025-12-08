@@ -2,7 +2,8 @@
 {include file='foo.conf'}
 {insert file='foo.tpl'}
 <html>
-{* testing comments *}
+{* testing comments *  }
+{ * test comment *}
 <title>{#pageTitle#}</title>
 {$testing}
 {$testing2}
