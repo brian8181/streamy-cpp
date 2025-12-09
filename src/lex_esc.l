@@ -1,11 +1,13 @@
 %{
-    #define LBRACKET 1
-    #define RBRACKET 2
-    #define NUMBER 3
-    #define IF    4
-    #define ELSE  5
+    // #define LBRACKET 1
+    // #define RBRACKET 2
+    // #define NUMBER 3
+    // #define IF    4
+    // #define ELSE  5
 
     #define MAX_INCLUDE_DEPTH 10
+
+    #include "parser_esc.tab.h"
 
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int include_stack_ptr = 0;
@@ -60,8 +62,10 @@ EQUAL          "="
 DOT             "."
 PERCENT         "%"
 AMPERSAND       "&"
-LOGICAL_AND      "&&"
-LOGICAL_OR      "||"
+AND      "&&"
+OR      "||"
+LESS_THAN       "<"
+GREATER_THAN    ">"
 NUMBER          [0-9]+
 HTTP            get|post|cookies|env|request|session
 CONFIG          config_load|config|section|template|ldelim|rdelim|version|file|cycle|counter
@@ -96,8 +100,8 @@ INCLUDE         include
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
 <ESCAPED,IF_BLOCK>{CONFIG}              { printf(" CONFIG "); }
 <ESCAPED,IF_BLOCK>{HTTP}                { printf(" HTTP "); }
-<ESCAPED,IF_BLOCK>{LOGICAL_AND}         { printf(" LOGICAL_AND "); }
-<ESCAPED,IF_BLOCK>{LOGICAL_OR}          { printf(" LOGICAL_OR "); }
+<ESCAPED,IF_BLOCK>{AND}                 { printf(" AND "); }
+<ESCAPED,IF_BLOCK>{OR}                  { printf(" OR "); }
 <ESCAPED,IF_BLOCK>{SLASH}               { printf(" SLASH "); }
 <ESCAPED,IF_BLOCK>{BACK_SLASH}          { printf(" BACK_SLASH "); }
 <ESCAPED,IF_BLOCK>{VBAR}                { printf(" VBAR "); }
@@ -120,10 +124,10 @@ INCLUDE         include
 <ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf(" SEMI_COLON "); }
 <ESCAPED,IF_BLOCK>{QUOTE}               { printf(" QUOTE "); }
 <ESCAPED,IF_BLOCK>{SINGLE_QUOTE}        { printf(" SINGLE_QUOTE "); }
-<ESCAPED,IF_BLOCK>{NUMBER}              { printf(" NUMBER "); }
+<ESCAPED,IF_BLOCK>{NUMBER}              { printf(" NUMBER "); return NUMBER; }
 <ESCAPED,IF_BLOCK>[}]                   { printf(" }'"); BEGIN INITIAL; }
-<ESCAPED>{CONST_ID}                     { printf(" [CONST_ID:%s] ", yytext); }
-<ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); }
+<ESCAPED>{CONST_ID}                     { printf(" [CONST_ID:%s] ", yytext); return ID; }
+<ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); return ID;  }
 <incl>[ \t]*        { /* eat the whitespace */ }
 <incl>[^ \t\n]+     {
                         /* got the include file name */
@@ -157,6 +161,7 @@ INCLUDE         include
                     }
 %%
 
+#ifdef LEXER_MAIN
 int yywrap(void)
 {
     return 1;
@@ -190,3 +195,4 @@ int main(int argc, char** argv)
     }
     return 0;
 }
+#endif
