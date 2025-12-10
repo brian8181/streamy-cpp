@@ -44,8 +44,8 @@ int yyerror(char* s);
 
 document:
         document '\n' { ; }
-        |
-        number
+        | NUMBER
+        | identifier
         ;
 identifier:
     ID     { printf("bison:ID"); };

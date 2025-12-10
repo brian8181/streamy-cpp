@@ -46,6 +46,8 @@ document:
         document '\n' { ; }
         |
         number
+        |
+        identifier;
         ;
 identifier:
     ID     { printf("bison:ID"); };
