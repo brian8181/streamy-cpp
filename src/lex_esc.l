@@ -53,37 +53,3 @@ NUMBER          [0-9]*
 <ESCAPED>{CONST_ID}                     { printf(" [CONST_ID:%s] ", yytext); }
 <ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); }
 %%
-
-int yywrap(void)
-{
-    return 1;
-}
-
-int yyerror(char *s)
-{
-    fprintf(stderr, "%s\n", s);
-    return 0;
-};
-
-int main(int argc, char** argv)
-{
-    if(argc < 2)
-    {
-        /* just read stdin */
-        yylex();
-        return 0;
-    }
-    for(int i = 1; i < argc; i++)
-    {
-        FILE *f = fopen(argv[i], "r");
-        if(!f)
-        {
-            perror(argv[i]);
-            return (1);
-        }
-        yyrestart(f);
-        yylex();
-        fclose(f);
-    }
-    return 0;
-}

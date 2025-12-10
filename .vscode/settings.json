@@ -13,5 +13,5 @@
         "xstring": "cpp",
         "iterator": "cpp"
     },
-    "cmake.sourceDirectory": "/home/brian/src/streamy-cpp/src"
+    "cmake.sourceDirectory": "C:/Users/brian/src/streamy-cpp/src"
 }

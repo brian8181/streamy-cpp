@@ -115,6 +115,12 @@ $(BLD)/streamy.bak.yy.c: $(SRC)/streamy.bak.l
 $(BLD)/streamy.tab.c: $(SRC)/streamy.y
 	$(YACC) -Wcounterexamples --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
 
+$(BLD)/parser_esc.tab.c: $(SRC)/parser_esc.y
+	$(YACC) -Wcounterexamples --header $^ -o $@
+
+$(BLD)/parser_esc: $(BLD)/lex_esc.yy.c $(BLD)/parser_esc.tab.c
+	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
+
 $(BLD)/lex_esc: $(BLD)/lex_esc.yy.c
 	$(CC) $(BLD)/lex_esc.yy.c -o $(BLD)/lex_esc
 
