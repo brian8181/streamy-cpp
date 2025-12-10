@@ -119,5 +119,36 @@ INCLUDE         include
 <ESCAPED,IF_BLOCK>[}]                   { printf(" }'"); BEGIN INITIAL; }
 <ESCAPED>{CONST_ID}                     { printf(" [CONST_ID:%s] ", yytext); return ID; }
 <ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); return ID;  }
+<incl>[ \t]*        { /* eat the whitespace */ }
+<incl>[^ \t\n]+     {
+                        /* got the include file name */
+                        if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
+                        {
+                            fprintf( stderr, "Includes nested too deeply" );
+                            exit( 1 );
+                        }
+                        include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+
+                        yyin = fopen( yytext, "r" );
+                        if ( ! yyin )
+                        {
+                            printf( "could not open file, %s", yytext );
+                        }
+
+                        yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
+                        BEGIN(INITIAL);
+                    }
+<<EOF>>             {
+                        if ( --include_stack_ptr < 0 )
+                        {
+                            yyterminate();
+                        }
+                        else
+                        {
+                            yy_delete_buffer( YY_CURRENT_BUFFER );
+                            yy_switch_to_buffer(
+                            include_stack[include_stack_ptr] );
+                        }
+                    }
 
 %%

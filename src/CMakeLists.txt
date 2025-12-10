@@ -3,7 +3,7 @@
 # Build Date: Wed Mar  6 08:41:13 AM CST 2024
 # Version:    0.1.0
 
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.31)
 project(streamy)
 
 #set(BUILD_SHARED_LIBS YES)
