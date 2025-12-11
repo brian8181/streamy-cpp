@@ -20,67 +20,66 @@
 
 %}
 
-IDENTIFIER         _*[A-Za-z][A-Za-z0-9_]*
-ID                 \${IDENTIFIER}
-CONST_ID           #{IDENTIFIER}#
-QUALAFIED_ID       {ID}(("."|"->"){IDENTIFIER})+
-FUNC               {IDENTIFIER}+[ /t]*\([^)]*\)
-ARRAY              {ID}\[[^\]]\]
-COMMENT            \{[ \t]*\*[^*}]*\*[ \t]*\}
-IF                 if
-END_IF             "/if"
-FOREACH            foreach
-END_FOREACH        "/foreach"
-FOREACHELSE        foreachelse
-END_FOREACHELSE    "/foreachelse"
-ELSE               else
-END_ELSE           "/else"
-ELSEIF             elseif
-END_ELSEIF         "/elseif"
-STREAM             .|\n
-VBAR               "|"
-COLON              ":"
-LBRACKET           "["
-RBRACKET           "]"
-LBRACE             "{"
-RBRACE             "}"
-LPAREN             "("
-RPAREN             ")"
-SEMI_COLON         ";"
-QUOTE              "\""
-SINGLE_QUOTE       "'"
-SLASH              "/"
-BACK_SLASH         "\\"
-TICK               "`"
-UNDERSCORE         "_"
-AT                 "@"
-PLUS               "+"
-MINUS              "-"
-ASTERIK            "*"
-EQUAL              "="
-NOT_EQUAL          "!="
-DOT                "."
-PERCENT            "%"
-AMPERSAND          "&"
-NOT                "!"
-AND                "&&"
-OR                 "||"
-LESS_THAN          "<"
-LESS_THAN_EQUAL    "<="
-GREATER_THAN       ">"
-GREATER_THAN_EQUAL ">="
-NUMBER          [0-9]+
-HTTP            get|post|cookies|env|request|session
-CONFIG          config|section|template|ldelim|rdelim|version|cycle|counter
-UTILITY         const|debug|eval|fetch|textformat|math
-ACCSESSORS      assign|isset|index|index_prev|index_next|iteration|first|last|show|total|from|item
-HTML            html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time
-MODIFIER        tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br
-MORE            "captialize|regex_replace|count_characters|count_sentences|count_paragraphs|count_words|strip_tags|escape"
-INCLUDE         include
-CONFIG_LOAD     config_load
-FILE_ATTRIB     file
-
+IDENTIFIER          _*[A-Za-z][A-Za-z0-9_]*
+ID                  \${IDENTIFIER}
+CONST_ID            #{IDENTIFIER}#
+QUALAFIED_ID        {ID}(("."|"->"){IDENTIFIER})+
+FUNC                {IDENTIFIER}+[ /t]*\([^)]*\)
+ARRAY               {ID}\[[^\]]\]
+COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
+IF                  if
+END_IF              "/if"
+FOREACH             foreach
+END_FOREACH         "/foreach"
+FOREACHELSE         foreachelse
+END_FOREACHELSE     "/foreachelse"
+ELSE                else
+END_ELSE            "/else"
+ELSEIF              elseif
+END_ELSEIF          "/elseif"
+STREAM              .|\n
+VBAR                "|"
+COLON               ":"
+LBRACKET            "["
+RBRACKET            "]"
+LBRACE              "{"
+RBRACE              "}"
+LPAREN              "("
+RPAREN              ")"
+SEMI_COLON          ";"
+QUOTE               "\""
+SINGLE_QUOTE        "'"
+SLASH               "/"
+BACK_SLASH          "\\"
+TICK                "`"
+UNDERSCORE          "_"
+AT                  "@"
+PLUS                "+"
+MINUS               "-"
+ASTERIK             "*"
+EQUAL               "="
+NOT_EQUAL           "!="
+DOT                 "."
+PERCENT             "%"
+AMPERSAND           "&"
+NOT                 "!"
+AND                 "&&"
+OR                  "||"
+LESS_THAN           "<"
+LESS_THAN_EQUAL     "<="
+GREATER_THAN        ">"
+GREATER_THAN_EQUAL  ">="
+NUMBER              [0-9]+
+HTTP                get|post|cookies|env|request|session
+CONFIG              config|section|template|ldelim|rdelim|version|cycle|counter
+UTILITY             const|debug|eval|fetch|textformat|math
+ACCSESSORS          assign|isset|index|index_prev|index_next|iteration|first|last|show|total|from|item
+HTML                html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time
+MODIFIER            tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br
+MORE                "captialize|regex_replace|count_characters|count_sentences|count_paragraphs|count_words|strip_tags|escape"
+INCLUDE             include
+CONFIG_LOAD         config_load
+FILE_ATTRIB         file
 
 %x STRING
 %x ESCAPED
@@ -90,15 +89,15 @@ FILE_ATTRIB     file
 %%
 
 {COMMENT}                               { /* eat up comment */ }
-{LBRACE}                                     { printf(" { "); BEGIN ESCAPED; }
+{LBRACE}                                { printf(" { "); BEGIN ESCAPED; }
 <OFF>{INCLUDE}                          { printf(" INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
-<OFF>\"          { BEGIN STRING; s = buf; }
-<STRING>\\n     { *s++ = '\n'; }
-<STRING>\\t     { *s++ = '\t'; }
-<STRING>\\\"    { *s++ = '\"'; }
-<STRING>\"      {*s = 0; BEGIN 0; printf("found '%s'\n", buf); }
-<STRING>\n      { printf("invalid string"); exit(1); }
-<STRING>.       { *s++ = *yytext; }
+<OFF>\"                                 { BEGIN STRING; s = buf; }
+<STRING>\\n                             { *s++ = '\n'; }
+<STRING>\\t                             { *s++ = '\t'; }
+<STRING>\\\"                            { *s++ = '\"'; }
+<STRING>\"                              {*s = 0; BEGIN 0; printf("found '%s'\n", buf); }
+<STRING>\n                              { printf("invalid string"); exit(1); }
+<STRING>.                               { *s++ = *yytext; }
 <ESCAPED,IF_BLOCK>{HTML}                { printf(" HTML "); }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf(" UTILITY "); }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
@@ -148,37 +147,37 @@ FILE_ATTRIB     file
 <ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" [CONST_ID:%s] ", yytext); } //return CONST_ID; }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf(" [FUNC:%s] ", yytext); } //return ID;  }
 <ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); } //return ID;  }
-<incl>[ \t]*        { /* eat the whitespace */ }
-<incl>[^ \t\n]+     {
-                        /* got the include file name */
-                        if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
-                        {
-                            fprintf( stderr, "Includes nested too deeply" );
-                            exit( 1 );
-                        }
-                        include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+<incl>[ \t]*                            { /* eat the whitespace */ }
+<incl>[^ \t\n]+                         {
+                                            /* got the include file name */
+                                            if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
+                                            {
+                                                fprintf( stderr, "Includes nested too deeply" );
+                                                exit( 1 );
+                                            }
+                                            include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
 
-                        yyin = fopen( yytext, "r" );
-                        if ( ! yyin )
-                        {
-                            printf( "could not open file, %s", yytext );
-                        }
+                                            yyin = fopen( yytext, "r" );
+                                            if ( ! yyin )
+                                            {
+                                                printf( "could not open file, %s", yytext );
+                                            }
 
-                        yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
-                        BEGIN(INITIAL);
-                    }
-<<EOF>>             {
-                        if ( --include_stack_ptr < 0 )
-                        {
-                            yyterminate();
-                        }
-                        else
-                        {
-                            yy_delete_buffer( YY_CURRENT_BUFFER );
-                            yy_switch_to_buffer(
-                            include_stack[include_stack_ptr] );
-                        }
-                    }
+                                            yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
+                                            BEGIN(INITIAL);
+                                        }
+<<EOF>>                                 {
+                                            if ( --include_stack_ptr < 0 )
+                                            {
+                                                yyterminate();
+                                            }
+                                            else
+                                            {
+                                                yy_delete_buffer( YY_CURRENT_BUFFER );
+                                                yy_switch_to_buffer(
+                                                include_stack[include_stack_ptr] );
+                                            }
+                                        }
 
 %%
 

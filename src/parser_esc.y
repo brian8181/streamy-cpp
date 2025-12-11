@@ -34,52 +34,59 @@ int yyerror(char* s);
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL DOT PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD CONFIG SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME
-%token assign ISSET
-%token INTEGER SYMBOL PLAIN_TEXT OPEN_BRACE CLOSE_BRACE FUNC BAR
+%token ASSIGN ISSET
+%token FUNC
 
 %start file;
 
 %%
 
 file:
-        file '\n' { }
-        | number { printf("bison:file:number");  }
-        | terminal { printf("bison:file:terminal");  }
-        ;
-
-number:
-    INTEGER { printf("bison:INTEGER"); }
-    | NUMBER { printf("bison:NUMBER"); }
+    file '\n' { }
+    | terminal       { printf("bison:file:terminal");  }
     ;
 
+block:
+    stmts
+
+stmts:
+    stmt
+    | stmts stmt
+
+stmt:
+    SEMI_COLON
+
 terminal:
-    PLUS      {printf("bison:PLUS"); }
-    | MINUS     {printf("bison:MINUS"); }
-    | ASTERIK   {printf("bison:ASTERIK"); }
-    | EQUAL     {printf("bison:EQUAL"); }
-    | NOT_EQUAL {printf("bison:NOT_EQUAL"); }
-    | DOT       {printf("bison:DOT"); }
-    | PERCENT   {printf("bison:PERCENT"); }
-    | COLON     {printf("bison:COLON"); }
-    | LBRACKET  {printf("bison:LBRACKET");}
-    | RBRACKET  {printf("bison:RBRACKET");}
-    | LBRACE    {printf("bison:LBRACE"); }
-    | RBRACE    {printf("bison:RBRACE"); }
-    | VBAR    {printf("bison:VBAR"); }
-    | SLASH    {printf("bison:SLASH"); }
-    | BACK_SLASH    {printf("bison:BACK_SLASH"); }
-    | QUOTE    {printf("bison:QUOTE"); }
-    | SINGLE_QUOTE    {printf("bison:SINGLE_QUOTE"); }
-    | IF    {printf("bison:IF"); }
-    | ELSE    {printf("bison:ELSE"); }
-    | FOREACH    {printf("bison:FOREACH"); }
-    | LESS_THAN    {printf("bison:LESS_THAN"); }
-    | LESS_THAN_EQUAL    {printf("bison:LESS_THAN_EQUAL"); }
-    | GREATER_THAN    {printf("bison:GREATER_THAN"); }
-    | GREATER_THAN_EQUAL    {printf("bison:GREATER_THAN_EQUAL"); }
-    | AND    {printf("bison:AND"); }
-    | OR    {printf("bison:OR"); }
-    | CONFIG {printf("bison:CONFIG"); }
+    PLUS                  { printf("bison:PLUS");               }
+    | MINUS               { printf("bison:MINUS");              }
+    | ASTERIK             { printf("bison:ASTERIK");            }
+    | EQUAL               { printf("bison:EQUAL");              }
+    | NOT_EQUAL           { printf("bison:NOT_EQUAL");          }
+    | DOT                 { printf("bison:DOT");                }
+    | PERCENT             { printf("bison:PERCENT");            }
+    | COLON               { printf("bison:COLON");              }
+    | LBRACKET            { printf("bison:LBRACKET");           }
+    | RBRACKET            { printf("bison:RBRACKET");           }
+    | LBRACE              { printf("bison:LBRACE");             }
+    | RBRACE              { printf("bison:RBRACE");             }
+    | VBAR                { printf("bison:VBAR");               }
+    | SLASH               { printf("bison:SLASH");              }
+    | BACK_SLASH          { printf("bison:BACK_SLASH");         }
+    | QUOTE               { printf("bison:QUOTE");              }
+    | SINGLE_QUOTE        { printf("bison:SINGLE_QUOTE");       }
+    | IF                  { printf("bison:IF");                 }
+    | ELSE                { printf("bison:ELSE");               }
+    | FOREACH             { printf("bison:FOREACH");            }
+    | LESS_THAN           { printf("bison:LESS_THAN");          }
+    | LESS_THAN_EQUAL     { printf("bison:LESS_THAN_EQUAL");    }
+    | GREATER_THAN        { printf("bison:GREATER_THAN");       }
+    | GREATER_THAN_EQUAL  { printf("bison:GREATER_THAN_EQUAL"); }
+    | AND                 { printf("bison:AND");                }
+    | OR                  { printf("bison:OR");                 }
+    | CONFIG              { printf("bison:CONFIG");             }
+    | ASSIGN              { printf("bison:ASSIGN");             }
+    | ISSET               { printf("bison:ISSET");              }
+    | NUMBER              { printf("bison:NUMBER");             }
     ;
 
 
