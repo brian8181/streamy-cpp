@@ -6,7 +6,10 @@
  */
 #ifndef _TEST_cofig_load_HPP_
 #define _TEST_cofig_load_HPP_
+
 #include <iostream>
+#include <cppunit/extensions/HelperMacros.h>
+#include <cppunit/TestFixture.h>
 
 /**
   * @brief class TEST_cofig_load
@@ -14,6 +17,10 @@
 class TEST_config_load
 {
 public:
+	CPPUNIT_TEST_SUITE( TEST_confif_load );
+    CPPUNIT_TEST( void TEST_load );
+    CPPUNIT_TEST_SUITE_END();
+
 	/**
 	* @brief : default ctor
 	*/
@@ -29,12 +36,15 @@ public:
 	*/
 	virtual ~TEST_config_load();
 
-	/**
-	  * @brief
-	  * @brief c++ comment ...
-	  * @brief place future addtions here ...
-	  *
-	*/
+
+
+public:
+    void setUp() override;
+    void tearDown() override;
+
+protected:
+
+	void TEST_load();
 
 private:
 

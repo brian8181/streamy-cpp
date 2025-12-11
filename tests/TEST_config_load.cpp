@@ -20,3 +20,9 @@ TEST_config_load::TEST_config_load( const TEST_config_load& src ) = default;
   * @brief : destructor
   */
 TEST_config_load::~TEST_config_load() = default;
+
+void TEST_config_load::TEST_load()
+{
+    CPPUNIT_ASSERT( true == true );
+}
+git

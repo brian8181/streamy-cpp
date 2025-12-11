@@ -44,7 +44,7 @@ int yyerror(char* s);
 
 document:
         document '\n' { ; }
-        | NUMBER
+        | number
         | identifier
         ;
 identifier:
