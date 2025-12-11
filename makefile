@@ -128,7 +128,7 @@ $(BLD)/parser_esc: $(BLD)/lex_esc.yy.c $(BLD)/parser_esc.tab.c
 $(BLD)/lex_esc: $(BLD)/lex_esc.yy.c
 	$(CC) -DLEXER_EXE $(BLD)/lex_esc.yy.c -o $(BLD)/lex_esc
 
-$(BLD)/lex_esc.yy.c: $(SRC)/lex_esc.l
+$(BLD)/lex_esc.yy.c: $(BLD)/parser_esc.tab.c $(SRC)/lex_esc.l
 	flex -o build/lex_esc.yy.c --header-file="build/lex_esc.yy.h" src/lex_esc.l
 
 $(BLD)/lex_esc2: $(BLD)/lex_esc2.yy.c

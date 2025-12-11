@@ -22,19 +22,20 @@ int yyerror(char* s);
 %token<sval> IDENTIFIER
 %token<sval> ID
 %token<sval> CONST_ID
-%token<sval> IF
-%token<sval> FOREACH
-%token<sval> FOREACHELSE
-%token<sval> ELSE
+%token<sval> IF END_IF
+%token<sval> FOREACH END_FOREACH
+%token<sval> FOREACHELSE END_FOREACHELSE
+%token<sval> ELSE END_ELSE
+%token<sval> ELSEIF END_ELSEIF
 %token<sval> VBAR
 %token<sval> LBRACKET
 %token<sval> RBRACKET
 %token<sval> LBRACE RBRACE LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL DOT PERCENT NOT_EQUAL
-%token<sval> config_load config section LDELIM RDELIM version cycle counter
-%token assign isset
-%token INTEGER SYMBOL PLAIN_TEXT OPEN_BRACE CLOSE_BRACE FUNCTION BAR CONFIG
+%token<sval> CONFIG_LOAD CONFIG SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME
+%token assign ISSET
+%token INTEGER SYMBOL PLAIN_TEXT OPEN_BRACE CLOSE_BRACE FUNC BAR
 
 %start file;
 
@@ -43,13 +44,8 @@ int yyerror(char* s);
 file:
         file '\n' { }
         | number { printf("bison:file:number");  }
-        | identifier { printf("bison:file:identifier");  }
         | terminal { printf("bison:file:terminal");  }
         ;
-identifier:
-    ID     { printf("bison:ID"); }
-    | FUNCTION
-    ;
 
 number:
     INTEGER { printf("bison:INTEGER"); }
@@ -57,8 +53,7 @@ number:
     ;
 
 terminal:
-    CONST_ID    {printf("bison:CONST_ID"); }
-    | PLUS      {printf("bison:PLUS"); }
+    PLUS      {printf("bison:PLUS"); }
     | MINUS     {printf("bison:MINUS"); }
     | ASTERIK   {printf("bison:ASTERIK"); }
     | EQUAL     {printf("bison:EQUAL"); }

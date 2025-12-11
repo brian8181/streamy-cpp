@@ -24,14 +24,19 @@ IDENTIFIER         _*[A-Za-z][A-Za-z0-9_]*
 ID                 \${IDENTIFIER}
 CONST_ID           #{IDENTIFIER}#
 QUALAFIED_ID       {ID}(("."|"->"){IDENTIFIER})+
-FUNC               {IDENTIFIER}(("."|"->"){IDENTIFIER})*[ /t]?\([^)]*\)
+FUNC               {IDENTIFIER}+[ /t]*\([^)]*\)
 ARRAY              {ID}\[[^\]]\]
 COMMENT            \{[ \t]*\*[^*}]*\*[ \t]*\}
 IF                 if
+END_IF             "/if"
 FOREACH            foreach
+END_FOREACH        "/foreach"
 FOREACHELSE        foreachelse
+END_FOREACHELSE    "/foreachelse"
 ELSE               else
+END_ELSE           "/else"
 ELSEIF             elseif
+END_ELSEIF         "/elseif"
 STREAM             .|\n
 VBAR               "|"
 COLON              ":"
@@ -66,13 +71,16 @@ GREATER_THAN       ">"
 GREATER_THAN_EQUAL ">="
 NUMBER          [0-9]+
 HTTP            get|post|cookies|env|request|session
-CONFIG          config_load|config|section|template|ldelim|rdelim|version|cycle|counter|file
+CONFIG          config|section|template|ldelim|rdelim|version|cycle|counter
 UTILITY         const|debug|eval|fetch|textformat|math
 ACCSESSORS      assign|isset|index|index_prev|index_next|iteration|first|last|show|total|from|item
 HTML            html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time
 MODIFIER        tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br
 MORE            "captialize|regex_replace|count_characters|count_sentences|count_paragraphs|count_words|strip_tags|escape"
 INCLUDE         include
+CONFIG_LOAD     config_load
+FILE_ATTRIB     file
+
 
 %x STRING
 %x ESCAPED
@@ -82,8 +90,7 @@ INCLUDE         include
 %%
 
 {COMMENT}                               { /* eat up comment */ }
-[{]                                     { printf("'{ "); BEGIN ESCAPED; }
-
+{LBRACE}                                     { printf(" { "); BEGIN ESCAPED; }
 <OFF>{INCLUDE}                          { printf(" INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
 <OFF>\"          { BEGIN STRING; s = buf; }
 <STRING>\\n     { *s++ = '\n'; }
@@ -97,6 +104,8 @@ INCLUDE         include
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
 <ESCAPED,IF_BLOCK>{CONFIG}              { printf(" CONFIG "); }
+<ESCAPED,IF_BLOCK>{CONFIG_LOAD}         { printf(" CONFIG_LOAD "); }
+<ESCAPED,IF_BLOCK>{FILE_ATTRIB}         { printf(" FILE_ATTRIB "); }
 <ESCAPED,IF_BLOCK>{HTTP}                { printf(" HTTP "); }
 <ESCAPED,IF_BLOCK>{NOT}                 { printf(" NOT "); } //return NOT; }
 <ESCAPED,IF_BLOCK>{AND}                 { printf(" AND "); } //return AND; }
@@ -119,21 +128,26 @@ INCLUDE         include
 <ESCAPED,IF_BLOCK>{COLON}               { printf(" COLON "); } //return COLON; }
 <ESCAPED,IF_BLOCK>{LBRACKET}            { printf(" LBRACKET "); } //return LBRACKET; }
 <ESCAPED,IF_BLOCK>{RBRACKET}            { printf(" RBRACKET "); } //return RBRACKET; }
-<ESCAPED,IF_BLOCK>{LBRACE}              { printf(" LBRACE "); } //return LBRACE; }
-<ESCAPED,IF_BLOCK>{RBRACE}              { printf(" RBRACE "); } //return RBRACE; }
 <ESCAPED,IF_BLOCK>{LPAREN}              { printf(" LPAREN "); } //return RPAREN; }
 <ESCAPED,IF_BLOCK>{RPAREN}              { printf(" RPAREN "); } //return LPAREN; }
 <ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf(" SEMI_COLON "); } //return SEMI_COLON; }
 <ESCAPED,IF_BLOCK>{QUOTE}               { printf(" QUOTE "); } //return QUOTE; }
 <ESCAPED,IF_BLOCK>{SINGLE_QUOTE}        { printf(" SINGLE_QUOTE "); } //return SINGLE_QUOTE; }
 <ESCAPED,IF_BLOCK>{NUMBER}              { printf(" NUMBER "); } //return NUMBER; }
-<ESCAPED,IF_BLOCK>[}]                   { printf(" }'"); BEGIN INITIAL; }
+<ESCAPED,IF_BLOCK>{RBRACE}              { printf(" } "); BEGIN INITIAL; }
 <ESCAPED>{IF}                           { printf(" IF_BLOCK "); BEGIN IF_BLOCK; } //return IF; }
 <ESCAPED>{ELSE}                         { printf(" ELSE_BLOCK "); BEGIN IF_BLOCK; } //return ELSE; }
+<ESCAPED>{ELSEIF}                       { printf(" ELSEIF "); BEGIN IF_BLOCK; } //return ELSEIF; }
 <ESCAPED>{FOREACHELSE}                  { printf(" FOREACHELSE "); BEGIN IF_BLOCK; } //return FOREACHELSE; }
 <ESCAPED>{FOREACH}                      { printf(" FOREACH "); BEGIN IF_BLOCK; } //return FOREACH; }
-<ESCAPED>{CONST_ID}                     { printf(" [CONST_ID:%s] ", yytext); } //return CONST_ID; }
-<ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); return ID;  }
+<ESCAPED,IF_BLOCK>{END_IF}              { printf(" END_IF "); BEGIN ESCAPED; } //return IF; }
+<ESCAPED,IF_BLOCK>{END_ELSE}            { printf(" ELSE_BLOCK "); BEGIN ESCAPED; } //return ELSE; }
+<ESCAPED,IF_BLOCK>{END_ELSEIF}          { printf(" END_ELSEIF "); BEGIN ESCAPED; } //return ELSEIF; }
+<ESCAPED,IF_BLOCK>{END_FOREACHELSE}     { printf(" FOREACHELSE "); BEGIN ESCAPED; } //return FOREACHELSE; }
+<ESCAPED,IF_BLOCK>{END_FOREACH}         { printf(" FOREACH "); BEGIN ESCAPED; } //return FOREACH; }
+<ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" [CONST_ID:%s] ", yytext); } //return CONST_ID; }
+<ESCAPED,IF_BLOCK>{FUNC}                { printf(" [FUNC:%s] ", yytext); } //return ID;  }
+<ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); } //return ID;  }
 <incl>[ \t]*        { /* eat the whitespace */ }
 <incl>[^ \t\n]+     {
                         /* got the include file name */
