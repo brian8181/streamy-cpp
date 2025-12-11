@@ -20,46 +20,50 @@
 
 %}
 
-IDENTIFIER      _*[A-Za-z][A-Za-z0-9_]*
-ID              \${IDENTIFIER}
-CONST_ID        #{IDENTIFIER}#
-QUALAFIED_ID    {ID}(("."|"->"){IDENTIFIER})+
-FUNCTION        {IDENTIFIER}(("."|"->"){IDENTIFIER})*[ /t]?\([^)]*\)
-ARRAY           {ID}\[[^\]]\]
-COMMENT         \{[ \t]*\*[^*}]*\*[ \t]*\}
-IF              if
-FOREACH         foreach
-FOREACHELSE     foreachelse
-ELSE            else
-ELSEIF          elseif
-STREAM          .|\n
-VBAR            "|"
-COLON           ":"
-LBRACKET        "["
-RBRACKET        "]"
-LBRACE          "{"
-RBRACE          "}"
-LPAREN          "("
-RPAREN          ")"
-SEMI_COLON      ";"
-QUOTE           "\""
-SINGLE_QUOTE    "'"
-SLASH           "/"
-BACK_SLASH      "\\"
-TICK            "`"
-UNDERSCORE      "_"
-AT              "@"
-PLUS            "+"
-MINUS           "-"
-ASTERIK         "*"
-EQUAL          "="
-DOT             "."
-PERCENT         "%"
-AMPERSAND       "&"
-AND      "&&"
-OR      "||"
-LESS_THAN       "<"
-GREATER_THAN    ">"
+IDENTIFIER         _*[A-Za-z][A-Za-z0-9_]*
+ID                 \${IDENTIFIER}
+CONST_ID           #{IDENTIFIER}#
+QUALAFIED_ID       {ID}(("."|"->"){IDENTIFIER})+
+FUNCTION           {IDENTIFIER}(("."|"->"){IDENTIFIER})*[ /t]?\([^)]*\)
+ARRAY              {ID}\[[^\]]\]
+COMMENT            \{[ \t]*\*[^*}]*\*[ \t]*\}
+IF                 if
+FOREACH            foreach
+FOREACHELSE        foreachelse
+ELSE               else
+ELSEIF             elseif
+STREAM             .|\n
+VBAR               "|"
+COLON              ":"
+LBRACKET           "["
+RBRACKET           "]"
+LBRACE             "{"
+RBRACE             "}"
+LPAREN             "("
+RPAREN             ")"
+SEMI_COLON         ";"
+QUOTE              "\""
+SINGLE_QUOTE       "'"
+SLASH              "/"
+BACK_SLASH         "\\"
+TICK               "`"
+UNDERSCORE         "_"
+AT                 "@"
+PLUS               "+"
+MINUS              "-"
+ASTERIK            "*"
+EQUAL              "="
+NOT_EQUAL          "!="
+DOT                "."
+PERCENT            "%"
+AMPERSAND          "&"
+NOT                "!"
+AND                "&&"
+OR                 "||"
+LESS_THAN          "<"
+LESS_THAN_EQUAL    "<="
+GREATER_THAN       ">"
+GREATER_THAN_EQUAL ">="
 NUMBER          [0-9]+
 HTTP            get|post|cookies|env|request|session
 CONFIG          config_load|config|section|template|ldelim|rdelim|version|cycle|counter
@@ -94,7 +98,13 @@ INCLUDE         include
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
 <ESCAPED,IF_BLOCK>{CONFIG}              { printf(" CONFIG "); }
 <ESCAPED,IF_BLOCK>{HTTP}                { printf(" HTTP "); }
+<ESCAPED,IF_BLOCK>{NOT}                 { printf(" NOT "); }
 <ESCAPED,IF_BLOCK>{AND}                 { printf(" AND "); }
+<ESCAPED,IF_BLOCK>{OR}                  { printf(" OR "); }
+<ESCAPED,IF_BLOCK>{LESS_THAN}           { printf(" LESS_THAN "); }
+<ESCAPED,IF_BLOCK>{LESS_THAN_EQUAL}     { printf(" LESS_THAN_EQUAL "); }
+<ESCAPED,IF_BLOCK>{GREATER_THAN}        { printf(" GREATER_THAN "); }
+<ESCAPED,IF_BLOCK>{GREATER_THAN_EQUAL}  { printf(" GREATER_THAN_EQUAL "); }
 <ESCAPED,IF_BLOCK>{OR}                  { printf(" OR "); }
 <ESCAPED,IF_BLOCK>{SLASH}               { printf(" SLASH "); }
 <ESCAPED,IF_BLOCK>{BACK_SLASH}          { printf(" BACK_SLASH "); }
@@ -104,6 +114,7 @@ INCLUDE         include
 <ESCAPED,IF_BLOCK>{MINUS}               { printf(" MINUS "); }
 <ESCAPED,IF_BLOCK>{ASTERIK}             { printf(" ASTERIK "); }
 <ESCAPED,IF_BLOCK>{EQUAL}               { printf(" EQUAL "); }
+<ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf(" NOT_EQUAL "); }
 <ESCAPED,IF_BLOCK>{DOT}                 { printf(" DOT "); }
 <ESCAPED,IF_BLOCK>{PERCENT}             { printf(" PERCENT "); }
 <ESCAPED,IF_BLOCK>{COLON}               { printf(" COLON "); }
