@@ -1,11 +1,14 @@
 %{
     #define MAX_INCLUDE_DEPTH 10
+    #include <stdio.h>
+    #include <stdio.h>
     #include "parser_esc.tab.h"
 
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int include_stack_ptr = 0;
     int yylex(void);
     int yyerror(char* s);
+    int fileno();
 
     char buf[100];
     char *s;
