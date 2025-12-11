@@ -24,7 +24,7 @@ IDENTIFIER         _*[A-Za-z][A-Za-z0-9_]*
 ID                 \${IDENTIFIER}
 CONST_ID           #{IDENTIFIER}#
 QUALAFIED_ID       {ID}(("."|"->"){IDENTIFIER})+
-FUNCTION           {IDENTIFIER}(("."|"->"){IDENTIFIER})*[ /t]?\([^)]*\)
+FUNC               {IDENTIFIER}(("."|"->"){IDENTIFIER})*[ /t]?\([^)]*\)
 ARRAY              {ID}\[[^\]]\]
 COMMENT            \{[ \t]*\*[^*}]*\*[ \t]*\}
 IF                 if

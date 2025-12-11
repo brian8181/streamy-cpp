@@ -33,7 +33,7 @@ int yyerror(char* s);
 %token<sval> LESS_THAN GRATER_THAN PLUS MINUS ASTERIK EQUAL DOT PERCENT
 %token<sval> config_load config section LDELIM RDELIM version file cycle counter
 %token assign isset
-%token INTEGER SYMBOL PLAIN_TEXT OPEN_BRACE CLOSE_BRACE FUNCTION BAR;
+%token INTEGER SYMBOL PLAIN_TEXT OPEN_BRACE CLOSE_BRACE FUNC BAR;
 
 %type<sval> ESCAPE
 %type EXPRESSION;
@@ -51,7 +51,7 @@ document:
         ;
 identifier:
     ID     { printf("bison:ID"); };
-    | FUNCTION
+    | FUNC
 
 number:
     INTEGER { printf("bison:INTEGER"); };
