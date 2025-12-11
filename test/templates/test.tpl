@@ -1,4 +1,4 @@
-{config_load file='index.conf'}
+{config_load file}
 {include file='foo.conf'}
 {insert file='foo.tpl'}
 <html>

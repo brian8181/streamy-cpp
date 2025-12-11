@@ -66,7 +66,7 @@ GREATER_THAN       ">"
 GREATER_THAN_EQUAL ">="
 NUMBER          [0-9]+
 HTTP            get|post|cookies|env|request|session
-CONFIG          config_load|config|section|template|ldelim|rdelim|version|cycle|counter
+CONFIG          config_load|config|section|template|ldelim|rdelim|version|cycle|counter|file
 UTILITY         const|debug|eval|fetch|textformat|math
 ACCSESSORS      assign|isset|index|index_prev|index_next|iteration|first|last|show|total|from|item
 HTML            html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time
@@ -98,40 +98,41 @@ INCLUDE         include
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
 <ESCAPED,IF_BLOCK>{CONFIG}              { printf(" CONFIG "); }
 <ESCAPED,IF_BLOCK>{HTTP}                { printf(" HTTP "); }
-<ESCAPED,IF_BLOCK>{NOT}                 { printf(" NOT "); }
-<ESCAPED,IF_BLOCK>{AND}                 { printf(" AND "); }
-<ESCAPED,IF_BLOCK>{OR}                  { printf(" OR "); }
-<ESCAPED,IF_BLOCK>{LESS_THAN}           { printf(" LESS_THAN "); }
-<ESCAPED,IF_BLOCK>{LESS_THAN_EQUAL}     { printf(" LESS_THAN_EQUAL "); }
-<ESCAPED,IF_BLOCK>{GREATER_THAN}        { printf(" GREATER_THAN "); }
-<ESCAPED,IF_BLOCK>{GREATER_THAN_EQUAL}  { printf(" GREATER_THAN_EQUAL "); }
-<ESCAPED,IF_BLOCK>{OR}                  { printf(" OR "); }
-<ESCAPED,IF_BLOCK>{SLASH}               { printf(" SLASH "); }
-<ESCAPED,IF_BLOCK>{BACK_SLASH}          { printf(" BACK_SLASH "); }
-<ESCAPED,IF_BLOCK>{VBAR}                { printf(" VBAR "); }
+<ESCAPED,IF_BLOCK>{NOT}                 { printf(" NOT "); } //return NOT; }
+<ESCAPED,IF_BLOCK>{AND}                 { printf(" AND "); } //return AND; }
+<ESCAPED,IF_BLOCK>{OR}                  { printf(" OR "); } //return OR; }
+<ESCAPED,IF_BLOCK>{LESS_THAN}           { printf(" LESS_THAN "); } //return LESS_THAN; }
+<ESCAPED,IF_BLOCK>{LESS_THAN_EQUAL}     { printf(" LESS_THAN_EQUAL "); } //return LESS_THAN_EQUAL; }
+<ESCAPED,IF_BLOCK>{GREATER_THAN}        { printf(" GREATER_THAN "); } //return GREATER_THAN; }
+<ESCAPED,IF_BLOCK>{GREATER_THAN_EQUAL}  { printf(" GREATER_THAN_EQUAL "); } //return GREATER_THAN_EQUAL; }
+<ESCAPED,IF_BLOCK>{SLASH}               { printf(" SLASH "); } //return SLASH; }
+<ESCAPED,IF_BLOCK>{BACK_SLASH}          { printf(" BACK_SLASH "); } //return BACK_SLASH; }
+<ESCAPED,IF_BLOCK>{VBAR}                { printf(" VBAR "); } //return VBAR; }
 <ESCAPED,IF_BLOCK>{AT}                  { printf(" AT "); }
-<ESCAPED,IF_BLOCK>{PLUS}                { printf(" PLUS "); }
-<ESCAPED,IF_BLOCK>{MINUS}               { printf(" MINUS "); }
-<ESCAPED,IF_BLOCK>{ASTERIK}             { printf(" ASTERIK "); }
-<ESCAPED,IF_BLOCK>{EQUAL}               { printf(" EQUAL "); }
-<ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf(" NOT_EQUAL "); }
-<ESCAPED,IF_BLOCK>{DOT}                 { printf(" DOT "); }
-<ESCAPED,IF_BLOCK>{PERCENT}             { printf(" PERCENT "); }
-<ESCAPED,IF_BLOCK>{COLON}               { printf(" COLON "); }
-<ESCAPED,IF_BLOCK>{LBRACKET}            { printf(" LBRACKET "); }
-<ESCAPED,IF_BLOCK>{RBRACKET}            { printf(" RBRACKET "); }
-<ESCAPED,IF_BLOCK>{LPAREN}              { printf(" LPAREN "); }
-<ESCAPED,IF_BLOCK>{RPAREN}              { printf(" RPAREN "); }
-<ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf(" SEMI_COLON "); }
-<ESCAPED,IF_BLOCK>{QUOTE}               { printf(" QUOTE "); }
-<ESCAPED,IF_BLOCK>{SINGLE_QUOTE}        { printf(" SINGLE_QUOTE "); }
-<ESCAPED,IF_BLOCK>{NUMBER}              { printf(" NUMBER "); return NUMBER; }
+<ESCAPED,IF_BLOCK>{PLUS}                { printf(" PLUS "); } //return PLUS; }
+<ESCAPED,IF_BLOCK>{MINUS}               { printf(" MINUS "); } //return MINUS;}
+<ESCAPED,IF_BLOCK>{ASTERIK}             { printf(" ASTERIK "); } //return ASTERIK; }
+<ESCAPED,IF_BLOCK>{EQUAL}               { printf(" EQUAL "); } //return EQUAL; }
+<ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf(" NOT_EQUAL "); } //return NOT_EQUAL; }
+<ESCAPED,IF_BLOCK>{DOT}                 { printf(" DOT "); } //return DOT; }
+<ESCAPED,IF_BLOCK>{PERCENT}             { printf(" PERCENT ");} //return PERCENT; }
+<ESCAPED,IF_BLOCK>{COLON}               { printf(" COLON "); } //return COLON; }
+<ESCAPED,IF_BLOCK>{LBRACKET}            { printf(" LBRACKET "); } //return LBRACKET; }
+<ESCAPED,IF_BLOCK>{RBRACKET}            { printf(" RBRACKET "); } //return RBRACKET; }
+<ESCAPED,IF_BLOCK>{LBRACE}              { printf(" LBRACE "); } //return LBRACE; }
+<ESCAPED,IF_BLOCK>{RBRACE}              { printf(" RBRACE "); } //return RBRACE; }
+<ESCAPED,IF_BLOCK>{LPAREN}              { printf(" LPAREN "); } //return RPAREN; }
+<ESCAPED,IF_BLOCK>{RPAREN}              { printf(" RPAREN "); } //return LPAREN; }
+<ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf(" SEMI_COLON "); } //return SEMI_COLON; }
+<ESCAPED,IF_BLOCK>{QUOTE}               { printf(" QUOTE "); } //return QUOTE; }
+<ESCAPED,IF_BLOCK>{SINGLE_QUOTE}        { printf(" SINGLE_QUOTE "); } //return SINGLE_QUOTE; }
+<ESCAPED,IF_BLOCK>{NUMBER}              { printf(" NUMBER "); } //return NUMBER; }
 <ESCAPED,IF_BLOCK>[}]                   { printf(" }'"); BEGIN INITIAL; }
-<ESCAPED>{IF}                           { printf(" IF_BLOCK "); BEGIN IF_BLOCK; }
-<ESCAPED>{ELSE}                         { printf(" ELSE_BLOCK "); BEGIN IF_BLOCK; }
-<ESCAPED>{FOREACHELSE}                  { printf(" FOREACHELSE "); BEGIN IF_BLOCK; }
-<ESCAPED>{FOREACH}                      { printf(" FOREACH "); BEGIN IF_BLOCK; }
-<ESCAPED>{CONST_ID}                     { printf(" [CONST_ID:%s] ", yytext); return ID; }
+<ESCAPED>{IF}                           { printf(" IF_BLOCK "); BEGIN IF_BLOCK; } //return IF; }
+<ESCAPED>{ELSE}                         { printf(" ELSE_BLOCK "); BEGIN IF_BLOCK; } //return ELSE; }
+<ESCAPED>{FOREACHELSE}                  { printf(" FOREACHELSE "); BEGIN IF_BLOCK; } //return FOREACHELSE; }
+<ESCAPED>{FOREACH}                      { printf(" FOREACH "); BEGIN IF_BLOCK; } //return FOREACH; }
+<ESCAPED>{CONST_ID}                     { printf(" [CONST_ID:%s] ", yytext); } //return CONST_ID; }
 <ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); return ID;  }
 <incl>[ \t]*        { /* eat the whitespace */ }
 <incl>[^ \t\n]+     {
@@ -166,3 +167,39 @@ INCLUDE         include
                     }
 
 %%
+
+#ifdef LEXER_EXE
+int yywrap(void)
+{
+    return 1;
+}
+
+int yyerror(char *s)
+{
+    fprintf(stderr, "%s\n", s);
+    return 0;
+};
+
+int main(int argc, char** argv)
+{
+    if(argc < 2)
+    {
+        /* just read stdin */
+        yylex();
+        return 0;
+    }
+    for(int i = 1; i < argc; i++)
+    {
+        FILE *f = fopen(argv[i], "r");
+        if(!f)
+        {
+            perror(argv[i]);
+            return (1);
+        }
+        yyrestart(f);
+        yylex();
+        fclose(f);
+    }
+    return 0;
+}
+#endif
