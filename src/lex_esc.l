@@ -111,15 +111,15 @@ INCLUDE         include
 <ESCAPED,IF_BLOCK>{RBRACKET}            { printf(" RBRACKET "); }
 <ESCAPED,IF_BLOCK>{LPAREN}              { printf(" LPAREN "); }
 <ESCAPED,IF_BLOCK>{RPAREN}              { printf(" RPAREN "); }
-<ESCAPED>{IF}                           { printf(" IF_BLOCK "); BEGIN IF_BLOCK; }
-<ESCAPED>{ELSE}                         { printf(" ELSE_BLOCK "); BEGIN IF_BLOCK; }
-<ESCAPED>{FOREACHELSE}                  { printf(" FOREACHELSE "); BEGIN IF_BLOCK; }
-<ESCAPED>{FOREACH}                      { printf(" FOREACH "); BEGIN IF_BLOCK; }
 <ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf(" SEMI_COLON "); }
 <ESCAPED,IF_BLOCK>{QUOTE}               { printf(" QUOTE "); }
 <ESCAPED,IF_BLOCK>{SINGLE_QUOTE}        { printf(" SINGLE_QUOTE "); }
 <ESCAPED,IF_BLOCK>{NUMBER}              { printf(" NUMBER "); return NUMBER; }
 <ESCAPED,IF_BLOCK>[}]                   { printf(" }'"); BEGIN INITIAL; }
+<ESCAPED>{IF}                           { printf(" IF_BLOCK "); BEGIN IF_BLOCK; }
+<ESCAPED>{ELSE}                         { printf(" ELSE_BLOCK "); BEGIN IF_BLOCK; }
+<ESCAPED>{FOREACHELSE}                  { printf(" FOREACHELSE "); BEGIN IF_BLOCK; }
+<ESCAPED>{FOREACH}                      { printf(" FOREACH "); BEGIN IF_BLOCK; }
 <ESCAPED>{CONST_ID}                     { printf(" [CONST_ID:%s] ", yytext); return ID; }
 <ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); return ID;  }
 <incl>[ \t]*        { /* eat the whitespace */ }
