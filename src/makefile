@@ -18,10 +18,10 @@ debug: all
 
 all: $(BLD)/parser.tab.c $(BLD)/lexer
 
-$(BLD)/parser: $(BLD)/lexer.yy.c $(BLD)/parser.tab.c
+$(BLD)/parser: copy_headers $(BLD)/lexer.yy.c $(BLD)/parser.tab.c
 	$(CC) $(CX) $(BLD)/lexer.yy.c $(BLD)/parser.tab.c -lfl -o $(BLD)/parser
 
-$(BLD)/lexer: $(BLD)/lexer.yy.c
+$(BLD)/lexer: copy_headers $(BLD)/lexer.yy.c
 	$(CC) $(CCFLAGS) $(BLD)/lexer.yy.c -I./build -lfl -o $(BLD)/lexer
 
 $(BLD)/lexer.yy.c: $(SRC)/lexer.l
@@ -29,6 +29,10 @@ $(BLD)/lexer.yy.c: $(SRC)/lexer.l
 
 $(BLD)/parser.tab.c: $(SRC)/parser.y
 	$(YACC) -Wcounterexamples --header $(SRC)/parser.y -o $(BLD)/parser.tab.c
+
+.PHONY: copy_headers
+copy_headers:
+	-cp $(SRC)/bash_color.h $(BLD)/
 
 .PHONY: clean
 clean:

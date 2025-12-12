@@ -11,8 +11,6 @@ YACC=bison -d
 SRC=src
 BLD=build
 OBJ=build
-PREFIX=/usr/local
-#CXXEXTRA = -Wshadow -fstats -fno-rtti fmessage-length=100 -fverbose-asm
 
 LIBS = -L/usr/local/lib/
 INCLUDES = -I/usr/local/include/cppunit/ -I/home/brian/src/inflex/makes/ -I/home/brian/src/inflex/src/
@@ -27,147 +25,42 @@ ifdef CYGWIN
 	LDFLAGS += /usr/lib/libcppunit.dll.a
 endif
 
-ifdef REFLEX
-	FLEX=reflex
-	CXXFLAGS +=-DREFLEX
-	LDFLAGS += /usr/local/lib/libcppunit.a /usr/local/lib/libreflex.a
-	REFLEXFLAGS=-I/usr/local/include/reflex
-endif
+all: copy_headers $(BLD)/parser $(BLD)/lex $(BLD)/lex2
 
-all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/tokenizer $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex $(BLD)/lex_esc
+$(BLD)/parser: $(BLD)/lex.yy.c $(BLD)/parser.tab.c
+	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
 
-$(BLD)/streamy.o: $(BLD)/compiler.o $(SRC)/streamy.cpp
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
+$(BLD)/parser.tab.c: $(SRC)/parser.y
+	$(YACC) -Wcounterexamples --header $^ -o $@
 
-$(BLD)/compiler.o: $(SRC)/compiler.cpp
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
+$(BLD)/lex: $(BLD)/lex.yy.c
+	$(CC) -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
 
-$(BLD)/utility.o: $(SRC)/utility.cpp
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
+$(BLD)/lex.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.l
+	flex -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
 
-$(BLD)/scanner: $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/scanner.o $(BLD)/compiler.o $(BLD)/streamy.o
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $^ -o $@
+$(BLD)/lex2: $(BLD)/lex2.yy.c
+	$(CC) $(BLD)/lex2.yy.c -o $(BLD)/lex2
 
-$(BLD)/index.cgi: $(BLD)/utility.omake clean $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.o
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi
+$(BLD)/lex2.yy.c: $(SRC)/lex2.l
+	$(LEX) -o $(BLD)/lex2.yy.c $(SRC)/lex2.l
 
-$(BLD)/index2.cgi: $(BLD)/utility.o $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index2.o
-	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/index2.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index2.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index2.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index2_a.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index2.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/inde23_so.cgi
+$(BLD)/lex3: $(BLD)/lex3.yy.c
+	$(CC) $(BLD)/lex.yy.c -o $(BLD)/lex3
 
-$(BLD)/index3.cgi: $(BLD)/utility.o $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index3.o
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index3.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index3_a.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index3_so.cgi
+$(BLD)/lex3.yy.c: $(SRC)/lex3.l
+	$(LEX) -o $(BLD)/lex3.yy.c $(SRC)/lex3.l
 
-$(BLD)/index_soso.cgi: install
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/utility.o -lstreamy -L$(PREFIX) -o $(BLD)/index_soso.cgi
-	cp $(SRC)/index.conf $(BLD)/index.conf
-
-$(BLD)/index.o: $(SRC)/index.cpp
-	$(CXX) $(CXXFLAGS) -c $(SRC)/index.cpp -o $(OBJ)/index.o
-
-$(BLD)/index2.o: $(SRC)/index2.cpp
-	$(CXX) $(CXXFLAGS) -c $(SRC)/index2.cpp -o $(OBJ)/index2.o
-
-$(BLD)/index3.o: $(SRC)/index3.cpp
-	$(CXX) $(CXXFLAGS) -c $(SRC)/index3.cpp -o $(OBJ)/index3.o
-
-$(BLD)/libstreamy.so: $(OBJ)/fileio.o $(OBJ)/compiler.o $(BLD)/streamy.o
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC --shared $(OBJ)/fileio.o $(OBJ)/compiler.o $(OBJ)/streamy.o -o $(BLD)/libstreamy.so
-	chmod 755 $(BLD)/libstreamy.so
-
-$(BLD)/libstreamy.a: $(BLD)/streamy.o
-	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
-	chmod 755 $(BLD)/libstreamy.a
-
-$(BLD)/streamy_lex: $(SRC)/fileio.o $(BLD)/libstreamy.a $(BLD)/libstreamy.so
-	# $(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
-	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(OBJ)/streamy.o -o $(BLD)/streamy_lex
-	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(BLD)/libstreamy.a -o $(BLD)/streamy_lex_a
-	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX) -o $(BLD)/streamy_lex_so
-	# cp $(SRC)/streamy_lex.conf $(BLD)/streamy_lex.conf
 
 $(BLD)/fileio.o: $(SRC)/fileio.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o
 
-$(BLD)/tokenizer: $(BLD)/tokenizer.yy.c
-	$(CC) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
-
-$(BLD)/tokenizer.yy.c: $(SRC)/tokenizer.l
-	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
-
-$(BLD)/parse: $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c
-	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/parse
-
-$(BLD)/lex: $(BLD)/streamy.yy.c
-	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c -I./build -lfl -o $(BLD)/lex
-
-$(BLD)/streamy.yy.c: $(SRC)/streamy.lex
-	$(LEX) --yylineno --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.lex
-
-$(BLD)/streamy.bak.yy.c: $(SRC)/streamy.bak.l
-	$(LEX) -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l
-
-$(BLD)/streamy.tab.c: $(SRC)/streamy.y
-	$(YACC) -Wcounterexamples --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
-
-## ESC
-
-esc: $(BLD)/parser_esc $(BLD)/lex_esc $(BLD)/lex_esc2
-
-$(BLD)/parser_esc.tab.c: $(SRC)/parser_esc.y
-	$(YACC) -Wcounterexamples --header $^ -o $@
-
-$(BLD)/parser_esc: $(BLD)/lex_esc.yy.c $(BLD)/parser_esc.tab.c
-	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
-
-$(BLD)/lex_esc: $(BLD)/lex_esc.yy.c
-	$(CC) -DLEXER_EXE $(BLD)/lex_esc.yy.c -o $(BLD)/lex_esc
-
-$(BLD)/lex_esc.yy.c: $(BLD)/parser_esc.tab.c $(SRC)/lex_esc.l
-	flex -o build/lex_esc.yy.c --header-file="build/lex_esc.yy.h" src/lex_esc.l
-
-$(BLD)/lex_esc2: $(BLD)/lex_esc2.yy.c
-	$(CC) $(BLD)/lex_esc2.yy.c -o $(BLD)/lex_esc2
-
-$(BLD)/lex_esc2.yy.c: $(SRC)/lex_esc2.l
-	$(LEX) -o $(BLD)/lex_esc2.yy.c $(SRC)/lex_esc2.l
-
-$(BLD)/lex_esc3: $(BLD)/lex_esc3.yy.c
-	$(CC) $(BLD)/lex_esc3.yy.c -o $(BLD)/lex_esc3
-
-$(BLD)/lex_esc3.yy.c: $(SRC)/lex_esc3.l
-	$(LEX) -o $(BLD)/lex_esc3.yy.c $(SRC)/lex_esc3.l
-
-## ESC
-
-.PHONY: lex_yacc_ex
-lex_yacc_ex:
-	$(LEX) -o $(BLD)/ex1.yy.c $(SRC)/ex1.l
-	$(CC) $(BLD)/ex1.yy.c -o $(BLD)/ex1
-	$(LEX) -o $(BLD)/ex2.yy.c $(SRC)/ex2.l
-	$(CC) $(BLD)/ex2.yy.c -o $(BLD)/ex2
-
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
-.PHONY: install
-install:
-	mkdir -p $(PREFIX)/lib
-	mkdir -p $(PREFIX)/include
-	cp $(SRC)/streamy.hpp $(PREFIX)/include/streamy.hpp
-	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
-	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
-	chmod 755 $(PREFIX)/include/streamy.hpp $(PREFIX)/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
-
-.PHONY: uninstall
-uninstall:
-	rm $(PREFIX)/include/streamy.hpp
-	rm -rf $(PREFIX)/libstreamy.a $(PREFIX)/lib/libstreamy.so
+.PHONY: copy_headers
+copy_headers:
+	-cp $(SRC)/bash_color.h $(BLD)/
 
 .PHONY: rebuild
 rebuild: clean all

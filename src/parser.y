@@ -1,74 +1,77 @@
 %{
+    #include <stdio.h>
+    #include "parser.tab.h"
+    #include "lex.yy.h"
+    #include "bash_color.h"
 
-#include <stdio.h>
-#include "parser.tab.h"
-#include "lex.yy.h"
-
+    int yylex(void);
+    int yyerror(char * s);
 %}
 
-/*
+
 %union
 {
     int ival;
-    std::string* sval;
-}
-%token <ival> NUMBER;
-%token <sval> STRING; */
+    char* sval;
+};
 
-%token INTEGER SYMBOL PLAIN_TEXT OPEN_BRACE CLOSE_BRACE FUNCTION BAR
-%type escape
-%type expression
-%start document
+%type<sval> tag;
+%token<ival> NUMBER
+%token<sval> STRING
+%token<sval> IDENTIFIER
+%token<sval> ID
+%token<sval> CONST_ID
+%token<sval> IF END_IF
+%token<sval> FOREACH END_FOREACH
+%token<sval> FOREACHELSE END_FOREACHELSE
+%token<sval> ELSE END_ELSE
+%token<sval> ELSEIF END_ELSEIF
+%token<sval> VBAR
+%token<sval> LBRACKET
+%token<sval> RBRACKET
+%token<sval> LBRACE RBRACE LPAREN RPAREN
+%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT AMPERSAND And Or Not
+%token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL DOT PERCENT NOT_EQUAL
+%token<sval> CONFIG_LOAD CONFIG SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME
+%token ASSIGN ISSET
+%token FUNC
 
-%%
-
-document:
-        document expression '\n' { printf("%d\n", $2); }
-        |
-        ;
-
-escape:
-        expression CLOSE_BRACE { $$ = $2; }
-        ;
-
-expression:
-        OPEN_BRACE expression CLOSE_BRACE
-        SYMBOL
-        |
-        SYMBOL BAR FUNCTION
-        ;
-
-stream:
-       PLAIN_TEXT;
-       |
-       stream PLAIN_TEXT
+%start file;
 
 %%
 
-int yyerror(char *s)
+file:
+file    '\n' { }
+        | tag                    { printf("bison:tag");  }
+        ;
+
+tag:
+        ID                       { printf("bison:tag:ID"); $$ = $1; }
+        | CONST_ID               { printf("bison:tag:CONST_ID"); $$ = $1; }
+        ;
+config:
+        CONFIG_LOAD
+        ;
+
+%%
+
+int yyerror(char * s)
 {
     fprintf(stderr, "%s\n", s);
     return 0;
-}
+};
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
-    int tok;
-    FILE* f = fopen(argv[1], "r");
-    if(!f)
+    printf("parsing ...\n");
+    extern FILE *yyin;
+    if (argc > 0)
     {
-        perror(argv[1]);
-        return -1;
+        yyin = fopen(argv[1], "r");
     }
-
-    while((tok = yylex()))
+    else
     {
-        printf("%d", tok);
-        if(tok == NUMBER)
-            printf(" = %d\n", yylval);
-        else
-            printf("\n");
-    }
+        yyin = stdin;
+    };
     yyparse();
-    return 0;
-}
+};

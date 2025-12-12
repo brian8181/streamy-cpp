@@ -2,7 +2,7 @@
     #define MAX_INCLUDE_DEPTH 10
     #include <stdio.h>
     #include <stdio.h>
-    #include "parser_esc.tab.h"
+    #include "parser.tab.h"
 
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int include_stack_ptr = 0;
