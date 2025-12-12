@@ -15,7 +15,9 @@
     char* sval;
 };
 
+%token END_OF_FILE;
 %type<sval> tag;
+%type<sval> config;
 %token<ival> NUMBER
 %token<sval> STRING
 %token<sval> IDENTIFIER
@@ -32,25 +34,26 @@
 %token<sval> LBRACE RBRACE LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT AMPERSAND And Or Not
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL DOT PERCENT NOT_EQUAL
-%token<sval> CONFIG_LOAD CONFIG SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME
+%token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME
+%token CONFIG;
 %token ASSIGN ISSET
 %token FUNC
-
 %start file;
 
 %%
 
 file:
-file    '\n' { }
-        | tag                    { printf("bison:tag");  }
+        tags END_OF_FILE              { printf("bison:file:tags END_OF_FILE\n"); }
         ;
-
+tags:
+        tag
+        | tags tag
 tag:
-        ID                       { printf("bison:tag:ID"); $$ = $1; }
-        | CONST_ID               { printf("bison:tag:CONST_ID"); $$ = $1; }
+        ID                       { printf("bison:tag:ID\n"); $$ = $1; }
+        | CONST_ID               { printf("bison:tag:CONST_ID\n"); $$ = $1; }
         ;
 config:
-        CONFIG_LOAD
+        CONFIG_LOAD               { printf("bison:config:CONFIG_LOAD\n");  }
         ;
 
 %%

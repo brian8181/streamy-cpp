@@ -20,6 +20,7 @@
 
 %}
 
+END_OF_FILE         \0
 IDENTIFIER          _*[A-Za-z][A-Za-z0-9_]*
 ID                  \${IDENTIFIER}
 CONST_ID            #{IDENTIFIER}#
@@ -146,7 +147,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{END_FOREACH}         { printf(" FOREACH "); BEGIN ESCAPED; } //return FOREACH; }
 <ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" [CONST_ID:%s] ", yytext); } //return CONST_ID; }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf(" [FUNC:%s] ", yytext); } //return ID;  }
-<ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); } //return ID;  }
+<ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); return ID;  }
 <incl>[ \t]*                            { /* eat the whitespace */ }
 <incl>[^ \t\n]+                         {
                                             /* got the include file name */
@@ -169,7 +170,8 @@ FILE_ATTRIB         file
 <<EOF>>                                 {
                                             if ( --include_stack_ptr < 0 )
                                             {
-                                                yyterminate();
+                                                return END_OF_FILE;
+                                                //yyterminate();
                                             }
                                             else
                                             {

@@ -42,24 +42,6 @@ bool match_single(const string& pattern, const string& text)
     return false;
 }
 
-// // get file lines as vector
-// vector<string>& get_lines(const string& path, vector<string>& lines)
-// {
-//     ifstream file;
-//     file.open(path, std::ios::in);
-//     if (file.is_open())
-//     {
-//         string line;
-//         while (getline(file, line))
-//         {
-//             lines.push_back(line);
-//         }
-//         file.close();
-//     }
-//     return lines;
-// }
-
-
 int read_bits(const smatch& m)
 {
     int len = m.size();
@@ -70,14 +52,6 @@ int read_bits(const smatch& m)
     }
     return bits;
 }
-
-// string& read_stream(const string& path, /* out */ string& s_out)
-// {
-//     std::ifstream ifstrm(path);
-//     std::string output((std::istreambuf_iterator<char>(ifstrm)), std::istreambuf_iterator<char>());
-//     s_out = output;
-//     return s_out;
-// }
 
 bool file_exist(const string& path)
 {
