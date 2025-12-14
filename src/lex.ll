@@ -134,21 +134,21 @@ FILE_ATTRIB         file
 <ESCAPED,IF_CONDITION>{QUOTE}               { printf(" QUOTE "); } //return QUOTE; }
 <ESCAPED,IF_CONDITION>{SINGLE_QUOTE}        { printf(" SINGLE_QUOTE "); } //return SINGLE_QUOTE; }
 <ESCAPED,IF_CONDITION>{NUMBER}              { printf(" NUMBER "); } //return NUMBER; }
-<ESCAPED,IF_CONDITION>{RBRACE}              { printf(" } "); BEGIN INITIAL; }
-<IF_CONDITION>[^}]                          {  ECHO; }
-<IF_CONDITION>[}]                           { printf("IF_BLOCK"); ECHO; BEGIN IF_BLOCK; }
+<ESCAPED>{RBRACE}                           { printf(" } "); BEGIN INITIAL; }
+<ESCAPED,IF_BLOCK>{END_IF}                          { ECHO; printf(" <--- END_IF\n"); BEGIN INITIAL; }
+<ESCAPED>{IF}                               { printf(" IF_BLOCK "); BEGIN IF_CONDITION; } //return IF; }
+<IF_CONDITION>{RBRACE}                      { printf("IF_BLOCK"); ECHO; BEGIN IF_BLOCK; }
+<IF_CONDITION>[^}]                          { ECHO; }
 <IF_BLOCK>[^{]                              { ECHO; }
-<IF_BLOCK>{END_IF}                          { printf(" end if ...'\n"); BEGIN INITIAL; }
-<ESCAPED>{IF}                           { printf(" IF_BLOCK "); BEGIN IF_CONDITION; } //return IF; }
 <ESCAPED>{ELSE}                         { printf(" ELSE_BLOCK "); BEGIN IF_BLOCK; } //return ELSE; }
 <ESCAPED>{ELSEIF}                       { printf(" ELSEIF "); BEGIN IF_CONDITION; } //return ELSEIF; }
 <ESCAPED>{FOREACHELSE}                  { printf(" FOREACHELSE "); BEGIN IF_BLOCK; } //return FOREACHELSE; }
 <ESCAPED>{FOREACH}                      { printf(" FOREACH "); BEGIN IF_BLOCK; } //return FOREACH; }
 <ESCAPED,IF_BLOCK>{END_FOREACHELSE}     { printf(" FOREACHELSE "); BEGIN ESCAPED; } //return FOREACHELSE; }
 <ESCAPED,IF_BLOCK>{END_FOREACH}         { printf(" FOREACH "); BEGIN ESCAPED; } //return FOREACH; }
-<ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" [CONST_ID:%s] ", yytext); return CONST_ID; }
+<ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" [CONST_ID:%s] ", yytext); }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf(" [FUNC:%s] ", yytext); } //return ID;  }
-<ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); return ID;  }
+<ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext); }
 <incl>[ \t]*                            { /* eat the whitespace */ }
 <incl>[^ \t\n]+                         {
                                             /* got the include file name */

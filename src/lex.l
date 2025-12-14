@@ -30,7 +30,7 @@ FUNC                {IDENTIFIER}+[ /t]*\([^)]*\)
 ARRAY               {ID}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
 IF                  if
-END_IF              "/if"
+END_IF              "\{/if\}"
 FOREACH             foreach
 END_FOREACH         "/foreach"
 FOREACHELSE         foreachelse
@@ -136,12 +136,12 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{SINGLE_QUOTE}        { printf(" SINGLE_QUOTE "); } //return SINGLE_QUOTE; }
 <ESCAPED,IF_BLOCK>{NUMBER}              { printf(" NUMBER "); } //return NUMBER; }
 <ESCAPED,IF_BLOCK>{RBRACE}              { printf(" } "); BEGIN INITIAL; }
+<ESCAPED,IF_BLOCK>{END_IF}              { printf(" END_IF "); BEGIN ESCAPED; } //return IF; }
 <ESCAPED>{IF}                           { printf(" IF_BLOCK "); BEGIN IF_BLOCK; } //return IF; }
 <ESCAPED>{ELSE}                         { printf(" ELSE_BLOCK "); BEGIN IF_BLOCK; } //return ELSE; }
 <ESCAPED>{ELSEIF}                       { printf(" ELSEIF "); BEGIN IF_BLOCK; } //return ELSEIF; }
 <ESCAPED>{FOREACHELSE}                  { printf(" FOREACHELSE "); BEGIN IF_BLOCK; } //return FOREACHELSE; }
 <ESCAPED>{FOREACH}                      { printf(" FOREACH "); BEGIN IF_BLOCK; } //return FOREACH; }
-<ESCAPED,IF_BLOCK>{END_IF}              { printf(" END_IF "); BEGIN ESCAPED; } //return IF; }
 <ESCAPED,IF_BLOCK>{END_ELSE}            { printf(" ELSE_BLOCK "); BEGIN ESCAPED; } //return ELSE; }
 <ESCAPED,IF_BLOCK>{END_ELSEIF}          { printf(" END_ELSEIF "); BEGIN ESCAPED; } //return ELSEIF; }
 <ESCAPED,IF_BLOCK>{END_FOREACHELSE}     { printf(" FOREACHELSE "); BEGIN ESCAPED; } //return FOREACHELSE; }

@@ -25,7 +25,7 @@ ifdef CYGWIN
 	LDFLAGS += /usr/lib/libcppunit.dll.a
 endif
 
-all: copy_headers $(BLD)/parser_pp $(BLD)/parser $(BLD)/lex $(BLD)/lex2
+all: copy_headers $(BLD)/parser_pp $(BLD)/parser $(BLD)/lex $(BLD)/lex2 $(BLD)/lex4
 
 $(BLD)/parser: $(BLD)/lex.yy.o $(BLD)/parser.tab.o
 	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
@@ -44,6 +44,12 @@ $(BLD)/lex: $(BLD)/lex.yy.c
 
 $(BLD)/lex.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.l
 	flex -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
+
+$(BLD)/lex4: $(BLD)/lex4.yy.c
+	$(CC) -DLEXER_EXE $(BLD)/lex4.yy.c -o $(BLD)/lex4
+
+$(BLD)/lex4.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.ll
+	flex -o build/lex4.yy.c --header-file="build/lex4.yy.h" src/lex.ll
 
 $(BLD)/lex2: $(BLD)/lex2.yy.c
 	$(CC) $(BLD)/lex2.yy.c -o $(BLD)/lex2
