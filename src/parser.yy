@@ -3,6 +3,7 @@
     #include "parser.tab.h"
     #include "lex.yy.h"
     #include "bash_color.h"
+    #include "symtab.h"
 
     int yylex(void);
     int yyerror(char * s);
@@ -31,7 +32,7 @@
 %token<sval> LBRACKET
 %token<sval> RBRACKET
 %token<sval> LBRACE RBRACE LPAREN RPAREN
-%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT AMPERSAND And Or Not
+%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL DOT PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME
 %token CONFIG;
@@ -42,17 +43,26 @@
 %%
 
 file:
-        tags END_OF_FILE          { printf("bison:file:tags END_OF_FILE\n"); }
+        tags END_OF_FILE          {
+                                        printf("bison:file:tags END_OF_FILE\n");
+                                  }
         ;
 tags:
         tag
         | tags tag
 tag:
-        ID                       { printf("bison:tag:ID\n"); $$ = $1; }
+        ID                       {
+                                    printf("bison:tag:ID\n"); $$ = $1;
+                                    void* pv = find_symbol($1);
+                                    // if(!pv)
+                                    //     add_symbol($1, "");
+                                 }
         | CONST_ID               { printf("bison:tag:CONST_ID\n"); $$ = $1; }
         ;
 
 %%
+
+//#include "symtab.h"
 
 int yyerror(char * s)
 {

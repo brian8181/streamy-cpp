@@ -25,10 +25,16 @@ ifdef CYGWIN
 	LDFLAGS += /usr/lib/libcppunit.dll.a
 endif
 
-all: copy_headers $(BLD)/parser $(BLD)/lex $(BLD)/lex2
+all: copy_headers $(BLD)/parser_pp $(BLD)/parser $(BLD)/lex $(BLD)/lex2
 
-$(BLD)/parser: $(BLD)/lex.yy.c $(BLD)/parser.tab.c
+$(BLD)/parser: $(BLD)/lex.yy.o $(BLD)/parser.tab.o
 	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
+
+$(BLD)/parser_pp: $(BLD)/lex.yy.o $(BLD)/parser.tab.o $(SRC)/symtab.cpp
+	$(CXX) $(CXXFLAGS) -Ibuild $(CXXFLAGS) $^ -lfl -o $@
+
+$(BLD)/parser.tab.cpp: $(SRC)/parser.yy
+	$(YACC) -Wcounterexamples --header $^ -o $@
 
 $(BLD)/parser.tab.c: $(SRC)/parser.y
 	$(YACC) -Wcounterexamples --header $^ -o $@
@@ -58,9 +64,12 @@ $(BLD)/fileio.o: $(SRC)/fileio.cpp
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
+$(OBJ)/%.o: $(SRC)/%.c
+	$(CC) $(CFLAGS) -c $^ -o $@
+
 .PHONY: copy_headers
 copy_headers:
-	-cp $(SRC)/bash_color.h $(BLD)/
+	-cp $(SRC)/*.h $(BLD)/
 
 .PHONY: rebuild
 rebuild: clean all

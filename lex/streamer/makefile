@@ -3,7 +3,7 @@ LEX=flex
 BLD=build
 SRC=src
 
-all: $(BLD)/streamer $(BLD)/test $(BLD)/simple $(BLD)/reject $(BLD)/esc_only $(BLD)/incl $(BLD)/esc_ids
+all: $(BLD)/streamer $(BLD)/test $(BLD)/simple $(BLD)/reject $(BLD)/esc_only $(BLD)/incl $(BLD)/esc_ids $(BLD)/esc_ifs
 
 $(BLD)/streamer: $(BLD)/tokenizer.yy.c
 	$(CC) $(BLD)/tokenizer.yy.c -o $(BLD)/streamer
@@ -47,6 +47,15 @@ $(BLD)/esc_ids: $(BLD)/esc_ids.yy.c
 
 $(BLD)/esc_ids.yy.c: $(SRC)/esc_ids.l
 	$(LEX) -o $(BLD)/esc_ids.yy.c $(SRC)/esc_ids.l
+
+
+
+$(BLD)/esc_ifs: $(BLD)/esc_ifs.yy.c
+	$(CC) $(BLD)/esc_ifs.yy.c -o $(BLD)/esc_ifs
+
+$(BLD)/esc_ifs.yy.c: $(SRC)/esc_ifs.l
+	$(LEX) -o $(BLD)/esc_ifs.yy.c $(SRC)/esc_ifs.l
+
 
 .PHONY: clean
 clean:
