@@ -3,7 +3,7 @@
     #include <stdio.h>
     #include <stdio.h>
     #include "parser.tab.h"
-    int fileno();
+    int fileno(FILE* f);
 
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int include_stack_ptr = 0;

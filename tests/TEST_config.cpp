@@ -22,7 +22,10 @@ void TEST_config::tearDown()
 
 void TEST_config::TEST_config_load()
 {
+    string TMP = "/home/brian/src/streamy-cpp";
     streamy strmy;
-    strmy.load_config("test/config/config");
+    strmy.load_config(TMP + "/test/config/config");
     map<string, map<string, string>>& config = strmy.get_map_config_sections();
+    string v = config["global"]["test1"];
+    CPPUNIT_ASSERT( v == "one" );
 }
