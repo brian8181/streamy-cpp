@@ -5,6 +5,7 @@
  * @info    ...
  */
 #include "TEST_config.hpp"
+#include "streamy.hpp"
 
 
 CPPUNIT_TEST_SUITE_REGISTRATION( TEST_config );
@@ -21,5 +22,7 @@ void TEST_config::tearDown()
 
 void TEST_config::TEST_config_load()
 {
-
+    streamy strmy;
+    strmy.load_config("test/config/config");
+    map<string, map<string, string>>& config = strmy.get_map_config_sections();
 }

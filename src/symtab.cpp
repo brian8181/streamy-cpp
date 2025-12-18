@@ -7,13 +7,13 @@ extern "C" {
 
 using std::string;
 
-static std::map<std::string, std::string> stab;
+//static std::map<std::string, struct symbol> stab;
+static std::map<std::string, string> stab;
 
 void add_symbol(const char* id_cstr, const char* val_cstr)
 {
     string id(id_cstr);
     string val(val_cstr);
-
     stab[id] = val;
 }
 

@@ -11,7 +11,7 @@
 #include <map>
 #include <regex>
 #include "fileio.hpp"
-#include "compiler.hpp"
+//#include "compiler.hpp"
 
 using std::stringstream;
 using std::string;
@@ -47,7 +47,6 @@ public:
     unsigned int get_state();
 
 private:
-    string& compile(const string& tmpl, /* out */ string& html);
     void lex(const string& src, /* out*/ vector<pair<int, string>>& escapes);
     void parse(vector<pair<int, string>>& tokens, /* out */ stringstream& ss);
     void include_file(const string& file_name, /* out */ stringstream& ss);

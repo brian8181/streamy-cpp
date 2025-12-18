@@ -2,6 +2,13 @@
 #define _SYMTAB_H_
 extern "C"
 {
+    struct symbol
+    {
+        char* name;
+        char* type;
+        void* val;
+    };
+
     void add_symbol(const char* id_cstr, const char* val_cstr);
     void remove_symbol(const char* cstr);
     void clear_symbols();

@@ -60,7 +60,7 @@ $(BLD)/lex4.yy.o: $(BLD)/lex4.yy.c
 $(BLD)/lex4.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.ll
 	flex -DLEXER_EXE -o build/lex4.yy.c --header-file="build/lex4.yy.h" src/lex.ll
 
-$(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/main.cpp #$(BLD)/lex.yy.c
+$(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
 	$(CXX) -DLEXER_EXE $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
 $(BLD)/fileio.o: $(SRC)/fileio.cpp
