@@ -5,7 +5,12 @@
             "includePath": [
                 "${default}"
             ],
-            "windowsSdkVersion": "10.0.26100.0"
+            "windowsSdkVersion": "10.0.26100.0",
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "defines": [
+                "CYGWIN=TRUE"
+            ]
         },
         {
             "name": "Cygwin",
@@ -15,7 +20,7 @@
             ],
             "windowsSdkVersion": "10.0.26100.0",
             "compilerPath": "C:/cygwin64/bin/g++.exe",
-            "intelliSenseMode": "linux-gcc-x64",
+            "intelliSenseMode": "windows-gcc-x64",
             "defines": [
                 "CYGWIN=1"
             ],

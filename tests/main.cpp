@@ -1,11 +1,10 @@
-#include <iostream>
+#include <cppunit/BriefTestProgressListener.h>
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/TestResult.h>
 #include <cppunit/TestResultCollector.h>
 #include <cppunit/TestRunner.h>
-#include <cppunit/BriefTestProgressListener.h>
-
+#include <iostream>
 
 using std::cout;
 using std::endl;
@@ -19,7 +18,7 @@ int main() {
     #else
         std::cout << "Running on a non-Windows, non-Cygwin system." << std::endl;
     #endif
-    
+
     // Create the event manager and test controller
     CppUnit::TestResult controller;
 

@@ -11,9 +11,13 @@ YACC=bison -d
 SRC=src
 BLD=build
 OBJ=build
+TST=tests
+
+CXXFLAGS = -std=c++20 -fPIC
+CCFLAG = -std=c99 -fPIC
 
 LIBS = -L/usr/local/lib/
-INCLUDES = -I/usr/local/include/cppunit/ -I/home/brian/src/inflex/makes/ -I/home/brian/src/inflex/src/
+INCLUDES = -I./build/ -I./src
 LDFLAGS = $(LIBS) $(INCLUDES)
 
 ifndef RELEASE
@@ -22,10 +26,12 @@ endif
 
 ifdef CYGWIN
 	CXXFLAGS +=-DCYGWIN
-	LDFLAGS += /usr/lib/libcppunit.dll.a
+	LDFLAGS += -lfmt -lcppunit.dll
+else
+	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: copy_headers $(BLD)/parser_pp $(BLD)/parser $(BLD)/lex $(BLD)/lex2 $(BLD)/lex4
+all: copy_headers $(BLD)/parser_pp $(BLD)/parser $(BLD)/lex $(BLD)/lex2 $(BLD)/TEST_lex
 
 $(BLD)/parser: $(BLD)/lex.yy.o $(BLD)/parser.tab.o
 	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
@@ -46,23 +52,16 @@ $(BLD)/lex.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.l
 	flex -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
 
 $(BLD)/lex4: $(BLD)/lex4.yy.c
-	$(CC) -DLEXER_EXE $(BLD)/lex4.yy.c -o $(BLD)/lex4
+	$(CC) $(BLD)/lex4.yy.c -o $(BLD)/lex4
+
+$(BLD)/lex4.yy.o: $(BLD)/lex4.yy.c
+	$(CC) -c $(CCFLAGS) -DLEXER_EXE $^ -o $@
 
 $(BLD)/lex4.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.ll
-	flex -o build/lex4.yy.c --header-file="build/lex4.yy.h" src/lex.ll
+	flex -DLEXER_EXE -o build/lex4.yy.c --header-file="build/lex4.yy.h" src/lex.ll
 
-$(BLD)/lex2: $(BLD)/lex2.yy.c
-	$(CC) $(BLD)/lex2.yy.c -o $(BLD)/lex2
-
-$(BLD)/lex2.yy.c: $(SRC)/lex2.l
-	$(LEX) -o $(BLD)/lex2.yy.c $(SRC)/lex2.l
-
-$(BLD)/lex3: $(BLD)/lex3.yy.c
-	$(CC) $(BLD)/lex.yy.c -o $(BLD)/lex3
-
-$(BLD)/lex3.yy.c: $(SRC)/lex3.l
-	$(LEX) -o $(BLD)/lex3.yy.c $(SRC)/lex3.l
-
+$(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/main.cpp #$(BLD)/lex.yy.c
+	$(CXX) -DLEXER_EXE $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
 $(BLD)/fileio.o: $(SRC)/fileio.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o
@@ -72,6 +71,7 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
+
 
 .PHONY: copy_headers
 copy_headers:

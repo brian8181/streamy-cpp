@@ -195,9 +195,7 @@ int yyerror(char *s)
     fprintf(stderr, "%s\n", s);
     return 0;
 };
-#endif
 
-#ifdef MAIN
 int main(int argc, char** argv)
 {
     if(argc < 2)
