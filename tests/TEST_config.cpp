@@ -8,6 +8,7 @@
 #include "streamy.hpp"
 
 
+
 CPPUNIT_TEST_SUITE_REGISTRATION( TEST_config );
 
 void TEST_config::setUp()

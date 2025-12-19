@@ -1,5 +1,5 @@
-# File Name:  streamy-cpp/makefile
-# Build Date: Wed Feb 14 03:28:42 PM CST 2024
+# File Name:  makefile
+# Build Date: Thu, Dec 18, 2025  9:16:12 PM
 # Version:    0.1.0
 
 CXX=g++
@@ -31,7 +31,7 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: copy_headers $(BLD)/parser_pp $(BLD)/parser $(BLD)/lex $(BLD)/lex2 $(BLD)/TEST_lex
+all: copy_headers $(BLD)/parser_pp $(BLD)/parser $(BLD)/lex $(BLD)/lex2 $(BLD)/TEST_lex # $(BLD)/lex4
 
 $(BLD)/parser: $(BLD)/lex.yy.o $(BLD)/parser.tab.o
 	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
@@ -46,19 +46,19 @@ $(BLD)/parser.tab.c: $(SRC)/parser.y
 	$(YACC) -Wcounterexamples --header $^ -o $@
 
 $(BLD)/lex: $(BLD)/lex.yy.c
-	$(CC) -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
+	$(CC) $(CCFLAGS) -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
 
 $(BLD)/lex.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.l
-	flex -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
+	$(LEX) -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
 
 $(BLD)/lex4: $(BLD)/lex4.yy.c
-	$(CC) $(BLD)/lex4.yy.c -o $(BLD)/lex4
+	$(CC) $(CCFLAGS) -DLEXER_EXE $(BLD)/lex4.yy.c -o $(BLD)/lex4
 
 $(BLD)/lex4.yy.o: $(BLD)/lex4.yy.c
-	$(CC) -c $(CCFLAGS) -DLEXER_EXE $^ -o $@
+	$(CC) $(CCFLAGS) -DLEXER_EXE -c $^ -o $@
 
 $(BLD)/lex4.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.ll
-	flex -DLEXER_EXE -o build/lex4.yy.c --header-file="build/lex4.yy.h" src/lex.ll
+	$(LEX) -DLEXER_EXE -o build/lex4.yy.c --header-file="build/lex4.yy.h" src/lex.ll
 
 $(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
 	$(CXX) -DLEXER_EXE $(CXXFLAGS) $^ $(LDFLAGS) -o $@
@@ -72,19 +72,22 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-
+# copy all headers from src to build dir
 .PHONY: copy_headers
 copy_headers:
 	-cp $(SRC)/*.h $(BLD)/
 
+# clean & make
 .PHONY: rebuild
 rebuild: clean all
 
+# remove all from build dir
 .PHONY: clean
 clean:
 	-rm -rf ./$(OBJ)/*
 	-rm -rf ./$(BLD)/*
 
+# remove any object files from src dir
 .PHONY: clean_src
 clean_src:
 	-rm .$(SRC)/*.o
