@@ -3,13 +3,12 @@
     #include <stdio.h>
     #include <stdio.h>
     #include "parser.tab.h"
-    int fileno();
 
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int include_stack_ptr = 0;
     int yylex(void);
     int yyerror(char* s);
-
+    int fileno(FILE* f);
 
     char buf[100];
     char *s;

@@ -3,13 +3,13 @@
     #include <stdio.h>
     #include <stdio.h>
     #include "parser.tab.h"
-    int fileno(FILE* f);
+
 
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int include_stack_ptr = 0;
     int yylex(void);
     int yyerror(char* s);
-
+    int fileno(FILE* f);
 
     char buf[100];
     char *s;
@@ -18,7 +18,6 @@
     #define NUMBER 3
     #define IF    4
     #define ELSE  5
-
 %}
 
 END_OF_FILE         \0
@@ -138,6 +137,9 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{NUMBER}              { printf(" NUMBER ");                         } // return NUMBER; }
 <ESCAPED,IF_BLOCK>{RBRACE}              { printf(" } "); BEGIN INITIAL;               } // return RBRACE;
 <ESCAPED,IF_BLOCK>{END_IF}              { printf(" END_IF "); BEGIN ESCAPED;          } // return IF; }
+<IF_CONDITION>{RBRACE}                  { printf("IF_BLOCK"); ECHO; BEGIN IF_BLOCK;   }
+<IF_CONDITION>[^}]                      { ECHO;                                       }
+<IF_BLOCK>[^{]                          { ECHO;                                       }
 <ESCAPED>{IF}                           { printf(" IF_BLOCK "); BEGIN IF_BLOCK;       } // return IF; }
 <ESCAPED>{ELSE}                         { printf(" ELSE_BLOCK "); BEGIN IF_BLOCK;     } // return ELSE; }
 <ESCAPED>{ELSEIF}                       { printf(" ELSEIF "); BEGIN IF_BLOCK;         } // return ELSEIF; }
