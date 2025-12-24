@@ -200,7 +200,7 @@ int yyerror(char *s)
 };
 #endif
 
-#ifdef MAIN
+#ifdef MAIN_IMP
 int main(int argc, char** argv)
 {
     if(argc < 2)

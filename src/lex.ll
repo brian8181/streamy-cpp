@@ -2,7 +2,7 @@
     #define MAX_INCLUDE_DEPTH 10
     #include <stdio.h>
     #include <stdio.h>
-    #include "parser.tab.h"
+    #include "parser++.tab.hpp"
 
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int include_stack_ptr = 0;
@@ -200,7 +200,7 @@ int yyerror(char *s)
 };
 #endif
 
-#ifdef MAIN
+#ifdef MAIN_IMP
 int main(int argc, char** argv)
 {
     if(argc < 2)

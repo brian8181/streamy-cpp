@@ -13,9 +13,6 @@ BLD=build
 OBJ=build
 TST=tests
 
-CXXFLAGS = -std=c++20 -fPIC
-CCFLAG = -std=c99 -fPIC
-
 LIBS = -L/usr/local/lib/
 INCLUDES = -I./build/ -I./src
 LDFLAGS = $(LIBS) $(INCLUDES)
@@ -31,49 +28,53 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: copy_headers $(BLD)/parser_pp $(BLD)/parser $(BLD)/lex $(BLD)/lex2 $(BLD)/TEST_lex # $(BLD)/lex4
+all: copy_headers $(BLD)/parser $(BLD)/lex $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)/parser++
 
-$(BLD)/parser: $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/lex.yy.c $(BLD)/lex.yy.h
-	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
+# CC
+$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c
+	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
-$(BLD)/parser_pp: $(BLD)/lex.yy.o $(BLD)/parser.tab.o $(SRC)/symtab.cpp
-	$(CXX) $(CXXFLAGS) -Ibuild $(CXXFLAGS) $^ -lfl -o $@
+$(BLD)/lex: $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/lex.yy.c $(BLD)/lex.yy.h
+	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
 
-$(BLD)/parser.tab.cpp: $(SRC)/parser.yy
-	$(YACC) -Wcounterexamples --header $^ -o $@
-	cp $(SRC)/bash_color.h $(BLD)/
+$(BLD)/lex.yy.c $(BLD)/lex.yy.h: $(SRC)/lex.l
+	$(LEX) -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
 
 $(BLD)/parser.tab.c $(BLD)/parser.tab.h: $(SRC)/parser.y
 	$(YACC) -Wcounterexamples --header $^ -o $@
 	cp $(SRC)/bash_color.h $(BLD)/
 
-$(BLD)/lex: $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/lex.yy.c $(BLD)/lex.yy.h
-	$(CC) $(CCFLAGS) -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
+# CXX
+$(BLD)/parser++: $(BLD)/parser++.tab.hpp $(BLD)/parser++.tab.cpp $(BLD)/lex++.yy.hpp $(BLD)/lex++.yy.cpp $(SRC)/symtab.h $(SRC)/symtab.cpp
+	$(CXX) $(CXXFLAGS) -Ibuild $^ -lfl -o $@
 
-$(BLD)/lex.yy.c $(BLD)/lex.yy.h: $(SRC)/lex.l
-	$(LEX) -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
+$(BLD)/parser++.tab.cpp parser++.tab.hpp: $(SRC)/parser.yy
+	$(YACC) -Wcounterexamples --header $^ -o $@
+	cp $(SRC)/bash_color.h $(BLD)/
 
-$(BLD)/lex4: $(BLD)/lex4.yy.c
-	$(CC) $(CCFLAGS) -DLEXER_EXE $(BLD)/lex4.yy.c -o $(BLD)/lex4
+$(BLD)/lex++: $(BLD)/lex++.yy.cpp parser++.tab.hpp
+	# USING C COMPLIER ON CPP! BUT IT BUILDS?
+	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex++.yy.cpp -o $(BLD)/lex++
 
-$(BLD)/lex4.yy.o: $(BLD)/lex4.yy.c
-	$(CC) $(CCFLAGS) -DLEXER_EXE -c $^ -o $@
+$(BLD)/lex++.yy.cpp: $(BLD)/parser++.tab.cpp $(SRC)/lex.ll
+	$(LEX) -DLEXER_EXE -o build/lex++.yy.cpp --header-file="build/lex++.yy.hpp" src/lex.ll
 
-$(BLD)/lex4.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.ll
-	$(LEX) -DLEXER_EXE -o build/lex4.yy.c --header-file="build/lex4.yy.h" src/lex.ll
-
-$(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
-	$(CXX) -DLEXER_EXE $(CXXFLAGS) $^ $(LDFLAGS) -o $@
-
+# UTILITY
 $(BLD)/fileio.o: $(SRC)/fileio.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o
 
+# ABSTARCT
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
+# TEST
+$(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
+	$(CXX) -DLEXER_EXE $(CXXFLAGS) $^ $(LDFLAGS) -o $@
+
+# MAKE UTILTY
 # copy all headers from src to build dir
 .PHONY: copy_headers
 copy_headers:
