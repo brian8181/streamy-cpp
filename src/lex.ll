@@ -35,7 +35,9 @@ END_FOREACH         "/foreach"
 FOREACHELSE         foreachelse
 END_FOREACHELSE     "/foreachelse"
 ELSE                "else"
+END_ELSE            "/else"
 ELSEIF              "elseif"
+END_ELSEIF          "/elseif"
 STREAM              .|\n
 VBAR                "|"
 COLON               ":"
@@ -134,7 +136,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_CONDITION>{SINGLE_QUOTE}        { printf(" SINGLE_QUOTE ");                      } // return SINGLE_QUOTE;       }
 <ESCAPED,IF_CONDITION>{NUMBER}              { printf(" NUMBER ");                            } // return NUMBER;             }
 <ESCAPED>{RBRACE}                           { printf(" } "); BEGIN INITIAL; }
-<ESCAPED,IF_BLOCK>{END_IF}                  { ECHO; printf(" <--- END_IF\n"); BEGIN INITIAL; }
+<ESCAPED,IF_BLOCK>{END_IF}                  { printf(" <--- END_IF\n"); BEGIN INITIAL; }
 <ESCAPED>{IF}                               { printf(" IF_BLOCK "); BEGIN IF_CONDITION;      } // return IF;                 }
 <IF_CONDITION>{RBRACE}                      { printf("IF_BLOCK"); ECHO; BEGIN IF_BLOCK;      }
 <IF_CONDITION>[^}]                          { ECHO; }
@@ -143,6 +145,8 @@ FILE_ATTRIB         file
 <ESCAPED>{ELSEIF}                           { printf(" ELSEIF "); BEGIN IF_CONDITION;        } // return ELSEIF;             }
 <ESCAPED>{FOREACHELSE}                      { printf(" FOREACHELSE "); BEGIN IF_BLOCK;       } // return FOREACHELSE;        }
 <ESCAPED>{FOREACH}                          { printf(" FOREACH "); BEGIN IF_BLOCK;           } // return FOREACH;            }
+<ESCAPED,IF_BLOCK>{END_ELSE}                { printf(" ELSE_BLOCK "); BEGIN ESCAPED;      } // return ELSE; }
+<ESCAPED,IF_BLOCK>{END_ELSEIF}              { printf(" END_ELSEIF "); BEGIN ESCAPED;      } // return ELSEIF; }
 <ESCAPED,IF_BLOCK>{END_FOREACHELSE}         { printf(" FOREACHELSE "); BEGIN ESCAPED;        } // return FOREACHELSE;        }
 <ESCAPED,IF_BLOCK>{END_FOREACH}             { printf(" FOREACH "); BEGIN ESCAPED;            } // return FOREACH;            }
 <ESCAPED,IF_BLOCK>{CONST_ID}                { printf(" [CONST_ID:%s] ", yytext);             } // return CONST_ID;           }

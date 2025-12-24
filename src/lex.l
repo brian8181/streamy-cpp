@@ -137,7 +137,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{NUMBER}              { printf(" NUMBER ");                         } // return NUMBER; }
 <ESCAPED,IF_BLOCK>{RBRACE}              { printf(" } "); BEGIN INITIAL;               } // return RBRACE;
 <ESCAPED,IF_BLOCK>{END_IF}              { printf(" END_IF "); BEGIN ESCAPED;          } // return IF; }
-<IF_CONDITION>{RBRACE}                  { printf("IF_BLOCK"); ECHO; BEGIN IF_BLOCK;   }
+<IF_CONDITION>{RBRACE}                  { printf("IF_BLOCK"); BEGIN IF_BLOCK;         }
 <IF_CONDITION>[^}]                      { ECHO;                                       }
 <IF_BLOCK>[^{]                          { ECHO;                                       }
 <ESCAPED>{IF}                           { printf(" IF_BLOCK "); BEGIN IF_BLOCK;       } // return IF; }
@@ -198,7 +198,9 @@ int yyerror(char *s)
     fprintf(stderr, "%s\n", s);
     return 0;
 };
+#endif
 
+#ifdef MAIN
 int main(int argc, char** argv)
 {
     if(argc < 2)

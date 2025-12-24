@@ -33,7 +33,7 @@ endif
 
 all: copy_headers $(BLD)/parser_pp $(BLD)/parser $(BLD)/lex $(BLD)/lex2 $(BLD)/TEST_lex # $(BLD)/lex4
 
-$(BLD)/parser: $(BLD)/lex.yy.o $(BLD)/parser.tab.o
+$(BLD)/parser: $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/lex.yy.c $(BLD)/lex.yy.h
 	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
 
 $(BLD)/parser_pp: $(BLD)/lex.yy.o $(BLD)/parser.tab.o $(SRC)/symtab.cpp
@@ -41,14 +41,16 @@ $(BLD)/parser_pp: $(BLD)/lex.yy.o $(BLD)/parser.tab.o $(SRC)/symtab.cpp
 
 $(BLD)/parser.tab.cpp: $(SRC)/parser.yy
 	$(YACC) -Wcounterexamples --header $^ -o $@
+	cp $(SRC)/bash_color.h $(BLD)/
 
-$(BLD)/parser.tab.c: $(SRC)/parser.y
+$(BLD)/parser.tab.c $(BLD)/parser.tab.h: $(SRC)/parser.y
 	$(YACC) -Wcounterexamples --header $^ -o $@
+	cp $(SRC)/bash_color.h $(BLD)/
 
-$(BLD)/lex: $(BLD)/lex.yy.c
+$(BLD)/lex: $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/lex.yy.c $(BLD)/lex.yy.h
 	$(CC) $(CCFLAGS) -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
 
-$(BLD)/lex.yy.c: $(BLD)/parser.tab.c $(SRC)/lex.l
+$(BLD)/lex.yy.c $(BLD)/lex.yy.h: $(SRC)/lex.l
 	$(LEX) -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
 
 $(BLD)/lex4: $(BLD)/lex4.yy.c
