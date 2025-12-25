@@ -16,11 +16,11 @@
     char* sval;
 };
 
-%token END_OF_FILE;
-%type<sval> tag;
-%type<sval> tags;
+%token END_OF_FILE
+%type<sval> tag
+%type<sval> tags
 %token<ival> NUMBER
-%token<sval> STRING
+%token<sval> STRING_LITERAL
 %token<sval> IDENTIFIER
 %token<sval> ID
 %token<sval> CONST_ID
@@ -59,9 +59,13 @@ tags:
 tag:
         ID                      { printf("bison:tag:ID\n"); $$ = $1; }
         | CONST_ID              { printf("bison:tag:CONST_ID\n"); $$ = $1; }
-        | CONFIG_LOAD           { printf("bison:tag:CONFIG_LOAD\n"); $$ = $1; }
-        | FILE_ATTRIB           { printf("bison:tag:FILE_ATTRIB\n"); $$ = $1; }
+        | CONFIG_LOAD           { printf("bison:tag:CONFIG_LOAD\n"); $$=$1; }
+        | EQUAL                 { printf("bison:tag:EQUAL\n"); $$=$1; }
+        | FILE_ATTRIB           { printf("bison:tag:FILE_ATTRIB\n"); $$=$1; }
+        | STRING_LITERAL        { printf("bison:tag:STRING_LITERAL\n"); $$=$1; }
         ;
+
+
 
 %%
 

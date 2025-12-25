@@ -1,4 +1,3 @@
-{"testing"}
 {config_load file="foo.conf"}
 <html>
 <title>{$smarty.config.pageTitle}</title>

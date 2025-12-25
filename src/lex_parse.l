@@ -94,12 +94,12 @@ FILE_ATTRIB         file
 {LBRACE}                                { printf(" { "); BEGIN ESCAPED; }
 <OFF>{INCLUDE}                          { printf(" INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
 <ESCAPED>{QUOTE}                                { BEGIN STRING; s = buf; }
-<ESCAPED,STRING>\\n                             { *s++ = '\n'; }
-<ESCAPED,STRING>\\t                             { *s++ = '\t'; }
-<ESCAPED,STRING>\\\"                            { *s++ = '\"'; }
-<ESCAPED,STRING>{QUOTE}                         { *s = 0; BEGIN 0; printf("found '%s'\n", buf); }
-<ESCAPED,STRING>\n                              { printf("invalid ESCAPED,STRING"); exit(1); }
-<ESCAPED,STRING>.                               { *s++ = *yytext; }
+<STRING>\\n                             { *s++ = '\n'; }
+<STRING>\\t                             { *s++ = '\t'; }
+<STRING>\\\"                            { *s++ = '\"'; }
+<STRING>{QUOTE}                         { *s = 0; BEGIN 0; printf("found '%s'\n", buf); return STRING_LITERAL; }
+<STRING>\n                              { printf("invalid ESCAPED,STRING"); exit(1); }
+<STRING>.                               { *s++ = *yytext; }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf(" UTILITY "); }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
@@ -122,8 +122,8 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{PLUS}                { printf(" PLUS ");                           } // return PLUS; }
 <ESCAPED,IF_BLOCK>{MINUS}               { printf(" MINUS ");                          } // return MINUS;}
 <ESCAPED,IF_BLOCK>{ASTERIK}             { printf(" ASTERIK ");                        } // return ASTERIK; }
-<ESCAPED,IF_BLOCK>{EQUAL}               { printf(" EQUAL ");                          } // return EQUAL; }
-<ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf(" NOT_EQUAL ");                      } // return NOT_EQUAL; }
+<ESCAPED,IF_BLOCK>{EQUAL}               { printf(" EQUAL ");                          return EQUAL; }
+<ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf(" NOT_EQUAL ");                      return NOT_EQUAL; }
 <ESCAPED,IF_BLOCK>{DOT}                 { printf(" DOT ");                            return DOT; }
 <ESCAPED,IF_BLOCK>{PERCENT}             { printf(" PERCENT ");                        } // return PERCENT; }
 <ESCAPED,IF_BLOCK>{COLON}               { printf(" COLON ");                          } // return COLON; }
