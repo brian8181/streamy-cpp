@@ -1,7 +1,7 @@
 %{
     #include <stdio.h>
     #include "parser.tab.h"
-    #include "lex.yy.h"
+    #include "lex_parse.yy.h"
     #include "bash_color.h"
 
     int yylex(void);
@@ -33,7 +33,7 @@
 %token<sval> LBRACE RBRACE LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT AMPERSAND And Or Not
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL DOT PERCENT NOT_EQUAL
-%token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME
+%token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
 %token CONFIG;
 %token ASSIGN ISSET
 %token FUNC
@@ -50,6 +50,8 @@ tags:
 tag:
         ID                       { printf("bison:tag:ID\n"); $$ = $1; }
         | CONST_ID               { printf("bison:tag:CONST_ID\n"); $$ = $1; }
+        | CONFIG_LOAD            { printf("bison:tag:CONFIG_LOAD\n"); $$ = $1; }
+         | FILE_ATTRIB            { printf("bison:tag:FILE_ATTRIB\n"); $$ = $1; }
         ;
 
 %%

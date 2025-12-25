@@ -31,8 +31,11 @@ endif
 all: copy_headers $(BLD)/parser $(BLD)/lex $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)/parser++
 
 # CC
-$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c
+$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex_parse.yy.h $(BLD)/lex_parse.yy.c
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
+
+$(BLD)/lex_parse.yy.c $(BLD)/lex_parse.yy.h: $(SRC)/lex_parse.l
+	$(LEX) -o build/lex_parse.yy.c --header-file="build/lex_parse.yy.h" src/lex_parse.l
 
 $(BLD)/lex: $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/lex.yy.c $(BLD)/lex.yy.h
 	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
