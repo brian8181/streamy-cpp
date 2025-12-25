@@ -1,5 +1,6 @@
 %{
     #include <stdio.h>
+    #include <string.h>
     #include "parser.tab.h"
     #include "lex_parse.yy.h"
     #include "bash_color.h"
@@ -17,6 +18,7 @@
 
 %token END_OF_FILE;
 %type<sval> tag;
+%type<sval> tags;
 %token<ival> NUMBER
 %token<sval> STRING
 %token<sval> IDENTIFIER
@@ -42,16 +44,23 @@
 %%
 
 file:
-        tags END_OF_FILE          { printf("bison:file:tags END_OF_FILE\n"); }
+        tags END_OF_FILE        { printf("bison:file:tags END_OF_FILE\n"); }
         ;
 tags:
-        tag
-        | tags tag
+        tag                     {  printf("bison:tags:tag\n"); printf("TAGS: { %s }\n", $1); $$=$1; }
+        | tags tag              {
+                                    printf("bison:tags:tags tag\n");
+                                    // char* tags = $1;
+                                    // char* tag = $2;
+                                    // strcat(tags, tag);
+                                    // $$ = $1;
+                                }
+        ;
 tag:
-        ID                       { printf("bison:tag:ID\n"); $$ = $1; }
-        | CONST_ID               { printf("bison:tag:CONST_ID\n"); $$ = $1; }
-        | CONFIG_LOAD            { printf("bison:tag:CONFIG_LOAD\n"); $$ = $1; }
-         | FILE_ATTRIB            { printf("bison:tag:FILE_ATTRIB\n"); $$ = $1; }
+        ID                      { printf("bison:tag:ID\n"); $$ = $1; }
+        | CONST_ID              { printf("bison:tag:CONST_ID\n"); $$ = $1; }
+        | CONFIG_LOAD           { printf("bison:tag:CONFIG_LOAD\n"); $$ = $1; }
+        | FILE_ATTRIB           { printf("bison:tag:FILE_ATTRIB\n"); $$ = $1; }
         ;
 
 %%

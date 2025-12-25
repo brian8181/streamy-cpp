@@ -93,13 +93,13 @@ FILE_ATTRIB         file
 {COMMENT}                               { /* eat up comment */ }
 {LBRACE}                                { printf(" { "); BEGIN ESCAPED; }
 <OFF>{INCLUDE}                          { printf(" INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
-<OFF>\"                                 { BEGIN STRING; s = buf; }
-<STRING>\\n                             { *s++ = '\n'; }
-<STRING>\\t                             { *s++ = '\t'; }
-<STRING>\\\"                            { *s++ = '\"'; }
-<STRING>\"                              {*s = 0; BEGIN 0; printf("found '%s'\n", buf); }
-<STRING>\n                              { printf("invalid string"); exit(1); }
-<STRING>.                               { *s++ = *yytext; }
+<ESCAPED>{QUOTE}                                { BEGIN STRING; s = buf; }
+<ESCAPED,STRING>\\n                             { *s++ = '\n'; }
+<ESCAPED,STRING>\\t                             { *s++ = '\t'; }
+<ESCAPED,STRING>\\\"                            { *s++ = '\"'; }
+<ESCAPED,STRING>{QUOTE}                         { *s = 0; BEGIN 0; printf("found '%s'\n", buf); }
+<ESCAPED,STRING>\n                              { printf("invalid ESCAPED,STRING"); exit(1); }
+<ESCAPED,STRING>.                               { *s++ = *yytext; }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf(" UTILITY "); }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
@@ -124,7 +124,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{ASTERIK}             { printf(" ASTERIK ");                        } // return ASTERIK; }
 <ESCAPED,IF_BLOCK>{EQUAL}               { printf(" EQUAL ");                          } // return EQUAL; }
 <ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf(" NOT_EQUAL ");                      } // return NOT_EQUAL; }
-<ESCAPED,IF_BLOCK>{DOT}                 { printf(" DOT ");                            } // return DOT; }
+<ESCAPED,IF_BLOCK>{DOT}                 { printf(" DOT ");                            return DOT; }
 <ESCAPED,IF_BLOCK>{PERCENT}             { printf(" PERCENT ");                        } // return PERCENT; }
 <ESCAPED,IF_BLOCK>{COLON}               { printf(" COLON ");                          } // return COLON; }
 <ESCAPED,IF_BLOCK>{LBRACKET}            { printf(" LBRACKET ");                       } // return LBRACKET; }

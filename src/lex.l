@@ -93,13 +93,13 @@ FILE_ATTRIB         file
 {COMMENT}                               { /* eat up comment */ }
 {LBRACE}                                { printf(" { "); BEGIN ESCAPED; }
 <OFF>{INCLUDE}                          { printf(" INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
-<OFF>\"                                 { BEGIN STRING; s = buf; }
-<STRING>\\n                             { *s++ = '\n'; }
-<STRING>\\t                             { *s++ = '\t'; }
-<STRING>\\\"                            { *s++ = '\"'; }
-<STRING>\"                              {*s = 0; BEGIN 0; printf("found '%s'\n", buf); }
-<STRING>\n                              { printf("invalid string"); exit(1); }
-<STRING>.                               { *s++ = *yytext; }
+<ESCAPED>\"                                     { BEGIN STRING; s = buf; }
+<ESCAPED,STRING>\\n                             { *s++ = '\n'; }
+<ESCAPED,STRING>\\t                             { *s++ = '\t'; }
+<ESCAPED,STRING>\\\"                            { *s++ = '\"'; }
+<ESCAPED,STRING>\"                              {*s = 0; BEGIN 0; printf("found '%s'\n", buf); }
+<ESCAPED,STRING>\n                              { printf("invalid string"); exit(1); }
+<ESCAPED,STRING>.                               { *s++ = *yytext; }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf(" UTILITY "); }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
