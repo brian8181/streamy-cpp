@@ -93,13 +93,13 @@ FILE_ATTRIB         file
 {COMMENT}                               { /* eat up comment */ }
 {LBRACE}                                { printf(" { "); BEGIN ESCAPED; }
 <OFF>{INCLUDE}                          { printf(" INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
-<ESCAPED>\"                                     { BEGIN STRING; s = buf; }
-<ESCAPED,STRING>\\n                             { *s++ = '\n'; }
-<ESCAPED,STRING>\\t                             { *s++ = '\t'; }
-<ESCAPED,STRING>\\\"                            { *s++ = '\"'; }
-<ESCAPED,STRING>\"                              {*s = 0; BEGIN 0; printf("found '%s'\n", buf); }
-<ESCAPED,STRING>\n                              { printf("invalid string"); exit(1); }
-<ESCAPED,STRING>.                               { *s++ = *yytext; }
+<OFF>\"                                     { BEGIN STRING; s = buf; }
+<STRING>\\n                             { *s++ = '\n'; }
+<STRING>\\t                             { *s++ = '\t'; }
+<STRING>\\\"                            { *s++ = '\"'; }
+<STRING>\"                              {*s = 0; BEGIN 0; printf("found '%s'\n", buf); }
+<STRING>\n                              { printf("invalid string"); exit(1); }
+<STRING>.                               { *s++ = *yytext; }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf(" UTILITY "); }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
@@ -151,6 +151,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{END_FOREACH}         { printf(" FOREACH "); BEGIN ESCAPED;         } // return FOREACH; }
 <ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" [CONST_ID:%s] ", yytext);          } // return CONST_ID; }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf(" [FUNC:%s] ", yytext);              } // return FUNC;  }
+<ESCAPED,IF_BLOCK>{QUALAFIED_ID}        { printf(" [QUALAFIED_ID:%s] ", yytext);      } // return ID;  }
 <ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext);                } // return ID;  }
 <incl>[ \t]*                            { /* eat the whitespace */ }
 <incl>[^ \t\n]+                         {

@@ -104,8 +104,8 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" MODIFIER "); }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" ACCSESSORS "); }
 <ESCAPED,IF_BLOCK>{CONFIG}              { printf(" CONFIG "); }
-<ESCAPED,IF_BLOCK>{CONFIG_LOAD}         { printf(" CONFIG_LOAD ");                    return CONFIG_LOAD; }
-<ESCAPED,IF_BLOCK>{FILE_ATTRIB}         { printf(" FILE_ATTRIB ");                    return FILE_ATTRIB; }
+<ESCAPED,IF_BLOCK>{CONFIG_LOAD}         { printf(" CONFIG_LOAD ");                    return CONFIG_LOAD;             }
+<ESCAPED,IF_BLOCK>{FILE_ATTRIB}         { printf(" FILE_ATTRIB ");                    return FILE_ATTRIB;             }
 <ESCAPED,IF_BLOCK>{HTML}                { printf(" HTML ");                           } // return HTTP; }
 <ESCAPED,IF_BLOCK>{HTTP}                { printf(" HTTP ");                           } // return HTTP; }
 <ESCAPED,IF_BLOCK>{NOT}                 { printf(" NOT ");                            } // return NOT; }
@@ -118,13 +118,14 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{SLASH}               { printf(" SLASH ");                          } // return SLASH; }
 <ESCAPED,IF_BLOCK>{BACK_SLASH}          { printf(" BACK_SLASH ");                     } // return BACK_SLASH; }
 <ESCAPED,IF_BLOCK>{VBAR}                { printf(" VBAR ");                           } // return VBAR; }
+<ESCAPED,IF_BLOCK>{AMPERSAND}           { printf(" AMPERSAND ");                      } // return AMPERSAND; }
 <ESCAPED,IF_BLOCK>{AT}                  { printf(" AT ");                             } // return AT; }
 <ESCAPED,IF_BLOCK>{PLUS}                { printf(" PLUS ");                           } // return PLUS; }
 <ESCAPED,IF_BLOCK>{MINUS}               { printf(" MINUS ");                          } // return MINUS;}
 <ESCAPED,IF_BLOCK>{ASTERIK}             { printf(" ASTERIK ");                        } // return ASTERIK; }
-<ESCAPED,IF_BLOCK>{EQUAL}               { printf(" EQUAL ");                          return EQUAL; }
-<ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf(" NOT_EQUAL ");                      return NOT_EQUAL; }
-<ESCAPED,IF_BLOCK>{DOT}                 { printf(" DOT ");                            return DOT; }
+<ESCAPED,IF_BLOCK>{EQUAL}               { printf(" EQUAL ");                          return EQUAL;                   }
+<ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf(" NOT_EQUAL ");                      return NOT_EQUAL;               }
+<ESCAPED,IF_BLOCK>{DOT}                 { printf(" DOT ");                            return DOT;                     }
 <ESCAPED,IF_BLOCK>{PERCENT}             { printf(" PERCENT ");                        } // return PERCENT; }
 <ESCAPED,IF_BLOCK>{COLON}               { printf(" COLON ");                          } // return COLON; }
 <ESCAPED,IF_BLOCK>{LBRACKET}            { printf(" LBRACKET ");                       } // return LBRACKET; }
@@ -149,8 +150,9 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{END_ELSEIF}          { printf(" END_ELSEIF "); BEGIN ESCAPED;      } // return ELSEIF; }
 <ESCAPED,IF_BLOCK>{END_FOREACHELSE}     { printf(" FOREACHELSE "); BEGIN ESCAPED;     } // return FOREACHELSE; }
 <ESCAPED,IF_BLOCK>{END_FOREACH}         { printf(" FOREACH "); BEGIN ESCAPED;         } // return FOREACH; }
-<ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" [CONST_ID:%s] ", yytext);          return CONST_ID; }
+<ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" [CONST_ID:%s] ", yytext);          return CONST_ID;                }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf(" [FUNC:%s] ", yytext);              } // return FUNC;  }
+<ESCAPED,IF_BLOCK>{QUALAFIED_ID}        { printf(" [QUALAFIED_ID:%s] ", yytext);      return QUALAFIED_ID;  }
 <ESCAPED,IF_BLOCK>{ID}                  { printf(" [ID:%s] ", yytext);                return ID;  }
 <incl>[ \t]*                            { /* eat the whitespace */ }
 <incl>[^ \t\n]+                         {

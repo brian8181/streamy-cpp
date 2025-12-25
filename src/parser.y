@@ -17,23 +17,14 @@
 };
 
 %token END_OF_FILE
-%type<sval> tag
-%type<sval> tags
+%type<sval> tag tags
 %token<ival> NUMBER
-%token<sval> STRING_LITERAL
-%token<sval> IDENTIFIER
-%token<sval> ID
-%token<sval> CONST_ID
-%token<sval> IF END_IF
-%token<sval> FOREACH END_FOREACH
-%token<sval> FOREACHELSE END_FOREACHELSE
-%token<sval> ELSE END_ELSE
-%token<sval> ELSEIF END_ELSEIF
-%token<sval> VBAR
-%token<sval> LBRACKET
-%token<sval> RBRACKET
-%token<sval> LBRACE RBRACE LPAREN RPAREN
-%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT AMPERSAND And Or Not
+%token<sval> STRING_LITERAL NUMERIC_LITERAL
+%token<sval> IDENTIFIER ID CONST_ID QUALAFIED_ID
+%token<sval> IF END_IF ELSE END_ELSE ELSEIF END_ELSEIF
+%token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
+%token<sval> LBRACKET RBRACKET LBRACE RBRACE LPAREN RPAREN
+%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND And Or Not
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL DOT PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
 %token CONFIG;
@@ -56,6 +47,7 @@ tags:
                                     // $$ = $1;
                                 }
         ;
+
 tag:
         ID                      { printf("bison:tag:ID\n"); $$ = $1; }
         | CONST_ID              { printf("bison:tag:CONST_ID\n"); $$ = $1; }

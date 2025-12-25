@@ -30,37 +30,40 @@ endif
 
 all: copy_headers $(BLD)/parser $(BLD)/lex $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)/parser++
 
-# CC
+# parser
 $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex_parse.yy.h $(BLD)/lex_parse.yy.c
-	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
-
-$(BLD)/lex_parse.yy.c $(BLD)/lex_parse.yy.h: $(SRC)/lex_parse.l
-	$(LEX) -o build/lex_parse.yy.c --header-file="build/lex_parse.yy.h" src/lex_parse.l
-
-$(BLD)/lex: $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/lex.yy.c $(BLD)/lex.yy.h
-	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
-
-$(BLD)/lex.yy.c $(BLD)/lex.yy.h: $(SRC)/lex.l
-	$(LEX) -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
+	# USING C COMPLIER ON CPP! BUT IT BUILDS?
+	$(CC) $(CXXFLAGS) -Ibuild $^ -lfl -o $@
 
 $(BLD)/parser.tab.c $(BLD)/parser.tab.h: $(SRC)/parser.y
 	$(YACC) -Wcounterexamples --header $^ -o $@
 	cp $(SRC)/bash_color.h $(BLD)/
 
-# CXX
+# CC lexer
+$(BLD)/lex_parse.yy.c $(BLD)/lex_parse.yy.h: $(SRC)/lex_parse.l
+	$(LEX) -o build/lex_parse.yy.c --header-file="build/lex_parse.yy.h" src/lex_parse.l
+
+$(BLD)/lex: $(BLD)/parser.tab.h $(BLD)/lex.yy.h $(BLD)/lex.yy.c
+	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
+
+$(BLD)/lex.yy.c $(BLD)/lex.yy.h: $(SRC)/lex.l
+	$(LEX) -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
+
+# CXX parser
 $(BLD)/parser++: $(BLD)/parser++.tab.hpp $(BLD)/parser++.tab.cpp $(BLD)/lex++.yy.hpp $(BLD)/lex++.yy.cpp $(SRC)/symtab.h $(SRC)/symtab.cpp
 	$(CXX) $(CXXFLAGS) -Ibuild $^ -lfl -o $@
 
-$(BLD)/parser++.tab.cpp parser++.tab.hpp: $(SRC)/parser.yy
+$(BLD)/parser++.tab.cpp $(BLD)/parser++.tab.hpp: $(SRC)/parser.yy
 	$(YACC) -Wcounterexamples --header $^ -o $@
 	cp $(SRC)/bash_color.h $(BLD)/
 
-$(BLD)/lex++: $(BLD)/lex++.yy.cpp parser++.tab.hpp
+# CXX lexer
+$(BLD)/lex++: $(BLD)/parser++.tab.hpp $(BLD)/lex++.yy.cpp
 	# USING C COMPLIER ON CPP! BUT IT BUILDS?
 	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex++.yy.cpp -o $(BLD)/lex++
 
-$(BLD)/lex++.yy.cpp: $(BLD)/parser++.tab.cpp $(SRC)/lex.ll
-	$(LEX) -DLEXER_EXE -o build/lex++.yy.cpp --header-file="build/lex++.yy.hpp" src/lex.ll
+$(BLD)/lex++.yy.cpp: $(SRC)/lex.ll
+	$(LEX) -DLEXER_EXE -o $(BLD)/lex++.yy.cpp --header-file="$(BLD)/lex++.yy.hpp" src/lex.ll
 
 # UTILITY
 $(BLD)/fileio.o: $(SRC)/fileio.cpp
