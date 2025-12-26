@@ -35,7 +35,7 @@ $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex_parse.yy.h $(B
 	# USING C COMPLIER ON CPP! BUT IT BUILDS?
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
-$(BLD)/parser.tab.c $(BLD)/parser.tab.h: $(SRC)/parser.y
+$(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/bash_color.h: $(SRC)/parser.y #$(SRC)/bash_color.h
 	$(YACC) -Wcounterexamples --header $^ -o $@
 	cp $(SRC)/bash_color.h $(BLD)/
 
@@ -79,6 +79,10 @@ $(OBJ)/%.o: $(SRC)/%.c
 # TEST
 $(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
 	$(CXX) -DLEXER_EXE $(CXXFLAGS) $^ $(LDFLAGS) -o $@
+
+# copy header files
+$(BLD)/fileio.h $(BLD)/streamy.hpp: $(SRC)/fileio.h $(SRC)/streamy.hpp
+	cp $^ $(BLD)/
 
 # MAKE UTILTY
 # copy all headers from src to build dir

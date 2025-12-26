@@ -20,15 +20,16 @@
 };
 
 %token END_OF_FILE
-%type<sval> tag tags
+%type<sval> tag tags decl
 %token<ival> NUMBER
+%token<sval> DOT INDIRECT_MEMBER
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
 %token<sval> IDENTIFIER ID CONST_ID QUALAFIED_ID
 %token<sval> IF END_IF ELSE END_ELSE ELSEIF END_ELSEIF
 %token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
 %token<sval> LBRACKET RBRACKET LBRACE RBRACE LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
-%token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL DOT PERCENT NOT_EQUAL
+%token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
 %token CONFIG;
 %token ASSIGN ISSET
@@ -42,6 +43,7 @@ file:
         ;
 tags:
         tag                     {  printf("bison:tags:tag\n"); printf("TAGS: { %s }\n", $1); $$=$1; }
+        | decl
         | tags tag              {
                                     printf("bison:tags:tags tag\n");
                                     // char* tags = $1;
@@ -50,14 +52,23 @@ tags:
                                     // $$ = $1;
                                 }
         ;
+decl:
+    ID                      { printf("bison:decl:ID\n"); $$ = $1; }
+    | decl DOT IDENTIFIER             { printf("bison:decl:decl .\n"); $$ = $1; }
+    | decl INDIRECT_MEMBER IDENTIFIER  { printf("bison:decl:decl ->\n"); $$ = $1; }
+    | LBRACKET
+    | RBRACKET
+    | RPAREN
+    | LPAREN
+    ;
+
 tag:
-        ID                      { printf("bison:tag:ID\n"); $$ = $1; }
-        | CONST_ID              { printf("bison:tag:CONST_ID\n"); $$ = $1; }
-        | CONFIG_LOAD           { printf("bison:tag:CONFIG_LOAD\n"); $$=$1; }
+        CONFIG_LOAD           { printf("bison:tag:CONFIG_LOAD\n"); $$=$1; }
         | EQUAL                 { printf("bison:tag:EQUAL\n"); $$=$1; }
         | FILE_ATTRIB           { printf("bison:tag:FILE_ATTRIB\n"); $$=$1; }
         | STRING_LITERAL        { printf("bison:tag:STRING_LITERAL=%s\n", buf); $$=$1; }
         ;
+
 terminal:
     IF
     | END_IF

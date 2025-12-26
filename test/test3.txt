@@ -1,4 +1,4 @@
 Start ...
-{ $a }
+{$a.b}
 { 'testing literal' }
 .. end

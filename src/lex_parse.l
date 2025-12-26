@@ -24,7 +24,6 @@ END_OF_FILE         \0
 IDENTIFIER          _*[A-Za-z][A-Za-z0-9_]*
 ID                  \${IDENTIFIER}
 CONST_ID            #{IDENTIFIER}#
-QUALAFIED_ID        {ID}(("."|"->"){IDENTIFIER})+
 FUNC                {IDENTIFIER}+[ /t]*\([^)]*\)
 ARRAY               {ID}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
@@ -61,6 +60,7 @@ ASTERIK             "*"
 EQUAL               "="
 NOT_EQUAL           "!="
 DOT                 "."
+INDIRECT_MEMBER "->"
 PERCENT             "%"
 AMPERSAND           "&"
 NOT                 "!"
@@ -131,17 +131,18 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{EQUAL}               { printf(" LEX:EQUAL ");                          return EQUAL;                   }
 <ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf(" LEX:NOT_EQUAL ");                      return NOT_EQUAL;               }
 <ESCAPED,IF_BLOCK>{DOT}                 { printf(" LEX:DOT ");                            return DOT;                     }
+<ESCAPED,IF_BLOCK>{INDIRECT_MEMBER}     { printf(" LEX:INDIRECT_MEMBER ");                return INDIRECT_MEMBER;                     }
 <ESCAPED,IF_BLOCK>{PERCENT}             { printf(" LEX:PERCENT ");                        } // return PERCENT;            }
 <ESCAPED,IF_BLOCK>{COLON}               { printf(" LEX:COLON ");                          } // return COLON;              }
-<ESCAPED,IF_BLOCK>{LBRACKET}            { printf(" LEX:LBRACKET ");                       } // return LBRACKET;           }
-<ESCAPED,IF_BLOCK>{RBRACKET}            { printf(" LEX:RBRACKET ");                       } // return RBRACKET;           }
-<ESCAPED,IF_BLOCK>{LPAREN}              { printf(" LEX:LPAREN ");                         } // return RPAREN;             }
-<ESCAPED,IF_BLOCK>{RPAREN}              { printf(" LEX:RPAREN ");                         } // return LPAREN;             }
+<ESCAPED,IF_BLOCK>{LBRACKET}            { printf(" LEX:LBRACKET ");                       return LBRACKET;                }
+<ESCAPED,IF_BLOCK>{RBRACKET}            { printf(" LEX:RBRACKET ");                       return RBRACKET;                }
+<ESCAPED,IF_BLOCK>{LPAREN}              { printf(" LEX:LPAREN ");                         return RPAREN;                  }
+<ESCAPED,IF_BLOCK>{RPAREN}              { printf(" LEX:RPAREN ");                         return LPAREN;                  }
 <ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf(" LEX:SEMI_COLON ");                     } // return SEMI_COLON;         }
 <ESCAPED,IF_BLOCK>{QUOTE}               { printf(" LEX:QUOTE ");                          } // return QUOTE;              }
 <ESCAPED,IF_BLOCK>{SINGLE_QUOTE}        { printf(" LEX:SINGLE_QUOTE ");                   } // return SINGLE_QUOTE;       }
 <ESCAPED,IF_BLOCK>{NUMBER}              { printf(" LEX:NUMBER ");                         } // return NUMBER;             }
-<ESCAPED,IF_BLOCK>{END_IF}              { printf(" LEX:END_IF "); BEGIN(ESCAPED);          } // return IF;                 }
+<ESCAPED,IF_BLOCK>{END_IF}              { printf(" LEX:END_IF "); BEGIN(ESCAPED);         } // return IF;                 }
 <IF_CONDITION>{RBRACE}                  { printf(" LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                         }
 <IF_CONDITION>[^}]                      { ECHO;                                                                           }
 <IF_BLOCK>[^{]                          { ECHO;                                                                           }
@@ -149,15 +150,15 @@ FILE_ATTRIB         file
 <ESCAPED>{ELSE}                         { printf(" LEX:ELSE_BLOCK "); BEGIN(IF_BLOCK);     } // return ELSE;               }
 <ESCAPED>{ELSEIF}                       { printf(" LEX:ELSEIF "); BEGIN(IF_BLOCK);         } // return ELSEIF;             }
 <ESCAPED>{FOREACHELSE}                  { printf(" LEX:FOREACHELSE "); BEGIN(IF_BLOCK);    } // return FOREACHELSE;        }
-<ESCAPED>{FOREACH}                      { printf(" LEX:FOREACH "); BEGIN (IF_BLOCK);        } // return FOREACH;            }
+<ESCAPED>{FOREACH}                      { printf(" LEX:FOREACH "); BEGIN (IF_BLOCK);       } // return FOREACH;            }
 <ESCAPED,IF_BLOCK>{END_ELSE}            { printf(" LEX:ELSE_BLOCK "); BEGIN(ESCAPED);      } // return ELSE;               }
 <ESCAPED,IF_BLOCK>{END_ELSEIF}          { printf(" LEX:END_ELSEIF "); BEGIN(ESCAPED);      } // return ELSEIF;             }
 <ESCAPED,IF_BLOCK>{END_FOREACHELSE}     { printf(" LEX:FOREACHELSE "); BEGIN(ESCAPED);     } // return FOREACHELSE;        }
 <ESCAPED,IF_BLOCK>{END_FOREACH}         { printf(" LEX:FOREACH "); BEGIN(ESCAPED);         } // return FOREACH;            }
-<ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" LEX:[CONST_ID:%s] ", yytext);          return CONST_ID;                }
-<ESCAPED,IF_BLOCK>{FUNC}                { printf(" LEX:[FUNC:%s] ", yytext);              } // return FUNC;               }
-<ESCAPED,IF_BLOCK>{QUALAFIED_ID}        { printf(" LEX:[QUALAFIED_ID:%s] ", yytext);      return QUALAFIED_ID;            }
-<ESCAPED,IF_BLOCK>{ID}                  { printf(" LEX:[ID:%s] ", yytext);                return ID;                      }
+<ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" LEX:[CONST_ID:%s] ", yytext);           return CONST_ID;                }
+<ESCAPED,IF_BLOCK>{FUNC}                { printf(" LEX:[FUNC:%s] ", yytext);               } // return FUNC;               }
+<ESCAPED,IF_BLOCK>{ID}                  { printf(" LEX:[ID:%s] ", yytext);                 return ID;                      }
+<ESCAPED,IF_BLOCK>{IDENTIFIER}          { printf(" LEX:[IDENTIFIER:%s] ", yytext);         return IDENTIFIER;              }
 <ESCAPED,incl>[ \t]*                    { /* eat the whitespace */                                                        }
 <incl>[^ \t\n]+                         {
                                             /* got the include file name */
