@@ -91,19 +91,19 @@ FILE_ATTRIB         file
 %%
 
 <INITIAL>{COMMENT}                      { /* eat up comment */                                                           }
-<INITIAL>{LBRACE}                       { printf("BEGIN ESCAPED\nLEX:{ "); BEGIN ESCAPED;                                }
-<ESCAPED,IF_BLOCK>{RBRACE}              { printf("BEGIN INITIAL\nLEX:} "); BEGIN INITIAL;                                } // return RBRACE;
+<INITIAL>{LBRACE}                       { printf("BEGIN ESCAPED\n   "); BEGIN(ESCAPED);                                   }
+<ESCAPED,IF_BLOCK>{RBRACE}              { printf("BEGIN INITIAL\n"); BEGIN(INITIAL);                                      } // return RBRACE;
 <OFF>{INCLUDE}                          { printf(" LEX:INCLUDE "); BEGIN(incl);                                          } // turned OFF for now, need to debug!
-<ESCAPED>{SINGLE_QUOTE}                 { printf("BEGIN QUOTED\n"); BEGIN QUOTED; s = buf;                               }
+<ESCAPED>{SINGLE_QUOTE}                 { printf("BEGIN QUOTED\n"); BEGIN(QUOTED); s = buf;                               }
 <QUOTED>\\n                             { *s++ = '\n';                                                                   }
 <QUOTED>\\t                             { *s++ = '\t';                                                                   }
 <QUOTED>\\\"                            { *s++ = '\"';                                                                   }
 <QUOTED>{SINGLE_QUOTE}                  {
-                                            printf("BEGIN INITIAL\n"); *s = 0;
-                                            BEGIN INITIAL; printf(" LITERAL='%s'\n", buf);
+                                            printf("BEGIN ESCAPED\n"); *s = 0;
+                                            BEGIN ESCAPED; printf(" LITERAL='%s'\n", buf);
                                             return STRING_LITERAL;
                                         }
-<QUOTED>\n                              { printf(" LEXinvalid ESCAPED,QUOTED"); exit(1);                                  }
+<QUOTED>[\n}]                           { printf(" LEX invalid ESCAPED,QUOTED"); exit(1);                                 }
 <QUOTED>.                               { *s++ = *yytext;                                                                 }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf(" LEX:UTILITY ");                                                        }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" LEX:MODIFIER ");                                                       }
@@ -141,19 +141,19 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{QUOTE}               { printf(" LEX:QUOTE ");                          } // return QUOTE;              }
 <ESCAPED,IF_BLOCK>{SINGLE_QUOTE}        { printf(" LEX:SINGLE_QUOTE ");                   } // return SINGLE_QUOTE;       }
 <ESCAPED,IF_BLOCK>{NUMBER}              { printf(" LEX:NUMBER ");                         } // return NUMBER;             }
-<ESCAPED,IF_BLOCK>{END_IF}              { printf(" LEX:END_IF "); BEGIN ESCAPED;          } // return IF;                 }
-<IF_CONDITION>{RBRACE}                  { printf(" LEXIF_BLOCK"); BEGIN IF_BLOCK;                                         }
+<ESCAPED,IF_BLOCK>{END_IF}              { printf(" LEX:END_IF "); BEGIN(ESCAPED);          } // return IF;                 }
+<IF_CONDITION>{RBRACE}                  { printf(" LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                         }
 <IF_CONDITION>[^}]                      { ECHO;                                                                           }
 <IF_BLOCK>[^{]                          { ECHO;                                                                           }
-<ESCAPED>{IF}                           { printf(" LEX:IF_BLOCK "); BEGIN IF_BLOCK;       } // return IF;                 }
-<ESCAPED>{ELSE}                         { printf(" LEX:ELSE_BLOCK "); BEGIN IF_BLOCK;     } // return ELSE;               }
-<ESCAPED>{ELSEIF}                       { printf(" LEX:ELSEIF "); BEGIN IF_BLOCK;         } // return ELSEIF;             }
-<ESCAPED>{FOREACHELSE}                  { printf(" LEX:FOREACHELSE "); BEGIN IF_BLOCK;    } // return FOREACHELSE;        }
-<ESCAPED>{FOREACH}                      { printf(" LEX:FOREACH "); BEGIN IF_BLOCK;        } // return FOREACH;            }
-<ESCAPED,IF_BLOCK>{END_ELSE}            { printf(" LEX:ELSE_BLOCK "); BEGIN ESCAPED;      } // return ELSE;               }
-<ESCAPED,IF_BLOCK>{END_ELSEIF}          { printf(" LEX:END_ELSEIF "); BEGIN ESCAPED;      } // return ELSEIF;             }
-<ESCAPED,IF_BLOCK>{END_FOREACHELSE}     { printf(" LEX:FOREACHELSE "); BEGIN ESCAPED;     } // return FOREACHELSE;        }
-<ESCAPED,IF_BLOCK>{END_FOREACH}         { printf(" LEX:FOREACH "); BEGIN ESCAPED;         } // return FOREACH;            }
+<ESCAPED>{IF}                           { printf(" LEX:IF_BLOCK "); BEGIN(IF_BLOCK);       } // return IF;                 }
+<ESCAPED>{ELSE}                         { printf(" LEX:ELSE_BLOCK "); BEGIN(IF_BLOCK);     } // return ELSE;               }
+<ESCAPED>{ELSEIF}                       { printf(" LEX:ELSEIF "); BEGIN(IF_BLOCK);         } // return ELSEIF;             }
+<ESCAPED>{FOREACHELSE}                  { printf(" LEX:FOREACHELSE "); BEGIN(IF_BLOCK);    } // return FOREACHELSE;        }
+<ESCAPED>{FOREACH}                      { printf(" LEX:FOREACH "); BEGIN (IF_BLOCK);        } // return FOREACH;            }
+<ESCAPED,IF_BLOCK>{END_ELSE}            { printf(" LEX:ELSE_BLOCK "); BEGIN(ESCAPED);      } // return ELSE;               }
+<ESCAPED,IF_BLOCK>{END_ELSEIF}          { printf(" LEX:END_ELSEIF "); BEGIN(ESCAPED);      } // return ELSEIF;             }
+<ESCAPED,IF_BLOCK>{END_FOREACHELSE}     { printf(" LEX:FOREACHELSE "); BEGIN(ESCAPED);     } // return FOREACHELSE;        }
+<ESCAPED,IF_BLOCK>{END_FOREACH}         { printf(" LEX:FOREACH "); BEGIN(ESCAPED);         } // return FOREACH;            }
 <ESCAPED,IF_BLOCK>{CONST_ID}            { printf(" LEX:[CONST_ID:%s] ", yytext);          return CONST_ID;                }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf(" LEX:[FUNC:%s] ", yytext);              } // return FUNC;               }
 <ESCAPED,IF_BLOCK>{QUALAFIED_ID}        { printf(" LEX:[QUALAFIED_ID:%s] ", yytext);      return QUALAFIED_ID;            }
@@ -179,17 +179,18 @@ FILE_ATTRIB         file
                                         }
 <<EOF>>                                 {
                                             printf("\n<<EOF>>\n");
-                                            if ( --include_stack_ptr < 0 )
-                                            {
-                                                return END_OF_FILE;
-                                                //yyterminate();
-                                            }
-                                            else
-                                            {
-                                                yy_delete_buffer( YY_CURRENT_BUFFER );
-                                                yy_switch_to_buffer(
-                                                include_stack[include_stack_ptr] );
-                                            }
+                                            return END_OF_FILE;
+                                            // if ( !end && --include_stack_ptr < 0 )
+                                            // {
+                                            //     return END_OF_FILE;
+                                            //     yyterminate();
+                                            // }
+                                            // else
+                                            // {
+                                            //     yy_delete_buffer( YY_CURRENT_BUFFER );
+                                            //     yy_switch_to_buffer(
+                                            //     include_stack[include_stack_ptr] );
+                                            // }
                                         }
 
 %%

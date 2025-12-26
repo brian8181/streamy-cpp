@@ -62,6 +62,7 @@ bool file_exist(const string& path)
     return ret;
 }
 
+/* retrive name value pairs from file */
 map<string, string>& get_name_value_pairs(string path, /* out */ map<string, string>& pairs)
 {
     std::ifstream file;

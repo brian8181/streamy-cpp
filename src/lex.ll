@@ -97,7 +97,7 @@ FILE_ATTRIB         file
 <STRING>\\n                                 { *s++ = '\n'; }
 <STRING>\\t                                 { *s++ = '\t'; }
 <STRING>\\\"                                { *s++ = '\"'; }
-<STRING>\"                                  {*s = 0; BEGIN 0; printf("found '%s'\n", buf); }
+<STRING>\"                                  {*s = 0; BEGIN ESCAPED; printf("found '%s'\n", buf); }
 <STRING>\n                                  { printf("invalid string"); exit(1); }
 <STRING>.                                   { *s++ = *yytext; }
 <ESCAPED,IF_CONDITION>{UTILITY}             { printf(" UTILITY "); }

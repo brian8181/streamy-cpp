@@ -1,0 +1,4 @@
+Start ...
+{ $a }
+{ 'testing literal' }
+.. end

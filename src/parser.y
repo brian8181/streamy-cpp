@@ -8,11 +8,10 @@
     int yylex(void);
     int yyerror(char * s);
 
+    /* string literal buffer */
     char buf[100];
     char *s;
-
 %}
-
 
 %union
 {
@@ -28,7 +27,7 @@
 %token<sval> IF END_IF ELSE END_ELSE ELSEIF END_ELSEIF
 %token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
 %token<sval> LBRACKET RBRACKET LBRACE RBRACE LPAREN RPAREN
-%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND And Or Not
+%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL DOT PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
 %token CONFIG;
@@ -51,7 +50,6 @@ tags:
                                     // $$ = $1;
                                 }
         ;
-
 tag:
         ID                      { printf("bison:tag:ID\n"); $$ = $1; }
         | CONST_ID              { printf("bison:tag:CONST_ID\n"); $$ = $1; }
@@ -60,8 +58,43 @@ tag:
         | FILE_ATTRIB           { printf("bison:tag:FILE_ATTRIB\n"); $$=$1; }
         | STRING_LITERAL        { printf("bison:tag:STRING_LITERAL=%s\n", buf); $$=$1; }
         ;
-
-
+terminal:
+    IF
+    | END_IF
+    | ELSE
+    | FOREACH
+    | FOREACHELSE
+    | ELSEIF
+    | LBRACKET
+    | RBRACKET
+    | LPAREN
+    | RPAREN
+    | SEMI_COLON
+    | COLON
+    | SLASH
+    | BACK_SLASH
+    | VBAR
+    | AT
+    | AMPERSAND
+    | AND
+    | OR
+    | NOT
+    | LESS_THAN
+    | LESS_THAN_EQUAL
+    | GREATER_THAN
+    | GREATER_THAN_EQUAL
+    | PLUS
+    | MINUS
+    | ASTERIK
+    | PERCENT
+    | NOT_EQUAL
+    | NUMERIC_LITERAL
+    | NUMBER
+    | QUOTE
+    | SINGLE_QUOTE
+    | LBRACE
+    | RBRACE
+    ;
 
 %%
 
