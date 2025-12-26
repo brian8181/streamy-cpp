@@ -184,7 +184,6 @@ FILE_ATTRIB         file
                                                 include_stack[include_stack_ptr] );
                                             }
                                         }
-
 %%
 
 #ifdef LEXER_EXE

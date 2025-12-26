@@ -90,17 +90,21 @@ FILE_ATTRIB         file
 %x OFF
 %%
 
-<INITIAL>{COMMENT}                               { /* eat up comment */ }
-<INITIAL>{LBRACE}                                { printf("BEGIN ESCAPED\nLEX:{ "); BEGIN ESCAPED; }
-<ESCAPED,IF_BLOCK>{RBRACE}                       { printf("BEGIN INITIAL\nLEX:} "); BEGIN INITIAL;               } // return RBRACE;
-<OFF>{INCLUDE}                          { printf(" LEX:INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
-<ESCAPED>{SINGLE_QUOTE}                 { printf("BEGIN QUOTED\n"); BEGIN QUOTED; s = buf; }
-<QUOTED>\\n                             { *s++ = '\n'; }
-<QUOTED>\\t                             { *s++ = '\t'; }
-<QUOTED>\\\"                            { *s++ = '\"'; }
-<QUOTED>{SINGLE_QUOTE}                  { printf("BEGIN INITIAL\n"); *s = 0; BEGIN INITIAL; printf(" LITERAL='%s'\n", buf);  return STRING_LITERAL; }
-<QUOTED>\n                              { printf(" LEXinvalid ESCAPED,QUOTED"); exit(1); }
-<QUOTED>.                               { *s++ = *yytext; }
+<INITIAL>{COMMENT}                      { /* eat up comment */                                                           }
+<INITIAL>{LBRACE}                       { printf("BEGIN ESCAPED\nLEX:{ "); BEGIN ESCAPED;                                }
+<ESCAPED,IF_BLOCK>{RBRACE}              { printf("BEGIN INITIAL\nLEX:} "); BEGIN INITIAL;                                } // return RBRACE;
+<OFF>{INCLUDE}                          { printf(" LEX:INCLUDE "); BEGIN(incl);                                          } // turned OFF for now, need to debug!
+<ESCAPED>{SINGLE_QUOTE}                 { printf("BEGIN QUOTED\n"); BEGIN QUOTED; s = buf;                               }
+<QUOTED>\\n                             { *s++ = '\n';                                                                   }
+<QUOTED>\\t                             { *s++ = '\t';                                                                   }
+<QUOTED>\\\"                            { *s++ = '\"';                                                                   }
+<QUOTED>{SINGLE_QUOTE}                  {
+                                            printf("BEGIN INITIAL\n"); *s = 0;
+                                            BEGIN INITIAL; printf(" LITERAL='%s'\n", buf);
+                                            return STRING_LITERAL;
+                                        }
+<QUOTED>\n                              { printf(" LEXinvalid ESCAPED,QUOTED"); exit(1);                                  }
+<QUOTED>.                               { *s++ = *yytext;                                                                 }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf(" LEX:UTILITY ");                                                        }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" LEX:MODIFIER ");                                                       }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" LEX:ACCSESSORS ");                                                     }
@@ -154,7 +158,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{FUNC}                { printf(" LEX:[FUNC:%s] ", yytext);              } // return FUNC;               }
 <ESCAPED,IF_BLOCK>{QUALAFIED_ID}        { printf(" LEX:[QUALAFIED_ID:%s] ", yytext);      return QUALAFIED_ID;            }
 <ESCAPED,IF_BLOCK>{ID}                  { printf(" LEX:[ID:%s] ", yytext);                return ID;                      }
-<ESCAPED,incl>[ \t]*                    { /* eat the whitespace */ }
+<ESCAPED,incl>[ \t]*                    { /* eat the whitespace */                                                        }
 <incl>[^ \t\n]+                         {
                                             /* got the include file name */
                                             if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )

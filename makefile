@@ -33,7 +33,7 @@ all: copy_headers $(BLD)/parser $(BLD)/lex $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)
 # parser
 $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex_parse.yy.h $(BLD)/lex_parse.yy.c
 	# USING C COMPLIER ON CPP! BUT IT BUILDS?
-	$(CC) $(CXXFLAGS) -Ibuild $^ -lfl -o $@
+	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
 $(BLD)/parser.tab.c $(BLD)/parser.tab.h: $(SRC)/parser.y
 	$(YACC) -Wcounterexamples --header $^ -o $@
@@ -60,7 +60,7 @@ $(BLD)/parser++.tab.cpp $(BLD)/parser++.tab.hpp: $(SRC)/parser.yy
 # CXX lexer
 $(BLD)/lex++: $(BLD)/parser++.tab.hpp $(BLD)/lex++.yy.cpp
 	# USING C COMPLIER ON CPP! BUT IT BUILDS?
-	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex++.yy.cpp -o $(BLD)/lex++
+	$(CC) $(CXXFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex++.yy.cpp -o $(BLD)/lex++
 
 $(BLD)/lex++.yy.cpp: $(SRC)/lex.ll
 	$(LEX) -DLEXER_EXE -o $(BLD)/lex++.yy.cpp --header-file="$(BLD)/lex++.yy.hpp" src/lex.ll
