@@ -7,6 +7,10 @@
 
     int yylex(void);
     int yyerror(char * s);
+
+    char buf[100];
+    char *s;
+
 %}
 
 
@@ -54,7 +58,7 @@ tag:
         | CONFIG_LOAD           { printf("bison:tag:CONFIG_LOAD\n"); $$=$1; }
         | EQUAL                 { printf("bison:tag:EQUAL\n"); $$=$1; }
         | FILE_ATTRIB           { printf("bison:tag:FILE_ATTRIB\n"); $$=$1; }
-        | STRING_LITERAL        { printf("bison:tag:STRING_LITERAL\n"); $$=$1; }
+        | STRING_LITERAL        { printf("bison:tag:STRING_LITERAL=%s\n", buf); $$=$1; }
         ;
 
 
