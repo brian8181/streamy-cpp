@@ -20,7 +20,7 @@
 };
 
 %token END_OF_FILE
-%type<sval> tag tags decl
+%type<sval> tag tags dereference
 %token<ival> NUMBER
 %token<sval> DOT INDIRECT_MEMBER
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
@@ -39,23 +39,23 @@
 %%
 
 file:
-        tags END_OF_FILE        { printf("bison:file:tags END_OF_FILE\n"); }
+        tags END_OF_FILE                      { printf("bison:file:tags END_OF_FILE\n"); }
         ;
 tags:
-        tag                     {  printf("bison:tags:tag\n"); printf("TAGS: { %s }\n", $1); $$=$1; }
-        | decl
-        | tags tag              {
-                                    printf("bison:tags:tags tag\n");
-                                    // char* tags = $1;
-                                    // char* tag = $2;
-                                    // strcat(tags, tag);
-                                    // $$ = $1;
-                                }
+        tag                                   {  printf("bison:tags:tag\n"); printf("TAGS: { %s }\n", $1); $$=$1; }
+        | dereference
+        | tags tag                            {
+                                                  printf("bison:tags:tags tag\n");
+                                                  // char* tags = $1;
+                                                  // char* tag = $2;
+                                                  // strcat(tags, tag);
+                                                  // $$ = $1;
+                                              }
         ;
-decl:
-    ID                      { printf("bison:decl:ID\n"); $$ = $1; }
-    | decl DOT IDENTIFIER             { printf("bison:decl:decl .\n"); $$ = $1; }
-    | decl INDIRECT_MEMBER IDENTIFIER  { printf("bison:decl:decl ->\n"); $$ = $1; }
+dereference:
+    ID                                        { printf("bison:decl:ID\n"); $$ = $1; }
+    | dereference DOT IDENTIFIER              { printf("bison:decl:decl .\n"); $$ = $1; }
+    | dereference INDIRECT_MEMBER IDENTIFIER  { printf("bison:decl:decl ->\n"); $$ = $1; }
     | LBRACKET
     | RBRACKET
     | RPAREN
@@ -63,10 +63,10 @@ decl:
     ;
 
 tag:
-        CONFIG_LOAD           { printf("bison:tag:CONFIG_LOAD\n"); $$=$1; }
-        | EQUAL                 { printf("bison:tag:EQUAL\n"); $$=$1; }
-        | FILE_ATTRIB           { printf("bison:tag:FILE_ATTRIB\n"); $$=$1; }
-        | STRING_LITERAL        { printf("bison:tag:STRING_LITERAL=%s\n", buf); $$=$1; }
+        CONFIG_LOAD                           { printf("bison:tag:CONFIG_LOAD\n"); $$=$1; }
+        | EQUAL                               { printf("bison:tag:EQUAL\n"); $$=$1; }
+        | FILE_ATTRIB                         { printf("bison:tag:FILE_ATTRIB\n"); $$=$1; }
+        | STRING_LITERAL                      { printf("bison:tag:STRING_LITERAL=%s\n", buf); $$=$1; }
         ;
 
 terminal:
