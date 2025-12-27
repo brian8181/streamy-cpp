@@ -1,4 +1,4 @@
 Start ...
 {$a.b}
-{ 'testing literal' "double quotes" }
+{ 'testing "literal"' "double 'quotes'" }
 .. end

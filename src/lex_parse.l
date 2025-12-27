@@ -95,28 +95,30 @@ FILE_ATTRIB         file
 <INITIAL>{LBRACE}                       { printf("BEGIN ESCAPED\n   "); BEGIN(ESCAPED);                                  }
 <ESCAPED,IF_BLOCK>{RBRACE}              { printf("BEGIN INITIAL\n"); BEGIN(INITIAL);                                     } // return RBRACE;
 <OFF>{INCLUDE}                          { printf(" LEX:INCLUDE "); BEGIN(incl);                                          } // turned OFF for now, need to debug!
-<ESCAPED>{SINGLE_QUOTE}                 { printf("BEGIN SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;                       }
-<SINGLE_QUOTED>\\n                             { *s++ = '\n';                                                            }
-<SINGLE_QUOTED>\\t                             { *s++ = '\t';                                                            }
-<SINGLE_QUOTED>\\\"                            { *s++ = '\"';                                                            }
-<SINGLE_QUOTED>{SINGLE_QUOTE}                  {
+<ESCAPED>{SINGLE_QUOTE}                 { printf("BEGIN SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;                }
+<SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
+<SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
+<SINGLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
+<SINGLE_QUOTED>{SINGLE_QUOTE}           {
                                             printf("BEGIN ESCAPED\n"); *s = 0;
                                             BEGIN ESCAPED; printf(" LITERAL='%s'\n", buf);
                                             return STRING_LITERAL;
                                         }
 <SINGLE_QUOTED>[\n}]                    { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                         }
 <SINGLE_QUOTED>.                        { *s++ = *yytext;                                                                }
-<ESCAPED>{DOUBLE_QUOTE}                { printf("BEGIN DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf;                       }
+<ESCAPED>{DOUBLE_QUOTE}                 { printf("BEGIN DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf;                }
 <DOUBLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <DOUBLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
 <DOUBLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
-<DOUBLE_QUOTED>{DOUBLE_QUOTE}          {
+<DOUBLE_QUOTED>{DOUBLE_QUOTE}           {
                                             printf("BEGIN ESCAPED\n"); *s = 0;
                                             BEGIN ESCAPED; printf(" LITERAL='%s'\n", buf);
                                             return STRING_LITERAL;
                                         }
 <DOUBLE_QUOTED>[\n}]                    { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                          }
 <DOUBLE_QUOTED>.                        { *s++ = *yytext;                                                                 }
+<SINGLE_QUOTED>{DOUBLE_QUOTE}           { printf(" LEX:QUOTE ");                          } // return DOUBLE_QUOTE;       }
+<DOUBLE_QUOTE>{SINGLE_QUOTE}            { printf(" LEX:SINGLE_QUOTE ");                   } // return SINGLE_QUOTE;       }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf(" LEX:UTILITY ");                                                        }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf(" LEX:MODIFIER ");                                                       }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf(" LEX:ACCSESSORS ");                                                     }
@@ -151,8 +153,6 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{LPAREN}              { printf(" LEX:LPAREN ");                         return RPAREN;                  }
 <ESCAPED,IF_BLOCK>{RPAREN}              { printf(" LEX:RPAREN ");                         return LPAREN;                  }
 <ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf(" LEX:SEMI_COLON ");                     } // return SEMI_COLON;         }
-<ESCAPED,IF_BLOCK>{DOUBLE_QUOTE}               { printf(" LEX:QUOTE ");                          } // return QUOTE;              }
-<ESCAPED,IF_BLOCK>{SINGLE_QUOTE}        { printf(" LEX:SINGLE_QUOTE ");                   } // return SINGLE_QUOTE;       }
 <ESCAPED,IF_BLOCK>{NUMBER}              { printf(" LEX:NUMBER ");                         } // return NUMBER;             }
 <ESCAPED,IF_BLOCK>{END_IF}              { printf(" LEX:END_IF "); BEGIN(ESCAPED);         } // return IF;                 }
 <IF_CONDITION>{RBRACE}                  { printf(" LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                        }
