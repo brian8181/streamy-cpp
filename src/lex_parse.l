@@ -23,7 +23,7 @@
 END_OF_FILE         \0
 IDENTIFIER          _*[A-Za-z][A-Za-z0-9_]*
 CONST_ID            #{IDENTIFIER}#
-FUNC                {IDENTIFIER}+[ /t]*\([^)]*\)
+FUNC                {IDENTIFIER}+\([^)]*\)
 ARRAY               {ID}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
 IF                  if
@@ -44,7 +44,7 @@ RBRACKET            "]"
 LBRACE              "{"
 RBRACE              "}"
 LPAREN              "("
-RPAREN             \n")"
+RPAREN              ")"
 SEMI_COLON          ";"
 DOUBLE_QUOTE        "\""
 SINGLE_QUOTE        "'"
@@ -92,22 +92,22 @@ FILE_ATTRIB         file
 %%
 
 <INITIAL>{COMMENT}                      { /* eat up comment */                                                           }
-<INITIAL>{LBRACE}                       { printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED);                                 }
-<ESCAPED,IF_BLOCK>{RBRACE}              { printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL);                                 } // return RBRACE;
+<INITIAL>{LBRACE}                       { printf("LEX:BEGIN_ESCAPED _LINE__ \n"); BEGIN(ESCAPED);                                 }
+<ESCAPED,IF_BLOCK>{RBRACE}              { printf("LEX:BEGIN_INITIAL\n"); BEGIN(INITIAL);                                 } // return RBRACE;
 <OFF>{INCLUDE}                          { printf("LEX:INCLUDE\n"); BEGIN(incl);                                          } // turned OFF for now, need to debug!
-<ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
+<ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
 <SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
 <SINGLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
 <SINGLE_QUOTED>{SINGLE_QUOTE}           {
-                                            printf("LEX:BEGIN ESCAPED\n"); *s = 0;
+                                            printf("LEX:BEGIN_ESCAPED\n"); *s = 0;
                                             BEGIN(ESCAPED); printf("LITERAL\n");
                                             return STRING_LITERAL;
                                         }
 <SINGLE_QUOTED>[\n}]                    { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                         }
 <SINGLE_QUOTED>.                        { *s++ = *yytext;                                                                }
 <SINGLE_QUOTED>{DOUBLE_QUOTE}           { printf("LEX:QUOTE\n"); return DOUBLE_QUOTED;                                   }
-<ESCAPED>{DOUBLE_QUOTE}                 { printf("LEX:BEGIN DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf;            }
+<ESCAPED>{DOUBLE_QUOTE}                 { printf("LEX:BEGIN_DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf;            }
 <DOUBLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <DOUBLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
 <DOUBLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }

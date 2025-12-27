@@ -1,6 +1,6 @@
 Start ...
-{$a.b}
+{$a $b $c}
+{$d}
 { 'testing "literal"' "double 'quotes'" }
-{ $foo() }
-{ $foo[2] }
+{ $foo }
 .. end

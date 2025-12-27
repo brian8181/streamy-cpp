@@ -39,11 +39,12 @@
 %%
 
 file:
-        tags END_OF_FILE                      { printf("bison:file:tags END_OF_FILE\n"); }
+        END_OF_FILE
+        | sym_list END_OF_FILE                      { printf("bison:file:tags END_OF_FILE\n"); }
+        | tags END_OF_FILE
         ;
 tags:
         tag                                   {  printf("bison:tags:tag\n"); printf("TAGS: { \"%s\" }\n", $1); $$=$1; }
-        | symbol
         | tags tag                            {
                                                   printf("bison:tags:tags tag\n");
                                                   // char* tags = $1;
@@ -51,7 +52,11 @@ tags:
                                                   // strcat(tags, tag);
                                                   // $$ = $1;
                                               }
-        ;
+                                              ;
+sym_list:
+    symbol
+    | sym_list symbol
+    ;
 symbol:
     DOLLAR_SIGN IDENTIFIER               {
                                             printf("bison:symbol:DOLLAR_SIGN IDENTIFIER\n");
@@ -61,6 +66,7 @@ symbol:
                                             // strcat(symbol, "$");
                                             // strcat(symbol, id);
                                             // $$ = symbol;
+                                            $$ = $2;
                                          }
     | symbol DOT IDENTIFIER              { printf("bison:symbol:symbol DOT IDENTIFIER\n"); $$ = $1; }
     | symbol INDIRECT_MEMBER IDENTIFIER  { printf("bison:symbol:symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
