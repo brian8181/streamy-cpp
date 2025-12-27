@@ -1,4 +1,6 @@
 Start ...
 {$a.b}
 { 'testing "literal"' "double 'quotes'" }
+{ $foo() }
+{ $foo[2] }
 .. end
