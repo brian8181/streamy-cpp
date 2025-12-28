@@ -1,9 +1,27 @@
 # File Name:  makefile
 # Build Date: Thu, Dec 18, 2025  9:16:12 PM
 # Version:    0.1.0
+WARNINGS=-Wc++11-compat -Wc++14-compat -Wc++17compat -Wc++20compat
+UNUSED=-Wunused-function
+
+CXXWARN=-Waddress -Waligned-new -Warray-compare -Warray-parameter=2 -Wbool-compare -Wbool-operation\
+-Wcatch-value -Wchar-subscripts -Wclass-memaccess -Wcomment -Wdangling-else -Wdangling-pointer=2\
+-Wdelete-non-virtual-dtor -Wformat=1 -Wformat-contains-nul -Wformat-diag -Wformat-extra-args\
+-Wformat-overflow=1 -Wformat-truncation=1 -Wzero-length-bounds -Wsign-compare\
+-Wformat-zero-length -Wframe-address -Winfinite-recursion -Winit-self -Wint-in-bool-context\
+-Wlogical-not-parentheses -Wmaybe-uninitialized -Wmemset-elt-size -Wmemset-transposed-args\
+-Wmisleading-indentation -Wmismatched-dealloc -Wmismatched-new-delete -Wmissing-attributes\
+-Wmultistatement-macros -Wnarrowing -Wnonnull -Wnonnull-compare -Wopenmp-simd\
+-Woverloaded-virtual=1 -Wpacked-not-aligned -Wparentheses -Wpessimizing-move\
+-Wrange-loop-construct -Wreorder -Wrestrict -Wreturn-type -Wself-move -Wsequence-point\
+-Wsizeof-array-div -Wsizeof-pointer-div -Wsizeof-pointer-memaccess -Wstrict-aliasing\
+-Wstrict-overflow=1 -Wswitch -Wtautological-compare -Wtrigraphs -Wuninitialized -Wunknown-pragmas\
+-Wunused -Wunused-but-set-variable -Wunused-label -Wunused-local-typedefs\
+-Wunused-value -Wunused-variable -Wuse-after-free=2 -Wvla-parameter -Wvolatile-register-var
+
 
 CXX=g++
-CXXFLAGS=-ggdb -DDEBUG -std=c++20
+CXXFLAGS=-ggdb -DDEBUG -std=c++20 $(CXXWARN)
 CC=gcc
 CCFLAGS=-ggdb -std=c99 -DDEBUG
 LEX=flex
@@ -27,23 +45,6 @@ ifdef CYGWIN
 else
 	LDFLAGS += -lfmt -lcppunit
 endif
-
-WARNINGS=-Wc++11-compat -Wc++14-compat -Wc++17compat -Wc++20compat
-
-CXXFLAGS +=-Waddress -Waligned-new -Warray-compare -Warray-parameter=2 -Wbool-compare -Wbool-operation\
-   -Wcatch-value -Wchar-subscripts -Wclass-memaccess -Wcomment -Wdangling-else -Wdangling-pointer=2\
-   -Wdelete-non-virtual-dtor -Wformat=1 -Wformat-contains-nul -Wformat-diag -Wformat-extra-args\
-   -Wformat-overflow=1 -Wformat-truncation=1\
-   -Wformat-zero-length -Wframe-address -Winfinite-recursion -Winit-self -Wint-in-bool-context\
-   -Wlogical-not-parentheses -Wmaybe-uninitialized -Wmemset-elt-size -Wmemset-transposed-args\
-   -Wmisleading-indentation -Wmismatched-dealloc -Wmismatched-new-delete -Wmissing-attributes\
-   -Wmultistatement-macros -Wnarrowing -Wnonnull -Wnonnull-compare -Wopenmp-simd\
-   -Woverloaded-virtual=1 -Wpacked-not-aligned -Wparentheses -Wpessimizing-move\
-   -Wrange-loop-construct -Wreorder -Wrestrict -Wreturn-type -Wself-move -Wsequence-point -Wsign-compare\
-   -Wsizeof-array-div -Wsizeof-pointer-div -Wsizeof-pointer-memaccess -Wstrict-aliasing\
-   -Wstrict-overflow=1 -Wswitch -Wtautological-compare -Wtrigraphs -Wuninitialized -Wunknown-pragmas\
-   -Wunused -Wunused-but-set-variable -Wunused-function -Wunused-label -Wunused-local-typedefs\
-   -Wunused-value -Wunused-variable -Wuse-after-free=2 -Wvla-parameter -Wvolatile-register-var -Wzero-length-bounds
 
 all: copy_headers $(BLD)/parser $(BLD)/lex $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)/parser++
 
@@ -80,7 +81,7 @@ $(BLD)/parser++.tab.cpp $(BLD)/parser++.tab.hpp: $(SRC)/parser.yy
 # CXX lexer
 $(BLD)/lex++: $(BLD)/parser++.tab.hpp $(BLD)/lex++.yy.cpp
 	# USING C COMPLIER ON CPP! BUT IT BUILDS?
-	$(CC) -ggdb -Wall -DDEBUG -DMAIN_IMP -DLEXER_EXE $(BLD)/lex++.yy.cpp -o $(BLD)/lex++
+	$(CC) -ggdb -DDEBUG -DMAIN_IMP -DLEXER_EXE $(BLD)/lex++.yy.cpp -o $(BLD)/lex++
 
 $(BLD)/lex++.yy.cpp: $(SRC)/lex.ll
 	$(LEX) -DLEXER_EXE -o $(BLD)/lex++.yy.cpp --header-file="$(BLD)/lex++.yy.hpp" src/lex.ll
