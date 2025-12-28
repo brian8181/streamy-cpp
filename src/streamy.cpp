@@ -111,8 +111,8 @@ void streamy::lex(const string& src, /* out*/ vector<pair<int, string>>& escapes
 
 void streamy::parse(vector<pair<int, string>>& tokens, /* out */ stringstream& ss)
 {
-    int ilen = tokens.size();
-    string symbol_name;
+    //int ilen = tokens.size();
+    //string symbol_name;
 }
 
 void streamy::include_file(const string& file_name, /* out */ stringstream& ss)
