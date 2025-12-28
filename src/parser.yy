@@ -64,11 +64,11 @@ tag:
 
 //#include "symtab.h"
 
-int yyerror(char * s)
+/* int yyerror(char * s)
 {
     fprintf(stderr, "%s\n", s);
     return 0;
-};
+}
 
 int main(int argc, char** argv)
 {
@@ -83,4 +83,51 @@ int main(int argc, char** argv)
         yyin = stdin;
     };
     yyparse();
-};
+} */
+
+static int
+process (const char *file)
+{
+  int is_stdin = !file || strcmp (file, "-") == 0;
+  if (is_stdin)
+    input = stdin;
+  else
+    input = fopen (file, "r");
+  assert (input);
+  int status = yyparse ();
+  if (!is_stdin)
+    fclose (input);
+  return status;
+}
+
+int
+main (int argc, char **argv)
+{
+    if (getenv ("YYDEBUG"))
+        yydebug = 1;
+
+    int ran = 0;
+    for (int i = 1; i < argc; ++i)
+    {
+        // Enable parse traces on option -p.
+        if (strcmp (argv[i], "-p") == 0)
+        {
+            yydebug = 1;
+        }
+        else
+        {
+            int status = process (argv[i]);
+            ran = 1;
+            if (!status)
+                return status;
+        }
+    }
+    if (!ran)
+    {
+        int status = process (NULL);
+        if (!status)
+        return status;
+    }
+
+    return 0;
+}
