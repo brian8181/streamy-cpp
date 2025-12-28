@@ -88,10 +88,6 @@ terminal:
     | FOREACH
     | FOREACHELSE
     | ELSEIF
-    | LBRACKET
-    | RBRACKET
-    | LPAREN
-    | RPAREN
     | SEMI_COLON
     | COLON
     | SLASH
@@ -113,10 +109,6 @@ terminal:
     | NOT_EQUAL
     | NUMERIC_LITERAL
     | NUMBER
-    | QUOTE
-    | SINGLE_QUOTE
-    | LBRACE
-    | RBRACE
     ;
 
 %%
