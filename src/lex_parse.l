@@ -92,8 +92,8 @@ FILE_ATTRIB         file
 %%
 
 <INITIAL>{COMMENT}                      { /* eat up comment */                                                           }
-<INITIAL>{LBRACE}                       { printf("LEX:BEGIN_ESCAPED _LINE__ \n"); BEGIN(ESCAPED);                                 }
-<ESCAPED,IF_BLOCK>{RBRACE}              { printf("LEX:BEGIN_INITIAL\n"); BEGIN(INITIAL);                                 } // return RBRACE;
+<INITIAL>{LBRACE}                       { printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED);                                 }
+<ESCAPED,IF_BLOCK>{RBRACE}              { printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL);                                 } // return RBRACE;
 <OFF>{INCLUDE}                          { printf("LEX:INCLUDE\n"); BEGIN(incl);                                          } // turned OFF for now, need to debug!
 <ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
 <SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
@@ -127,33 +127,33 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{FILE_ATTRIB}         { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;             }
 <ESCAPED,IF_BLOCK>{HTML}                { printf("LEX:HTML\n");                           } // return HTTP;               }
 <ESCAPED,IF_BLOCK>{HTTP}                { printf("LEX:HTTP\n");                           } // return HTTP;               }
-<ESCAPED,IF_BLOCK>{NOT}                 { printf("LEX:NOT\n");                            } // return NOT;                }
-<ESCAPED,IF_BLOCK>{AND}                 { printf("LEX:AND\n");                            } // return AND;                }
-<ESCAPED,IF_BLOCK>{OR}                  { printf("LEX:OR\n");                             } // return OR;                 }
-<ESCAPED,IF_BLOCK>{LESS_THAN}           { printf("LEX:LESS_THAN\n");                      } // return LESS_THAN;          }
-<ESCAPED,IF_BLOCK>{LESS_THAN_EQUAL}     { printf("LEX:LESS_THAN_EQUAL\n");                } // return LESS_THAN_EQUAL;    }
-<ESCAPED,IF_BLOCK>{GREATER_THAN}        { printf("LEX:GREATER_THAN\n");                   } // return GREATER_THAN;       }
-<ESCAPED,IF_BLOCK>{GREATER_THAN_EQUAL}  { printf("LEX:GREATER_THAN_EQUAL\n");             } // return GREATER_THAN_EQUAL; }
+<ESCAPED,IF_BLOCK>{NOT}                 { printf("LEX:NOT\n");                            return NOT;                     }
+<ESCAPED,IF_BLOCK>{AND}                 { printf("LEX:AND\n");                            return AND;                     }
+<ESCAPED,IF_BLOCK>{OR}                  { printf("LEX:OR\n");                             return OR;                      }
+<ESCAPED,IF_BLOCK>{LESS_THAN}           { printf("LEX:LESS_THAN\n");                      return LESS_THAN;               }
+<ESCAPED,IF_BLOCK>{LESS_THAN_EQUAL}     { printf("LEX:LESS_THAN_EQUAL\n");                return LESS_THAN_EQUAL;         }
+<ESCAPED,IF_BLOCK>{GREATER_THAN}        { printf("LEX:GREATER_THAN\n");                   return GREATER_THAN;            }
+<ESCAPED,IF_BLOCK>{GREATER_THAN_EQUAL}  { printf("LEX:GREATER_THAN_EQUAL\n");             return GREATER_THAN_EQUAL;      }
 <ESCAPED,IF_BLOCK>{SLASH}               { printf("LEX:SLASH\n");                          } // return SLASH;              }
 <ESCAPED,IF_BLOCK>{BACK_SLASH}          { printf("LEX:BACK_SLASH\n");                     } // return BACK_SLASH;         }
-<ESCAPED,IF_BLOCK>{VBAR}                { printf("LEX:VBAR\n");                           } // return VBAR;               }
-<ESCAPED,IF_BLOCK>{AMPERSAND}           { printf("LEX:AMPERSAND\n");                      } // return AMPERSAND;          }
+<ESCAPED,IF_BLOCK>{VBAR}                { printf("LEX:VBAR\n");                           return VBAR;                    }
+<ESCAPED,IF_BLOCK>{AMPERSAND}           { printf("LEX:AMPERSAND\n");                      return AMPERSAND;               }
 <ESCAPED,IF_BLOCK>{AT}                  { printf("LEX:AT\n");                             } // return AT;                 }
 <ESCAPED,IF_BLOCK>{DOLLAR_SIGN}         { printf("LEX:DOLLAR_SIGN\n");                    return DOLLAR_SIGN;             }
-<ESCAPED,IF_BLOCK>{PLUS}                { printf("LEX:PLUS\n");                           } // return PLUS;               }
-<ESCAPED,IF_BLOCK>{MINUS}               { printf("LEX:MINUS\n");                          } // return MINUS;              }
-<ESCAPED,IF_BLOCK>{ASTERIK}             { printf("LEX:ASTERIK\n");                        } // return ASTERIK;            }
+<ESCAPED,IF_BLOCK>{PLUS}                { printf("LEX:PLUS\n");                           return PLUS;                    }
+<ESCAPED,IF_BLOCK>{MINUS}               { printf("LEX:MINUS\n");                          return MINUS;                   }
+<ESCAPED,IF_BLOCK>{ASTERIK}             { printf("LEX:ASTERIK\n");                        return ASTERIK;                 }
 <ESCAPED,IF_BLOCK>{EQUAL}               { printf("LEX:EQUAL\n");                          return EQUAL;                   }
 <ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf("LEX:NOT_EQUAL\n");                      return NOT_EQUAL;               }
 <ESCAPED,IF_BLOCK>{DOT}                 { printf("LEX:DOT\n");                            return DOT;                     }
 <ESCAPED,IF_BLOCK>{INDIRECT_MEMBER}     { printf("LEX:INDIRECT_MEMBER\n");                return INDIRECT_MEMBER;         }
-<ESCAPED,IF_BLOCK>{PERCENT}             { printf("LEX:PERCENT\n");                        } // return PERCENT;            }
-<ESCAPED,IF_BLOCK>{COLON}               { printf("LEX:COLON\n");                          } // return COLON;              }
+<ESCAPED,IF_BLOCK>{PERCENT}             { printf("LEX:PERCENT\n");                        return PERCENT;                 }
+<ESCAPED,IF_BLOCK>{COLON}               { printf("LEX:COLON\n");                          return COLON;                   }
 <ESCAPED,IF_BLOCK>{LBRACKET}            { printf("LEX:LBRACKET\n");                       return LBRACKET;                }
 <ESCAPED,IF_BLOCK>{RBRACKET}            { printf("LEX:RBRACKET\n");                       return RBRACKET;                }
 <ESCAPED,IF_BLOCK>{LPAREN}              { printf("LEX:LPAREN\n");                         return RPAREN;                  }
 <ESCAPED,IF_BLOCK>{RPAREN}              { printf("LEX:RPAREN\n");                         return LPAREN;                  }
-<ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf("LEX:SEMI_COLON\n");                     } // return SEMI_COLON;         }
+<ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;              }
 <ESCAPED,IF_BLOCK>{NUMBER}              { printf("LEX:NUMBER\n");                         return NUMBER;                  }
 <ESCAPED,IF_BLOCK>{END_IF}              { printf("LEX:END_IF\n"); BEGIN(ESCAPED);         } // return IF;                 }
 <IF_CONDITION>{RBRACE}                  { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                         }
