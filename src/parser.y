@@ -58,20 +58,20 @@ sym_list:
     | sym_list symbol
     ;
 symbol:
-    DOLLAR_SIGN IDENTIFIER               {
-                                            printf("bison:symbol:DOLLAR_SIGN IDENTIFIER\n");
-                                            // char* id = $2;
-                                            // int len = strlen(id);
-                                            // char* symbol[len+2];
-                                            // strcat(symbol, "$");
-                                            // strcat(symbol, id);
-                                            // $$ = symbol;
-                                            $$ = $2;
-                                         }
-    | symbol DOT IDENTIFIER              { printf("bison:symbol:symbol DOT IDENTIFIER\n"); $$ = $1; }
-    | symbol INDIRECT_MEMBER IDENTIFIER  { printf("bison:symbol:symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
-    | symbol LBRACKET NUMBER RBRACKET    { printf("bison:symbol:symbol:symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
-    | symbol LPAREN RPAREN               { printf("bison:symbol:symbol:LPAREN RPAREN\n"); $$ = $1; }
+    DOLLAR_SIGN IDENTIFIER                    {
+                                                 printf("bison:symbol:DOLLAR_SIGN IDENTIFIER\n");
+                                                 // char* id = $2;
+                                                 // int len = strlen(id);
+                                                 // char* symbol[len+2];
+                                                 // strcat(symbol, "$");
+                                                 // strcat(symbol, id);
+                                                 // $$ = symbol;
+                                                 $$ = $2;
+                                              }
+    | symbol DOT IDENTIFIER                   { printf("bison:symbol:symbol DOT IDENTIFIER\n"); $$ = $1; }
+    | symbol INDIRECT_MEMBER IDENTIFIER       { printf("bison:symbol:symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
+    | symbol LBRACKET NUMBER RBRACKET         { printf("bison:symbol:symbol:symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
+    | symbol LPAREN RPAREN                    { printf("bison:symbol:symbol:LPAREN RPAREN\n"); $$ = $1; }
     ;
 
 tag:

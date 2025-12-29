@@ -100,25 +100,28 @@ FILE_ATTRIB         file
 <SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
 <SINGLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
 <SINGLE_QUOTED>{SINGLE_QUOTE}           {
-                                            printf("LEX:BEGIN_ESCAPED\n"); *s = 0;
-                                            BEGIN(ESCAPED); printf("LITERAL\n");
+                                            *s = 0;
+                                            printf("LITERAL=%s\n", s);
+                                            printf("LEX:BEGIN ESCAPED\n");
+                                            BEGIN(ESCAPED);
                                             return STRING_LITERAL;
                                         }
 <SINGLE_QUOTED>[\n}]                    { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                         }
 <SINGLE_QUOTED>.                        { *s++ = *yytext;                                                                }
-<SINGLE_QUOTED>{DOUBLE_QUOTE}           { printf("LEX:QUOTE\n"); return DOUBLE_QUOTED;                                   }
 <ESCAPED>{DOUBLE_QUOTE}                 { printf("LEX:BEGIN_DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf;            }
 <DOUBLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <DOUBLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
 <DOUBLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
 <DOUBLE_QUOTED>{DOUBLE_QUOTE}           {
-                                            printf("LEX:BEGIN ESCAPED\n"); *s = 0;
-                                            BEGIN(ESCAPED); printf("LEX:LITERAL\n");
+
+                                            *s = 0;
+                                            printf("LITERAL=%s\n", s);
+                                            printf("LEX:BEGIN ESCAPED\n");
+                                            BEGIN(ESCAPED);
                                             return STRING_LITERAL;
                                         }
 <DOUBLE_QUOTED>[\n}]                    { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                          }
 <DOUBLE_QUOTED>.                        { *s++ = *yytext;                                                                 }
-<DOUBLE_QUOTED>{SINGLE_QUOTE}           { printf("LEX:SINGLE_QUOTE\n");                  return SINGLE_QUOTE;             }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf("LEX:UTILITY\n");                                                        }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf("LEX:MODIFIER\n");                                                       }
 <ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf("LEX:ACCSESSORS\n");                                                     }

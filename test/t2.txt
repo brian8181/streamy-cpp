@@ -1,0 +1,6 @@
+Start ...
+{$x $y $}
+{$d}
+{ 'testing "literal"' "double 'quotes'" }
+{ $foo }
+.. end
