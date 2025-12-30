@@ -1,8 +1,8 @@
 %{
     #include <stdio.h>
     #include <string.h>
-    #include "parser.tab.h"
-    #include "lex_parse.yy.h"
+    #include "parser_test.tab.h"
+    #include "lex.yy.h"
     #include "bash_color.h"
 
     int yylex(void);
@@ -39,21 +39,8 @@
 %%
 
 file:
-        END_OF_FILE
-        | sym_list END_OF_FILE                      { printf("bison:file:tags END_OF_FILE\n"); }
-        | tags END_OF_FILE
+        sym_list END_OF_FILE                      { printf("bison:file:sym_list END_OF_FILE\n"); exit(0); }
         ;
-tags:
-        tag                                   {  printf("bison:tags:tag\n"); printf("TAGS: { \"%s\" }\n", $1); $$=$1; }
-        | tags tag                            {
-                                                  printf("bison:tags:tags tag\n");
-                                                  char* tags = $1;
-                                                  char* tag = $2;
-                                                  printf("%s - %s", tag, tags);
-                                                  strcat(tags, tag);
-                                                  $$ = tags;
-                                              }
-                                              ;
 sym_list:
     symbol                                    { printf("bison:sym_list:symbol\n"); $$=$1; }
     | sym_list symbol                         { printf("bison:sym_list:sym_list symbol\n"); $$=$2; }
@@ -75,13 +62,6 @@ symbol:
     | symbol LBRACKET NUMBER RBRACKET         { printf("bison:symbol:symbol:symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
     | symbol LPAREN RPAREN                    { printf("bison:symbol:symbol:LPAREN RPAREN\n"); $$ = $1; }
     ;
-
-tag:
-        CONFIG_LOAD                           { printf("bison:tag:CONFIG_LOAD\n"); $$=$1; }
-        | EQUAL                               { printf("bison:tag:EQUAL\n"); $$=$1; }
-        | FILE_ATTRIB                         { printf("bison:tag:FILE_ATTRIB\n"); $$=$1; }
-        | STRING_LITERAL                      { printf("bison:tag:STRING_LITERAL: { \"%s\" }\n", buf); $$=$1; }
-        ;
 
 terminal:
     IF

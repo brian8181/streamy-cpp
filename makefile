@@ -67,6 +67,16 @@ $(BLD)/lex_parse.yy.c $(BLD)/lex_parse.yy.h: $(SRC)/lex_parse.l
 $(BLD)/lex: $(BLD)/parser.tab.h $(BLD)/lex.yy.h $(BLD)/lex.yy.c
 	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
 
+
+$(BLD)/parser_test: $(BLD)/parser_test.tab.h $(BLD)/parser_test.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c
+	@ echo -e "\nBuilding \"lexer & parser\" ...\n"
+	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
+
+$(BLD)/parser_test.tab.c $(BLD)/parser_test.tab.h: $(SRC)/parser_test.y #$(SRC)/bash_color.h
+	@ echo -e "\nGererating \"parser_test\" ...\n"
+	$(YACC) -Wcounterexamples --header $^ -o $@
+	cp $(SRC)/bash_color.h $(BLD)/
+
 $(BLD)/lex.yy.c $(BLD)/lex.yy.h: $(SRC)/lex.l
 	$(LEX) -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
 

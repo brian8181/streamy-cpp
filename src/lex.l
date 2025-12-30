@@ -2,7 +2,7 @@
     #define MAX_INCLUDE_DEPTH 10
     #include <stdio.h>
     #include <stdio.h>
-    #include "parser.tab.h"
+    #include "parser_test.tab.h"
 
 
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
@@ -11,8 +11,8 @@
     int yyerror(char* s);
     int fileno(FILE* f);
 
-    char buf[100];
-    char *s;
+    extern char buf[100];
+    extern char *s;
     #define LBRACKET 1
     #define RBRACKET 2
     #define NUMBER 3
@@ -39,6 +39,7 @@ END_ELSE            "/else"
 ELSEIF              "elseif"
 END_ELSEIF          "/elseif"
 STREAM              .|\n
+DOLLAR_SIGN         "$"
 VBAR                "|"
 COLON               ":"
 LBRACKET            "["
@@ -71,16 +72,7 @@ LESS_THAN_EQUAL     "<="
 GREATER_THAN        ">"
 GREATER_THAN_EQUAL  ">="
 NUMBER              [0-9]+
-HTTP                get|post|cookies|env|request|session
-CONFIG              config|section|template|ldelim|rdelim|version|cycle|counter
-UTILITY             const|debug|eval|fetch|textformat|math
-ACCSESSORS          assign|isset|index|index_prev|index_next|iteration|first|last|show|total|from|item
-HTML                html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time
-MODIFIER            tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br
-MORE                "captialize|regex_replace|count_characters|count_sentences|count_paragraphs|count_words|strip_tags|escape"
-INCLUDE             include
-CONFIG_LOAD         config_load
-FILE_ATTRIB         file
+
 
 %x STRING
 %x ESCAPED
@@ -92,7 +84,6 @@ FILE_ATTRIB         file
 
 {COMMENT}                                   { /* eat up comment */ }
 {LBRACE}                                    { printf(" { "); BEGIN ESCAPED; }
-<OFF>{INCLUDE}                              { printf(" INCLUDE "); BEGIN(incl); } // turned OFF for now, need to debug!
 <OFF>\"                                     { BEGIN STRING; s = buf; }
 <STRING>\\n                                 { *s++ = '\n'; }
 <STRING>\\t                                 { *s++ = '\t'; }
@@ -100,14 +91,6 @@ FILE_ATTRIB         file
 <STRING>\"                                  {*s = 0; BEGIN ESCAPED; printf("found '%s'\n", buf); }
 <STRING>\n                                  { printf("invalid string"); exit(1); }
 <STRING>.                                   { *s++ = *yytext; }
-<ESCAPED,IF_CONDITION>{UTILITY}             { printf(" UTILITY "); }
-<ESCAPED,IF_CONDITION>{MODIFIER}            { printf(" MODIFIER "); }
-<ESCAPED,IF_CONDITION>{ACCSESSORS}          { printf(" ACCSESSORS "); }
-<ESCAPED,IF_CONDITION>{CONFIG}              { printf(" CONFIG "); }
-<ESCAPED,IF_CONDITION>{CONFIG_LOAD}         { printf(" CONFIG_LOAD ");                       } // return CONFIG_LOAD;        }
-<ESCAPED,IF_CONDITION>{FILE_ATTRIB}         { printf(" FILE_ATTRIB ");                       } // return FILE_ATTRIB;        }
-<ESCAPED,IF_CONDITION>{HTML}                { printf(" HTML ");                              } // return HTTP;               }
-<ESCAPED,IF_CONDITION>{HTTP}                { printf(" HTTP ");                              } // return HTTP;               }
 <ESCAPED,IF_CONDITION>{NOT}                 { printf(" NOT ");                               } // return NOT;                }
 <ESCAPED,IF_CONDITION>{AND}                 { printf(" AND ");                               } // return AND;                }
 <ESCAPED,IF_CONDITION>{OR}                  { printf(" OR ");                                } // return OR;                 }
@@ -116,6 +99,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_CONDITION>{GREATER_THAN}        { printf(" GREATER_THAN ");                      } // return GREATER_THAN;       }
 <ESCAPED,IF_CONDITION>{GREATER_THAN_EQUAL}  { printf(" GREATER_THAN_EQUAL ");                } // return GREATER_THAN_EQUAL; }
 <ESCAPED,IF_CONDITION>{SLASH}               { printf(" SLASH ");                             } // return SLASH;              }
+<ESCAPED,IF_CONDITION>{DOLLAR_SIGN}         { printf(" DOLLAR_SIGN ");                      return DOLLAR_SIGN;              }
 <ESCAPED,IF_CONDITION>{BACK_SLASH}          { printf(" BACK_SLASH ");                        } // return BACK_SLASH;         }
 <ESCAPED,IF_CONDITION>{VBAR}                { printf(" VBAR ");                              } // return VBAR;               }
 <ESCAPED,IF_CONDITION>{AT}                  { printf(" AT ");                                } // return AT;                 }
@@ -124,17 +108,17 @@ FILE_ATTRIB         file
 <ESCAPED,IF_CONDITION>{ASTERIK}             { printf(" ASTERIK ");                           } // return ASTERIK;            }
 <ESCAPED,IF_CONDITION>{EQUAL}               { printf(" EQUAL ");                             } // return EQUAL;              }
 <ESCAPED,IF_CONDITION>{NOT_EQUAL}           { printf(" NOT_EQUAL ");                         } // return NOT_EQUAL;          }
-<ESCAPED,IF_CONDITION>{DOT}                 { printf(" DOT ");                               } // return DOT;                }
+<ESCAPED,IF_CONDITION>{DOT}                 { printf(" DOT ");                               return DOT;                }
 <ESCAPED,IF_CONDITION>{PERCENT}             { printf(" PERCENT ");                           } // return PERCENT;            }
 <ESCAPED,IF_CONDITION>{COLON}               { printf(" COLON ");                             } // return COLON;              }
-<ESCAPED,IF_CONDITION>{LBRACKET}            { printf(" LBRACKET ");                          } // return LBRACKET;           }
-<ESCAPED,IF_CONDITION>{RBRACKET}            { printf(" RBRACKET ");                          } // return RBRACKET;           }
-<ESCAPED,IF_CONDITION>{LPAREN}              { printf(" LPAREN ");                            } // return RPAREN;             }
-<ESCAPED,IF_CONDITION>{RPAREN}              { printf(" RPAREN ");                            } // return LPAREN;             }
+<ESCAPED,IF_CONDITION>{LBRACKET}            { printf(" LBRACKET ");                          return LBRACKET;           }
+<ESCAPED,IF_CONDITION>{RBRACKET}            { printf(" RBRACKET ");                          return RBRACKET;           }
+<ESCAPED,IF_CONDITION>{LPAREN}              { printf(" LPAREN ");                            return RPAREN;             }
+<ESCAPED,IF_CONDITION>{RPAREN}              { printf(" RPAREN ");                            return LPAREN;             }
 <ESCAPED,IF_CONDITION>{SEMI_COLON}          { printf(" SEMI_COLON ");                        } // return SEMI_COLON;         }
 <ESCAPED,IF_CONDITION>{QUOTE}               { printf(" QUOTE ");                             } // return QUOTE;              }
 <ESCAPED,IF_CONDITION>{SINGLE_QUOTE}        { printf(" SINGLE_QUOTE ");                      } // return SINGLE_QUOTE;       }
-<ESCAPED,IF_CONDITION>{NUMBER}              { printf(" NUMBER ");                            } // return NUMBER;             }
+<ESCAPED,IF_CONDITION>{NUMBER}              { printf(" NUMBER ");                            return NUMBER;             }
 <ESCAPED>{RBRACE}                           { printf(" } "); BEGIN INITIAL; }
 <ESCAPED,IF_BLOCK>{END_IF}                  { printf(" <--- END_IF\n"); BEGIN INITIAL; }
 <ESCAPED>{IF}                               { printf(" IF_BLOCK "); BEGIN IF_CONDITION;      } // return IF;                 }
@@ -151,7 +135,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{END_FOREACH}             { printf(" FOREACH "); BEGIN ESCAPED;            } // return FOREACH;            }
 <ESCAPED,IF_BLOCK>{CONST_ID}                { printf(" [CONST_ID:%s] ", yytext);             } // return CONST_ID;           }
 <ESCAPED,IF_BLOCK>{FUNC}                    { printf(" [FUNC:%s] ", yytext);                 } // return FUNC;               }
-<ESCAPED,IF_BLOCK>{ID}                      { printf(" [ID:%s] ", yytext);                   } // return ID;                 }
+<ESCAPED,IF_BLOCK>{IDENTIFIER}              { printf(" [IDENTIFIER:%s] ", yytext);           return IDENTIFIER;    }
 <incl>[ \t]*                                { /* eat the whitespace */  }
 <incl>[^ \t\n]+                             {
                                             /* got the include file name */
