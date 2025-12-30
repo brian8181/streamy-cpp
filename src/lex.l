@@ -11,8 +11,14 @@
     int yyerror(char* s);
     int fileno(FILE* f);
 
+#ifdef LEXER_EXE
+    char buf[100];
+    char *s;
+#else
     extern char buf[100];
     extern char *s;
+#endif
+
     #define LBRACKET 1
     #define RBRACKET 2
     #define NUMBER 3
@@ -83,8 +89,8 @@ NUMBER              [0-9]+
 %x OFF
 %%
 
-{COMMENT}                                   { /* eat up comment */ }
-{LBRACE}                                    { printf("LEX:END(INITIAL)\nLEX:BEGIN(ESCAPED)\n"); BEGIN(ESCAPED); return LBRACE;       }
+<INITIAL>{COMMENT}                          { /* eat up comment */ }
+<INITIAL>{LBRACE}                           { printf("LEX:END(INITIAL)\nLEX:BEGIN(ESCAPED)\n"); BEGIN(ESCAPED); return LBRACE;       }
 <ESCAPED>{RBRACE}                           { printf("LEX:END(ESCAPED)\nLEX:BEGIN(INITIAL)\n"); BEGIN INITIAL; return RBRACE;        }
 <ESCAPED>{SINGLE_QUOTE}                     { printf("LEX:END(ESCAPED)\nLEX:BEGIN(SINGLE_QUOTED)\n"); BEGIN(SINGLE_QUOTED); s = buf; }
 <SINGLE_QUOTED>\\n                          { *s++ = '\n';  }
@@ -110,7 +116,7 @@ NUMBER              [0-9]+
                                                 BEGIN(ESCAPED);
                                                 return STRING_LITERAL;
                                             }
-<DOUBLE_QUOTED>[\n}]                        { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                             }
+<DOUBLE_QUOTED>[\n}]                        { printf("LEX invalid newline in state DOUBLE_QUOTED\n"); exit(1);                   }
 <DOUBLE_QUOTED>.                            { *s++ = *yytext;                                                                    }
 <ESCAPED,IF_CONDITION>{NOT}                 { printf("LEX:NOT\n");                               } // return NOT;                }
 <ESCAPED,IF_CONDITION>{AND}                 { printf("LEX:AND\n");                               } // return AND;                }

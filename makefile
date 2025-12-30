@@ -48,10 +48,9 @@ endif
 
 all: copy_headers $(BLD)/parser $(BLD)/lex $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)/parser++
 
-# parser
+# parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
 $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex_parse.yy.h $(BLD)/lex_parse.yy.c
-	# USING C COMPLIER ON CPP! BUT IT BUILDS?
-	@ echo -e "\nBuilding \"lexer & parser\" ...\n"
+	@echo -e "\nBuilding \"lexer & parser\" ...\n"
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
 $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/bash_color.h: $(SRC)/parser.y #$(SRC)/bash_color.h
@@ -61,15 +60,15 @@ $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/bash_color.h: $(SRC)/parser.y #$(
 
 # CC lexer
 $(BLD)/lex_parse.yy.c $(BLD)/lex_parse.yy.h: $(SRC)/lex_parse.l
-	@ echo -e "\nGenerating \"lexer\" ...\n"
+	@echo -e "\nGenerating \"lexer\" ...\n"
 	$(LEX) -o build/lex_parse.yy.c --header-file="build/lex_parse.yy.h" src/lex_parse.l
 
-$(BLD)/lex: $(BLD)/parser.tab.h $(BLD)/lex.yy.h $(BLD)/lex.yy.c
+$(BLD)/lex: $(BLD)/parser_test.tab.h $(BLD)/lex.yy.h $(BLD)/lex.yy.c
 	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
 
 
 $(BLD)/parser_test: $(BLD)/parser_test.tab.h $(BLD)/parser_test.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c
-	@ echo -e "\nBuilding \"lexer & parser\" ...\n"
+	@echo -e "\nBuilding \"lexer & parser\" ...\n"
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
 $(BLD)/parser_test.tab.c $(BLD)/parser_test.tab.h: $(SRC)/parser_test.y #$(SRC)/bash_color.h
@@ -88,9 +87,8 @@ $(BLD)/parser++.tab.cpp $(BLD)/parser++.tab.hpp: $(SRC)/parser.yy
 	$(YACC) -Wcounterexamples --header $^ -o $@
 	cp $(SRC)/bash_color.h $(BLD)/
 
-# CXX lexer
+# CXX lexer # USING C COMPLIER ON CPP! BUT IT BUILDS?
 $(BLD)/lex++: $(BLD)/parser++.tab.hpp $(BLD)/lex++.yy.cpp
-	# USING C COMPLIER ON CPP! BUT IT BUILDS?
 	$(CC) -ggdb -DDEBUG -DMAIN_IMP -DLEXER_EXE $(BLD)/lex++.yy.cpp -o $(BLD)/lex++
 
 $(BLD)/lex++.yy.cpp: $(SRC)/lex.ll

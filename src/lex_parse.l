@@ -22,8 +22,10 @@
 
 END_OF_FILE         \0
 IDENTIFIER          _*[A-Za-z][A-Za-z0-9_]*
+ID                  \${IDENTIFIER}
 CONST_ID            #{IDENTIFIER}#
-FUNC                {IDENTIFIER}+\([^)]*\)
+QUALAFIED_ID        {ID}(("."|"->"){IDENTIFIER})+
+FUNC                {IDENTIFIER}+[ /t]*\([^)]*\)
 ARRAY               {ID}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
 IF                  if
@@ -32,11 +34,12 @@ FOREACH             foreach
 END_FOREACH         "/foreach"
 FOREACHELSE         foreachelse
 END_FOREACHELSE     "/foreachelse"
-ELSE                else
+ELSE                "else"
 END_ELSE            "/else"
-ELSEIF              elseif
+ELSEIF              "elseif"
 END_ELSEIF          "/elseif"
 STREAM              .|\n
+DOLLAR_SIGN         "$"
 VBAR                "|"
 COLON               ":"
 LBRACKET            "["
@@ -52,7 +55,6 @@ SLASH               "/"
 BACK_SLASH          "\\"
 TICK                "`"
 UNDERSCORE          "_"
-DOLLAR_SIGN         "\$"
 AT                  "@"
 PLUS                "+"
 MINUS               "-"
@@ -92,9 +94,9 @@ FILE_ATTRIB         file
 %%
 
 <INITIAL>{COMMENT}                      { /* eat up comment */                                                           }
-<INITIAL>{LBRACE}                       { printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED);                                 }
-<ESCAPED,IF_BLOCK>{RBRACE}              { printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL);                                 } // return RBRACE;
-<OFF>{INCLUDE}                          { printf("LEX:INCLUDE\n"); BEGIN(incl);                                          } // turned OFF for now, need to debug!
+<INITIAL>{LBRACE}                       { printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED);   return LBRACE;                }
+<ESCAPED,IF_BLOCK>{RBRACE}              { printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL);   return RBRACE;                }
+<OFF>{INCLUDE}                          { printf("LEX:INCLUDE\n"); BEGIN(incl); } // turned OFF for now, need to debug!
 <ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
 <SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
@@ -113,14 +115,13 @@ FILE_ATTRIB         file
 <DOUBLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
 <DOUBLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
 <DOUBLE_QUOTED>{DOUBLE_QUOTE}           {
-
                                             *s = 0;
                                             printf("LITERAL=%s\n", s);
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
                                             return STRING_LITERAL;
                                         }
-<DOUBLE_QUOTED>[\n}]                    { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                          }
+<DOUBLE_QUOTED>[\n}]                    { printf("LEX invalid newline in state DOUBLE_QUOTED\n"); exit(1);                }
 <DOUBLE_QUOTED>.                        { *s++ = *yytext;                                                                 }
 <ESCAPED,IF_BLOCK>{UTILITY}             { printf("LEX:UTILITY\n");                                                        }
 <ESCAPED,IF_BLOCK>{MODIFIER}            { printf("LEX:MODIFIER\n");                                                       }

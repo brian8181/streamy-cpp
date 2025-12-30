@@ -74,7 +74,7 @@ symbol:
 
 terminal_list:
         terminal                                   { printf("PARSE:terminal_list:terminal\n"); $$=$1; }
-        | terminal_list terminal                    { printf("PARSE:terminal_list:terminal_list teminal\n"); $$=$2; }
+        | terminal_list terminal                   { printf("PARSE:terminal_list:terminal_list teminal\n"); $$=$2; }
         ;
 
 terminal:
