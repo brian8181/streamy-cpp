@@ -30,8 +30,6 @@
 %token<sval> LBRACKET RBRACKET LBRACE RBRACE LPAREN RPAREN
 %token<sval> DOLLAR_SIGN COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL PERCENT NOT_EQUAL
-%token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
-%token CONFIG;
 %token ASSIGN ISSET
 %token FUNC
 %start file;
@@ -39,17 +37,17 @@
 %%
 
 file:
-        sym_list END_OF_FILE                      { printf("bison:file:sym_list END_OF_FILE\n"); exit(0); }
+        sym_list END_OF_FILE                  { printf("PARSE:file:sym_list END_OF_FILE\n"); exit(0); }
         ;
 sym_list:
-    symbol                                    { printf("bison:sym_list:symbol\n"); $$=$1; }
-    | sym_list symbol                         { printf("bison:sym_list:sym_list symbol\n"); $$=$2; }
+    symbol                                    { printf("PARSE:sym_list:symbol\n"); $$=$1; }
+    | sym_list symbol                         { printf("PARSE:sym_list:sym_list symbol\n"); $$=$2; }
     ;
 symbol:
     DOLLAR_SIGN IDENTIFIER                    {
                                                 //int len = strlen($2);
                                                 //printf("%s - %s : len=%s", $1, $2, len);
-                                                printf("bison:symbol:DOLLAR_SIGN IDENTIFIER\n"); $$=$2;
+                                                printf("PARSE:symbol:DOLLAR_SIGN IDENTIFIER\n"); $$=$1;
                                                 //char* id = $2;
 
                                                 // char* sym[len+2];
@@ -57,10 +55,10 @@ symbol:
                                                 //  strcat(sym, id);
                                                 //  $$ = sym;
                                               }
-    | symbol DOT IDENTIFIER                   { printf("bison:symbol:symbol DOT IDENTIFIER\n"); $$ = $1; }
-    | symbol INDIRECT_MEMBER IDENTIFIER       { printf("bison:symbol:symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
-    | symbol LBRACKET NUMBER RBRACKET         { printf("bison:symbol:symbol:symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
-    | symbol LPAREN RPAREN                    { printf("bison:symbol:symbol:LPAREN RPAREN\n"); $$ = $1; }
+    | symbol DOT IDENTIFIER                   { printf("PARSE:symbol:symbol DOT IDENTIFIER\n"); $$ = $1; }
+    | symbol INDIRECT_MEMBER IDENTIFIER       { printf("PARSE:symbol:symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
+    | symbol LBRACKET NUMBER RBRACKET         { printf("PARSE:symbol:symbol:symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
+    | symbol LPAREN RPAREN                    { printf("PARSE:symbol:symbol:LPAREN RPAREN\n"); $$ = $1; }
     ;
 
 terminal:
