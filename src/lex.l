@@ -49,7 +49,7 @@ RBRACE              "}"
 LPAREN              "("
 RPAREN              ")"
 SEMI_COLON          ";"
-QUOTE               "\""
+DOUBLE_QUOTE        "\""
 SINGLE_QUOTE        "'"
 SLASH               "/"
 BACK_SLASH          "\\"
@@ -74,7 +74,8 @@ GREATER_THAN_EQUAL  ">="
 NUMBER              [0-9]+
 
 
-%x STRING
+%x DOUBLE_QUOTED
+%x SINGLE_QUOTED
 %x ESCAPED
 %x IF_BLOCK
 %x IF_CONDITION
@@ -83,14 +84,34 @@ NUMBER              [0-9]+
 %%
 
 {COMMENT}                                   { /* eat up comment */ }
-{LBRACE}                                    { printf("BEGIN(INITIAL)\nBEGIN(ESCAPED)\n"); BEGIN(ESCAPED); }
-<OFF>\"                                     { BEGIN STRING; s = buf; }
-<STRING>\\n                                 { *s++ = '\n'; }
-<STRING>\\t                                 { *s++ = '\t'; }
-<STRING>\\\"                                { *s++ = '\"'; }
-<STRING>\"                                  {*s = 0; BEGIN(ESCAPED); printf("found '%s'\n", buf); }
-<STRING>\n                                  { printf("invalid string"); exit(1); }
-<STRING>.                                   { *s++ = *yytext; }
+{LBRACE}                                    { printf("LEX:END(INITIAL)\nLEX:BEGIN(ESCAPED)\n"); BEGIN(ESCAPED); return LBRACE;       }
+<ESCAPED>{RBRACE}                           { printf("LEX:END(ESCAPED)\nLEX:BEGIN(INITIAL)\n"); BEGIN INITIAL; return RBRACE;        }
+<ESCAPED>{SINGLE_QUOTE}                     { printf("LEX:END(ESCAPED)\nLEX:BEGIN(SINGLE_QUOTED)\n"); BEGIN(SINGLE_QUOTED); s = buf; }
+<SINGLE_QUOTED>\\n                          { *s++ = '\n';  }
+<SINGLE_QUOTED>\\t                          { *s++ = '\t';  }
+<SINGLE_QUOTED>\\\"                         { *s++ = '\"';  }
+<SINGLE_QUOTED>{SINGLE_QUOTE}               {
+                                                *s = 0;
+                                                printf("LEX:LITERAL=%s\n", s);
+                                                printf("LEX:END(SINGLE_QUOTED)\nLEX:BEGIN(ESCAPED)\n");
+                                                BEGIN(ESCAPED);
+                                                return STRING_LITERAL;
+                                            }
+<SINGLE_QUOTED>[\n}]                        { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                                  }
+<SINGLE_QUOTED>.                            { *s++ = *yytext;                                                                         }
+<ESCAPED>{DOUBLE_QUOTE}                     { printf("LEX:END(ESCAPED)\nLEX:BEGIN(DOUBLE_QUOTED)\n"); BEGIN(DOUBLE_QUOTED); s = buf;  }
+<DOUBLE_QUOTED>\\n                          { *s++ = '\n'; }
+<DOUBLE_QUOTED>\\t                          { *s++ = '\t'; }
+<DOUBLE_QUOTED>\\\"                         { *s++ = '\"'; }
+<DOUBLE_QUOTED>{DOUBLE_QUOTE}               {
+                                                *s = 0;
+                                                printf("LITERAL=%s\n", s);
+                                                printf("LEX:END(DOUBLE_QUOTED)\nLEX:BEGIN(ESCAPED)\n");
+                                                BEGIN(ESCAPED);
+                                                return STRING_LITERAL;
+                                            }
+<DOUBLE_QUOTED>[\n}]                        { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                             }
+<DOUBLE_QUOTED>.                            { *s++ = *yytext;                                                                    }
 <ESCAPED,IF_CONDITION>{NOT}                 { printf("LEX:NOT\n");                               } // return NOT;                }
 <ESCAPED,IF_CONDITION>{AND}                 { printf("LEX:AND\n");                               } // return AND;                }
 <ESCAPED,IF_CONDITION>{OR}                  { printf("LEX:OR\n");                                } // return OR;                 }
@@ -116,10 +137,7 @@ NUMBER              [0-9]+
 <ESCAPED,IF_CONDITION>{LPAREN}              { printf("LEX:LPAREN\n");                            return RPAREN;                  }
 <ESCAPED,IF_CONDITION>{RPAREN}              { printf("LEX:RPAREN\n");                            return LPAREN;                  }
 <ESCAPED,IF_CONDITION>{SEMI_COLON}          { printf("LEX:SEMI_COLON\n");                        } // return SEMI_COLON;         }
-<ESCAPED,IF_CONDITION>{QUOTE}               { printf("LEX:QUOTE\n");                             } // return QUOTE;              }
-<ESCAPED,IF_CONDITION>{SINGLE_QUOTE}        { printf("LEX:SINGLE_QUOTE\n");                      } // return SINGLE_QUOTE;       }
 <ESCAPED,IF_CONDITION>{NUMBER}              { printf("LEX:NUMBER\n");                            return NUMBER;                  }
-<ESCAPED>{RBRACE}                           { printf("END(ESCAPED)\nBEGIN(INITIAL)\n"); BEGIN INITIAL;                           }
 <ESCAPED,IF_BLOCK>{END_IF}                  { printf("LEX:END_IF\n"); BEGIN INITIAL;                                             }
 <ESCAPED>{IF}                               { printf("LEX:IF_BLOCK\n"); BEGIN IF_CONDITION;      } // return IF;                 }
 <IF_CONDITION>{RBRACE}                      { printf("IF_BLOCK"); ECHO; BEGIN IF_BLOCK;                                          }

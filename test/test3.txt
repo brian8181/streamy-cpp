@@ -1,5 +1,6 @@
 Start ...
-{$a $b $c}
+{"testing"}
+{"testing2"}
 {$d}
 { $foo }
 .. end
