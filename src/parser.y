@@ -41,8 +41,8 @@
 %%
 
 file:
-        blocks END_OF_FILE                  { printf("PARSE:file:blocks END_OF_FILE\n"); exit(0); }
-        ;
+        blocks END_OF_FILE                          { printf("PARSER:file:blocks END_OF_FILE\n"); exit(0); }
+               ;
 
 blocks:
     block
@@ -50,34 +50,32 @@ blocks:
     ;
 
 block:
-    LBRACE terminal_list RBRACE             { printf("PARSE:block:LBRACE terminal_list RBRACE\n"); }
-    | LBRACE sym_list RBRACE                { printf("PARSE:block:LBRACE sym_list RBRACE\n"); }
+    LBRACE terminal_list RBRACE                     { printf("PARSER:block:LBRACE terminal_list RBRACE\n"); }
+    | LBRACE sym_list RBRACE                        { printf("PARSER:block:LBRACE sym_list RBRACE\n"); }
 
 sym_list:
-        symbol                                    { printf("PARSE:sym_list:symbol\n"); $$=$1; }
-        | sym_list symbol                         { printf("PARSE:sym_list:sym_list symbol\n"); $$=$2; }
-        ;
+        symbol                                      { printf("PARSER:sym_list:symbol\n"); $$=$1; }
+         | sym_list symbol                          { printf("PARSER:sym_list:sym_list symbol\n"); $$=$2; }
+         ;
 symbol:
-        DOLLAR_SIGN IDENTIFIER                  {
-                                                    //int len = strlen($2);
-                                                    //printf("%s - %s : len=%s", $1, $2, len);
-                                                    printf("PARSE:symbol:DOLLAR_SIGN IDENTIFIER\n"); $$=$1;
-                                                    //char* id = $2;
-
-                                                    // char* sym[len+2];
-                                                    //  strcat(sym, "$");
-                                                    //  strcat(sym, id);
-                                                    //  $$ = sym;
-                                                }
-        | symbol DOT IDENTIFIER                   { printf("PARSE:symbol:symbol DOT IDENTIFIER\n"); $$ = $1; }
-        | symbol INDIRECT_MEMBER IDENTIFIER       { printf("PARSE:symbol:symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
-        | symbol LBRACKET NUMBER RBRACKET         { printf("PARSE:symbol:symbol:symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
-        | symbol LPAREN RPAREN                    { printf("PARSE:symbol:symbol:LPAREN RPAREN\n"); $$ = $1; }
+        DOLLAR_SIGN IDENTIFIER                      {
+                                                        printf("PARSER:symbol:DOLLAR_SIGN=%s IDENTIFIER=%s yytext=%s\n", $1, $2, yytext);
+                                                        // int len = strlen($2);
+                                                        // char* id = $2;
+                                                        // char sym[len+2];
+                                                        // sym[len+1] = '\0';
+                                                        // strcat(sym, "$");
+                                                        $$ = $2;
+                                                    }
+        | symbol DOT IDENTIFIER                     { printf("PARSER:symbol:symbol DOT IDENTIFIER\n"); $$ = $1; }
+        | symbol INDIRECT_MEMBER IDENTIFIER         { printf("PARSER:symbol:symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
+        | symbol LBRACKET NUMBER RBRACKET           { printf("PARSER:symbol:symbol:symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
+        | symbol LPAREN RPAREN                      { printf("PARSER:symbol:symbol:LPAREN RPAREN\n"); $$ = $1; }
         ;
 
 terminal_list:
-        terminal                                   { printf("PARSE:terminal_list:terminal\n"); $$=$1; }
-        | terminal_list terminal                   { printf("PARSE:terminal_list:terminal_list teminal\n"); $$=$2; }
+        terminal                                    { printf("PARSER:terminal_list:terminal=%s\n", $1); $$=$1; }
+        | terminal_list terminal                    { printf("PARSER:terminal_list:terminal_list teminal%s, %s\n", $1, $2); $$=$2; }
         ;
 
 terminal:
@@ -106,8 +104,9 @@ terminal:
         | ASTERIK
         | PERCENT
         | NOT_EQUAL
+        | DOLLAR_SIGN                         { printf("PARSER:terminal:DOLLAR_SIGN=\"%s\"\n", $1); $$=$1; }
         | NUMERIC_LITERAL
-        | STRING_LITERAL                      { printf("PARSER:terminal:STRING_LITERAL: { \"%s\" }\n", buf); $$=$1; }
+        | STRING_LITERAL                      { printf("PARSER:terminal:STRING_LITERAL: { \"%s\" }\n", buf); $$=buf; }
         | NUMBER
         ;
 

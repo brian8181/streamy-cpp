@@ -1,7 +1,7 @@
 %{
     #define MAX_INCLUDE_DEPTH 10
     #include <stdio.h>
-    #include <stdio.h>
+    #include <string.h>
     #include "parser.tab.h"
 
 
@@ -174,7 +174,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{END_FOREACH}         { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;           }
 <ESCAPED,IF_BLOCK>{CONST_ID}            { printf("LEX:[CONST_ID:%s]\n", yytext);           return CONST_ID;               }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf("LEX:[FUNC:%s]\n", yytext);               } // return FUNC;              }
-<ESCAPED,IF_BLOCK>{IDENTIFIER}          { printf("LEX:[IDENTIFIER:%s]\n", yytext);         return IDENTIFIER;             }
+<ESCAPED,IF_BLOCK>{IDENTIFIER}          { printf("LEX:[IDENTIFIER:%s]\n", yytext); return IDENTIFIER;             }
 <ESCAPED,incl>[ \t]*                    { /* eat the whitespace */                                                        }
 <incl>[^ \t\n]+                         {
                                             /* got the include file name */
