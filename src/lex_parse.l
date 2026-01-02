@@ -22,7 +22,7 @@
 
 END_OF_FILE         \0
 IDENTIFIER          _*[A-Za-z][A-Za-z0-9_]*
-ID                  \${IDENTIFIER}
+SYMBOL              \${IDENTIFIER}
 CONST_ID            #{IDENTIFIER}#
 QUALAFIED_ID        {ID}(("."|"->"){IDENTIFIER})+
 FUNC                {IDENTIFIER}+[ /t]*\([^)]*\)
@@ -52,7 +52,6 @@ DOUBLE_QUOTE        "\""
 SINGLE_QUOTE        "'"
 SLASH               "/"
 BACK_SLASH          "\\"
-UNDERSCORE          "_"
 AT                  "@"
 PLUS                "+"
 MINUS               "-"
@@ -60,7 +59,7 @@ ASTERIK             "*"
 EQUAL               "="
 NOT_EQUAL           "!="
 DOT                 "."
-INDIRECT_MEMBER "->"
+INDIRECT_MEMBER     "->"
 PERCENT             "%"
 AMPERSAND           "&"
 NOT                 "!"
@@ -84,7 +83,7 @@ FILE_ATTRIB         file
 %x OFF
 %%
 
-<INITIAL>{COMMENT}                      { /* eat up comment */                                                           }
+<INITIAL>{COMMENT}                      { printf("LEX:COMMENT\n");    /* eat up comment */                               }
 <INITIAL>{LBRACE}                       { printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED);   return LBRACE;                }
 <ESCAPED,IF_BLOCK>{RBRACE}              { printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL);   return RBRACE;                }
 <OFF>{INCLUDE}                          { printf("LEX:INCLUDE\n"); BEGIN(incl); } // turned OFF for now, need to debug!
@@ -128,7 +127,6 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{VBAR}                { printf("LEX:VBAR\n");                           return VBAR;                    }
 <ESCAPED,IF_BLOCK>{AMPERSAND}           { printf("LEX:AMPERSAND\n");                      return AMPERSAND;               }
 <ESCAPED,IF_BLOCK>{AT}                  { printf("LEX:AT\n");                             } // return AT;                 }
-<ESCAPED,IF_BLOCK>{DOLLAR_SIGN}         { printf("LEX:DOLLAR_SIGN\n");                    return DOLLAR_SIGN;             }
 <ESCAPED,IF_BLOCK>{PLUS}                { printf("LEX:PLUS\n");                           return PLUS;                    }
 <ESCAPED,IF_BLOCK>{MINUS}               { printf("LEX:MINUS\n");                          return MINUS;                   }
 <ESCAPED,IF_BLOCK>{ASTERIK}             { printf("LEX:ASTERIK\n");                        return ASTERIK;                 }
@@ -159,7 +157,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{END_FOREACH}         { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;           }
 <ESCAPED,IF_BLOCK>{CONST_ID}            { printf("LEX:[CONST_ID:%s]\n", yytext);           return CONST_ID;               }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf("LEX:[FUNC:%s]\n", yytext);               } // return FUNC;              }
-<ESCAPED,IF_BLOCK>{IDENTIFIER}          { printf("LEX:[IDENTIFIER:%s]\n", yytext); return IDENTIFIER;             }
+<ESCAPED,IF_BLOCK>{SYMBOL}              { printf("LEX:[SYMBOL:%s]\n", yytext); return SYMBOL;             }
 <ESCAPED,incl>[ \t]*                    { /* eat the whitespace */                                                        }
 <incl>[^ \t\n]+                         {
                                             /* got the include file name */
