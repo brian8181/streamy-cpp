@@ -38,7 +38,6 @@ ELSE                "else"
 END_ELSE            "/else"
 ELSEIF              "elseif"
 END_ELSEIF          "/elseif"
-STREAM              .|\n
 DOLLAR_SIGN         "$"
 VBAR                "|"
 COLON               ":"
@@ -53,7 +52,6 @@ DOUBLE_QUOTE        "\""
 SINGLE_QUOTE        "'"
 SLASH               "/"
 BACK_SLASH          "\\"
-TICK                "`"
 UNDERSCORE          "_"
 AT                  "@"
 PLUS                "+"
@@ -73,13 +71,6 @@ LESS_THAN_EQUAL     "<="
 GREATER_THAN        ">"
 GREATER_THAN_EQUAL  ">="
 NUMBER              [0-9]+
-HTTP                get|post|cookies|env|request|session
-CONFIG              config|section|template|ldelim|rdelim|version|cycle|counter
-UTILITY             const|debug|eval|fetch|textformat|math
-ACCSESSORS          assign|isset|index|index_prev|index_next|iteration|first|last|show|total|from|item
-HTML                html_checkboxes|html_image|html_table|html_options|html_radios|html_select_date|html_select_time
-MODIFIER            tuncate|cat|spacify|lower|upper|date_format|default|replace|strip|indent|wordwrap|nl2br
-MORE                "captialize|regex_replace|count_characters|count_sentences|count_paragraphs|count_words|strip_tags|escape"
 INCLUDE             include
 CONFIG_LOAD         config_load
 FILE_ATTRIB         file
@@ -123,14 +114,8 @@ FILE_ATTRIB         file
                                         }
 <DOUBLE_QUOTED>[\n}]                    { printf("LEX invalid newline in state DOUBLE_QUOTED\n"); exit(1);                }
 <DOUBLE_QUOTED>.                        { *s++ = *yytext;                                                                 }
-<ESCAPED,IF_BLOCK>{UTILITY}             { printf("LEX:UTILITY\n");                                                        }
-<ESCAPED,IF_BLOCK>{MODIFIER}            { printf("LEX:MODIFIER\n");                                                       }
-<ESCAPED,IF_BLOCK>{ACCSESSORS}          { printf("LEX:ACCSESSORS\n");                                                     }
-<ESCAPED,IF_BLOCK>{CONFIG}              { printf("LEX:CONFIG\n");                                                         }
 <ESCAPED,IF_BLOCK>{CONFIG_LOAD}         { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;             }
 <ESCAPED,IF_BLOCK>{FILE_ATTRIB}         { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;             }
-<ESCAPED,IF_BLOCK>{HTML}                { printf("LEX:HTML\n");                           } // return HTTP;               }
-<ESCAPED,IF_BLOCK>{HTTP}                { printf("LEX:HTTP\n");                           } // return HTTP;               }
 <ESCAPED,IF_BLOCK>{NOT}                 { printf("LEX:NOT\n");                            return NOT;                     }
 <ESCAPED,IF_BLOCK>{AND}                 { printf("LEX:AND\n");                            return AND;                     }
 <ESCAPED,IF_BLOCK>{OR}                  { printf("LEX:OR\n");                             return OR;                      }
