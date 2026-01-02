@@ -1,8 +1,8 @@
 %{
     #include <stdio.h>
+    #include <stdlib.h>
     #include <string.h>
     #include "parser.tab.h"
-    #include "lex_parse.yy.h"
     #include "bash_color.h"
 
     int yylex(void);
@@ -28,7 +28,8 @@
 %token<sval> IDENTIFIER CONST_ID QUALAFIED_ID
 %token<sval> IF END_IF ELSE END_ELSE ELSEIF END_ELSEIF
 %token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
-%token<sval> LBRACKET RBRACKET LBRACE RBRACE LPAREN RPAREN
+%left<sval> LBRACKET RBRACKET
+%token<sval> LBRACE RBRACE LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
@@ -41,34 +42,34 @@
 %%
 
 file:
-        blocks END_OF_FILE                          { printf("PARSER:file:blocks END_OF_FILE\n"); exit(0); }
+        blocks END_OF_FILE                          { printf("PARSER file: | blocks END_OF_FILE\n"); exit(0); }
                ;
 
 blocks:
-    block                                           { printf("PARSER:blocks:block\n"); }
-    | blocks block                                  { printf("PARSER:blocks:blocks block\n"); }
+    block                                           { printf("PARSER blocks: | block\n"); }
+    | blocks block                                  { printf("PARSER blocks: | blocks block\n"); }
     ;
 
 block:
-    LBRACE terminal_list RBRACE                     { printf("PARSER:block:LBRACE terminal_list RBRACE\n"); }
-    | LBRACE symbols RBRACE                         { printf("PARSER:block:LBRACE symbols RBRACE\n"); }
+    LBRACE terminal_list RBRACE                     { printf("PARSER block: | LBRACE terminal_list RBRACE\n"); }
+    | LBRACE symbols RBRACE                         { printf("PARSER block: | LBRACE symbols RBRACE\n"); }
 
 symbols:
-        symbol                                      { printf("PARSER:symbols:symbol\n"); $$=$1; }
-         | symbols symbol                           { printf("PARSER:symbols:symbols symbol\n"); $$=$2; }
+        symbol                                      { printf("PARSER symbols: | symbol\n"); $$=$1; }
+         | symbols symbol                           { printf("PARSER symbols: | symbols symbol\n"); $$=$2; }
          ;
 symbol:
-        SYMBOL                                      { printf("PARSER:SYMBOL=%s\n", $1); $$ = $1; }
-        | CONST_ID                                  { printf("PARSER:CONST_ID=%s\n", $1); $$=$1; }
-        | symbol DOT IDENTIFIER                     { printf("PARSER:symbol:symbol DOT IDENTIFIER\n"); $$ = $1; }
-        | symbol INDIRECT_MEMBER IDENTIFIER         { printf("PARSER:symbol:symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
-        | symbol LBRACKET NUMBER RBRACKET           { printf("PARSER:symbol:symbol:symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
-        | symbol LPAREN RPAREN                      { printf("PARSER:symbol:symbol:LPAREN RPAREN\n"); $$ = $1; }
+        SYMBOL                                      { printf("PARSER symbol: | SYMBOL=\"%s\"\n", $1); $$ = $1; }
+        | CONST_ID                                  { printf("PARSER symbol: | CONST_ID=\"%s\"\n", $1); $$=$1; }
+        | symbol DOT IDENTIFIER                     { printf("PARSER symbol: | symbol DOT IDENTIFIER\n"); $$ = $1; }
+        | symbol INDIRECT_MEMBER IDENTIFIER         { printf("PARSER symbol: | symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
+        | SYMBOL LBRACKET NUMERIC_LITERAL RBRACKET           { printf("PARSER symbol: | symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
+        | symbol LPAREN RPAREN                      { printf("PARSER symbol: | symbol LPAREN RPAREN\n"); $$ = $1; }
         ;
 
 terminal_list:
-        terminal                                    { printf("PARSER:terminal_list:terminal=%s\n", $1); $$=$1; }
-        | terminal_list terminal                    { printf("PARSER:terminal_list:terminal_list teminal%s, %s\n", $1, $2); $$=$2; }
+        terminal                                    { printf("PARSER terminal_list: | terminal=\"%s\"\n", $1); $$=$1; }
+        | terminal_list terminal                    { printf("PARSER terminal_list: | terminal_list teminal=\"%s=%s\"\n", $1, $2); $$=$2; }
         ;
 
 terminal:
@@ -97,9 +98,8 @@ terminal:
         | ASTERIK
         | PERCENT
         | NOT_EQUAL
-        | NUMERIC_LITERAL                           { printf("PARSER:terminal:NUMERIC_LITERAL=%s\n", $1); $$=$1; }
-        | STRING_LITERAL                            { printf("PARSER:terminal:STRING_LITERAL: { \"%s\" }\n", buf); $$=buf; }
-        | NUMBER                                    { printf("PARSER:terminal:NUMBER=%s\n", $1); $$=$1; }
+        | NUMERIC_LITERAL                           { printf("PARSER terminal: | NUMERIC_LITERAL=%s\n", $1); $$=$1; }
+        | STRING_LITERAL                            { printf("PARSER terminal: | STRING_LITERAL=\"%s\"\n", buf); $$=buf; }
         ;
 
 %%

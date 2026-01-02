@@ -3,4 +3,5 @@ Start ...
 {$d}
 {"double quotes" }
 { $foo }
+{123}
 .. end

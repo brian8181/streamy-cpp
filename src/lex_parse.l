@@ -24,9 +24,9 @@ END_OF_FILE         \0
 IDENTIFIER          _*[A-Za-z][A-Za-z0-9_]*
 SYMBOL              \${IDENTIFIER}
 CONST_ID            #{IDENTIFIER}#
-QUALAFIED_ID        {ID}(("."|"->"){IDENTIFIER})+
+QUALAFIED_ID        {SYMBOL}(("."|"->"){IDENTIFIER})+
 FUNC                {IDENTIFIER}+[ /t]*\([^)]*\)
-ARRAY               {ID}\[[^\]]\]
+ARRAY               {SYMBOL}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
 IF                  if
 END_IF              "\{/if\}"
@@ -68,7 +68,7 @@ LESS_THAN           "<"
 LESS_THAN_EQUAL     "<="
 GREATER_THAN        ">"
 GREATER_THAN_EQUAL  ">="
-NUMBER              [0-9]+
+NUMERIC_LITERAL     [0-9]+
 INCLUDE             include
 CONFIG_LOAD         config_load
 FILE_ATTRIB         file
@@ -78,14 +78,14 @@ FILE_ATTRIB         file
 %x ESCAPED
 %x IF_BLOCK
 %x IF_CONDITION
-%x incl
+%x INCLUDING
 %x OFF
 %%
 
 <INITIAL>{COMMENT}                      { printf("LEX:COMMENT\n");    /* eat up comment */                               }
 <INITIAL>{LBRACE}                       { printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED);   return LBRACE;                }
 <ESCAPED,IF_BLOCK>{RBRACE}              { printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL);   return RBRACE;                }
-<OFF>{INCLUDE}                          { printf("LEX:INCLUDE\n"); BEGIN(incl); } // turned OFF for now, need to debug!
+<OFF>{INCLUDE}                          { printf("LEX:INCLUDE\n"); BEGIN(INCLUDING); } // turned OFF for now, need to debug!
 <ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
 <SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
@@ -138,7 +138,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{LPAREN}              { printf("LEX:LPAREN\n");                         return RPAREN;                  }
 <ESCAPED,IF_BLOCK>{RPAREN}              { printf("LEX:RPAREN\n");                         return LPAREN;                  }
 <ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;              }
-<ESCAPED,IF_BLOCK>{NUMBER}              { printf("LEX:NUMBER\n");                         return NUMBER;                  }
+<ESCAPED,IF_BLOCK>{NUMERIC_LITERAL}     { printf("LEX:NUMERIC_LITERAL\n"); yylval.sval = yytext; return NUMERIC_LITERAL;  }
 <ESCAPED,IF_BLOCK>{END_IF}              { printf("LEX:END_IF\n"); BEGIN(ESCAPED);         } // return IF;                 }
 <IF_CONDITION>{RBRACE}                  { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                         }
 <IF_CONDITION>[^}]                      { ECHO;                                                                           }
@@ -155,8 +155,8 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{CONST_ID}            { printf("LEX:[CONST_ID:%s]\n", yytext); yylval.sval = yytext; return CONST_ID;   }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf("LEX:[FUNC:%s]\n", yytext); yylval.sval = yytext;                        } // return FUNC;              }
 <ESCAPED,IF_BLOCK>{SYMBOL}              { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = yytext; return SYMBOL;       }
-<ESCAPED,incl>[ \t]*                    { /* eat the whitespace */                                                        }
-<incl>[^ \t\n]+                         {
+<ESCAPED,INCLUDING>[ \t]*               { /* eat the whitespace */                                                        }
+<INCLUDING>[^ \t\n]+                    {
                                             /* got the include file name */
                                             if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
                                             {

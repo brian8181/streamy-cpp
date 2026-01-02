@@ -8,7 +8,6 @@
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int include_stack_ptr = 0;
     int yylex(void);
-    int yyerror(char* s);
     int fileno(FILE* f);
 
 #ifdef LEXER_EXE
@@ -200,12 +199,12 @@ int yywrap(void)
 {
     return 1;
 }
-
+/*
 int yyerror(char *s)
 {
     fprintf(stderr, "%s\n", s);
     return 0;
-};
+}; */
 #endif
 
 #ifdef MAIN_IMP
