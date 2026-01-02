@@ -38,7 +38,6 @@ ELSE                "else"
 END_ELSE            "/else"
 ELSEIF              "elseif"
 END_ELSEIF          "/elseif"
-DOLLAR_SIGN         "$"
 VBAR                "|"
 COLON               ":"
 LBRACKET            "["
@@ -93,7 +92,6 @@ FILE_ATTRIB         file
 <SINGLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
 <SINGLE_QUOTED>{SINGLE_QUOTE}           {
                                             *s = 0;
-                                            printf("LITERAL=%s\n", s);
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
                                             return STRING_LITERAL;
@@ -106,7 +104,6 @@ FILE_ATTRIB         file
 <DOUBLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
 <DOUBLE_QUOTED>{DOUBLE_QUOTE}           {
                                             *s = 0;
-                                            printf("LITERAL=%s\n", s);
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
                                             return STRING_LITERAL;
@@ -155,9 +152,9 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{END_ELSEIF}          { printf("LEX:END_ELSEIF\n"); BEGIN(ESCAPED);      } // return ELSEIF;            }
 <ESCAPED,IF_BLOCK>{END_FOREACHELSE}     { printf("LEX:FOREACHELSE\n"); BEGIN(ESCAPED);     } // return FOREACHELSE;       }
 <ESCAPED,IF_BLOCK>{END_FOREACH}         { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;           }
-<ESCAPED,IF_BLOCK>{CONST_ID}            { printf("LEX:[CONST_ID:%s]\n", yytext);           return CONST_ID;               }
-<ESCAPED,IF_BLOCK>{FUNC}                { printf("LEX:[FUNC:%s]\n", yytext);               } // return FUNC;              }
-<ESCAPED,IF_BLOCK>{SYMBOL}              { printf("LEX:[SYMBOL:%s]\n", yytext); return SYMBOL;             }
+<ESCAPED,IF_BLOCK>{CONST_ID}            { printf("LEX:[CONST_ID:%s]\n", yytext); yylval.sval = yytext; return CONST_ID;   }
+<ESCAPED,IF_BLOCK>{FUNC}                { printf("LEX:[FUNC:%s]\n", yytext); yylval.sval = yytext;                        } // return FUNC;              }
+<ESCAPED,IF_BLOCK>{SYMBOL}              { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = yytext; return SYMBOL;       }
 <ESCAPED,incl>[ \t]*                    { /* eat the whitespace */                                                        }
 <incl>[^ \t\n]+                         {
                                             /* got the include file name */

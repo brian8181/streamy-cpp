@@ -45,28 +45,21 @@ file:
                ;
 
 blocks:
-    block
-    | blocks block
+    block                                           { printf("PARSER:blocks:block\n"); }
+    | blocks block                                  { printf("PARSER:blocks:blocks block\n"); }
     ;
 
 block:
-    LBRACE terminal_list RBRACE                    { printf("PARSER:block:LBRACE terminal_list RBRACE\n"); }
-    | LBRACE symbols RBRACE                        { printf("PARSER:block:LBRACE symbols RBRACE\n"); }
+    LBRACE terminal_list RBRACE                     { printf("PARSER:block:LBRACE terminal_list RBRACE\n"); }
+    | LBRACE symbols RBRACE                         { printf("PARSER:block:LBRACE symbols RBRACE\n"); }
 
 symbols:
-        symbol                                     { printf("PARSER:symbols:symbol\n"); $$=$1; }
-         | symbols symbol                          { printf("PARSER:symbols:symbols symbol\n"); $$=$2; }
+        symbol                                      { printf("PARSER:symbols:symbol\n"); $$=$1; }
+         | symbols symbol                           { printf("PARSER:symbols:symbols symbol\n"); $$=$2; }
          ;
 symbol:
-        SYMBOL                                     {
-                                                        printf("PARSER:SYMBOL=%s yytext=%s\n", $1, yytext);
-                                                        // int len = strlen($2);
-                                                        // char* id = $2;
-                                                        // char sym[len+2];
-                                                        // sym[len+1] = '\0';
-                                                        // strcat(sym, "$");
-                                                        $$ = $1;
-                                                    }
+        SYMBOL                                      { printf("PARSER:SYMBOL=%s\n", $1); $$ = $1; }
+        | CONST_ID                                  { printf("PARSER:CONST_ID=%s\n", $1); $$=$1; }
         | symbol DOT IDENTIFIER                     { printf("PARSER:symbol:symbol DOT IDENTIFIER\n"); $$ = $1; }
         | symbol INDIRECT_MEMBER IDENTIFIER         { printf("PARSER:symbol:symbol INDIRECT_MEMBER IDENTIFIER\n"); $$ = $1; }
         | symbol LBRACKET NUMBER RBRACKET           { printf("PARSER:symbol:symbol:symbol LBRACKET NUMBER RBRACKET\n"); $$ = $1; }
@@ -104,9 +97,9 @@ terminal:
         | ASTERIK
         | PERCENT
         | NOT_EQUAL
-        | NUMERIC_LITERAL
-        | STRING_LITERAL                      { printf("PARSER:terminal:STRING_LITERAL: { \"%s\" }\n", buf); $$=buf; }
-        | NUMBER
+        | NUMERIC_LITERAL                           { printf("PARSER:terminal:NUMERIC_LITERAL=%s\n", $1); $$=$1; }
+        | STRING_LITERAL                            { printf("PARSER:terminal:STRING_LITERAL: { \"%s\" }\n", buf); $$=buf; }
+        | NUMBER                                    { printf("PARSER:terminal:NUMBER=%s\n", $1); $$=$1; }
         ;
 
 %%
