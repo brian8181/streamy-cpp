@@ -1,8 +1,4 @@
 Start ...
+{$X[12]}
 {$abc}
-{$aaa[1]}
-{$abc.xyz}
-{#XXX#}
-{"TEST ..."}
-{123}
 ... End

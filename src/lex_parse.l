@@ -13,11 +13,6 @@
 
     extern char buf[100];
     extern char *s;
-    #define LBRACKET 1
-    #define RBRACKET 2
-    #define NUMBER 3
-    #define IF    4
-    #define ELSE  5
 %}
 
 END_OF_FILE         \0
@@ -110,6 +105,12 @@ FILE_ATTRIB         file
                                         }
 <DOUBLE_QUOTED>[\n}]                    { printf("LEX invalid newline in state DOUBLE_QUOTED\n"); exit(1);                }
 <DOUBLE_QUOTED>.                        { *s++ = *yytext;                                                                 }
+<ESCAPED,IF_BLOCK>{NUMERIC_LITERAL}     {
+                                            printf("LEX:NUMERIC_LITERAL=%s\n", yytext);
+                                            yylval.sval = (char*)malloc((strlen(yytext) * sizeof(char)) + 1);
+                                            strcpy(yylval.sval, yytext);
+                                            return NUMERIC_LITERAL;
+                                        }
 <ESCAPED,IF_BLOCK>{CONFIG_LOAD}         { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;             }
 <ESCAPED,IF_BLOCK>{FILE_ATTRIB}         { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;             }
 <ESCAPED,IF_BLOCK>{NOT}                 { printf("LEX:NOT\n");                            return NOT;                     }
@@ -133,12 +134,11 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{INDIRECT_MEMBER}     { printf("LEX:INDIRECT_MEMBER\n");                return INDIRECT_MEMBER;         }
 <ESCAPED,IF_BLOCK>{PERCENT}             { printf("LEX:PERCENT\n");                        return PERCENT;                 }
 <ESCAPED,IF_BLOCK>{COLON}               { printf("LEX:COLON\n");                          return COLON;                   }
-<ESCAPED,IF_BLOCK>{LBRACKET}            { printf("LEX:LBRACKET\n");                       return LBRACKET;                }
-<ESCAPED,IF_BLOCK>{RBRACKET}            { printf("LEX:RBRACKET\n");                       return RBRACKET;                }
+<ESCAPED,IF_BLOCK>{LBRACKET}            { printf("LEX:LBRACKET\n");  yylval.sval = yytext;                     return LBRACKET;                }
+<ESCAPED,IF_BLOCK>{RBRACKET}            { printf("LEX:RBRACKET\n");  yylval.sval = yytext;                     return RBRACKET;                }
 <ESCAPED,IF_BLOCK>{LPAREN}              { printf("LEX:LPAREN\n");                         return RPAREN;                  }
 <ESCAPED,IF_BLOCK>{RPAREN}              { printf("LEX:RPAREN\n");                         return LPAREN;                  }
 <ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;              }
-<ESCAPED,IF_BLOCK>{NUMERIC_LITERAL}     { printf("LEX:NUMERIC_LITERAL\n"); yylval.sval = yytext; return NUMERIC_LITERAL;  }
 <ESCAPED,IF_BLOCK>{END_IF}              { printf("LEX:END_IF\n"); BEGIN(ESCAPED);         } // return IF;                 }
 <IF_CONDITION>{RBRACE}                  { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                         }
 <IF_CONDITION>[^}]                      { ECHO;                                                                           }
@@ -154,7 +154,12 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{END_FOREACH}         { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;           }
 <ESCAPED,IF_BLOCK>{CONST_ID}            { printf("LEX:[CONST_ID:%s]\n", yytext); yylval.sval = yytext; return CONST_ID;   }
 <ESCAPED,IF_BLOCK>{FUNC}                { printf("LEX:[FUNC:%s]\n", yytext); yylval.sval = yytext;                        } // return FUNC;              }
-<ESCAPED,IF_BLOCK>{SYMBOL}              { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = yytext; return SYMBOL;       }
+<ESCAPED,IF_BLOCK>{SYMBOL}              {
+                                            printf("LEX:[SYMBOL:%s]\n", yytext);
+                                            yylval.sval = (char*)malloc((strlen(yytext) * sizeof(char)) + 1);
+                                            strcpy(yylval.sval, yytext);
+                                            return SYMBOL;
+                                        }
 <ESCAPED,INCLUDING>[ \t]*               { /* eat the whitespace */                                                        }
 <INCLUDING>[^ \t\n]+                    {
                                             /* got the include file name */
