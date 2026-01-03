@@ -15,7 +15,7 @@ typedef struct node
     struct node* next;
 } node;
 
-void init(symbol* s);
+void init_streamy_symtable();
 void add_symbol(const char* id_cstr, const char* val_cstr);
 void remove_symbol(const char* cstr);
 void clear_symbols();

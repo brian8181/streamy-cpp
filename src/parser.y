@@ -63,7 +63,11 @@ block:
                                                                   }
 
 expr:
-    SYMBOL                                                        { printf("PARSER expr: | SYMBOL=%s\n", $1); $$=$1; }
+    SYMBOL                                                        {
+                                                                    printf("PARSER expr: | SYMBOL=%s\n", $1);
+                                                                    $$=$1;
+
+                                                                }
     | expr LBRACKET NUMERIC_LITERAL RBRACKET                      { printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=%s RBRACKET\n", $3); $$=$1; }
     | expr LPAREN RPAREN                                             { printf("PARSER expr: | expr LPAREN RPAREN\n"); $$=$1; }
     ;
@@ -119,6 +123,7 @@ int yyerror(char * s)
 
 int main(int argc, char** argv)
 {
+    init_streamy_symtable();
     printf("parsing ...\n");
     extern FILE *yyin;
     if (argc > 0)

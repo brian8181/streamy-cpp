@@ -6,10 +6,16 @@
 #include "symtab.h"
 static node* g_head;
 
-void init(symbol* s)
+void init_streamy_symtable()
 {
+   symbol streamy_init_object;
+   streamy_init_object.id = "$streamy";
+   streamy_init_object.stype = "object";
+   streamy_init_object.stype_modifiers = "static";
+   streamy_init_object.pval = 0;
+
    g_head = (node*)malloc(sizeof(node));
-   g_head->val = s;
+   g_head->val = &streamy_init_object;
    g_head->next = 0;
 }
 
