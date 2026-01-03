@@ -31,7 +31,9 @@
 %token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
 %token<sval> LBRACKET
 %token<sval> RBRACKET
-%token<sval> LBRACE RBRACE LPAREN RPAREN
+%token<sval> LPAREN
+%token<sval> RPAREN
+%token<sval> LBRACE RBRACE
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
@@ -62,7 +64,7 @@ block:
 expr:
     SYMBOL                                                        { printf("PARSER expr: | SYMBOL=%s\n", $1); $$=$1; }
     | expr LBRACKET NUMERIC_LITERAL RBRACKET                      { printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=%s RBRACKET\n", $3); $$=$1; }
-    | expr LPAREN RPAREN
+    | expr LPAREN RPAREN                                             { printf("PARSER expr: | expr LPAREN RPAREN\n"); $$=$1; }
     ;
 
 terminal_list:

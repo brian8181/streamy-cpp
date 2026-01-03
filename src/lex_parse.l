@@ -136,8 +136,8 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{COLON}               { printf("LEX:COLON\n");                          return COLON;                   }
 <ESCAPED,IF_BLOCK>{LBRACKET}            { printf("LEX:LBRACKET\n");  return LBRACKET;                }
 <ESCAPED,IF_BLOCK>{RBRACKET}            { printf("LEX:RBRACKET\n");  return RBRACKET;                }
-<ESCAPED,IF_BLOCK>{LPAREN}              { printf("LEX:LPAREN\n");                         return RPAREN;                  }
-<ESCAPED,IF_BLOCK>{RPAREN}              { printf("LEX:RPAREN\n");                         return LPAREN;                  }
+<ESCAPED,IF_BLOCK>{LPAREN}              { printf("LEX:LPAREN\n");                         return LPAREN;                  }
+<ESCAPED,IF_BLOCK>{RPAREN}              { printf("LEX:RPAREN\n");                         return RPAREN;                  }
 <ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;              }
 <ESCAPED,IF_BLOCK>{END_IF}              { printf("LEX:END_IF\n"); BEGIN(ESCAPED);         } // return IF;                 }
 <IF_CONDITION>{RBRACE}                  { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                         }
