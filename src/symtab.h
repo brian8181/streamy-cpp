@@ -22,6 +22,4 @@ void clear_symbols();
 symbol* find_symbol(const char* cstr);
 node* find_tail();
 
-
-
 #endif
