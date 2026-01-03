@@ -1,57 +1,75 @@
 
-extern "C" {
-    #include "symtab.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "symtab.h"
+static node* g_head;
+
+void init(symbol* s)
+{
+   g_head = (node*)malloc(sizeof(node));
+   g_head->val = s;
+   g_head->next = 0;
 }
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <sstream>
-#include <map>
-#include <cstring>
-
-using std::string;
-using std::endl;
-
-static std::map<std::string, struct symbol> symtab;
 
 void add_symbol(const char* id_cstr, const char* val_cstr)
 {
-    symbol s;
-    s.id = (char*)malloc( (sizeof(char) * strlen(id_cstr)) + 1 );
-    strcpy(s.id, id_cstr);
-    s.type = 0;
-    symtab[s.id] = s;
+    // create symbol
+    symbol* s = (symbol*)malloc( sizeof(symbol) );
+    s->id = (char*)malloc( (sizeof(char) * strlen(id_cstr)) + 1 );
+    s->pval = (char*)malloc( (sizeof(char) * strlen(val_cstr)) + 1 );
+    // add node
+    node* tail = find_tail();
+    tail->next = (node*)malloc(sizeof(node));
+    tail = tail->next;
+    tail->val = s;
+    tail->next = 0;
 }
 
 void remove_symbol(const char* cstr)
 {
-    string s(cstr);
-    auto v = symtab.find(s);
-    free((*v).second.id);
-    symtab.erase(v);
+    node* cur = g_head;
+    while(cur->next != 0)
+    {
+        symbol* s = cur->next->val;
+        if(strcmp((char*)s->pval, cstr))
+        {
+            node* tmp = cur->next->next;
+            free(cur->next);
+            cur->next = 0;
+            cur->next = tmp;
+        }
+    }
 }
 
 void clear_symbols()
 {
-    auto end = symtab.end();
-    for(auto iter = symtab.begin(); iter != end; ++iter)
-        free((*iter).second.id);
-    symtab.clear();
+    node* cur = g_head;
+    while(cur != 0)
+    {
+        node* tmp = cur->next;
+        free(cur);
+        cur = tmp;
+    }
 }
 
-void* find_symbol(const char* cstr)
+symbol* find_symbol(const char* cstr)
 {
-    string s(cstr);
-    auto v = symtab.find(s);
-    return (v == symtab.end()) ? (void*)0 : (void*)0;
+    node* cur = g_head;
+    while(cur->next != 0)
+    {
+        symbol* s = cur->val;
+        if(strcmp((char*)s->pval, cstr))
+            return s;
+        cur = cur->next;
+    }
+    return 0;
 }
 
-// void print(const symbol& s, /* out */ std::stringstream ss)
-// {
-//     ss  << "symbol" << endl << "{" << endl
-//         << "\tname: " << s.id << endl
-//         << "\ttype: " << s.stype << endl
-//         << "\tvalue: " << (long*)s.pval << endl
-//         << "\taddress: " << std::hex << (long*)s.pval << endl
-//         << "}" << endl;
-//}
+node* find_tail()
+{
+    node* cur = g_head;
+    while(cur->next != 0);
+    return cur;
+}

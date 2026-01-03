@@ -1,28 +1,27 @@
 #ifndef _SYMTAB_H_
 #define _SYMTAB_H_
 
-#include <string>
-#include <sstream>
-#include <map>
+typedef struct symbol
+{
+    char* id;
+    char* stype_modifiers;
+    char* stype;
+    void* pval;
+} symbol;
 
-// extern "C"
-// {
-//     typedef int TYPE_t;
+typedef struct node
+{
+    symbol* val;
+    struct node* next;
+} node;
 
-//     struct symbol
-//     {
-//         char* id;
-//         char* stype_modifiers;
-//         char* stype;
-//         TYPE_t type;
-//         void* pval;
-//     };
+void init(symbol* s);
+void add_symbol(const char* id_cstr, const char* val_cstr);
+void remove_symbol(const char* cstr);
+void clear_symbols();
+symbol* find_symbol(const char* cstr);
+node* find_tail();
 
-//     void add_symbol(const char* id_cstr, const char* val_cstr);
-//     void remove_symbol(const char* cstr);
-//     void clear_symbols();
-//     void* find_symbol(const char* cstr);
-//     //void print(const symbol& s, /* out */ std::stringstream ss);
-// }
+
 
 #endif

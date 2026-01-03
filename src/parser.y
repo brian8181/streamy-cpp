@@ -4,6 +4,7 @@
     #include <string.h>
     #include "parser.tab.h"
     #include "bash_color.h"
+    #include "symtab.h"
 
     int yylex(void);
     int yyerror(char * s);
