@@ -13,6 +13,7 @@
 
     extern char buf[100];
     extern char *s;
+    char* strdup(char* str);
 %}
 
 END_OF_FILE         \0
@@ -107,8 +108,7 @@ FILE_ATTRIB         file
 <DOUBLE_QUOTED>.                        { *s++ = *yytext;                                                                 }
 <ESCAPED,IF_BLOCK>{NUMERIC_LITERAL}     {
                                             printf("LEX:NUMERIC_LITERAL=%s\n", yytext);
-                                            yylval.sval = (char*)malloc((strlen(yytext) * sizeof(char)) + 1);
-                                            strcpy(yylval.sval, yytext);
+                                            yylval.sval = strdup(yytext);
                                             return NUMERIC_LITERAL;
                                         }
 <ESCAPED,IF_BLOCK>{CONFIG_LOAD}         { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;             }
@@ -134,8 +134,8 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{INDIRECT_MEMBER}     { printf("LEX:INDIRECT_MEMBER\n");                return INDIRECT_MEMBER;         }
 <ESCAPED,IF_BLOCK>{PERCENT}             { printf("LEX:PERCENT\n");                        return PERCENT;                 }
 <ESCAPED,IF_BLOCK>{COLON}               { printf("LEX:COLON\n");                          return COLON;                   }
-<ESCAPED,IF_BLOCK>{LBRACKET}            { printf("LEX:LBRACKET\n");  yylval.sval = yytext;                     return LBRACKET;                }
-<ESCAPED,IF_BLOCK>{RBRACKET}            { printf("LEX:RBRACKET\n");  yylval.sval = yytext;                     return RBRACKET;                }
+<ESCAPED,IF_BLOCK>{LBRACKET}            { printf("LEX:LBRACKET\n");  return LBRACKET;                }
+<ESCAPED,IF_BLOCK>{RBRACKET}            { printf("LEX:RBRACKET\n");  return RBRACKET;                }
 <ESCAPED,IF_BLOCK>{LPAREN}              { printf("LEX:LPAREN\n");                         return RPAREN;                  }
 <ESCAPED,IF_BLOCK>{RPAREN}              { printf("LEX:RPAREN\n");                         return LPAREN;                  }
 <ESCAPED,IF_BLOCK>{SEMI_COLON}          { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;              }
@@ -156,8 +156,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{FUNC}                { printf("LEX:[FUNC:%s]\n", yytext); yylval.sval = yytext;                        } // return FUNC;              }
 <ESCAPED,IF_BLOCK>{SYMBOL}              {
                                             printf("LEX:[SYMBOL:%s]\n", yytext);
-                                            yylval.sval = (char*)malloc((strlen(yytext) * sizeof(char)) + 1);
-                                            strcpy(yylval.sval, yytext);
+                                            yylval.sval = strdup(yytext);
                                             return SYMBOL;
                                         }
 <ESCAPED,INCLUDING>[ \t]*               { /* eat the whitespace */                                                        }
@@ -196,6 +195,13 @@ FILE_ATTRIB         file
                                         }
 
 %%
+
+char* strdup(char* s)
+{
+    char* dup = (char*)malloc((strlen(s) * sizeof(char)) + 1);
+    strcpy(dup, s);
+    return dup;
+}
 
 #ifdef LEXER_EXE
 int yywrap(void)

@@ -44,28 +44,30 @@
 %%
 
 file:
-        blocks END_OF_FILE                          { printf("PARSER file: | blocks END_OF_FILE\n"); exit(0); }
+        blocks END_OF_FILE                                       { printf("PARSER file: | blocks END_OF_FILE\n"); exit(0); }
                ;
 
 blocks:
-    block                                           { printf("PARSER blocks: | block\n"); }
-    | blocks block                                  { printf("PARSER blocks: | blocks block\n"); }
+    block                                                        { printf("PARSER blocks: | block\n"); }
+    | blocks block                                               { printf("PARSER blocks: | blocks block\n"); }
     ;
 
 block:
-    LBRACE terminal_list RBRACE                     { printf("PARSER block: | LBRACE terminal_list RBRACE\n"); }
-    | LBRACE expr RBRACE                         { printf("PARSER block: | LBRACE symbols RBRACE\n"); }
-    | LBRACE CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL RBRACE  { printf("PARSER block: | LBRACE terminal_list RBRACE\n"); }
+    LBRACE terminal_list RBRACE                                  { printf("PARSER block: | LBRACE terminal_list RBRACE\n"); }
+    | LBRACE expr RBRACE                                         { printf("PARSER block: | LBRACE symbols RBRACE\n"); }
+    | LBRACE CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL RBRACE {
+                                                                    printf("PARSER block: | LBRACE terminal_list RBRACE\n");
+                                                                  }
 
 expr:
-    SYMBOL                                               { printf("PARSER expr: | SYMBOL=%s\n", $1); $$=$1; }
-    | expr LBRACKET NUMERIC_LITERAL RBRACKET             { printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=%s RBRACKET\n", $3); $$=$1; }
+    SYMBOL                                                        { printf("PARSER expr: | SYMBOL=%s\n", $1); $$=$1; }
+    | expr LBRACKET NUMERIC_LITERAL RBRACKET                      { printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=%s RBRACKET\n", $3); $$=$1; }
     | expr LPAREN RPAREN
     ;
 
 terminal_list:
-        terminal                                    { printf("PARSER terminal_list: | terminal=\"%s\"\n", $1); $$=$1; }
-        | terminal_list terminal                    { printf("PARSER terminal_list: | terminal_list teminal=\"%s=%s\"\n", $1, $2); $$=$2; }
+        terminal                                                  { printf("PARSER terminal_list: | terminal=\"%s\"\n", $1); $$=$1; }
+        | terminal_list terminal                                  { printf("PARSER terminal_list: | terminal_list teminal=\"%s=%s\"\n", $1, $2); $$=$2; }
         ;
 
 file_attrib:
