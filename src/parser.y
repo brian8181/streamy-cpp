@@ -37,7 +37,7 @@
 %token<sval> LBRACE RBRACE
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL PERCENT NOT_EQUAL
-%token<sval> CONFIG_LOAD SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
+%token<sval> CONFIG_LOAD INCLUDE SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
 %token CONFIG;
 %token ASSIGN ISSET
 %token FUNC
@@ -56,11 +56,9 @@ blocks:
     ;
 
 block:
-    LBRACE terminal_list RBRACE                                  { printf("PARSER block: | LBRACE terminal_list RBRACE\n"); }
-    | LBRACE expr RBRACE                                         { printf("PARSER block: | LBRACE symbols RBRACE\n"); }
-    | LBRACE CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL RBRACE {
-                                                                    printf("PARSER block: | LBRACE terminal_list RBRACE\n");
-                                                                  }
+    LBRACE           { printf("PARSER block: | LBRACE\n"); }
+    | block INCLUDE FILE_ATTRIB                                  { printf("PARSER block: | LBRACE terminal_list RBRACE\n"); }
+     ;
 
 expr:
     SYMBOL                                                        {
@@ -77,10 +75,7 @@ terminal_list:
         | terminal_list terminal                                  { printf("PARSER terminal_list: | terminal_list teminal=\"%s=%s\"\n", $1, $2); $$=$2; }
         ;
 
-file_attrib:
-    FILE_ATTRIB EQUAL STRING_LITERAL
-    | FILE_ATTRIB EQUAL SYMBOL
-    ;
+
 
 
 terminal:
@@ -108,9 +103,6 @@ terminal:
         | MINUS
         | ASTERIK
         | PERCENT
-        | NOT_EQUAL
-        | NUMERIC_LITERAL                           { printf("PARSER terminal: | NUMERIC_LITERAL=%s\n", $1); $$=$1; }
-        | STRING_LITERAL                            { printf("PARSER terminal: | STRING_LITERAL=\"%s\"\n", buf); $$=buf; }
         ;
 
 %%

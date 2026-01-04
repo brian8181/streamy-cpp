@@ -5,6 +5,14 @@
 
 #include "symtab.h"
 static node* g_head;
+static tree_node* g_map_root;
+
+void init_streamy_map_root()
+{
+    g_map_root = (tree_node*)malloc(sizeof(tree_node));
+   //g_map_rootl = &streamy_init_object;
+   //g_map_root = 0;
+}
 
 void init_streamy_symtable()
 {

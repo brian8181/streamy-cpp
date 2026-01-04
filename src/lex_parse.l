@@ -81,38 +81,38 @@ FILE_ATTRIB         file
 <INITIAL>{COMMENT}                      { printf("LEX:COMMENT\n");    /* eat up comment */                               }
 <INITIAL>{LBRACE}                       { printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED);   return LBRACE;                }
 <ESCAPED,IF_BLOCK>{RBRACE}              { printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL);   return RBRACE;                }
-<OFF>{INCLUDE}                          { printf("LEX:INCLUDE\n"); BEGIN(INCLUDING); } // turned OFF for now, need to debug!
+<ESCAPED>{INCLUDE}                      { printf("LEXBEGIN INCLUDE\n"); BEGIN(INCLUDING); return INCLUDE; }
 <ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
-<SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
-<SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
-<SINGLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
-<SINGLE_QUOTED>{SINGLE_QUOTE}           {
+<SINGLE_QUOTED,INCLUDING>\\n                      { *s++ = '\n';                                                                   }
+<SINGLE_QUOTED,INCLUDING>\\t                      { *s++ = '\t';                                                                   }
+<SINGLE_QUOTED,INCLUDING>\\\"                     { *s++ = '\"';                                                                   }
+<SINGLE_QUOTED,INCLUDING>{SINGLE_QUOTE}           {
                                             *s = 0;
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
                                             return STRING_LITERAL;
                                         }
-<SINGLE_QUOTED>[\n}]                    { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                         }
-<SINGLE_QUOTED>.                        { *s++ = *yytext;                                                                }
+<SINGLE_QUOTED,INCLUDING>[\n}]                    { printf(" LEX invalid ESCAPED,SINGLE_QUOTED,INCLUDING"); exit(1);                         }
+<SINGLE_QUOTED,INCLUDING>.                        { *s++ = *yytext;                                                                }
 <ESCAPED>{DOUBLE_QUOTE}                 { printf("LEX:BEGIN_DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf;            }
-<DOUBLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
-<DOUBLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
-<DOUBLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
-<DOUBLE_QUOTED>{DOUBLE_QUOTE}           {
+<DOUBLE_QUOTED,INCLUDING>\\n                      { *s++ = '\n';                                                                   }
+<DOUBLE_QUOTED,INCLUDING>\\t                      { *s++ = '\t';                                                                   }
+<DOUBLE_QUOTED,INCLUDING>\\\"                     { *s++ = '\"';                                                                   }
+<DOUBLE_QUOTED,INCLUDING>{DOUBLE_QUOTE}           {
                                             *s = 0;
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
                                             return STRING_LITERAL;
                                         }
-<DOUBLE_QUOTED>[\n}]                    { printf("LEX invalid newline in state DOUBLE_QUOTED\n"); exit(1);                }
-<DOUBLE_QUOTED>.                        { *s++ = *yytext;                                                                 }
+<DOUBLE_QUOTED,INCLUDING>[\n}]                    { printf("LEX invalid newline in state DOUBLE_QUOTED,INCLUDING\n"); exit(1);                }
+<DOUBLE_QUOTED,INCLUDING>.                        { *s++ = *yytext;                                                                 }
 <ESCAPED,IF_BLOCK>{NUMERIC_LITERAL}     {
                                             printf("LEX:NUMERIC_LITERAL=%s\n", yytext);
                                             yylval.sval = strdup(yytext);
                                             return NUMERIC_LITERAL;
                                         }
 <ESCAPED,IF_BLOCK>{CONFIG_LOAD}         { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;             }
-<ESCAPED,IF_BLOCK>{FILE_ATTRIB}         { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;             }
+<ESCAPED,IF_BLOCK,INCLUDING>{FILE_ATTRIB}         { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;             }
 <ESCAPED,IF_BLOCK>{NOT}                 { printf("LEX:NOT\n");                            return NOT;                     }
 <ESCAPED,IF_BLOCK>{AND}                 { printf("LEX:AND\n");                            return AND;                     }
 <ESCAPED,IF_BLOCK>{OR}                  { printf("LEX:OR\n");                             return OR;                      }
@@ -128,7 +128,7 @@ FILE_ATTRIB         file
 <ESCAPED,IF_BLOCK>{PLUS}                { printf("LEX:PLUS\n");                           return PLUS;                    }
 <ESCAPED,IF_BLOCK>{MINUS}               { printf("LEX:MINUS\n");                          return MINUS;                   }
 <ESCAPED,IF_BLOCK>{ASTERIK}             { printf("LEX:ASTERIK\n");                        return ASTERIK;                 }
-<ESCAPED,IF_BLOCK>{EQUAL}               { printf("LEX:EQUAL\n");                          return EQUAL;                   }
+<ESCAPED,IF_BLOCK,INCLUDING>{EQUAL}     { printf("LEX:EQUAL\n");                          return EQUAL;                   }
 <ESCAPED,IF_BLOCK>{NOT_EQUAL}           { printf("LEX:NOT_EQUAL\n");                      return NOT_EQUAL;               }
 <ESCAPED,IF_BLOCK>{DOT}                 { printf("LEX:DOT\n");                            return DOT;                     }
 <ESCAPED,IF_BLOCK>{INDIRECT_MEMBER}     { printf("LEX:INDIRECT_MEMBER\n");                return INDIRECT_MEMBER;         }
@@ -159,7 +159,7 @@ FILE_ATTRIB         file
                                             yylval.sval = strdup(yytext);
                                             return SYMBOL;
                                         }
-<ESCAPED,INCLUDING>[ \t]*               { /* eat the whitespace */                                                        }
+<ESCAPED,INCLUDING>[ \t]*                         { /* eat the whitespace */                                                        }
 <INCLUDING>[^ \t\n]+                    {
                                             /* got the include file name */
                                             if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )

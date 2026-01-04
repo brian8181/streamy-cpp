@@ -13,7 +13,42 @@ typedef struct node
 {
     symbol* val;
     struct node* next;
+    struct node* prev;
 } node;
+
+
+typedef struct binary_node
+{
+    void* data;
+    struct node* left;
+    struct node* right;
+} binary_node;
+
+typedef struct tree_node
+{
+    void* data;
+    int count;
+    struct tree_node* nodes;
+} tree_node;
+
+
+typedef struct map_node
+{
+    int key;
+    char*name;
+    symbol* sym;
+} map_node;
+
+typedef struct object
+{
+    char* fields[255];
+    symbol symbols[255];
+    struct node* next;
+} object;
+
+
+
+void init_streamy_map_root();
 
 void init_streamy_symtable();
 void add_symbol(const char* id_cstr, const char* val_cstr);
