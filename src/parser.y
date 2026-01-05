@@ -74,8 +74,8 @@ expr:
     ;
 
 name_value:
-    VAR_ATTRIB EQUAL STRING_LITERAL                            { printf("PARSER name_value: | VAR_ATTRIB EQULAL STRING_LITERAL=%s\n", $3); $$=$3; }
-    | FILE_ATTRIB EQUAL STRING_LITERAL                         { printf("PARSER name_value: | FILE_ATTRIB EQULAL STRING_LITERAL=%s\n", $3); $$=$3; }
+    VAR_ATTRIB EQUAL STRING_LITERAL                            { printf("PARSER name_value: | VAR_ATTRIB=%s EQULAL STRING_LITERAL=%s\n", $1, buf); $$=buf; }
+    | FILE_ATTRIB EQUAL STRING_LITERAL                         { printf("PARSER name_value: | FILE_ATTRIB=%s EQULAL STRING_LITERAL=%s\n", $1, buf); $$=buf; }
     ;
 
 %%

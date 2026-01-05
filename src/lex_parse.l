@@ -24,6 +24,7 @@ QUALAFIED_ID        {SYMBOL}(("."|"->"){IDENTIFIER})+
 FUNC                {IDENTIFIER}+[ /t]*\([^)]*\)
 ARRAY               {SYMBOL}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
+FILE_NAME           [A-Za-z0-9_.-~+#@]
 IF                  if
 END_IF              "\{/if\}"
 FOREACH             foreach
@@ -84,7 +85,7 @@ VALUE_ATTRIB        value
 <OFF>{COMMENT}                          { printf("LEX:COMMENT\n");    /* eat up comment */                               }
 <INITIAL>{LBRACE}                       { printf("LEX:LBRACE\n"); printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED); return LBRACE; }
 <ESCAPED>{RBRACE}                       { printf("LEX:RBRACE\n");  printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL); return RBRACE; }
-<ESCAPED>{INCLUDE}                      { printf("LEX:BEGIN INCLUDE\n"); /*BEGIN(INCLUDING);*/ printf("LEX:INCLUDE\n"); yylval.sval = yytext; return INCLUDE; }
+<ESCAPED>{INCLUDE}                      { printf("LEX:BEGIN INCLUDE\n"); /*BEGIN(INCLUDING);*/ printf("LEX:INCLUDE\n"); yylval.sval = strdup(yytext); return INCLUDE; }
 <ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
 <SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
@@ -95,34 +96,36 @@ VALUE_ATTRIB        value
                                             printf("LEX:SINGLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
+                                            //yylval.sval = strdup(yytext);
                                             return STRING_LITERAL;
                                         }
-<SINGLE_QUOTED>[\n}]                    { printf(" LEX invalid ESCAPED,SINGLE_QUOTED"); exit(1);                         }
-<SINGLE_QUOTED>.                        { *s++ = *yytext;                                                                }
+<SINGLE_QUOTED>[\n}]                    { printf("LEX: missing closing quote"); exit(1);                                 }
+<SINGLE_QUOTED>{FILE_NAME}              { *s++ = *yytext;                                                                }
 <ESCAPED>{DOUBLE_QUOTE}                 { printf("LEX:BEGIN_DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf;            }
 <DOUBLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <DOUBLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
-<DOUBLE_QUOTED>\\\"                     { *s++ = '\"';                                                                   }
+<DOUBLE_QUOTED>\\\'                     { *s++ = '\'';                                                                   }
 <DOUBLE_QUOTED>{DOUBLE_QUOTE}           {
                                             printf("LEX:STRING_LITERAL=%s\n", s);
                                             *s = 0;
                                             printf("LEX:DOUBLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
+                                            //yylval.sval = strdup(yytext);
                                             return STRING_LITERAL;
                                         }
-<DOUBLE_QUOTED>[\n}]                    { printf("LEX invalid newline in state DOUBLE_QUOTED\n"); exit(1);                }
-<DOUBLE_QUOTED>.                        { *s++ = *yytext;                                                                 }
+<DOUBLE_QUOTED>[\n}]                    { printf("LEX: missing closing quote\n"); exit(1);                                }
+<DOUBLE_QUOTED>{FILE_NAME}              { *s++ = *yytext;                                                                 }
 <ESCAPED>{NUMERIC_LITERAL}              {
                                             printf("LEX:NUMERIC_LITERAL=%s\n", yytext);
                                             yylval.sval = strdup(yytext);
                                             return NUMERIC_LITERAL;
                                         }
-<ESCAPED>{ASSIGN}                       { printf("LEX:ASSIGN\n"); yylval.sval = yytext;       return ASSIGN;              }
-<ESCAPED>{CONFIG_LOAD}                  { printf("LEX:CONFIG_LOAD\n"); yylval.sval = yytext;  return CONFIG_LOAD;         }
-<ESCAPED>{FILE_ATTRIB}                  { printf("LEX:FILE_ATTRIB\n"); yylval.sval = yytext;  return FILE_ATTRIB;         }
-<ESCAPED>{VAR_ATTRIB}                   { printf("LEX:VAR_ATTRIB\n"); yylval.sval = yytext;   return VAR_ATTRIB;          }
-<ESCAPED>{VALUE_ATTRIB}                 { printf("LEX:VALUE_ATTRIB\n"); yylval.sval = yytext; return VALUE_ATTRIB;        }
+<ESCAPED>{ASSIGN}                       { printf("LEX:ASSIGN\n"); yylval.sval = strdup(yytext);       return ASSIGN;              }
+<ESCAPED>{CONFIG_LOAD}                  { printf("LEX:CONFIG_LOAD\n"); yylval.sval = strdup(yytext);  return CONFIG_LOAD;         }
+<ESCAPED>{FILE_ATTRIB}                  { printf("LEX:FILE_ATTRIB\n"); yylval.sval = strdup(yytext);  return FILE_ATTRIB;         }
+<ESCAPED>{VAR_ATTRIB}                   { printf("LEX:VAR_ATTRIB\n"); yylval.sval = strdup(yytext);   return VAR_ATTRIB;          }
+<ESCAPED>{VALUE_ATTRIB}                 { printf("LEX:VALUE_ATTRIB\n"); yylval.sval = strdup(yytext); return VALUE_ATTRIB;        }
 <ESCAPED>{NOT}                          { printf("LEX:NOT\n");                            return NOT;                     }
 <ESCAPED>{AND}                          { printf("LEX:AND\n");                            return AND;                     }
 <ESCAPED>{OR}                           { printf("LEX:OR\n");                             return OR;                      }
@@ -162,8 +165,8 @@ VALUE_ATTRIB        value
 <ESCAPED>{END_ELSEIF}                   { printf("LEX:END_ELSEIF\n"); BEGIN(ESCAPED);      } // return ELSEIF;            }
 <ESCAPED>{END_FOREACHELSE}              { printf("LEX:FOREACHELSE\n"); BEGIN(ESCAPED);     } // return FOREACHELSE;       }
 <ESCAPED>{END_FOREACH}                  { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;           }
-<ESCAPED>{CONST_ID}                     { printf("LEX:[CONST_ID:%s]\n", yytext); yylval.sval = yytext; return CONST_ID;   }
-<ESCAPED>{FUNC}                         { printf("LEX:[FUNC:%s]\n", yytext); yylval.sval = yytext; return FUNC;           }
+<ESCAPED>{CONST_ID}                     { printf("LEX:[CONST_ID:%s]\n", yytext); yylval.sval = strdup(yytext); return CONST_ID;   }
+<ESCAPED>{FUNC}                         { printf("LEX:[FUNC:%s]\n", yytext); yylval.sval = strdup(yytext); return FUNC;           }
 <ESCAPED>{SYMBOL}                       {
                                             printf("LEX:[SYMBOL:%s]\n", yytext);
                                             yylval.sval = strdup(yytext);

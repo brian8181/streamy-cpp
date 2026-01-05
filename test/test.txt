@@ -1,6 +1,6 @@
 Start ...
 {$abc}
 {$xyz}
-{assign var="test"}
-{include file="file_name.txt"}
+{assign var="test\'a\'"}
+{include file="filename.txt"}
 ... End
