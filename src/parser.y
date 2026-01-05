@@ -39,15 +39,22 @@
 %token<sval> CONFIG_LOAD INCLUDE SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
 %token CONFIG;
 %token ASSIGN ISSET
+%token<sval> VAR_ATTRIB
+%token<sval> VALUE_ATTRIB
 %token FUNC
 %token END_OF_FILE
 %start file;
 
 %%
 
-file:
+file: {
+            printf( "\n*** RUN ***\n" );
+            printf("Terminate listing with ; to see parsed AST\n");
+            printf("Terminate parser with Ctrl-D ... \n*********** \n\n");
+            /* cout << endl << "prompt> "; */
+        }
         blocks END_OF_FILE                                      { printf("PARSER file: | blocks END_OF_FILE\n"); exit(0); }
-               ;
+        ;
 
 blocks:
     block                                                       { printf("PARSER blocks: | block\n"); }
@@ -65,6 +72,10 @@ expr:
     | expr LPAREN RPAREN                                        { printf("PARSER expr: | expr LPAREN RPAREN\n"); $$=$1; }
     ;
 
+name_value:
+    VAR_ATTRIB EQUAL STRING_LITERAL                            { printf("PARSER name_value: | VAR_ATTRIB EQULAL STRING_LITERALk\n"); }
+    | FILE_ATTRIB EQUAL STRING_LITERAL                          { printf("PARSER name_value: | FILE_ATTRIB EQULAL STRING_LITERAL\n"); }
+
 %%
 
 int yyerror(char * s)
@@ -76,7 +87,6 @@ int yyerror(char * s)
 int main(int argc, char** argv)
 {
     //init_streamy_symtable();
-    printf("parsing ...\n");
     extern FILE *yyin;
     if (argc > 0)
     {

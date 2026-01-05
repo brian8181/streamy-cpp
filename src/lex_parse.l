@@ -69,6 +69,8 @@ INCLUDE             include
 CONFIG_LOAD         config_load
 FILE_ATTRIB         file
 ASSIGN              assign
+VAR_ATTRIB          var
+VALUE_ATTRIB         value
 
 %x DOUBLE_QUOTED
 %x SINGLE_QUOTED
@@ -119,6 +121,8 @@ ASSIGN              assign
 <ESCAPED>{ASSIGN}                       { printf("LEX:ASSIGN\n");                         return ASSIGN;             }
 <ESCAPED>{CONFIG_LOAD}                  { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;             }
 <ESCAPED>{FILE_ATTRIB}                  { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;             }
+<ESCAPED>{VAR_ATTRIB}                   { printf("LEX:VAR_ATTRIB\n");                     return VAR_ATTRIB;             }
+<ESCAPED>{VALUE_ATTRIB}                 { printf("LEX:VALUE_ATTRIB\n");                    return VALUE_ATTRIB;             }
 <ESCAPED>{NOT}                          { printf("LEX:NOT\n");                            return NOT;                     }
 <ESCAPED>{AND}                          { printf("LEX:AND\n");                            return AND;                     }
 <ESCAPED>{OR}                           { printf("LEX:OR\n");                             return OR;                      }
