@@ -21,7 +21,7 @@ CXXWARN=-Waddress -Waligned-new -Warray-compare -Warray-parameter=2 -Wbool-compa
 
 
 CXX=g++
-CXXFLAGS=-ggdb -DDEBUG -std=c++20 $(CXXWARN)
+CXXFLAGS=-ggdb -DDEBUG -std=c++20 -Wall # $(CXXWARN)
 CC=gcc
 CCFLAGS=-ggdb -std=c99 -DDEBUG
 LEX=flex
@@ -46,7 +46,7 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: copy_headers $(BLD)/parser $(BLD)/lex $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)/parser++
+all: $(BLD)/parser $(BLD)/lex $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)/parser++
 
 # parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
 $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex_parse.yy.h $(BLD)/lex_parse.yy.c $(OBJ)/symtab.o
@@ -56,7 +56,7 @@ $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex_parse.yy.h $(B
 $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/bash_color.h: $(SRC)/parser.y #$(SRC)/bash_color.h
 	@ echo -e "\nGererating \"parser\" ...\n"
 	$(YACC) -Wcounterexamples --header $^ -o $@
-	cp $(SRC)/bash_color.h $(BLD)/
+	cp $(SRC)/*.h $(BLD)/
 
 # CC lexer
 $(BLD)/lex_parse.yy.c $(BLD)/lex_parse.yy.h: $(SRC)/lex_parse.l

@@ -1,6 +1,5 @@
 Start ...
-{include file="t1.txt"}
-{$X[12]}
 {$abc}
-{$foo()}
+{$xyz}
+{assign}
 ... End

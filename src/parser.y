@@ -22,7 +22,6 @@
 
 
 %type block
-%type<sval> terminal terminal_list file_attrib
 %type<sval> expr
 %token<sval> SYMBOL NUMBER
 %token<sval> DOT INDIRECT_MEMBER
@@ -47,63 +46,24 @@
 %%
 
 file:
-        blocks END_OF_FILE                                       { printf("PARSER file: | blocks END_OF_FILE\n"); exit(0); }
+        blocks END_OF_FILE                                      { printf("PARSER file: | blocks END_OF_FILE\n"); exit(0); }
                ;
 
 blocks:
-    block                                                        { printf("PARSER blocks: | block\n"); }
-    | blocks block                                               { printf("PARSER blocks: | blocks block\n"); }
+    block                                                       { printf("PARSER blocks: | block\n"); }
+    | blocks block                                              { printf("PARSER blocks: | blocks block\n"); }
     ;
 
 block:
-    LBRACE           { printf("PARSER block: | LBRACE\n"); }
-    | block INCLUDE FILE_ATTRIB                                  { printf("PARSER block: | LBRACE terminal_list RBRACE\n"); }
-     ;
+    LBRACE expr RBRACE                                         {  printf("PARSER block: | LBRACE expr RBRACE\n"); }
 
 expr:
-    SYMBOL                                                        {
-                                                                    printf("PARSER expr: | SYMBOL=%s\n", $1);
-                                                                    $$=$1;
+    SYMBOL                                                      { printf("PARSER expr: | SYMBOL=%s\n", $1); $$=$1; }
+    | ASSIGN                                                    { printf("PARSER expr: | ASSIGN\n"); }
 
-                                                                }
-    | expr LBRACKET NUMERIC_LITERAL RBRACKET                      { printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=%s RBRACKET\n", $3); $$=$1; }
-    | expr LPAREN RPAREN                                             { printf("PARSER expr: | expr LPAREN RPAREN\n"); $$=$1; }
+    | expr LBRACKET NUMERIC_LITERAL RBRACKET                    { printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=%s RBRACKET\n", $3); $$=$1; }
+    | expr LPAREN RPAREN                                        { printf("PARSER expr: | expr LPAREN RPAREN\n"); $$=$1; }
     ;
-
-terminal_list:
-        terminal                                                  { printf("PARSER terminal_list: | terminal=\"%s\"\n", $1); $$=$1; }
-        | terminal_list terminal                                  { printf("PARSER terminal_list: | terminal_list teminal=\"%s=%s\"\n", $1, $2); $$=$2; }
-        ;
-
-
-
-
-terminal:
-        IF
-        | END_IF
-        | ELSE
-        | FOREACH
-        | FOREACHELSE
-        | ELSEIF
-        | SEMI_COLON
-        | COLON
-        | SLASH
-        | BACK_SLASH
-        | VBAR
-        | AT
-        | AMPERSAND
-        | AND
-        | OR
-        | NOT
-        | LESS_THAN
-        | LESS_THAN_EQUAL
-        | GREATER_THAN
-        | GREATER_THAN_EQUAL
-        | PLUS
-        | MINUS
-        | ASTERIK
-        | PERCENT
-        ;
 
 %%
 
@@ -115,7 +75,7 @@ int yyerror(char * s)
 
 int main(int argc, char** argv)
 {
-    init_streamy_symtable();
+    //init_streamy_symtable();
     printf("parsing ...\n");
     extern FILE *yyin;
     if (argc > 0)
