@@ -70,7 +70,7 @@ CONFIG_LOAD         config_load
 FILE_ATTRIB         file
 ASSIGN              assign
 VAR_ATTRIB          var
-VALUE_ATTRIB         value
+VALUE_ATTRIB        value
 
 %x DOUBLE_QUOTED
 %x SINGLE_QUOTED
@@ -84,7 +84,7 @@ VALUE_ATTRIB         value
 <OFF>{COMMENT}                          { printf("LEX:COMMENT\n");    /* eat up comment */                               }
 <INITIAL>{LBRACE}                       { printf("LEX:LBRACE\n"); printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED); return LBRACE; }
 <ESCAPED>{RBRACE}                       { printf("LEX:RBRACE\n");  printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL); return RBRACE; }
-<OFF>{INCLUDE}                          { printf("LEX:BEGIN INCLUDE\n"); BEGIN(INCLUDING); printf("LEX:INCLUDE\n"); return INCLUDE; }
+<ESCAPED>{INCLUDE}                  { printf("LEX:BEGIN INCLUDE\n"); /*BEGIN(INCLUDING);*/ printf("LEX:INCLUDE\n"); yylval.sval = yytext; return INCLUDE; }
 <ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
 <SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
@@ -118,11 +118,11 @@ VALUE_ATTRIB         value
                                             yylval.sval = strdup(yytext);
                                             return NUMERIC_LITERAL;
                                         }
-<ESCAPED>{ASSIGN}                       { printf("LEX:ASSIGN\n");                         return ASSIGN;                  }
-<ESCAPED>{CONFIG_LOAD}                  { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;             }
-<ESCAPED>{FILE_ATTRIB}                  { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;             }
-<ESCAPED>{VAR_ATTRIB}                   { printf("LEX:VAR_ATTRIB\n");                     return VAR_ATTRIB;              }
-<ESCAPED>{VALUE_ATTRIB}                 { printf("LEX:VALUE_ATTRIB\n");                    return VALUE_ATTRIB;           }
+<ESCAPED>{ASSIGN}                       { printf("LEX:ASSIGN\n"); yylval.sval = yytext;   return ASSIGN;                  }
+<ESCAPED>{CONFIG_LOAD}                  { printf("LEX:CONFIG_LOAD\n"); yylval.sval = yytext;  return CONFIG_LOAD;             }
+<ESCAPED>{FILE_ATTRIB}                  { printf("LEX:FILE_ATTRIB\n"); yylval.sval = yytext;  return FILE_ATTRIB;             }
+<ESCAPED>{VAR_ATTRIB}                   { printf("LEX:VAR_ATTRIB\n"); yylval.sval = yytext;   return VAR_ATTRIB;              }
+<ESCAPED>{VALUE_ATTRIB}                 { printf("LEX:VALUE_ATTRIB\n"); yylval.sval = yytext; return VALUE_ATTRIB;           }
 <ESCAPED>{NOT}                          { printf("LEX:NOT\n");                            return NOT;                     }
 <ESCAPED>{AND}                          { printf("LEX:AND\n");                            return AND;                     }
 <ESCAPED>{OR}                           { printf("LEX:OR\n");                             return OR;                      }

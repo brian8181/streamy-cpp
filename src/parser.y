@@ -23,6 +23,7 @@
 
 %type block
 %type<sval> expr
+%type<sval> name_value
 %token<sval> SYMBOL NUMBER
 %token<sval> DOT INDIRECT_MEMBER
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
@@ -37,7 +38,7 @@
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD INCLUDE SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
-%token CONFIG;
+%token CONFIG
 %token ASSIGN ISSET
 %token<sval> VAR_ATTRIB
 %token<sval> VALUE_ATTRIB
@@ -51,7 +52,6 @@ file: {
             printf( "\n*** RUN ***\n" );
             printf("Terminate listing with ; to see parsed AST\n");
             printf("Terminate parser with Ctrl-D ... \n*********** \n\n");
-            /* cout << endl << "prompt> "; */
         }
         blocks END_OF_FILE                                      { printf("PARSER file: | blocks END_OF_FILE\n"); exit(0); }
         ;
@@ -62,19 +62,21 @@ blocks:
     ;
 
 block:
-    LBRACE expr RBRACE                                         {  printf("PARSER block: | LBRACE expr RBRACE\n"); }
+    LBRACE expr RBRACE                                          { printf("PARSER block: | LBRACE expr RBRACE\n"); }
+    ;
 
 expr:
     SYMBOL                                                      { printf("PARSER expr: | SYMBOL=%s\n", $1); $$=$1; }
-    | ASSIGN                                                    { printf("PARSER expr: | ASSIGN\n"); }
-
+    | ASSIGN name_value                                         { printf("PARSER expr: | ASSIGN name_value=%s\n", $2); $$=$2; }
+    | INCLUDE name_value                                        { printf("PARSER expr: | INCLUDE name_value=%s\n", $2); $$=$2; }
     | expr LBRACKET NUMERIC_LITERAL RBRACKET                    { printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=%s RBRACKET\n", $3); $$=$1; }
     | expr LPAREN RPAREN                                        { printf("PARSER expr: | expr LPAREN RPAREN\n"); $$=$1; }
     ;
 
 name_value:
-    VAR_ATTRIB EQUAL STRING_LITERAL                            { printf("PARSER name_value: | VAR_ATTRIB EQULAL STRING_LITERALk\n"); }
-    | FILE_ATTRIB EQUAL STRING_LITERAL                          { printf("PARSER name_value: | FILE_ATTRIB EQULAL STRING_LITERAL\n"); }
+    VAR_ATTRIB EQUAL STRING_LITERAL                            { printf("PARSER name_value: | VAR_ATTRIB EQULAL STRING_LITERAL=%s\n", $3); $$=$3; }
+    | FILE_ATTRIB EQUAL STRING_LITERAL                         { printf("PARSER name_value: | FILE_ATTRIB EQULAL STRING_LITERAL=%s\n", $3); $$=$3; }
+    ;
 
 %%
 

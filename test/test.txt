@@ -2,4 +2,5 @@ Start ...
 {$abc}
 {$xyz}
 {assign var="test"}
+{include file="file_name.txt"}
 ... End
