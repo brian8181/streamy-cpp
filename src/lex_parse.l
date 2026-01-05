@@ -84,7 +84,7 @@ VALUE_ATTRIB        value
 <OFF>{COMMENT}                          { printf("LEX:COMMENT\n");    /* eat up comment */                               }
 <INITIAL>{LBRACE}                       { printf("LEX:LBRACE\n"); printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED); return LBRACE; }
 <ESCAPED>{RBRACE}                       { printf("LEX:RBRACE\n");  printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL); return RBRACE; }
-<ESCAPED>{INCLUDE}                  { printf("LEX:BEGIN INCLUDE\n"); /*BEGIN(INCLUDING);*/ printf("LEX:INCLUDE\n"); yylval.sval = yytext; return INCLUDE; }
+<ESCAPED>{INCLUDE}                      { printf("LEX:BEGIN INCLUDE\n"); /*BEGIN(INCLUDING);*/ printf("LEX:INCLUDE\n"); yylval.sval = yytext; return INCLUDE; }
 <ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
 <SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
@@ -118,11 +118,11 @@ VALUE_ATTRIB        value
                                             yylval.sval = strdup(yytext);
                                             return NUMERIC_LITERAL;
                                         }
-<ESCAPED>{ASSIGN}                       { printf("LEX:ASSIGN\n"); yylval.sval = yytext;   return ASSIGN;                  }
-<ESCAPED>{CONFIG_LOAD}                  { printf("LEX:CONFIG_LOAD\n"); yylval.sval = yytext;  return CONFIG_LOAD;             }
-<ESCAPED>{FILE_ATTRIB}                  { printf("LEX:FILE_ATTRIB\n"); yylval.sval = yytext;  return FILE_ATTRIB;             }
-<ESCAPED>{VAR_ATTRIB}                   { printf("LEX:VAR_ATTRIB\n"); yylval.sval = yytext;   return VAR_ATTRIB;              }
-<ESCAPED>{VALUE_ATTRIB}                 { printf("LEX:VALUE_ATTRIB\n"); yylval.sval = yytext; return VALUE_ATTRIB;           }
+<ESCAPED>{ASSIGN}                       { printf("LEX:ASSIGN\n"); yylval.sval = yytext;       return ASSIGN;              }
+<ESCAPED>{CONFIG_LOAD}                  { printf("LEX:CONFIG_LOAD\n"); yylval.sval = yytext;  return CONFIG_LOAD;         }
+<ESCAPED>{FILE_ATTRIB}                  { printf("LEX:FILE_ATTRIB\n"); yylval.sval = yytext;  return FILE_ATTRIB;         }
+<ESCAPED>{VAR_ATTRIB}                   { printf("LEX:VAR_ATTRIB\n"); yylval.sval = yytext;   return VAR_ATTRIB;          }
+<ESCAPED>{VALUE_ATTRIB}                 { printf("LEX:VALUE_ATTRIB\n"); yylval.sval = yytext; return VALUE_ATTRIB;        }
 <ESCAPED>{NOT}                          { printf("LEX:NOT\n");                            return NOT;                     }
 <ESCAPED>{AND}                          { printf("LEX:AND\n");                            return AND;                     }
 <ESCAPED>{OR}                           { printf("LEX:OR\n");                             return OR;                      }
@@ -144,8 +144,8 @@ VALUE_ATTRIB        value
 <ESCAPED>{INDIRECT_MEMBER}              { printf("LEX:INDIRECT_MEMBER\n");                return INDIRECT_MEMBER;         }
 <ESCAPED>{PERCENT}                      { printf("LEX:PERCENT\n");                        return PERCENT;                 }
 <ESCAPED>{COLON}                        { printf("LEX:COLON\n");                          return COLON;                   }
-<ESCAPED>{LBRACKET}                     { printf("LEX:LBRACKET\n");  return LBRACKET;                }
-<ESCAPED>{RBRACKET}                     { printf("LEX:RBRACKET\n");  return RBRACKET;                }
+<ESCAPED>{LBRACKET}                     { printf("LEX:LBRACKET\n");  return LBRACKET;                                     }
+<ESCAPED>{RBRACKET}                     { printf("LEX:RBRACKET\n");  return RBRACKET;                                     }
 <ESCAPED>{LPAREN}                       { printf("LEX:LPAREN\n");                         return LPAREN;                  }
 <ESCAPED>{RPAREN}                       { printf("LEX:RPAREN\n");                         return RPAREN;                  }
 <ESCAPED>{SEMI_COLON}                   { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;              }
