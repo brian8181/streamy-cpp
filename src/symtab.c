@@ -7,6 +7,13 @@
 static node* g_head;
 static tree_node* g_map_root;
 
+//typedef struct symbol_tab 
+//{
+//    symbol *head;
+//} symbol_tab;
+//
+//symbol_tab* symtab;
+
 void init_streamy_map_root()
 {
     g_map_root = (tree_node*)malloc(sizeof(tree_node));
@@ -26,6 +33,10 @@ void init_streamy_symtable()
    g_head->val = &streamy_init_object;
    g_head->next = 0;
 }
+
+//void add_symbol(symbol_tab *sym_tab, symbol *sym)
+//{
+//}
 
 void add_symbol(const char* id_cstr, const char* val_cstr)
 {

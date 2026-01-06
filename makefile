@@ -54,7 +54,7 @@ $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex_parse.yy.h $(B
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
 $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/bash_color.h: $(SRC)/parser.y #$(SRC)/bash_color.h
-	@ echo -e "\nGererating \"parser\" ...\n"
+	@echo -e "\nGererating \"parser\" ...\n"
 	$(YACC) -Wcounterexamples --header $^ -o $@
 	cp $(SRC)/*.h $(BLD)/
 
@@ -72,7 +72,7 @@ $(BLD)/parser_test: $(BLD)/parser_test.tab.h $(BLD)/parser_test.tab.c $(BLD)/lex
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
 $(BLD)/parser_test.tab.c $(BLD)/parser_test.tab.h: $(SRC)/parser_test.y #$(SRC)/bash_color.h
-	@ echo -e "\nGererating \"parser_test\" ...\n"
+	@echo -e "\nGererating \"parser_test\" ...\n"
 	$(YACC) -Wcounterexamples --header $^ -o $@
 	cp $(SRC)/bash_color.h $(BLD)/
 

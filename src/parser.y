@@ -12,6 +12,19 @@
     /* string literal buffer */
     char buf[100];
     char *s;
+
+    //typdef struct ASTNode 
+    //{
+    //    char* value;
+    //    struct ASTNode** children;
+    //    int child_count;
+	//} ASTNode;
+
+    //typedef struct AST 
+    //{
+	//	ASTNode* root;
+	//} AST;
+    
 %}
 
 %union
