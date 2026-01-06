@@ -37,22 +37,21 @@
 %token<sval> LBRACE RBRACE
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL PERCENT NOT_EQUAL
-%token<sval> CONFIG_LOAD INCLUDE SECTION LDELIM RDELIM VERSION CYCLE COUNTER FILE_NAME FILE_ATTRIB
+%token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT SECTION LDELIM RDELIM VERSION CYCLE COUNTER
 %token CONFIG
 %token ASSIGN ISSET
-%token<sval> VAR_ATTRIB
-%token<sval> VALUE_ATTRIB
+%token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME ATTRIB_VALUE
 %token FUNC
 %token END_OF_FILE
 %start file;
 
 %%
 
-file: {
-            printf( "\n*** RUN ***\n" );
-            printf("Terminate listing with ; to see parsed AST\n");
-            printf("Terminate parser with Ctrl-D ... \n*********** \n\n");
-        }
+file:                                                           {
+                                                                    printf( "\n*** RUN ***\n" );
+                                                                    printf("Terminate listing with ; to see parsed AST\n");
+                                                                    printf("Terminate parser with Ctrl-D ... \n*********** \n\n");
+                                                                }
         blocks END_OF_FILE                                      { printf("PARSER file: | blocks END_OF_FILE\n"); exit(0); }
         ;
 
@@ -66,16 +65,24 @@ block:
     ;
 
 expr:
-    SYMBOL                                                      { printf("PARSER expr: | SYMBOL=%s\n", $1); $$=$1; }
-    | ASSIGN name_value                                         { printf("PARSER expr: | ASSIGN name_value=%s\n", $2); $$=$2; }
-    | INCLUDE name_value                                        { printf("PARSER expr: | INCLUDE name_value=%s\n", $2); $$=$2; }
-    | expr LBRACKET NUMERIC_LITERAL RBRACKET                    { printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=%s RBRACKET\n", $3); $$=$1; }
+    SYMBOL                                                      { printf("PARSER expr: | SYMBOL=\"%s\"\n", $1); $$=$1; }
+    | CONFIG_LOAD name_value                                    { printf("PARSER expr: | CONFIG_LOAD name_value=\"%s\"\n", $2); $$=$2; }
+    | ASSIGN VAR_ATTRIB EQUAL STRING_LITERAL                    {
+                                                                    printf("PARSER expr: | ASSIGN VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $2, buf);
+                                                                    if(!find_symbol($2))
+                                                                        add_symbol($2, buf);
+                                                                    $$=buf;
+                                                                }
+    | INCLUDE name_value                                        { printf("PARSER expr: | INCLUDE name_value=\"%s\"\n", $2); $$=$2; }
+    | REQUIRE name_value                                        { printf("PARSER expr: | REQUIRE name_value=\"%s\"\n", $2); $$=$2; }
+    | INSERT name_value                                         { printf("PARSER expr: | INSERT name_value=\"%s\"\n", $2); $$=$2; }
+    | expr LBRACKET NUMERIC_LITERAL RBRACKET                    { printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=\"%s\" RBRACKET\n", $3); $$=$1; }
     | expr LPAREN RPAREN                                        { printf("PARSER expr: | expr LPAREN RPAREN\n"); $$=$1; }
     ;
 
 name_value:
-    VAR_ATTRIB EQUAL STRING_LITERAL                            { printf("PARSER name_value: | VAR_ATTRIB=%s EQULAL STRING_LITERAL=%s\n", $1, buf); $$=buf; }
-    | FILE_ATTRIB EQUAL STRING_LITERAL                         { printf("PARSER name_value: | FILE_ATTRIB=%s EQULAL STRING_LITERAL=%s\n", $1, buf); $$=buf; }
+    VALUE_ATTRIB EQUAL STRING_LITERAL                        { printf("PARSER name_value: | VALUE_ATTRIB=\"%s\" EQULAL STRING_LITERAL=\"%s\"\n", $1, buf); $$=buf; }
+    | FILE_ATTRIB EQUAL STRING_LITERAL                         { printf("PARSER name_value: | FILE_ATTRIB=\"%s\" EQULAL STRING_LITERAL=\"%s\"\n", $1, buf); $$=buf; }
     ;
 
 %%
@@ -88,7 +95,7 @@ int yyerror(char * s)
 
 int main(int argc, char** argv)
 {
-    //init_streamy_symtable();
+    init_streamy_symtable();
     extern FILE *yyin;
     if (argc > 0)
     {

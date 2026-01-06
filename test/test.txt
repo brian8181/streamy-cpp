@@ -1,6 +1,8 @@
 Start ...
+{config_load file="config.txt"}
 {$abc}
 {$xyz}
-{assign var="test\'a\'"}
+{assign var="test"}
 {include file="filename.txt"}
+{insert file="filename2.txt"}
 ... End

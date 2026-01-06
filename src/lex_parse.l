@@ -68,6 +68,7 @@ GREATER_THAN_EQUAL  ">="
 NUMERIC_LITERAL     [0-9]+
 INCLUDE             include
 CONFIG_LOAD         config_load
+INSERT              insert
 FILE_ATTRIB         file
 ASSIGN              assign
 VAR_ATTRIB          var
@@ -123,6 +124,7 @@ VALUE_ATTRIB        value
                                         }
 <ESCAPED>{ASSIGN}                       { printf("LEX:ASSIGN\n"); yylval.sval = strdup(yytext);       return ASSIGN;              }
 <ESCAPED>{CONFIG_LOAD}                  { printf("LEX:CONFIG_LOAD\n"); yylval.sval = strdup(yytext);  return CONFIG_LOAD;         }
+<ESCAPED>{INSERT}                       { printf("LEX:INSERT\n"); yylval.sval = strdup(yytext);  return INSERT;         }
 <ESCAPED>{FILE_ATTRIB}                  { printf("LEX:FILE_ATTRIB\n"); yylval.sval = strdup(yytext);  return FILE_ATTRIB;         }
 <ESCAPED>{VAR_ATTRIB}                   { printf("LEX:VAR_ATTRIB\n"); yylval.sval = strdup(yytext);   return VAR_ATTRIB;          }
 <ESCAPED>{VALUE_ATTRIB}                 { printf("LEX:VALUE_ATTRIB\n"); yylval.sval = strdup(yytext); return VALUE_ATTRIB;        }
@@ -141,7 +143,7 @@ VALUE_ATTRIB        value
 <ESCAPED>{PLUS}                         { printf("LEX:PLUS\n");                           return PLUS;                    }
 <ESCAPED>{MINUS}                        { printf("LEX:MINUS\n");                          return MINUS;                   }
 <ESCAPED>{ASTERIK}                      { printf("LEX:ASTERIK\n");                        return ASTERIK;                 }
-<ESCAPED>{EQUAL}                        { printf("LEX:EQUAL\n");                          return EQUAL;                   }
+<ESCAPED>{EQUAL}                        { printf("LEX:EQUAL\n"); return EQUAL;                   }
 <ESCAPED>{NOT_EQUAL}                    { printf("LEX:NOT_EQUAL\n");                      return NOT_EQUAL;               }
 <ESCAPED>{DOT}                          { printf("LEX:DOT\n");                            return DOT;                     }
 <ESCAPED>{INDIRECT_MEMBER}              { printf("LEX:INDIRECT_MEMBER\n");                return INDIRECT_MEMBER;         }
