@@ -67,6 +67,7 @@ GREATER_THAN        ">"
 GREATER_THAN_EQUAL  ">="
 NUMERIC_LITERAL     [0-9]+
 INCLUDE             include
+REQUIRE             require
 CONFIG_LOAD         config_load
 INSERT              insert
 FILE_ATTRIB         file
@@ -83,10 +84,10 @@ VALUE_ATTRIB        value
 %x OFF
 %%
 
-<OFF>{COMMENT}                          { printf("LEX:COMMENT\n");    /* eat up comment */                               }
+<INITIAL>{COMMENT}                      { printf("LEX:COMMENT\n");    /* eat up comment */                               }
 <INITIAL>{LBRACE}                       { printf("LEX:LBRACE\n"); printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED); return LBRACE; }
 <ESCAPED>{RBRACE}                       { printf("LEX:RBRACE\n");  printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL); return RBRACE; }
-<ESCAPED>{INCLUDE}                      { printf("LEX:BEGIN INCLUDE\n"); /*BEGIN(INCLUDING);*/ printf("LEX:INCLUDE\n"); yylval.sval = strdup(yytext); return INCLUDE; }
+<ESCAPED>{INCLUDE}                      { printf("LEX:INCLUDE\n"); /*printf("LEX:BEGIN INCLUDE\n"); BEGIN(INCLUDING);*/ yylval.sval = strdup(yytext); return INCLUDE; }
 <ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;            }
 <SINGLE_QUOTED>\\n                      { *s++ = '\n';                                                                   }
 <SINGLE_QUOTED>\\t                      { *s++ = '\t';                                                                   }
@@ -97,7 +98,6 @@ VALUE_ATTRIB        value
                                             printf("LEX:SINGLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
-                                            //yylval.sval = strdup(yytext);
                                             return STRING_LITERAL;
                                         }
 <SINGLE_QUOTED>[\n}]                    { printf("LEX: missing closing quote"); exit(1);                                 }
@@ -112,7 +112,6 @@ VALUE_ATTRIB        value
                                             printf("LEX:DOUBLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
-                                            //yylval.sval = strdup(yytext);
                                             return STRING_LITERAL;
                                         }
 <DOUBLE_QUOTED>[\n}]                    { printf("LEX: missing closing quote\n"); exit(1);                                }
@@ -123,6 +122,7 @@ VALUE_ATTRIB        value
                                             return NUMERIC_LITERAL;
                                         }
 <ESCAPED>{ASSIGN}                       { printf("LEX:ASSIGN\n"); yylval.sval = strdup(yytext);       return ASSIGN;              }
+<ESCAPED>{REQUIRE}                      { printf("LEX:REQUIRE\n"); yylval.sval = strdup(yytext);       return REQUIRE;            }
 <ESCAPED>{CONFIG_LOAD}                  { printf("LEX:CONFIG_LOAD\n"); yylval.sval = strdup(yytext);  return CONFIG_LOAD;         }
 <ESCAPED>{INSERT}                       { printf("LEX:INSERT\n"); yylval.sval = strdup(yytext);  return INSERT;         }
 <ESCAPED>{FILE_ATTRIB}                  { printf("LEX:FILE_ATTRIB\n"); yylval.sval = strdup(yytext);  return FILE_ATTRIB;         }

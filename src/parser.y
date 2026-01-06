@@ -30,18 +30,11 @@
 %token<sval> IDENTIFIER CONST_ID QUALAFIED_ID
 %token<sval> IF END_IF ELSE END_ELSE ELSEIF END_ELSEIF
 %token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
-%token<sval> LBRACKET
-%token<sval> RBRACKET
-%token<sval> LPAREN
-%token<sval> RPAREN
-%token<sval> LBRACE RBRACE
+%token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL PERCENT NOT_EQUAL
-%token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT SECTION LDELIM RDELIM VERSION CYCLE COUNTER
-%token CONFIG
-%token ASSIGN ISSET
-%token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME ATTRIB_VALUE
-%token FUNC
+%token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
+%token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
 %token END_OF_FILE
 %start file;
 
@@ -65,12 +58,24 @@ block:
     ;
 
 expr:
-    SYMBOL                                                      { printf("PARSER expr: | SYMBOL=\"%s\"\n", $1); $$=$1; }
-    | CONFIG_LOAD name_value                                    { printf("PARSER expr: | CONFIG_LOAD name_value=\"%s\"\n", $2); $$=$2; }
+    SYMBOL                                                      {
+                                                                    printf("PARSER expr: | SYMBOL=\"%s\"\n", $1);
+                                                                    $$=$1;
+                                                                }
+    | CONST_ID                                                  {
+                                                                    printf("PARSER expr: | CONST_ID=\"%s\"\n", $1);
+                                                                    $$=$1;
+                                                                }
+    | CONFIG_LOAD name_value                                    {
+                                                                    printf("PARSER expr: | CONFIG_LOAD name_value=\"%s\"\n", $2);
+                                                                    $$=$2;
+                                                                }
     | ASSIGN VAR_ATTRIB EQUAL STRING_LITERAL                    {
                                                                     printf("PARSER expr: | ASSIGN VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $2, buf);
                                                                     if(!find_symbol($2))
+                                                                    {
                                                                         add_symbol($2, buf);
+                                                                    }
                                                                     $$=buf;
                                                                 }
     | INCLUDE name_value                                        { printf("PARSER expr: | INCLUDE name_value=\"%s\"\n", $2); $$=$2; }
@@ -81,8 +86,8 @@ expr:
     ;
 
 name_value:
-    VALUE_ATTRIB EQUAL STRING_LITERAL                        { printf("PARSER name_value: | VALUE_ATTRIB=\"%s\" EQULAL STRING_LITERAL=\"%s\"\n", $1, buf); $$=buf; }
-    | FILE_ATTRIB EQUAL STRING_LITERAL                         { printf("PARSER name_value: | FILE_ATTRIB=\"%s\" EQULAL STRING_LITERAL=\"%s\"\n", $1, buf); $$=buf; }
+    VALUE_ATTRIB EQUAL STRING_LITERAL                          { printf("PARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf); $$=buf; }
+    | FILE_ATTRIB EQUAL STRING_LITERAL                         { printf("PARSER name_value: | FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf); $$=buf; }
     ;
 
 %%
