@@ -1,8 +1,8 @@
 %{
     #define MAX_INCLUDE_DEPTH 10
+    #include "parser.tab.h"
     #include <stdio.h>
     #include <string.h>
-    #include "parser.tab.h"
 
 
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
@@ -84,7 +84,7 @@ VALUE_ATTRIB        value
 %x OFF
 %%
 
-<INITIAL>{COMMENT}                      { printf("LEX:COMMENT\n");    /* eat up comment */                               }
+<INITIAL>{COMMENT}                      { printf("LEX:COMMENT=\"%s\"", yytext);    /* eat up comment */                               }
 <INITIAL>{LBRACE}                       { printf("LEX:LBRACE\n"); printf("LEX:BEGIN ESCAPED\n"); BEGIN(ESCAPED); return LBRACE; }
 <ESCAPED>{RBRACE}                       { printf("LEX:RBRACE\n");  printf("LEX:BEGIN INITIAL\n"); BEGIN(INITIAL); return RBRACE; }
 <ESCAPED>{INCLUDE}                      { printf("LEX:INCLUDE\n"); /*printf("LEX:BEGIN INCLUDE\n"); BEGIN(INCLUDING);*/ yylval.sval = strdup(yytext); return INCLUDE; }

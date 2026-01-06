@@ -8,4 +8,5 @@ Start ...
 {include file="filename.txt"}
 {insert file="filename2.txt"}
 {require file='name.txt'}
+{ * testing comments 2 * }
 ... End
