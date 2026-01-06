@@ -13,30 +13,38 @@
     char buf[100];
     char *s;
 
-    //typdef struct ASTNode 
+    //typdef struct ASTNode
     //{
     //    char* value;
     //    struct ASTNode** children;
     //    int child_count;
 	//} ASTNode;
 
-    //typedef struct AST 
+    //typedef struct AST
     //{
 	//	ASTNode* root;
 	//} AST;
-    
+
+    struct name_value
+    {
+        char* name;
+        char* value;
+    };
+
 %}
 
 %union
 {
     int ival;
     char* sval;
+    struct name_value* nval;
 };
 
 
 %type block
 %type<sval> expr
-%type<sval> attribute attributes
+%type<nval> attribute
+%type<nval> attributes
 %token<sval> SYMBOL NUMBER
 %token<sval> DOT INDIRECT_MEMBER
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
@@ -58,7 +66,7 @@ file:                                                           {
                                                                     printf("Terminate listing with ; to see parsed AST\n");
                                                                     printf("Terminate parser with Ctrl-D ... \n*********** \n\n");
                                                                 }
-        blocks END_OF_FILE                                      { 
+        blocks END_OF_FILE                                      {
                                                                     printf("PARSER file: | blocks END_OF_FILE\n");
                                                                     exit(0);
                                                                 }
@@ -66,23 +74,23 @@ file:                                                           {
 
 blocks:
 block                                                           {
-                                                                    printf("PARSER blocks: | block"); 
+                                                                    printf("PARSER blocks: | block");
                                                                 }
-    | blocks block                                              { 
+    | blocks block                                              {
                                                                     printf("PARSER blocks: | blocks block");
                                                                 }
     ;
 
 block:
-    LBRACE expr RBRACE                                          { 
+    LBRACE expr RBRACE                                          {
                                                                     printf("PARSER block: | LBRACE expr RBRACE\n");
                                                                 }
     ;
 
 expr:
     SYMBOL                                                      {
-                                                                    printf("PARSER expr: | SYMBOL=\"%s\"\n", $1); 
-                                                                    $$=$1; 
+                                                                    printf("PARSER expr: | SYMBOL=\"%s\"\n", $1);
+                                                                    $$=$1;
                                                                 }
     | CONST_ID                                                  {
                                                                     printf("PARSER expr: | CONST_ID=\"%s\"\n", $1);
@@ -92,51 +100,60 @@ expr:
                                                                     printf("PARSER expr: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
-    | ASSIGN attributes                                         {
-                                                                    printf("PARSER expr: | ASSIGN VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $2, buf);
-                                                                    if(!find_symbol($2))
+    | ASSIGN attribute                                         {
+                                                                    printf("PARSER expr: | ASSIGN attribute { VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }\n", $2->name, $2->value);
+                                                                    if(!find_symbol($2->name))
                                                                     {
-                                                                        add_symbol($2, buf);
+                                                                        add_symbol($2->name, $2->value);
                                                                     }
                                                                     $$=buf;
                                                                 }
-    | INCLUDE FILE_ATTRIB EQUAL STRING_LITERAL                  { 
+    | INCLUDE FILE_ATTRIB EQUAL STRING_LITERAL                  {
                                                                     printf("PARSER expr: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
-    | REQUIRE FILE_ATTRIB EQUAL STRING_LITERAL                  { 
+    | REQUIRE FILE_ATTRIB EQUAL STRING_LITERAL                  {
                                                                     printf("PARSER expr: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
-    | INSERT FILE_ATTRIB EQUAL STRING_LITERAL                   { 
+    | INSERT FILE_ATTRIB EQUAL STRING_LITERAL                   {
                                                                     printf("PARSER expr: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
-    | expr LBRACKET NUMERIC_LITERAL RBRACKET                    { 
+    | expr LBRACKET NUMERIC_LITERAL RBRACKET                    {
                                                                     printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=\"%s\" RBRACKET\n", $3);
                                                                     $$=$1;
                                                                 }
-    | expr LPAREN RPAREN                                        { 
+    | expr LPAREN RPAREN                                        {
                                                                     printf("PARSER expr: | expr LPAREN RPAREN\n");
-                                                                    $$=$1; 
+                                                                    $$=$1;
                                                                 }
     ;
 
 attributes:
-    attribute
-    | attributes attribute                                     { 
-                                                                    printf("PARSER attributes: | attributes attribute\n");
+    attribute                                                  {
+                                                                    printf("PARSER attributes: | attribute={name=\"%s\"; value=\"%s\"}\n", $1->name, $1->value);
+                                                                    $$ = $1;
+                                                               }
+    | attributes attribute                                     {
+                                                                    printf("PARSER attributes: | attributes=%s attribute\n", $1);
                                                                }
     ;
 
 attribute:
-    VALUE_ATTRIB EQUAL STRING_LITERAL                          { 
+    VALUE_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     printf("PARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
-                                                                    $$= buf; 
+	                                                                yyval.nval = (struct name_value*)malloc( sizeof(struct name_value) );
+	                                                                yyval.nval->name = $1;
+                                                                    yyval.nval->value = buf;
+                                                                    $$ = yyval.nval;
                                                                }
-    | VAR_ATTRIB EQUAL STRING_LITERAL                          { 
+    | VAR_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     printf("PARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
-                                                                    $$= buf; 
+                                                                    yyval.nval = (struct name_value*)malloc( sizeof( struct name_value ) );
+                                                                    yyval.nval->name = $1;
+                                                                    yyval.nval->value = buf;
+                                                                    $$ = yyval.nval;
                                                                }
     ;
 
@@ -150,7 +167,7 @@ int yyerror(char * s)
 
 int main(int argc, char** argv)
 {
-    init_streamy_symtable();
+    init_symtable();
     extern FILE *yyin;
     if (argc > 0)
     {

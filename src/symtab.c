@@ -4,34 +4,33 @@
 #include <string.h>
 
 #include "symtab.h"
-static node* g_head;
+
 static tree_node* g_map_root;
 
-//typedef struct symbol_tab 
-//{
-//    symbol *head;
-//} symbol_tab;
-//
-//symbol_tab* symtab;
+typedef struct symbol_tab
+{
+   node* head;
+} symbol_tab;
+static symbol_tab* symtab;
 
-void init_streamy_map_root()
+void init_root()
 {
     g_map_root = (tree_node*)malloc(sizeof(tree_node));
-   //g_map_rootl = &streamy_init_object;
-   //g_map_root = 0;
 }
 
-void init_streamy_symtable()
+void init_symtable()
 {
-   symbol streamy_init_object;
-   streamy_init_object.id = "$streamy";
-   streamy_init_object.stype = "object";
-   streamy_init_object.stype_modifiers = "static";
-   streamy_init_object.pval = 0;
+   symbol* streamy_init_object = (symbol*)malloc(sizeof(symbol));
+   // todo allocate strings ...
+   streamy_init_object->id = "$streamy";
+   streamy_init_object->stype = "object";
+   streamy_init_object->stype_modifiers = "static";
+   streamy_init_object->pval = 0;
 
-   g_head = (node*)malloc(sizeof(node));
-   g_head->val = &streamy_init_object;
-   g_head->next = 0;
+   symtab = (symbol_tab*)malloc(sizeof(symbol_tab));
+   symtab->head = (node*)malloc(sizeof(node));
+   symtab->head->val = streamy_init_object;
+   symtab->head->next = 0;
 }
 
 //void add_symbol(symbol_tab *sym_tab, symbol *sym)
@@ -54,7 +53,7 @@ void add_symbol(const char* id_cstr, const char* val_cstr)
 
 void remove_symbol(const char* cstr)
 {
-    node* cur = g_head;
+    node* cur = symtab->head;
     while(cur->next != 0)
     {
         symbol* s = cur->next->val;
@@ -70,7 +69,7 @@ void remove_symbol(const char* cstr)
 
 void clear_symbols()
 {
-    node* cur = g_head;
+    node* cur = symtab->head;
     while(cur != 0)
     {
         node* tmp = cur->next;
@@ -81,7 +80,7 @@ void clear_symbols()
 
 symbol* find_symbol(const char* cstr)
 {
-    node* cur = g_head;
+    node* cur = symtab->head;
     while(cur->next != 0)
     {
         symbol* s = cur->val;
@@ -94,7 +93,7 @@ symbol* find_symbol(const char* cstr)
 
 node* find_tail()
 {
-    node* cur = g_head;
+    node* cur = symtab->head;
     while(cur->next != 0);
     return cur;
 }
