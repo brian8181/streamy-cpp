@@ -103,6 +103,7 @@ block:
                                                                     {
                                                                         add_symbol($3->name, $3->value);
                                                                     }
+                                                                    pnv_head = 0;
                                                                 }
     ;
 
