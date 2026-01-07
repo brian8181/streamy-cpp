@@ -4,7 +4,7 @@ Start ...
 {#test_var#}
 {$abc}
 {$xyz}
-{assign var="test"}
+{assign var="test" value="42"}
 {include file="filename.txt"}
 {insert file="filename2.txt"}
 {require file='name.txt'}

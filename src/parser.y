@@ -25,11 +25,14 @@
 	//	ASTNode* root;
 	//} AST;
 
-    struct name_value
+    typedef struct nvalue
     {
         char* name;
         char* value;
-    };
+        struct nvalue* next;
+    } nvalue;
+
+    nvalue* alloc_nvalue(char* name, char* value);
 
 %}
 
@@ -37,7 +40,7 @@
 {
     int ival;
     char* sval;
-    struct name_value* nval;
+    struct nvalue* nval;
 };
 
 
@@ -85,6 +88,13 @@ block:
     LBRACE expr RBRACE                                          {
                                                                     printf("PARSER block: | LBRACE expr RBRACE\n");
                                                                 }
+    | LBRACE ASSIGN attributes RBRACE                           {
+                                                                    printf("PARSER expr: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }\n", $3->name, $3->value);
+                                                                    if(!find_symbol($3->name))
+                                                                    {
+                                                                        add_symbol($3->name, $3->value);
+                                                                    }
+                                                                }
     ;
 
 expr:
@@ -100,15 +110,7 @@ expr:
                                                                     printf("PARSER expr: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
-    | ASSIGN attribute                                         {
-                                                                    printf("PARSER expr: | ASSIGN attribute { VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }\n", $2->name, $2->value);
-                                                                    if(!find_symbol($2->name))
-                                                                    {
-                                                                        add_symbol($2->name, $2->value);
-                                                                    }
-                                                                    $$=buf;
-                                                                }
-    | INCLUDE FILE_ATTRIB EQUAL STRING_LITERAL                  {
+   | INCLUDE FILE_ATTRIB EQUAL STRING_LITERAL                  {
                                                                     printf("PARSER expr: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
@@ -136,28 +138,47 @@ attributes:
                                                                     $$ = $1;
                                                                }
     | attributes attribute                                     {
-                                                                    printf("PARSER attributes: | attributes=%s attribute\n", $1);
+                                                                    printf("PARSER attributes: | attributes attribute={name=\"%s\"; value=\"%s\"}\n", $2->name, $2->value);
+                                                                    $2->next = $1;
+                                                                    nvalue* cur = $2;
+                                                                    while(cur != 0)
+                                                                    {
+                                                                        printf("attribute={name=\"%s\"; value=\"%s\"}\n", cur->name, cur->value);
+                                                                        cur = cur->next;
+                                                                    }
                                                                }
     ;
 
 attribute:
     VALUE_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     printf("PARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
-	                                                                yyval.nval = (struct name_value*)malloc( sizeof(struct name_value) );
-	                                                                yyval.nval->name = $1;
-                                                                    yyval.nval->value = buf;
+	                                                                yyval.nval = alloc_nvalue($1, buf);
                                                                     $$ = yyval.nval;
                                                                }
     | VAR_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("PARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
-                                                                    yyval.nval = (struct name_value*)malloc( sizeof( struct name_value ) );
-                                                                    yyval.nval->name = $1;
-                                                                    yyval.nval->value = buf;
+                                                                    printf("PARSER name_value: | VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    yyval.nval = alloc_nvalue($1, buf);
                                                                     $$ = yyval.nval;
                                                                }
     ;
 
 %%
+
+char* STRDUP(char* s)
+{
+    char* dup = (char*)malloc((strlen(s) * sizeof(char)) + 1);
+    strcpy(dup, s);
+    return dup;
+}
+
+nvalue* alloc_nvalue(char* name, char* value)
+{
+    nvalue* nval = (nvalue*)malloc( sizeof( nvalue ) );
+    nval->name = STRDUP(name);
+    nval->value = STRDUP(value);
+    nval->next = 0;
+    return nval;
+}
 
 int yyerror(char * s)
 {
