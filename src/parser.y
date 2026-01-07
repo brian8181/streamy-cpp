@@ -1,6 +1,7 @@
 %{
     #include "bash_color.h"
     #include "parser.tab.h"
+    #include "tool.h"
     #include "symtab.h"
     #include <stdio.h>
     #include <stdlib.h>
@@ -43,6 +44,8 @@
     static nvalue* pnv_head = 0;
     nvalue* alloc_nvalue(char* name, char* value);
 
+
+
 %}
 
 %union
@@ -54,13 +57,12 @@
 
 
 %type block
-%type<sval> expr
 %type<nval> attribute
 %type<nval> attributes
 %token<sval> SYMBOL NUMBER
 %token<sval> DOT INDIRECT_MEMBER
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
-%token<sval> IDENTIFIER CONST_ID QUALAFIED_ID
+%token<sval> ID CONST_ID QUALAFIED_ID
 %token<sval> IF END_IF ELSE END_ELSE ELSEIF END_ELSEIF
 %token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
 %token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
@@ -69,6 +71,7 @@
 %token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
 %token END_OF_FILE
+%type<sval> symbol sub_proc built_in array
 %start file blocks
 
 %%
@@ -91,11 +94,20 @@ blocks:
     | blocks block                                              {
                                                                     printf("PARSER blocks: | blocks block");
                                                                 }
-    ;
+                                                                ;
 
 block:
-    LBRACE expr RBRACE                                          {
-                                                                    printf("PARSER block: | LBRACE expr RBRACE\n");
+    LBRACE sub_proc RBRACE                                      {
+                                                                    printf("PARSER block: | LBRACE sub_porc RBRACE\n");
+                                                                }
+    | LBRACE array RBRACE                                       {
+                                                                    printf("PARSER block: | LBRACE array RBRACE\n");
+                                                                }
+    | LBRACE symbol RBRACE                                      {
+                                                                    printf("PARSER block: | LBRACE symbol RBRACE\n");
+                                                                }
+    | LBRACE built_in RBRACE                                    {
+                                                                    printf("PARSER block: | LBRACE built_in RBRACE\n");
                                                                 }
     | LBRACE ASSIGN attributes RBRACE                           {
                                                                     printf("PARSER expr: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }\n", $3->name, $3->value);
@@ -105,10 +117,24 @@ block:
                                                                     }
                                                                     pnv_head = 0;
                                                                 }
-    ;
+                                                                ;
 
-expr:
-    SYMBOL                                                      {
+sub_proc:
+    symbol LPAREN RPAREN                                        {
+                                                                    printf("PARSER expr: | expr LPAREN RPAREN\n");
+                                                                    $$=$1;
+                                                                }
+                                                                ;
+
+array:
+    symbol LBRACKET NUMERIC_LITERAL RBRACKET                    {
+                                                                    printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=\"%s\" RBRACKET\n", $3);
+                                                                    $$=$1;
+                                                                }
+                                                                ;
+
+symbol:
+    ID                                                          {
                                                                     printf("PARSER expr: | SYMBOL=\"%s\"\n", $1);
                                                                     $$=$1;
                                                                 }
@@ -116,12 +142,17 @@ expr:
                                                                     printf("PARSER expr: | CONST_ID=\"%s\"\n", $1);
                                                                     $$=$1;
                                                                 }
-    | CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL              {
+                                                                ;
+
+built_in:
+    CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL               {
                                                                     printf("PARSER expr: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
-   | INCLUDE FILE_ATTRIB EQUAL STRING_LITERAL                  {
+    | INCLUDE FILE_ATTRIB EQUAL STRING_LITERAL                  {
                                                                     printf("PARSER expr: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("LEX:INCLUDING filename\n");
+                                                                    /* todo */
                                                                     $$=buf;
                                                                 }
     | REQUIRE FILE_ATTRIB EQUAL STRING_LITERAL                  {
@@ -132,15 +163,7 @@ expr:
                                                                     printf("PARSER expr: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
-    | expr LBRACKET NUMERIC_LITERAL RBRACKET                    {
-                                                                    printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=\"%s\" RBRACKET\n", $3);
-                                                                    $$=$1;
-                                                                }
-    | expr LPAREN RPAREN                                        {
-                                                                    printf("PARSER expr: | expr LPAREN RPAREN\n");
-                                                                    $$=$1;
-                                                                }
-    ;
+                                                                ;
 
 attributes:
     attribute                                                  {
@@ -163,7 +186,7 @@ attributes:
                                                                         cur = cur->next;
                                                                     }
                                                                }
-    ;
+                                                               ;
 
 attribute:
     VALUE_ATTRIB EQUAL STRING_LITERAL                          {
@@ -176,7 +199,7 @@ attribute:
                                                                     yyval.nval = alloc_nvalue($1, buf);
                                                                     $$ = yyval.nval;
                                                                }
-    ;
+                                                               ;
 
 %%
 
@@ -215,4 +238,5 @@ int main(int argc, char** argv)
         yyin = stdin;
     };
     yyparse();
+    return 0;
 };
