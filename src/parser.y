@@ -32,6 +32,15 @@
         struct nvalue* next;
     } nvalue;
 
+    // typedef struct nvlist
+    // {
+    //     struct nvalue* head;
+    // } nvlist;
+
+    // nvlist* nvalues =(nvlist*) malloc(sizeof(nvlist));
+    // nvalues->head = 0;
+
+    static nvalue* pnv_head = 0;
     nvalue* alloc_nvalue(char* name, char* value);
 
 %}
@@ -76,7 +85,7 @@ file:                                                           {
         ;
 
 blocks:
-block                                                           {
+    block                                                       {
                                                                     printf("PARSER blocks: | block");
                                                                 }
     | blocks block                                              {
@@ -136,10 +145,16 @@ attributes:
     attribute                                                  {
                                                                     printf("PARSER attributes: | attribute={name=\"%s\"; value=\"%s\"}\n", $1->name, $1->value);
                                                                     $$ = $1;
+                                                                    // put attribute @ head position
+                                                                    $1->next = pnv_head;
+                                                                    pnv_head = $1;
                                                                }
     | attributes attribute                                     {
                                                                     printf("PARSER attributes: | attributes attribute={name=\"%s\"; value=\"%s\"}\n", $2->name, $2->value);
-                                                                    $2->next = $1;
+                                                                    // put attribute @ head position
+                                                                    $2->next = pnv_head;
+                                                                    pnv_head = $2;
+                                                                    // print attributes ...
                                                                     nvalue* cur = $2;
                                                                     while(cur != 0)
                                                                     {
