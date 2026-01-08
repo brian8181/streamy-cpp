@@ -77,9 +77,10 @@
 %%
 
 file:                                                           {
-                                                                    printf( "\n*** RUN ***\n" );
+                                                                    printf("************************* RUN *************************\n");
                                                                     printf("Terminate listing with ; to see parsed AST\n");
-                                                                    printf("Terminate parser with Ctrl-D ... \n*********** \n\n");
+                                                                    printf("Terminate parser with Ctrl-D ...\n");
+                                                                    printf("************************* Done ************************\n");
                                                                 }
         blocks END_OF_FILE                                      {
                                                                     printf("PARSER file: | blocks END_OF_FILE\n");
@@ -110,7 +111,7 @@ block:
                                                                     printf("PARSER block: | LBRACE built_in RBRACE\n");
                                                                 }
     | LBRACE ASSIGN attributes RBRACE                           {
-                                                                    printf("PARSER expr: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }\n", $3->name, $3->value);
+                                                                    printf("PARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }\n", $3->name, $3->value);
                                                                     if(!find_symbol($3->name))
                                                                     {
                                                                         add_symbol($3->name, $3->value);
@@ -121,46 +122,45 @@ block:
 
 sub_proc:
     symbol LPAREN RPAREN                                        {
-                                                                    printf("PARSER expr: | expr LPAREN RPAREN\n");
+                                                                    printf("PARSER sub_proc: | symbol LPAREN RPAREN\n");
                                                                     $$=$1;
                                                                 }
                                                                 ;
 
 array:
     symbol LBRACKET NUMERIC_LITERAL RBRACKET                    {
-                                                                    printf("PARSER expr: | expr LBRACKET NUMERIC_LITERAL=\"%s\" RBRACKET\n", $3);
+                                                                    printf("PARSER array: | symbol=\"%s\" LBRACKET NUMERIC_LITERAL=\"%s\" RBRACKET\n", $1, $3);
                                                                     $$=$1;
                                                                 }
                                                                 ;
 
 symbol:
     ID                                                          {
-                                                                    printf("PARSER expr: | SYMBOL=\"%s\"\n", $1);
+                                                                    printf("PARSER symbol: | ID=\"%s\"\n", $1);
                                                                     $$=$1;
                                                                 }
     | CONST_ID                                                  {
-                                                                    printf("PARSER expr: | CONST_ID=\"%s\"\n", $1);
+                                                                    printf("PARSER symbol: | CONST_ID=\"%s\"\n", $1);
                                                                     $$=$1;
                                                                 }
                                                                 ;
 
 built_in:
     CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL               {
-                                                                    printf("PARSER expr: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("PARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
     | INCLUDE FILE_ATTRIB EQUAL STRING_LITERAL                  {
-                                                                    printf("PARSER expr: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
-                                                                    printf("LEX:INCLUDING filename\n");
+                                                                    printf("PARSER built_in: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     /* todo */
                                                                     $$=buf;
                                                                 }
     | REQUIRE FILE_ATTRIB EQUAL STRING_LITERAL                  {
-                                                                    printf("PARSER expr: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("PARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
     | INSERT FILE_ATTRIB EQUAL STRING_LITERAL                   {
-                                                                    printf("PARSER expr: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("PARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
                                                                 ;

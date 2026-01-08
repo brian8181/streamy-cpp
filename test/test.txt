@@ -4,8 +4,9 @@ Start ...
 {#test_var#}
 {$abc}
 {$xyz}
+{$arry[0]}
+{$subproc()}
 {assign var="test" value="42" var="test2" value="21"}
-{include file="filename.txt"}
 {insert file="filename2.txt"}
 {require file='name.txt'}
 { * testing comments 2 * }
