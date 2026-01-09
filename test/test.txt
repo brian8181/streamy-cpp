@@ -14,4 +14,5 @@ Start ...
 { * testing comments 2 * }
 {$xxx.test}
 {$yyy->test}
+{$subproc($x, $y)}
 ... End

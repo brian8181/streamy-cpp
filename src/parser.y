@@ -130,8 +130,8 @@ qualafied_id:
                                                                 ;
 
 sub_proc:
-    symbol LPAREN RPAREN                                        {
-                                                                    printf("PARSER sub_proc: | symbol LPAREN RPAREN\n");
+    symbol LPAREN params RPAREN                                 {
+                                                                    printf("PARSER sub_proc: | symbol LPAREN params RPAREN\n");
                                                                     $$=$1;
                                                                 }
                                                                 ;
@@ -145,7 +145,7 @@ array:
 
 params:
     /*empty*/
-    | symbol COMMA symbol                                       { printf("PARSER params: | symbol COMMA symbol\n"); }
+    | symbol                                                    { printf("PARSER params: | symbol\n"); }
     | params COMMA symbol                                       { printf("PARSER qualafied_id: | params COMMA symbol\n"); }
 
 
