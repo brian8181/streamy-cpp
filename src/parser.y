@@ -98,7 +98,10 @@ blocks:
                                                                 ;
 
 block:
-    LBRACE sub_proc RBRACE                                      {
+    LBRACE STRING_LITERAL RBRACE                                {
+                                                                    printf("PARSER block: | LBRACE STRING_LITERAL RBRACE\n");
+                                                                }
+    | LBRACE sub_proc RBRACE                                    {
                                                                     printf("PARSER block: | LBRACE sub_porc RBRACE\n");
                                                                 }
     | LBRACE array RBRACE                                       {
