@@ -1,5 +1,7 @@
 Start ...
 {config_load file="config.txt"}
+{insert file="filename2.txt"}
+{include file="t1.txt"}
 {* testing comments *}
 {#test_var#}
 {$abc}
@@ -10,4 +12,6 @@ Start ...
 {insert file="filename2.txt"}
 {require file='name.txt'}
 { * testing comments 2 * }
+{$xxx.test}
+{$yyy->test}
 ... End

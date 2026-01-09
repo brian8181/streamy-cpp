@@ -59,19 +59,19 @@
 %type block
 %type<nval> attribute
 %type<nval> attributes
-%token<sval> SYMBOL NUMBER
-%token<sval> DOT INDIRECT_MEMBER
+%token<sval> NUMBER
+%token<sval> DOLLAR_SIGN DOT INDIRECT_MEMBER
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
-%token<sval> ID CONST_ID QUALAFIED_ID
+%token<sval> ID CONST_ID
 %token<sval> IF END_IF ELSE END_ELSE ELSEIF END_ELSEIF
 %token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
 %token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
-%token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK EQUAL PERCENT NOT_EQUAL
+%token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK COMMA EQUAL PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
 %token END_OF_FILE
-%type<sval> symbol sub_proc built_in array
+%type<sval> symbol sub_proc built_in array qualafied_id
 %start file blocks
 
 %%
@@ -118,6 +118,15 @@ block:
                                                                     }
                                                                     pnv_head = 0;
                                                                 }
+    | LBRACE qualafied_id RBRACE                                {
+                                                                    printf("PARSER block: | LBRACE qualafied_id RBRACE\n");
+                                                                }
+                                                                ;
+qualafied_id:
+    symbol DOT ID                                               { printf("PARSER qualafied_id: | symbol DOT ID\n"); }
+    | symbol INDIRECT_MEMBER ID                                 { printf("PARSER qualafied_id: | symbol INDIRECT_MEMBER ID\n"); }
+    | qualafied_id DOT ID                                       { printf("PARSER qualafied_id: | qualafied_id DOT ID\n"); }
+    | qualafied_id INDIRECT_MEMBER ID                           { printf("PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID\n"); }
                                                                 ;
 
 sub_proc:
@@ -134,8 +143,14 @@ array:
                                                                 }
                                                                 ;
 
+params:
+    /*empty*/
+    | symbol COMMA symbol                                       { printf("PARSER params: | symbol COMMA symbol\n"); }
+    | params COMMA symbol                                       { printf("PARSER qualafied_id: | params COMMA symbol\n"); }
+
+
 symbol:
-    ID                                                          {
+    DOLLAR_SIGN ID                                              {
                                                                     printf("PARSER symbol: | ID=\"%s\"\n", $1);
                                                                     $$=$1;
                                                                 }
