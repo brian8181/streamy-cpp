@@ -16,7 +16,6 @@ typedef struct node
     struct node* prev;
 } node;
 
-
 typedef struct binary_node
 {
     void* data;
@@ -46,15 +45,20 @@ typedef struct object
     struct node* next;
 } object;
 
+typedef struct symbol_tab
+{
+   node* head;
+   node* parent;
+} symbol_tab;
 
-
-void init_root();
 
 void init_symtable();
-void add_symbol(const char* id_cstr, const char* val_cstr);
-void remove_symbol(const char* cstr);
-void clear_symbols();
-symbol* find_symbol(const char* cstr);
-node* find_tail();
+void add_symbol(symbol_tab* stab, const char* id_cstr, const char* val_cstr);
+void insert_symbol(symbol_tab* stab, const char* dst_id, const char* src_id, const char* src_val);
+void remove_symbol(symbol_tab* stab, const char* cstr);
+void clear_symbols(symbol_tab* stab);
+symbol* find_symbol(symbol_tab* stab, const char* cstr);
+node* find_node(symbol_tab* stab, const char* cstr);
+node* find_tail(symbol_tab* stab);
 
 #endif

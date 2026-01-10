@@ -18,6 +18,12 @@
 %}
 
 END_OF_FILE         \0
+COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
+FILE_NAME           [A-Za-z0-9 ._-~+@]
+VALID_CHAR          [A-Za-z0-9 ._-~+@]
+ID                  _?[A-Za-z]{VALID_CHAR}*
+CONST_ID            #_?[A-Za-z]{VALID_CHAR}*#
+ARRAY               {ID}\[[^\]]\]
 IF                  if
 END_IF              "\{/if\}"
 FOREACH             foreach
@@ -69,12 +75,7 @@ FILE_ATTRIB         file
 ASSIGN              assign
 VAR_ATTRIB          var
 VALUE_ATTRIB        value
-COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
-FILE_NAME           [A-Za-z0-9 ._-~+@]
-VALID_CHAR          [A-Za-z0-9 ._-~+@]
-ID                  _?[A-Za-z]{VALID_CHAR}*
-CONST_ID            #_?[A-Za-z]{VALID_CHAR}*#
-ARRAY               {ID}\[[^\]]\]
+
 
 
 %x DOUBLE_QUOTED

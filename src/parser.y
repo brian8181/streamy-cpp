@@ -115,9 +115,9 @@ block:
                                                                 }
     | LBRACE ASSIGN attributes RBRACE                           {
                                                                     printf("PARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }\n", $3->name, $3->value);
-                                                                    if(!find_symbol($3->name))
+                                                                    if(!find_symbol(0, $3->name))
                                                                     {
-                                                                        add_symbol($3->name, $3->value);
+                                                                        add_symbol(0, $3->name, $3->value);
                                                                     }
                                                                     pnv_head = 0;
                                                                 }
