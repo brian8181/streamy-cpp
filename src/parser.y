@@ -1,11 +1,10 @@
 %{
-    #include "bash_color.h"
-    #include "parser.tab.h"
-    #include "tool.h"
-    #include "symtab.h"
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include "bash_color.h"
+    #include "parser.tab.h"
+    #include "symtab.h"
 
     int yylex(void);
     int yyerror(char * s);
@@ -26,14 +25,7 @@
 	//	ASTNode* root;
 	//} AST;
 
-    typedef struct nvalue
-    {
-        char* name;
-        char* value;
-        struct nvalue* next;
-    } nvalue;
-
-    // typedef struct nvlist
+     // typedef struct nvlist
     // {
     //     struct nvalue* head;
     // } nvlist;
@@ -41,11 +33,15 @@
     // nvlist* nvalues =(nvlist*) malloc(sizeof(nvlist));
     // nvalues->head = 0;
 
+    typedef struct nvalue
+    {
+        char* name;
+        char* value;
+        struct nvalue* next;
+    } nvalue;
+
     static nvalue* pnv_head = 0;
     nvalue* alloc_nvalue(char* name, char* value);
-
-
-
 %}
 
 %union
@@ -78,12 +74,15 @@
 
 file:                                                           {
                                                                     printf("************************* RUN *************************\n");
-                                                                    printf("Terminate listing with ; to see parsed AST\n");
-                                                                    printf("Terminate parser with Ctrl-D ...\n");
+                                                                    printf("* Terminate listing with ; to see parsed AST          *\n");
+                                                                    printf("* Terminate parser with Ctrl-D ...                    *\n");
                                                                     printf("************************* Done ************************\n");
                                                                 }
         blocks END_OF_FILE                                      {
                                                                     printf("PARSER file: | blocks END_OF_FILE\n");
+                                                                    printf("*********************** STOPPING **********************\n");
+                                                                    printf("* End of file, terminating.                           *\n");
+                                                                    printf("************************* Done ************************\n");
                                                                     exit(0);
                                                                 }
         ;
@@ -112,9 +111,9 @@ block:
                                                                 }
     | LBRACE ASSIGN attributes RBRACE                           {
                                                                     printf("PARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }\n", $3->name, $3->value);
-                                                                    if(!find_symbol($3->name))
+                                                                    if(!find_symbol(0, $3->name))
                                                                     {
-                                                                        add_symbol($3->name, $3->value);
+                                                                        add_symbol(0, $3->name, $3->value);
                                                                     }
                                                                     pnv_head = 0;
                                                                 }
@@ -161,7 +160,7 @@ symbol:
                                                                 ;
 
 built_in:
-    CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL               {
+    CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL                {
                                                                     printf("PARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
                                                                     $$=buf;
                                                                 }
@@ -242,7 +241,6 @@ int yyerror(char * s)
 
 int main(int argc, char** argv)
 {
-    init_symtable();
     extern FILE *yyin;
     if (argc > 0)
     {

@@ -19,6 +19,7 @@
 
 END_OF_FILE         \0
 VALID_CHARS          _*[A-Za-z][A-Za-z0-9_]*
+ID                  {VALID_CHARS}
 CONST_ID            #{VALID_CHARS}#
 ARRAY               {ID}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
@@ -74,7 +75,6 @@ FILE_ATTRIB         file
 ASSIGN              assign
 VAR_ATTRIB          var
 VALUE_ATTRIB        value
-ID                  {VALID_CHARS}
 
 %x DOUBLE_QUOTED
 %x SINGLE_QUOTED
@@ -102,10 +102,17 @@ ID                  {VALID_CHARS}
                                             return RBRACE;
                                         }
 <ESCAPED>{SINGLE_QUOTE}                 { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf; }
-<SINGLE_QUOTED>\\n                      { *s++ = '\n'; }
-<SINGLE_QUOTED>\\t                      { *s++ = '\t'; }
-<SINGLE_QUOTED>\\\"                     { *s++ = '\"'; }
-<SINGLE_QUOTED>{SINGLE_QUOTE}           {
+<ESCAPED>{DOUBLE_QUOTE}                 {
+                                            printf("LEX:BEGIN_DOUBLE_QUOTED\n");
+                                            BEGIN(DOUBLE_QUOTED);
+                                            s = buf;
+                                        }
+<SINGLE_QUOTED,DOUBLE_QUOTED>\\n         { *s++ = '\n'; }
+<SINGLE_QUOTED,DOUBLE_QUOTED>\\t         { *s++ = '\t'; }
+<SINGLE_QUOTED,DOUBLE_QUOTED>\\\"        { *s++ = '\"'; }
+<SINGLE_QUOTED>{FILE_NAME}              { *s++ = *yytext; }
+<DOUBLE_QUOTED>{FILE_NAME}              { *s++ = *yytext; }
+<SINGLE_QUOTED>{SINGLE_QUOTE}            {
                                             printf("LEX:SINGLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
@@ -113,16 +120,6 @@ ID                  {VALID_CHARS}
                                             printf("LEX:STRING_LITERAL=\"%s\"\n", buf);
                                             return STRING_LITERAL;
                                         }
-<SINGLE_QUOTED>[\n}]                    { printf("LEX: missing closing quote"); exit(1); }
-<SINGLE_QUOTED>{FILE_NAME}              { *s++ = *yytext; }
-<ESCAPED>{DOUBLE_QUOTE}                 {
-                                            printf("LEX:BEGIN_DOUBLE_QUOTED\n");
-                                            BEGIN(DOUBLE_QUOTED);
-                                            s = buf;
-                                        }
-<DOUBLE_QUOTED>\\n                      { *s++ = '\n'; }
-<DOUBLE_QUOTED>\\t                      { *s++ = '\t'; }
-<DOUBLE_QUOTED>\\\'                     { *s++ = '\''; }
 <DOUBLE_QUOTED>{DOUBLE_QUOTE}           {
                                             printf("LEX:DOUBLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
@@ -131,8 +128,7 @@ ID                  {VALID_CHARS}
                                             printf("LEX:STRING_LITERAL=\"%s\"\n", buf);
                                             return STRING_LITERAL;
                                         }
-<DOUBLE_QUOTED>[\n}]                    { printf("LEX: missing closing quote\n"); exit(1); }
-<DOUBLE_QUOTED>{FILE_NAME}              { *s++ = *yytext; }
+<DOUBLE_QUOTED,SINGLE_QUOTED>[\n}]      { printf("LEX: missing closing quote"); exit(1); }
 <ESCAPED>{NUMERIC_LITERAL}              {
                                             printf("LEX:NUMERIC_LITERAL=%s\n", yytext);
                                             yylval.sval = strdup(yytext);
