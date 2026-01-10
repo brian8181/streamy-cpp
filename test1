@@ -1,0 +1,224 @@
+************************* RUN *************************
+Terminate listing with ; to see parsed AST
+Terminate parser with Ctrl-D ...
+************************* Done ************************
+Start ...
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:CONFIG_LOAD
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="config.txt"
+PARSER built_in: | CONFIG_LOAD FILE_ATTRIB="config_load" EQUAL STRING_LITERAL="config.txt"
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE built_in RBRACE
+PARSER blocks: | block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:INSERT
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="filename2.txt"
+PARSER built_in: | INSERT FILE_ATTRIB="insert" EQUAL STRING_LITERAL="filename2.txt"
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE built_in RBRACE
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:INCLUDE
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="t1.txt"
+PARSER built_in: | INCLUDE FILE_ATTRIB="include" EQUAL STRING_LITERAL="t1.txt"
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE built_in RBRACE
+PARSER blocks: | blocks block
+LEX:COMMENT="{* testing comments *}"
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:[CONST_ID:#test_var#]
+PARSER symbol: | CONST_ID="#test_var#"
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE symbol RBRACE
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:abc]
+PARSER symbol: | ID="#test_var#"
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE symbol RBRACE
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:xyz]
+PARSER symbol: | ID="abc"
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE symbol RBRACE
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:arry]
+PARSER symbol: | ID="xyz"
+LEX:LBRACKET
+LEX:NUMERIC_LITERAL=0
+LEX:RBRACKET
+PARSER array: | symbol="xyz" LBRACKET NUMERIC_LITERAL="0" RBRACKET
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE array RBRACE
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:subproc]
+PARSER symbol: | ID="0"
+LEX:LPAREN
+LEX:RPAREN
+PARSER sub_proc: | symbol LPAREN params RPAREN
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE sub_porc RBRACE
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:ASSIGN
+LEX:VAR_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="test"
+PARSER name_value: | VAR_ATTRIB="var" EQUAL STRING_LITERAL="test"
+PARSER attributes: | attribute={name="var"; value="test"}
+LEX:VALUE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="42"
+PARSER name_value: | VALUE_ATTRIB="value" EQUAL STRING_LITERAL="42"
+PARSER attributes: | attributes attribute={name="value"; value="42"}
+attribute={name="value"; value="42"}
+attribute={name="var"; value="test"}
+LEX:VAR_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="test2"
+PARSER name_value: | VAR_ATTRIB="var" EQUAL STRING_LITERAL="test2"
+PARSER attributes: | attributes attribute={name="var"; value="test2"}
+attribute={name="var"; value="test2"}
+attribute={name="value"; value="42"}
+attribute={name="var"; value="test"}
+LEX:VALUE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="21"
+PARSER name_value: | VALUE_ATTRIB="value" EQUAL STRING_LITERAL="21"
+PARSER attributes: | attributes attribute={name="value"; value="21"}
+attribute={name="value"; value="21"}
+attribute={name="var"; value="test2"}
+attribute={name="value"; value="42"}
+attribute={name="var"; value="test"}
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB="var" EQUAL STRING_LITERAL="test" }
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:INSERT
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="filename2.txt"
+PARSER built_in: | INSERT FILE_ATTRIB="insert" EQUAL STRING_LITERAL="filename2.txt"
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE built_in RBRACE
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:REQUIRE
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_SINGLE_QUOTED
+LEX:SINGLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="name.txt"
+PARSER built_in: | REQUIRE FILE_ATTRIB="require" EQUAL STRING_LITERAL="name.txt"
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE built_in RBRACE
+PARSER blocks: | blocks block
+LEX:COMMENT="{ * testing comments 2 * }"
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:xxx]
+PARSER symbol: | ID="file"
+LEX:DOT
+LEX:[ID:test]
+PARSER qualafied_id: | symbol DOT ID
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE qualafied_id RBRACE
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:yyy]
+PARSER symbol: | ID="test"
+LEX:INDIRECT_MEMBER
+LEX:[ID:test]
+PARSER qualafied_id: | symbol INDIRECT_MEMBER ID
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE qualafied_id RBRACE
+PARSER blocks: | blocks block
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:subproc]
+PARSER symbol: | ID="test"
+LEX:LPAREN
+LEX:DOLLAR_SIGN
+LEX:[ID:x]
+PARSER symbol: | ID="subproc"
+PARSER params: | symbol
+LEX:COMMA
+LEX:DOLLAR_SIGN
+LEX:[ID:y]
+PARSER symbol: | ID="x"
+PARSER qualafied_id: | params COMMA symbol
+LEX:RPAREN
+PARSER sub_proc: | symbol LPAREN params RPAREN
+LEX:RBRACE
+LEX:BEGIN INITIAL
+PARSER block: | LBRACE sub_porc RBRACE
+PARSER blocks: | blocks block
+... End
+<<EOF>>
+PARSER file: | blocks END_OF_FILE
