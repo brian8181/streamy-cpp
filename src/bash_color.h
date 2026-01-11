@@ -1,6 +1,8 @@
 #ifndef _BASH_COLOR_HPP
 #define _BASH_COLOR_HPP
 
+ #include <string.h>
+
 // shell color constants
 const char* FMT_RESET             = "\033[0m";
 const char* FMT_RESET_BOLD        = "\033[21m";
@@ -47,5 +49,12 @@ const char* FMT_BG_LIGHT_BLUE     = "\033[104m";
 const char* FMT_BG_LIGHT_MAGENTA  = "\033[105m";
 const char* FMT_BG_LIGHT_CYAN     = "\033[106m";
 const char* FMT_BG_WHITE          = "\033[107m";
+
+void printfmt(const char* FMT, const char* s)
+{
+    int len = (strlen(FMT) + strlen(s) + strlen(FMT_RESET)) + 1;
+    char* nstr = (char*)malloc(len);
+    strcat( strcat( strcat(nstr, FMT), s), FMT_RESET);
+}
 
 #endif

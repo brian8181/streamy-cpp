@@ -11,7 +11,7 @@ typedef struct symbol
 
 typedef struct node
 {
-    symbol* val;
+    symbol* sym;
     struct node* next;
     struct node* prev;
 } node;
@@ -42,18 +42,18 @@ typedef struct object
 {
     char* fields[255];
     symbol symbols[255];
-    struct node* next;
+    node* next;
 } object;
 
 typedef struct symbol_tab
 {
    node* head;
-   node* parent;
+   struct symbol_tab* parent;
 } symbol_tab;
 
 // get root symbol table
 symbol_tab* get_stable();
-//void free(symbol_tab* stab);
+void free_node(symbol_tab* stab, node* n);
 void add_symbol(symbol_tab* stab, const char* id, const char* val);
 void insert_symbol(symbol_tab* stab, const char* dst_id, const char* src_id, const char* src_val);
 void remove_symbol(symbol_tab* stab, const char* id);

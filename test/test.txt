@@ -1,4 +1,5 @@
 Start ...
+{$abc}
 {config_load file="config.txt"}
 {insert file="filename2.txt"}
 {include file="t1.txt"}

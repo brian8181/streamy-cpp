@@ -79,7 +79,7 @@ file:                                                           {
                                                                     printf("************************* Done ************************\n");
                                                                 }
         blocks END_OF_FILE                                      {
-                                                                    printf("PARSER file: | blocks END_OF_FILE\n");
+                                                                    printf("%sPARSER file: | blocks END_OF_FILE%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                     printf("*********************** STOPPING **********************\n");
                                                                     printf("* End of file, terminating.                           *\n");
                                                                     printf("************************* Done ************************\n");
@@ -89,28 +89,28 @@ file:                                                           {
 
 blocks:
     block                                                       {
-                                                                    printf("PARSER blocks: | block");
+                                                                    printf("%sPARSER blocks: | block%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                 }
     | blocks block                                              {
-                                                                    printf("PARSER blocks: | blocks block");
+                                                                    printf("%sPARSER blocks: | blocks block%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                 }
                                                                 ;
 
 block:
     LBRACE sub_proc RBRACE                                      {
-                                                                    printf("PARSER block: | LBRACE sub_porc RBRACE\n");
+                                                                    printf("%sPARSER block: | LBRACE sub_porc RBRACE\n", FMT_FG_GREEN, FMT_RESET);
                                                                 }
     | LBRACE array RBRACE                                       {
-                                                                    printf("PARSER block: | LBRACE array RBRACE\n");
+                                                                    printf("%sPARSER block: | LBRACE array RBRACE%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                 }
     | LBRACE symbol RBRACE                                      {
-                                                                    printf("PARSER block: | LBRACE symbol RBRACE\n");
+                                                                    printf("%sPARSER block: | LBRACE symbol RBRACE%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                 }
     | LBRACE built_in RBRACE                                    {
-                                                                    printf("PARSER block: | LBRACE built_in RBRACE\n");
+                                                                    printf("%sPARSER block: | LBRACE built_in RBRACE%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                 }
     | LBRACE ASSIGN attributes RBRACE                           {
-                                                                    printf("PARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }\n", $3->name, $3->value);
+                                                                    printf("%sPARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }%s\n", FMT_FG_GREEN, $3->name, $3->value, FMT_RESET);
                                                                     if(!find_symbol(0, $3->name))
                                                                     {
                                                                         add_symbol(0, $3->name, $3->value);
@@ -118,77 +118,77 @@ block:
                                                                     pnv_head = 0;
                                                                 }
     | LBRACE qualafied_id RBRACE                                {
-                                                                    printf("PARSER block: | LBRACE qualafied_id RBRACE\n");
+                                                                    printf("%sPARSER block: | LBRACE qualafied_id RBRACE%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                 }
                                                                 ;
 qualafied_id:
-    symbol DOT ID                                               { printf("PARSER qualafied_id: | symbol DOT ID\n"); }
-    | symbol INDIRECT_MEMBER ID                                 { printf("PARSER qualafied_id: | symbol INDIRECT_MEMBER ID\n"); }
-    | qualafied_id DOT ID                                       { printf("PARSER qualafied_id: | qualafied_id DOT ID\n"); }
-    | qualafied_id INDIRECT_MEMBER ID                           { printf("PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID\n"); }
+    symbol DOT ID                                               { printf("%sPARSER qualafied_id: | symbol DOT ID%s\n", FMT_FG_GREEN, FMT_RESET); }
+    | symbol INDIRECT_MEMBER ID                                 { printf("%sPARSER qualafied_id: | symbol INDIRECT_MEMBER ID%s\n", FMT_FG_GREEN, FMT_RESET); }
+    | qualafied_id DOT ID                                       { printf("%sPARSER qualafied_id: | qualafied_id DOT ID%s\n", FMT_FG_GREEN, FMT_RESET); }
+    | qualafied_id INDIRECT_MEMBER ID                           { printf("%sPARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID%s\n", FMT_FG_GREEN, FMT_RESET); }
                                                                 ;
 
 sub_proc:
     symbol LPAREN params RPAREN                                 {
-                                                                    printf("PARSER sub_proc: | symbol LPAREN params RPAREN\n");
+                                                                    printf("%sPARSER sub_proc: | symbol LPAREN params RPAREN%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                     $$=$1;
                                                                 }
                                                                 ;
 
 array:
     symbol LBRACKET NUMERIC_LITERAL RBRACKET                    {
-                                                                    printf("PARSER array: | symbol=\"%s\" LBRACKET NUMERIC_LITERAL=\"%s\" RBRACKET\n", $1, $3);
+                                                                    printf("%sPARSER array: | symbol=\"%s\" LBRACKET NUMERIC_LITERAL=\"%s\" RBRACKET%s\n", FMT_FG_GREEN, $1, $3, FMT_RESET);
                                                                     $$=$1;
                                                                 }
                                                                 ;
 
 params:
     /*empty*/
-    | symbol                                                    { printf("PARSER params: | symbol\n"); }
-    | params COMMA symbol                                       { printf("PARSER qualafied_id: | params COMMA symbol\n"); }
+    | symbol                                                    { printf("%sPARSER params: | symbol%s\n", FMT_FG_GREEN, FMT_RESET); }
+    | params COMMA symbol                                       { printf("%sPARSER qualafied_id: | params COMMA symbol%s\n", FMT_FG_GREEN, FMT_RESET); }
 
 
 symbol:
     DOLLAR_SIGN ID                                              {
-                                                                    printf("PARSER symbol: | ID=\"%s\"\n", $1);
+                                                                    printf("%sPARSER symbol: | ID=\"%s\"%s\n", FMT_FG_GREEN, $2, FMT_RESET);
                                                                     $$=$1;
                                                                 }
     | CONST_ID                                                  {
-                                                                    printf("PARSER symbol: | CONST_ID=\"%s\"\n", $1);
+                                                                    printf("%sPARSER symbol: | CONST_ID=\"%s\"%s\n", FMT_FG_GREEN, $1, FMT_RESET);
                                                                     $$=$1;
                                                                 }
                                                                 ;
 
 built_in:
     CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL                {
-                                                                    printf("PARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("%sPARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
                                                                     $$=buf;
                                                                 }
     | INCLUDE FILE_ATTRIB EQUAL STRING_LITERAL                  {
-                                                                    printf("PARSER built_in: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("%sPARSER built_in: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
                                                                     /* todo */
                                                                     $$=buf;
                                                                 }
     | REQUIRE FILE_ATTRIB EQUAL STRING_LITERAL                  {
-                                                                    printf("PARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("%sPARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
                                                                     $$=buf;
                                                                 }
     | INSERT FILE_ATTRIB EQUAL STRING_LITERAL                   {
-                                                                    printf("PARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
                                                                     $$=buf;
                                                                 }
                                                                 ;
 
 attributes:
     attribute                                                  {
-                                                                    printf("PARSER attributes: | attribute={name=\"%s\"; value=\"%s\"}\n", $1->name, $1->value);
+                                                                    printf("%sPARSER attributes: | attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, $1->name, $1->value, FMT_RESET);
                                                                     $$ = $1;
                                                                     // put attribute @ head position
                                                                     $1->next = pnv_head;
                                                                     pnv_head = $1;
                                                                }
     | attributes attribute                                     {
-                                                                    printf("PARSER attributes: | attributes attribute={name=\"%s\"; value=\"%s\"}\n", $2->name, $2->value);
+                                                                    printf("%sPARSER attributes: | attributes attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, $2->name, $2->value, FMT_RESET);
                                                                     // put attribute @ head position
                                                                     $2->next = pnv_head;
                                                                     pnv_head = $2;
@@ -196,7 +196,7 @@ attributes:
                                                                     nvalue* cur = $2;
                                                                     while(cur != 0)
                                                                     {
-                                                                        printf("attribute={name=\"%s\"; value=\"%s\"}\n", cur->name, cur->value);
+                                                                        printf("attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, cur->name, cur->value, FMT_RESET);
                                                                         cur = cur->next;
                                                                     }
                                                                }
@@ -204,12 +204,12 @@ attributes:
 
 attribute:
     VALUE_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("PARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("%sPARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
 	                                                                yyval.nval = alloc_nvalue($1, buf);
                                                                     $$ = yyval.nval;
                                                                }
     | VAR_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("PARSER name_value: | VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"\n", $1, buf);
+                                                                    printf("%sPARSER name_value: | VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
                                                                     yyval.nval = alloc_nvalue($1, buf);
                                                                     $$ = yyval.nval;
                                                                }
