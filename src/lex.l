@@ -220,7 +220,7 @@ VALUE_ATTRIB        value
                                                 yyin = fopen(f, "r");
                                                 return END_OF_FILE;
                                             } */
-                                            return END_OF_FILES;
+                                            return END_OF_FILE;
                                         }
 
 %%

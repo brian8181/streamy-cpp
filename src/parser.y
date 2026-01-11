@@ -78,17 +78,17 @@ complier:                                                        {
                                                                     printf("* Terminate parser with Ctrl-D ...                    *\n");
                                                                     printf("************************* Done ************************\n");
                                                                 }
-    files END_OF_FILES                                                      {
-                                                                    printf("%sPARSER complier: | files END_OF_FILES%s\n", FMT_FG_GREEN, FMT_RESET);
+    files                                                       {
+                                                                    printf("%sPARSER complier: | files%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                     printf("*********************** STOPPING **********************\n");
-                                                                    printf("*              End Of Files, Terminating.             *\n");
+                                                                    printf("*                     Terminating.                    *\n");
                                                                     printf("************************* Done ************************\n");
                                                                     //exit(0);
                                                                 }
 
 files:
-    file
-    | files file
+    file                                                        { printf("%sPARSER files: | file%s\n", FMT_FG_GREEN, FMT_RESET); }
+    | files file                                                { printf("%sPARSER files: | files file%s\n", FMT_FG_GREEN, FMT_RESET); }
 
 file:
     blocks END_OF_FILE                                          {
