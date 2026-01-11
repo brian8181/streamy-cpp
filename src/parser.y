@@ -51,7 +51,6 @@
     struct nvalue* nval;
 };
 
-
 %type block
 %type<nval> attribute
 %type<nval> attributes

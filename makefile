@@ -49,7 +49,7 @@ endif
 all: $(BLD)/parser $(BLD)/lex $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)/parser++
 
 # parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
-$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex_parse.yy.h $(BLD)/lex_parse.yy.c $(OBJ)/symtab.o
+$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex2.yy.h $(BLD)/lex2.yy.c $(OBJ)/symtab.o
 	@echo -e "\nBuilding \"lexer & parser\" ...\n"
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
@@ -59,9 +59,9 @@ $(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/bash_color.h: $(SRC)/parser.y #$(
 	cp $(SRC)/*.h $(BLD)/
 
 # CC lexer
-$(BLD)/lex_parse.yy.c $(BLD)/lex_parse.yy.h: $(SRC)/lex_parse.l
+$(BLD)/lex2.yy.c $(BLD)/lex2.yy.h: $(SRC)/lex2.l
 	@echo -e "\nGenerating \"lexer\" ...\n"
-	$(LEX) -o build/lex_parse.yy.c --header-file="build/lex_parse.yy.h" src/lex_parse.l
+	$(LEX) -o build/lex2.yy.c --header-file="build/lex2.yy.h" src/lex2.l
 
 $(BLD)/lex: $(BLD)/parser_test.tab.h $(BLD)/lex.yy.h $(BLD)/lex.yy.c
 	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex.yy.c -o $(BLD)/lex
