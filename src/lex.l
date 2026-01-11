@@ -93,7 +93,7 @@ VALUE_ATTRIB        value
                                             BEGIN(ESCAPED);
                                             return LBRACE;
                                         }
-                                                                                                      }
+                                        }
 <SINGLE_QUOTED,DOUBLE_QUOTED>{
 \\n                                     { *s++ = '\n'; }
 \\t                                     { *s++ = '\t'; }
@@ -185,11 +185,11 @@ VALUE_ATTRIB        value
 {CONST_ID}                              { printf("LEX:[CONST_ID:%s]\n", yytext); yylval.sval = strdup(yytext); return CONST_ID; }
 {ID}                                    { printf("LEX:[ID:%s]\n", yytext); yylval.sval = strdup(yytext); return ID;             }
 [ \t]*                                  { /********************************** eat whitespace *********************************/ }
-                                                                                                                                }
+                                        }
 <IF_CONDITION>{
-{RBRACE}                  { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK); }
-[^}]                      { ECHO; }
-                                                                    }
+{RBRACE}                                { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK); }
+[^}]                                    { ECHO; }
+                                        }
 <IF_BLOCK>[^{]                          { ECHO; }
 <OFF>[^ \t\n]+                          {
                                             printf("LEX:INCLUDING \"%s\"\n", buf);
