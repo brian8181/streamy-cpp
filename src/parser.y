@@ -13,26 +13,6 @@
     char buf[100];
     char *s;
 
-    //typdef struct ASTNode
-    //{
-    //    char* value;
-    //    struct ASTNode** children;
-    //    int child_count;
-	//} ASTNode;
-
-    //typedef struct AST
-    //{
-	//	ASTNode* root;
-	//} AST;
-
-     // typedef struct nvlist
-    // {
-    //     struct nvalue* head;
-    // } nvlist;
-
-    // nvlist* nvalues =(nvlist*) malloc(sizeof(nvlist));
-    // nvalues->head = 0;
-
     typedef struct nvalue
     {
         char* name;
@@ -42,7 +22,6 @@
 
     static nvalue* pnv_head = 0;
     nvalue* alloc_nvalue(char* name, char* value);
-    //FILE* next_file();
 %}
 
 %union
@@ -164,7 +143,7 @@ params:
 symbol:
     DOLLAR_SIGN ID                                              {
                                                                     printf("%sPARSER symbol: | ID=\"%s\"%s\n", FMT_FG_GREEN, $2, FMT_RESET);
-                                                                    $$=$1;
+                                                                    $$=$2;
                                                                 }
     | CONST_ID                                                  {
                                                                     printf("%sPARSER symbol: | CONST_ID=\"%s\"%s\n", FMT_FG_GREEN, $1, FMT_RESET);
@@ -252,24 +231,8 @@ int yyerror(char * s)
     return 0;
 };
 
-// extern FILE *yyin;
-// static int g_argc;
-// static char** g_argv;
-// static int i = 0;
-
-// FILE* next_file()
-// {
-//     ++i;
-//     if(i < g_argc)
-//         return fopen(g_argv[i], "r");
-//     return 0;
-// }
-
 int main(int argc, char** argv)
 {
-    // g_argc = argc;
-    // g_argv = argv;
-
     extern FILE *yyin;
     for(int i = 1; i < argc; ++i)
     {

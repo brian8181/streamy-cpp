@@ -15,8 +15,6 @@
     char* strdup(char* str);
 
     #define YY_BUFFER YY_CURRENT_BUFFFER
-
-    const char* next_file();
 %}
 
 END_OF_FILE         \0
@@ -214,12 +212,6 @@ VALUE_ATTRIB        value
                                         }
 <<EOF>>                                 {
                                             printf("LEX:<<EOF>>\n");
-                                            /* const char* f = next_file();
-                                            if(f)
-                                            {
-                                                yyin = fopen(f, "r");
-                                                return END_OF_FILE;
-                                            } */
                                             return END_OF_FILE;
                                         }
 
