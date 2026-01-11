@@ -42,6 +42,7 @@
 
     static nvalue* pnv_head = 0;
     nvalue* alloc_nvalue(char* name, char* value);
+    void next_file();
 %}
 
 %union
@@ -97,7 +98,7 @@ blocks:
 
 block:
     LBRACE sub_proc RBRACE                                      {
-                                                                    printf("%sPARSER block: | LBRACE sub_porc RBRACE\n", FMT_FG_GREEN, FMT_RESET);
+                                                                    printf("%sPARSER block: | LBRACE sub_porc RBRACE%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                 }
     | LBRACE array RBRACE                                       {
                                                                     printf("%sPARSER block: | LBRACE array RBRACE%s\n", FMT_FG_GREEN, FMT_RESET);
@@ -238,12 +239,27 @@ int yyerror(char * s)
     return 0;
 };
 
+extern FILE *yyin;
+static int g_argc;
+static char** g_argv;
+
+void next_file()
+{
+    static int i = 1;
+    if(i < g_argc)
+        yyin = fopen(g_argv[i], "r");
+    ++i;
+}
+
 int main(int argc, char** argv)
 {
+    g_argc = argc;
+    g_argv = argv;
+
     extern FILE *yyin;
     if (argc > 0)
     {
-        yyin = fopen(argv[1], "r");
+        next_file();
     }
     else
     {
