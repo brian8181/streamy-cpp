@@ -42,7 +42,7 @@
 
     static nvalue* pnv_head = 0;
     nvalue* alloc_nvalue(char* name, char* value);
-    void next_file();
+    const char* next_file();
 %}
 
 %union
@@ -52,7 +52,7 @@
     struct nvalue* nval;
 };
 
-%type block
+%type files file block blocks
 %type<nval> attribute
 %type<nval> attributes
 %token<sval> NUMBER
@@ -66,24 +66,37 @@
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK COMMA EQUAL PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
-%token END_OF_FILE
+%token END_OF_FILE END_OF_FILES
 %type<sval> symbol sub_proc built_in array qualafied_id
-%start file blocks
+%start complier
 
 %%
 
-file:                                                           {
+complier:                                                        {
                                                                     printf("************************* RUN *************************\n");
                                                                     printf("* Terminate listing with ; to see parsed AST          *\n");
                                                                     printf("* Terminate parser with Ctrl-D ...                    *\n");
                                                                     printf("************************* Done ************************\n");
                                                                 }
-        blocks END_OF_FILE                                      {
-                                                                    printf("%sPARSER file: | blocks END_OF_FILE%s\n", FMT_FG_GREEN, FMT_RESET);
+    files END_OF_FILES                                                      {
+                                                                    printf("%sPARSER complier: | files END_OF_FILES%s\n", FMT_FG_GREEN, FMT_RESET);
                                                                     printf("*********************** STOPPING **********************\n");
-                                                                    printf("* End of file, terminating.                           *\n");
+                                                                    printf("*              End Of Files, Terminating.             *\n");
                                                                     printf("************************* Done ************************\n");
-                                                                    exit(0);
+                                                                    //exit(0);
+                                                                }
+
+files:
+    file
+    | files file
+
+file:
+    blocks END_OF_FILE                                          {
+                                                                    printf("%sPARSER file: | blocks END_OF_FILE%s\n", FMT_FG_GREEN, FMT_RESET);
+                                                                    printf("*******************************************************\n");
+                                                                    printf("*                      End Of File                    *\n");
+                                                                    printf("*******************************************************\n");
+                                                                    //exit(0);
                                                                 }
         ;
 
@@ -242,13 +255,14 @@ int yyerror(char * s)
 extern FILE *yyin;
 static int g_argc;
 static char** g_argv;
+static int i = 0;
 
-void next_file()
+const char* next_file()
 {
-    static int i = 1;
-    if(i < g_argc)
-        yyin = fopen(g_argv[i], "r");
     ++i;
+    if(i < g_argc)
+        return g_argv[i];
+    return 0;
 }
 
 int main(int argc, char** argv)
@@ -259,7 +273,9 @@ int main(int argc, char** argv)
     extern FILE *yyin;
     if (argc > 0)
     {
-        next_file();
+        const char* f = next_file();
+        if(f)
+            yyin = fopen(f, "r");
     }
     else
     {

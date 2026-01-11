@@ -16,7 +16,7 @@
 
     #define YY_BUFFER YY_CURRENT_BUFFFER
 
-    void next_file();
+    const char* next_file();
 %}
 
 END_OF_FILE         \0
@@ -87,21 +87,24 @@ VALUE_ATTRIB        value
 %x OFF
 %%
 
-<INITIAL>{COMMENT}                       {  /* eat up comment */ printf("LEX:COMMENT=\"%s\"", yytext); }
-<INITIAL>{LBRACE}                        {
+<INITIAL>{
+{COMMENT}                               {  /* eat up comment */ printf("LEX:COMMENT=\"%s\"", yytext); }
+{LBRACE}                                {
                                             printf("LEX:LBRACE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
                                             return LBRACE;
-                                         }
+                                        }
+                                                                                                      }
 <SINGLE_QUOTED,DOUBLE_QUOTED>{
 \\n                                     { *s++ = '\n'; }
 \\t                                     { *s++ = '\t'; }
 \\\"                                    { *s++ = '\"'; }
 [\n}]                                   { printf("LEX: missing closing quote"); exit(1); }
                                                                                          }
-<SINGLE_QUOTED>{FILE_NAME}              { *s++ = *yytext; }
-<SINGLE_QUOTED>{SINGLE_QUOTE}           {
+<SINGLE_QUOTED>{
+{FILE_NAME}                             { *s++ = *yytext; }
+{SINGLE_QUOTE}                          {
                                             printf("LEX:SINGLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
@@ -109,14 +112,17 @@ VALUE_ATTRIB        value
                                             printf("LEX:STRING_LITERAL=\"%s\"\n", buf);
                                             return STRING_LITERAL;
                                         }
-<DOUBLE_QUOTED>{FILE_NAME}              { *s++ = *yytext; }
-<DOUBLE_QUOTED>{DOUBLE_QUOTE}           {
+                                        }
+<DOUBLE_QUOTED>{
+{FILE_NAME}                             { *s++ = *yytext; }
+{DOUBLE_QUOTE}                          {
                                             printf("LEX:DOUBLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
                                             *s = 0;
                                             printf("LEX:STRING_LITERAL=\"%s\"\n", buf);
                                             return STRING_LITERAL;
+                                        }
                                         }
 <ESCAPED>{
 {RBRACE}                                {
@@ -180,11 +186,13 @@ VALUE_ATTRIB        value
 {END_FOREACH}                           { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;                 }
 {CONST_ID}                              { printf("LEX:[CONST_ID:%s]\n", yytext); yylval.sval = strdup(yytext); return CONST_ID; }
 {ID}                                    { printf("LEX:[ID:%s]\n", yytext); yylval.sval = strdup(yytext); return ID;             }
-[ \t]*                                  {      /************************* eat the whitespace *********************/             }
+[ \t]*                                  { /********************************** eat whitespace *********************************/ }
                                                                                                                                 }
-<IF_CONDITION>{RBRACE}                  { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                               }
-<IF_CONDITION>[^}]                      { ECHO;                                                                                 }
-<IF_BLOCK>[^{]                          { ECHO;                                                                                 }
+<IF_CONDITION>{
+{RBRACE}                  { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK); }
+[^}]                      { ECHO; }
+                                                                    }
+<IF_BLOCK>[^{]                          { ECHO; }
 <OFF>[^ \t\n]+                          {
                                             printf("LEX:INCLUDING \"%s\"\n", buf);
                                             /* got the include file name */
@@ -205,20 +213,14 @@ VALUE_ATTRIB        value
                                             BEGIN(INITIAL);
                                         }
 <<EOF>>                                 {
-                                            printf("<<EOF>>\n");
-                                            next_file();
-                                            return END_OF_FILE;
-                                            // if ( !end && --include_stack_ptr < 0 )
-                                            // {
-                                            //     return END_OF_FILE;
-                                            //     yyterminate();
-                                            // }
-                                            // else
-                                            // {
-                                            //     yy_delete_buffer( YY_CURRENT_BUFFER );
-                                            //     yy_switch_to_buffer(
-                                            //     include_stack[include_stack_ptr] );
-                                            // }
+                                            printf("LEX:<<EOF>>\n");
+                                            const char* f = next_file();
+                                            if(f)
+                                            {
+                                                yyin = fopen(f, "r");
+                                                return END_OF_FILE;
+                                            }
+                                            return END_OF_FILES;
                                         }
 
 %%
