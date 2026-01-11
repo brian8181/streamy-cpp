@@ -42,7 +42,7 @@
 
     static nvalue* pnv_head = 0;
     nvalue* alloc_nvalue(char* name, char* value);
-    const char* next_file();
+    //FILE* next_file();
 %}
 
 %union
@@ -252,35 +252,31 @@ int yyerror(char * s)
     return 0;
 };
 
-extern FILE *yyin;
-static int g_argc;
-static char** g_argv;
-static int i = 0;
+// extern FILE *yyin;
+// static int g_argc;
+// static char** g_argv;
+// static int i = 0;
 
-const char* next_file()
-{
-    ++i;
-    if(i < g_argc)
-        return g_argv[i];
-    return 0;
-}
+// FILE* next_file()
+// {
+//     ++i;
+//     if(i < g_argc)
+//         return fopen(g_argv[i], "r");
+//     return 0;
+// }
 
 int main(int argc, char** argv)
 {
-    g_argc = argc;
-    g_argv = argv;
+    // g_argc = argc;
+    // g_argv = argv;
 
     extern FILE *yyin;
-    if (argc > 0)
+    for(int i = 1; i < argc; ++i)
     {
-        const char* f = next_file();
-        if(f)
-            yyin = fopen(f, "r");
+        yyin = fopen(argv[i], "r");
+        if(!yyin)
+            printf("error opening file: %s ...", argv[i]);
+        yyparse();
     }
-    else
-    {
-        yyin = stdin;
-    };
-    yyparse();
-    return 0;
+    exit(0);
 };
