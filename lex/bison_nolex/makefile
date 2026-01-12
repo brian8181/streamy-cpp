@@ -10,14 +10,19 @@ SRC=.
 
 all: $(BLD)/calc
 
-$(BLD)/calc: $(BLD)/calc.tab.c lexer.c
-	$(CC) lexer.c $(BLD)/calc.tab.c -o $(BLD)/calc
+$(BLD)/calc: $(BLD)/lexer.h $(BLD)/calc.tab.c $(SRC)/lexer.c
+	$(CC) $(SRC)/lexer.c $(BLD)/calc.tab.c -o $(BLD)/calc
 
-# $(BLD)/calc.yy.c: $(SRC)/calc.l
+#$(BLD)/calc.yy.c: $(SRC)/calc.l
 # 	$(LEX) -o $(BLD)/calc.yy.c $(SRC)/calc.l
 
 $(BLD)/calc.tab.c: $(SRC)/calc.y
-	$(YACC) -o $(BLD)/calc.tab.c -d calc.y
+	$(YACC) --header -o $(BLD)/calc.tab.c -d $(SRC)/calc.y
+
+# copy header files
+$(BLD)/lexer.h: $(SRC)/lexer.h
+	cp $^ $@
+
 
 .PHONY: clean
 clean:
