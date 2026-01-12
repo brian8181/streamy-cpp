@@ -51,14 +51,14 @@
 
 %%
 
-complier:                                                        {
+complier:                                                       {
                                                                     printf("************************* RUN *************************\n");
                                                                     printf("* Terminate listing with ; to see parsed AST          *\n");
                                                                     printf("* Terminate parser with Ctrl-D ...                    *\n");
                                                                     printf("************************* Done ************************\n");
                                                                 }
     files                                                       {
-                                                                    printf("%sPARSER complier: | files%s\n", FMT_FG_GREEN, FMT_RESET);
+                                                                    printfmt(FMT_FG_GREEN, "PARSER complier: | files\n");
                                                                     printf("*********************** STOPPING **********************\n");
                                                                     printf("*                     Terminating.                    *\n");
                                                                     printf("************************* Done ************************\n");
@@ -66,12 +66,12 @@ complier:                                                        {
                                                                 }
 
 files:
-    file                                                        { printf("%sPARSER files: | file%s\n", FMT_FG_GREEN, FMT_RESET); }
-    | files file                                                { printf("%sPARSER files: | files file%s\n", FMT_FG_GREEN, FMT_RESET); }
+    file                                                        { printfmt(FMT_FG_GREEN, "PARSER files: | file\n"); }
+    | files file                                                { printfmt(FMT_FG_GREEN, "PARSER files: | files file\n"); }
 
 file:
     blocks END_OF_FILE                                          {
-                                                                    printf("%sPARSER file: | blocks END_OF_FILE%s\n", FMT_FG_GREEN, FMT_RESET);
+                                                                    printfmt(FMT_FG_GREEN, "PARSER file: | blocks END_OF_FILE\n");
                                                                     printf("*******************************************************\n");
                                                                     printf("*                      End Of File                    *\n");
                                                                     printf("*******************************************************\n");
@@ -81,10 +81,10 @@ file:
 
 blocks:
     block                                                       {
-                                                                    printf("%sPARSER blocks: | block%s\n", FMT_FG_GREEN, FMT_RESET);
+                                                                    printfmt(FMT_FG_GREEN, "PARSER blocks: | block\n");
                                                                 }
     | blocks block                                              {
-                                                                    printf("%sPARSER blocks: | blocks block%s\n", FMT_FG_GREEN, FMT_RESET);
+                                                                    printfmt(FMT_FG_GREEN, "PARSER blocks: | blocks block\n");
                                                                 }
                                                                 ;
 

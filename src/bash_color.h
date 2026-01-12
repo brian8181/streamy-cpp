@@ -12,6 +12,7 @@ const char* FMT_RESET_BLINK       = "\033[25m";
 const char* FMT_RESET_REVERSE     = "\033[27m";
 const char* FMT_RESET_HIDDEN      = "\033[28m";
 const char* FMT_BOLD              = "\033[1m";
+const char* FMT_ITALIC               = "\033[3m";
 const char* FMT_DIM               = "\033[2m";
 const char* FMT_UNDERLINE         = "\033[4m";
 const char* FMT_BLINK             = "\033[5m";
@@ -50,11 +51,13 @@ const char* FMT_BG_LIGHT_MAGENTA  = "\033[105m";
 const char* FMT_BG_LIGHT_CYAN     = "\033[106m";
 const char* FMT_BG_WHITE          = "\033[107m";
 
-void printfmt(const char* FMT, const char* s)
+void printfmt(const char* FMT, const char* s, ...)
 {
     int len = (strlen(FMT) + strlen(s) + strlen(FMT_RESET)) + 1;
     char* nstr = (char*)malloc(len);
     strcat( strcat( strcat(nstr, FMT), s), FMT_RESET);
+    printf(nstr, FMT, FMT_RESET);
+    free(nstr);
 }
 
 #endif
