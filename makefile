@@ -46,7 +46,7 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: $(BLD)/parser $(BLD)/lex++ $(BLD)/TEST_lex # $(BLD)/lex $(BLD)/parser++
+all: $(BLD)/parser $(BLD)/lex++ $(BLD)/TEST_lex $(BLD)/lex # $(BLD)/parser++
 
 # parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
 $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o
@@ -63,9 +63,8 @@ $(BLD)/lex.yy.c $(BLD)/lex.yy.h: $(SRC)/lex.l
 	@echo -e "\nGenerating \"lexer\" ...\n"
 	$(LEX) -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
 
-$(BLD)/lex: $(BLD)/parser_test.tab.h $(BLD)/lex.bak.yy.h $(BLD)/lex.bak.yy.c
-	$(CC) $(CCFLAGS) -DMAIN_IMP -DLEXER_EXE $(BLD)/lex.bak.yy.c -o $(BLD)/lex
-
+$(BLD)/lex: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o
+	$(CC) $(CCFLAGS) $^ -lfl -o $@
 
 $(BLD)/parser_test: $(BLD)/parser_test.tab.h $(BLD)/parser_test.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c
 	@echo -e "\nBuilding \"lexer & parser\" ...\n"

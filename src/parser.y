@@ -51,7 +51,7 @@
 
 %%
 
-complier:                                                        {
+complier:                                                       {
                                                                     printf("************************* RUN *************************\n");
                                                                     printf("* Terminate listing with ; to see parsed AST          *\n");
                                                                     printf("* Terminate parser with Ctrl-D ...                    *\n");
