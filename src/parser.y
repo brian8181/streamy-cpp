@@ -9,6 +9,9 @@
     int yylex(void);
     int yyerror(char * s);
 
+
+    char* STRDUP(char* s);
+
     /* string literal buffer */
     char buf[100];
     char *s;
@@ -32,7 +35,7 @@
 };
 
 %type files file block blocks
-%type<nval> attribute
+%type<nval> attribute built_in
 %type<nval> attributes
 %token<sval> NUMBER
 %token<sval> DOLLAR_SIGN DOT INDIRECT_MEMBER
@@ -46,7 +49,7 @@
 %token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
 %token END_OF_FILE END_OF_FILES
-%type<sval> symbol sub_proc built_in array qualafied_id
+%type<sval> symbol sub_proc array qualafied_id
 %start complier
 
 %%
@@ -154,43 +157,58 @@ symbol:
 built_in:
     CONFIG_LOAD FILE_ATTRIB EQUAL STRING_LITERAL                {
                                                                     printf("%sPARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    $$=buf;
+                                                                    nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
+                                                                    nv->name = STRDUP($1);
+                                                                    nv->value = STRDUP(s);
+                                                                    $$=nv;
+                                                                    s = 0;
                                                                 }
     | INCLUDE FILE_ATTRIB EQUAL STRING_LITERAL                  {
                                                                     printf("%sPARSER built_in: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    /* todo */
-                                                                    $$=buf;
+                                                                    nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
+                                                                    nv->name = STRDUP($1);
+                                                                    nv->value = STRDUP(s);
+                                                                    $$=nv;
+                                                                    s = 0;
                                                                 }
     | REQUIRE FILE_ATTRIB EQUAL STRING_LITERAL                  {
                                                                     printf("%sPARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    $$=buf;
+                                                                    nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
+                                                                    nv->name = STRDUP($1);
+                                                                    nv->value = STRDUP(s);
+                                                                    $$=nv;
+                                                                    s = 0;
                                                                 }
     | INSERT FILE_ATTRIB EQUAL STRING_LITERAL                   {
                                                                     printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    $$=buf;
+                                                                    nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
+                                                                    nv->name = STRDUP($1);
+                                                                    nv->value = STRDUP(s);
+                                                                    $$=nv;
+                                                                    s = 0;
                                                                 }
                                                                 ;
 
 attributes:
     attribute                                                  {
                                                                     printf("%sPARSER attributes: | attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, $1->name, $1->value, FMT_RESET);
-                                                                    $$ = $1;
                                                                     // put attribute @ head position
-                                                                    $1->next = pnv_head;
                                                                     pnv_head = $1;
+                                                                    $$ = pnv_head;
                                                                }
     | attributes attribute                                     {
                                                                     printf("%sPARSER attributes: | attributes attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, $2->name, $2->value, FMT_RESET);
                                                                     // put attribute @ head position
-                                                                    $2->next = pnv_head;
-                                                                    pnv_head = $2;
+                                                                    // $2->next = pnv_head;
+                                                                    // pnv_head = $2;
                                                                     // print attributes ...
-                                                                    nvalue* cur = $2;
-                                                                    while(cur != 0)
+                                                                    nvalue* cur = pnv_head;
+                                                                    while(cur->next != 0)
                                                                     {
-                                                                        printf("attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, cur->name, cur->value, FMT_RESET);
+                                                                        //printf("attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, cur->name, cur->value, FMT_RESET);
                                                                         cur = cur->next;
                                                                     }
+                                                                    cur->next = $2;
                                                                }
                                                                ;
 
@@ -211,7 +229,7 @@ attribute:
 
 char* STRDUP(char* s)
 {
-    char* dup = (char*)malloc((strlen(s) * sizeof(char)) + 1);
+    char* dup = (char*)malloc(strlen(s) + 1);
     strcpy(dup, s);
     return dup;
 }
