@@ -1,0 +1,19 @@
+Start ...
+{$abcs}
+{config_load file="config.txt"}
+{insert file="test/t1.txt"}
+{include file="test/t1.txt"}
+{* testing comments *}
+{#test_var#}
+{$abc}
+{$xyz}
+{$arry[0]}
+{$subproc()}
+{assign var="test" value="42" var="test2" value="21"}
+{insert file="filename2.txt"}
+{require file='name.txt'}
+{ * testing comments 2 * }
+{$xxx.test}
+{$yyy->test}
+{$subproc($x, $y)}
+... End
