@@ -216,7 +216,8 @@ VALUE_ATTRIB        value
 <<EOF>>                                 {
 
                                             printf("LEX:<<EOF>>\n");
-                                            if ( --pstack < 0 )
+                                            //yyrestart( yyin );
+                                            /* if ( --pstack < 0 )
                                             {
                                                 yyterminate();
                                             }
@@ -225,8 +226,9 @@ VALUE_ATTRIB        value
                                                 yy_delete_buffer( YY_CURRENT_BUFFER );
                                                 yy_switch_to_buffer(
                                                 include_stack[pstack] );
-                                            }
-                                            //return END_OF_FILE;
+                                            } */
+                                            //return 0;
+                                            return END;
                                         }
 
 %%

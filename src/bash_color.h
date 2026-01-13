@@ -12,6 +12,7 @@ const char* FMT_RESET_BLINK       = "\033[25m";
 const char* FMT_RESET_REVERSE     = "\033[27m";
 const char* FMT_RESET_HIDDEN      = "\033[28m";
 const char* FMT_BOLD              = "\033[1m";
+const char* FMT_ITALIC            = "\033[3m";
 const char* FMT_DIM               = "\033[2m";
 const char* FMT_UNDERLINE         = "\033[4m";
 const char* FMT_BLINK             = "\033[5m";

@@ -25,6 +25,8 @@
 
     static nvalue* pnv_head = 0;
     nvalue* alloc_nvalue(char* name, char* value);
+    void free_nvalue(nvalue* nv);
+    void free_all_nvalues();
 %}
 
 %union
@@ -34,6 +36,7 @@
     struct nvalue* nval;
 };
 
+%token END 0 _("end of input")
 %type files file block blocks
 %type<nval> attribute built_in
 %type<nval> attributes
@@ -48,23 +51,18 @@
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK COMMA EQUAL PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
-%token END_OF_FILE END_OF_FILES
+%token END_OF_FILES
 %type<sval> symbol sub_proc array qualafied_id
 %start complier
 
 %%
 
-complier:                                                       {
-                                                                    printf("************************* RUN *************************\n");
-                                                                    printf("* Terminate listing with ; to see parsed AST          *\n");
-                                                                    printf("* Terminate parser with Ctrl-D ...                    *\n");
-                                                                    printf("************************* Done ************************\n");
-                                                                }
+complier:
     files                                                       {
                                                                     printf("%sPARSER complier: | files%s\n", FMT_FG_GREEN, FMT_RESET);
-                                                                    printf("*********************** STOPPING **********************\n");
-                                                                    printf("*                     Terminating.                    *\n");
-                                                                    printf("************************* Done ************************\n");
+                                                                    printf("%s*********************** STOPPING **********************%s\n", FMT_REVERSE, FMT_RESET);
+                                                                    printf("%s*                     Terminating.                    *%s\n", FMT_REVERSE, FMT_RESET);
+                                                                    printf("%s************************* Done ************************%s\n", FMT_REVERSE, FMT_RESET);
                                                                     //exit(0);
                                                                 }
 
@@ -73,11 +71,11 @@ files:
     | files file                                                { printf("%sPARSER files: | files file%s\n", FMT_FG_GREEN, FMT_RESET); }
 
 file:
-    blocks END_OF_FILE                                          {
+    blocks END                                                  {
                                                                     printf("%sPARSER file: | blocks END_OF_FILE%s\n", FMT_FG_GREEN, FMT_RESET);
-                                                                    printf("*******************************************************\n");
-                                                                    printf("*                      End Of File                    *\n");
-                                                                    printf("*******************************************************\n");
+                                                                    printf("%s*******************************************************%s\n", FMT_REVERSE, FMT_RESET);
+                                                                    printf("%s*                      End Of File                    *%s\n", FMT_REVERSE, FMT_RESET);
+                                                                    printf("%s*******************************************************%s\n", FMT_REVERSE, FMT_RESET);
                                                                     //exit(0);
                                                                 }
         ;
@@ -103,15 +101,15 @@ block:
                                                                 }
     | LBRACE built_in RBRACE                                    {
                                                                     printf("%sPARSER block: | LBRACE built_in RBRACE%s\n", FMT_FG_GREEN, FMT_RESET);
-
+                                                                    //free_all_nvalues();
                                                                 }
     | LBRACE ASSIGN attributes RBRACE                           {
-                                                                    printf("%sPARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }%s\n", FMT_FG_GREEN, $3->name, $3->value, FMT_RESET);
-                                                                    if(!find_symbol(0, $3->name))
-                                                                    {
-                                                                        add_symbol(0, $3->name, $3->value);
-                                                                    }
-                                                                    pnv_head = 0;
+                                                                    //printf("%sPARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }%s\n", FMT_FG_GREEN, $3->name, $3->value, FMT_RESET);
+                                                                    // if(!find_symbol(0, $3->name))
+                                                                    // {
+                                                                    //     add_symbol(0, $3->name, $3->value);
+                                                                    // }
+                                                                    // pnv_head = 0;
                                                                 }
     | LBRACE qualafied_id RBRACE                                {
                                                                     printf("%sPARSER block: | LBRACE qualafied_id RBRACE%s\n", FMT_FG_GREEN, FMT_RESET);
@@ -182,11 +180,11 @@ built_in:
                                                                 }
     | INSERT FILE_ATTRIB EQUAL STRING_LITERAL                   {
                                                                     printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
-                                                                    nv->name = STRDUP($1);
-                                                                    nv->value = STRDUP(s);
-                                                                    $$=nv;
-                                                                    s = 0;
+                                                                    // nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
+                                                                    // nv->name = STRDUP($1);
+                                                                    // nv->value = STRDUP(s);
+                                                                    // $$=nv;
+                                                                    // s = 0;
                                                                 }
                                                                 ;
 
@@ -228,6 +226,8 @@ attribute:
 
 %%
 
+#include "bash_color.h"
+
 char* STRDUP(char* s)
 {
     char* dup = (char*)malloc(strlen(s) + 1);
@@ -251,8 +251,11 @@ void free_nvalue(nvalue* nv)
     free(nv);
 }
 
-void free_nvalues()
+void free_all_nvalues()
 {
+    if(!pnv_head)
+        return;
+
     nvalue* cur = pnv_head;
     nvalue* next = pnv_head->next;
     while(cur != 0)
@@ -277,7 +280,21 @@ int main(int argc, char** argv)
         yyin = fopen(argv[i], "r");
         if(!yyin)
             printf("error opening file: %s ...", argv[i]);
+
+
+        printf("%s************************* RUN *************************%s\n", FMT_REVERSE, FMT_RESET);
+        printf("%s* Terminate listing with ; to see parsed AST          *%s\n", FMT_REVERSE, FMT_RESET);
+        printf("%s* Terminate parser with Ctrl-D ...                    *%s\n", FMT_REVERSE, FMT_RESET);
+        printf("%s%s* parsing file=\"%s\"                       *%s\n", FMT_REVERSE, FMT_ITALIC, argv[i], FMT_RESET);
+        printf("%s************************* Done ************************%s\n", FMT_REVERSE, FMT_RESET);
+
         yyparse();
+
+        printf("%s%sclosing file=\"%s\"%s\n", FMT_ITALIC, FMT_FG_CYAN, argv[i], FMT_RESET);
+        fclose(yyin);
+        free(yyin);
+        yyin = 0;
+
     }
     exit(0);
 };
