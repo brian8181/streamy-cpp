@@ -205,7 +205,7 @@ attributes:
                                                                     nvalue* cur = pnv_head;
                                                                     while(cur->next != 0)
                                                                     {
-                                                                        //printf("attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, cur->name, cur->value, FMT_RESET);
+                                                                        printf("%sattribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, cur->name, cur->value, FMT_RESET);
                                                                         cur = cur->next;
                                                                     }
                                                                     cur->next = $2;
