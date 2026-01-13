@@ -103,6 +103,7 @@ block:
                                                                 }
     | LBRACE built_in RBRACE                                    {
                                                                     printf("%sPARSER block: | LBRACE built_in RBRACE%s\n", FMT_FG_GREEN, FMT_RESET);
+
                                                                 }
     | LBRACE ASSIGN attributes RBRACE                           {
                                                                     printf("%sPARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\" }%s\n", FMT_FG_GREEN, $3->name, $3->value, FMT_RESET);
@@ -241,6 +242,25 @@ nvalue* alloc_nvalue(char* name, char* value)
     nval->value = STRDUP(value);
     nval->next = 0;
     return nval;
+}
+
+void free_nvalue(nvalue* nv)
+{
+    free(nv->name);
+    free(nv->value);
+    free(nv);
+}
+
+void free_nvalues()
+{
+    nvalue* cur = pnv_head;
+    nvalue* next = pnv_head->next;
+    while(cur != 0)
+    {
+        free_nvalue(cur);
+        cur = next;
+        next = cur->next;
+    }
 }
 
 int yyerror(char * s)
