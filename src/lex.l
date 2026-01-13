@@ -3,9 +3,11 @@
     #include <stdio.h>
     #include <string.h>
 
+    /* include defines */
     #define MAX_INCLUDE_DEPTH 10
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
-    int include_stack_ptr = 0;
+    int pstack = 0;
+
     int yylex(void);
     int yyerror(char* s);
     int fileno(FILE* f);
@@ -140,7 +142,7 @@ VALUE_ATTRIB        value
 {REQUIRE}                               { printf("LEX:REQUIRE\n");                        return REQUIRE;                       }
 {CONFIG_LOAD}                           { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;                   }
 {INSERT}                                { printf("LEX:INSERT\n");                         return INSERT;                        }
-{INCLUDE}                               { printf("LEX:INCLUDE\n");                        return INCLUDE;                       }
+{INCLUDE}                               { printf("LEX:INCLUDE\n"); /*BEGIN(INCLUDING);*/  return INCLUDE;                       }
 {FILE_ATTRIB}                           { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;                   }
 {VAR_ATTRIB}                            { printf("LEX:VAR_ATTRIB\n");                     return VAR_ATTRIB;                    }
 {VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                  }
@@ -191,28 +193,40 @@ VALUE_ATTRIB        value
 [^}]                                    { ECHO; }
                                         }
 <IF_BLOCK>[^{]                          { ECHO; }
-<OFF>[^ \t\n]+                          {
+<INCLUDING>[^ \t\n]+                    {
                                             printf("LEX:INCLUDING \"%s\"\n", buf);
-                                            /* got the include file name */
-                                            if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
+                                            /* include file name */
+                                            if ( pstack >= MAX_INCLUDE_DEPTH )
                                             {
-                                                fprintf( stderr, "Includes nested too deeply" );
+                                                fprintf( stderr, "error: includes nested too deeply" );
                                                 exit( 1 );
                                             }
-                                            include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+                                            include_stack[pstack++] = YY_CURRENT_BUFFER;
+
                                             yyin = fopen( yytext, "r" );
-                                            yyin = fopen( yytext, "r" );
-                                            if ( !yyin )
+                                            if ( ! yyin )
                                             {
-                                                printf( "could not open file, %s\n", yytext );
+                                                printf( "error: could not open file, %s", yytext );
                                             }
+
                                             yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
                                             printf("LEX:BEGIN INITIAL\n");
                                             BEGIN(INITIAL);
                                         }
 <<EOF>>                                 {
+
                                             printf("LEX:<<EOF>>\n");
-                                            return END_OF_FILE;
+                                            if ( --pstack < 0 )
+                                            {
+                                                yyterminate();
+                                            }
+                                            else
+                                            {
+                                                yy_delete_buffer( YY_CURRENT_BUFFER );
+                                                yy_switch_to_buffer(
+                                                include_stack[pstack] );
+                                            }
+                                            //return END_OF_FILE;
                                         }
 
 %%

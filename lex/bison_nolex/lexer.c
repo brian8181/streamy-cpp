@@ -12,7 +12,7 @@ int yyerror(char *s)
     return 0;
 }
 
-char* TOKS[] = { "3", "+", "2", ";", "\n", "\0"};
+char* TOKS[] = { "3", "+", "2", ";", "\n", "\0" };
 
 int yylex (void)
 {

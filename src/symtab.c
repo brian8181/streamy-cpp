@@ -17,8 +17,8 @@ symbol_tab* get_stable()
     symbol* streamy_init_object = (symbol*)malloc(sizeof(symbol));
     // todo allocate strings ...
     streamy_init_object->id = "$streamy";
-    streamy_init_object->stype = "object";
-    streamy_init_object->stype_modifiers = "static";
+    streamy_init_object->type = "object";
+    streamy_init_object->type_modifiers = "static";
     streamy_init_object->pval = 0;
     tab = (symbol_tab*)malloc(sizeof(symbol_tab));
     tab->head = (node*)malloc(sizeof(node));
@@ -34,6 +34,18 @@ void free_node(symbol_tab* stab, node* n)
     n->sym = 0;
     free(n);
     n = 0;
+}
+
+void init_symbol(symbol** s, const char* id, const char* type_modifiers, const char* type)
+{
+    *s =  (symbol*)malloc( sizeof(symbol) );
+
+    (*s)->id = (char*)malloc( strlen(id)+1 );
+    strcpy((*s)->id, id);
+    (*s)->type = (char*)malloc (strlen(type)+1 );
+    strcpy((*s)->type_modifiers, type_modifiers);
+    (*s)->type_modifiers = (char*)malloc( strlen(type_modifiers)+1 );
+    strcpy((*s)->type, type);
 }
 
 void init_sub_table(symbol_tab* parent)
@@ -172,4 +184,16 @@ node* find_tail(symbol_tab* stab)
         cur = cur->next;
     }
     return cur;
+}
+
+int size(symbol_tab* stab)
+{
+        int k = 0;
+        node *cur = stab->head;
+        while (cur)
+        {
+                cur = cur->next;
+                k++;
+        }
+        return k;
 }

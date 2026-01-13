@@ -460,7 +460,7 @@ char *yytext;
 #line 6 "src/incl.l"
     #define MAX_INCLUDE_DEPTH 10
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
-    int include_stack_ptr = 0;
+    int pstack = 0;
 #line 464 "build/incl.yy.c"
 #line 465 "build/incl.yy.c"
 
@@ -767,12 +767,12 @@ YY_RULE_SETUP
 #line 18 "src/incl.l"
 {
                         /* got the include file name */
-                        if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
+                        if ( pstack >= MAX_INCLUDE_DEPTH )
                         {
                             fprintf( stderr, "Includes nested too deeply" );
                             exit( 1 );
                         }
-                        include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+                        include_stack[pstack++] = YY_CURRENT_BUFFER;
 
                         yyin = fopen( yytext, "r" );
                         if ( ! yyin )
@@ -788,7 +788,7 @@ case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(incl):
 #line 36 "src/incl.l"
 {
-                        if ( --include_stack_ptr < 0 )
+                        if ( --pstack < 0 )
                         {
                             yyterminate();
                         }
@@ -796,7 +796,7 @@ case YY_STATE_EOF(incl):
                         {
                             yy_delete_buffer( YY_CURRENT_BUFFER );
                             yy_switch_to_buffer(
-                            include_stack[include_stack_ptr] );
+                            include_stack[pstack] );
                         }
                     }
 	YY_BREAK

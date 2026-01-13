@@ -4,8 +4,8 @@
 typedef struct symbol
 {
     char* id;
-    char* stype_modifiers;
-    char* stype;
+    char* type_modifiers;
+    char* type;
     void* pval;
 } symbol;
 
@@ -63,5 +63,6 @@ symbol* find_symbol_by_value(symbol_tab* stab, const char* id);
 symbol* find_symbol(symbol_tab* stab, const char* id);
 node* find_node(symbol_tab* stab, const char* id);
 node* find_tail(symbol_tab* stab);
+int size(symbol_tab* stab);
 
 #endif
