@@ -111,7 +111,6 @@ $(BLD)/parsercxx.cc $(BLD)/parsercxx.hh: $(SRC)/parsercxx.yy
 $(BLD)/parsercxx: $(BLD)/parsercxx.cc
 	$(CXX) -std=c++14 -I./build -o $@ $<
 
-
 # TEST
 $(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
 	$(CXX) -DLEXER_EXE $(CXXFLAGS) $^ $(LDFLAGS) -o $@
