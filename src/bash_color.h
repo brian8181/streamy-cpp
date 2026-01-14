@@ -2,11 +2,13 @@
 #define _BASH_COLOR_HPP
 
  #include <string.h>
+ #include <stdio.h>
 
 // shell color constants
 const char* FMT_RESET             = "\033[0m";
 const char* FMT_RESET_BOLD        = "\033[21m";
 const char* FMT_RESET_DIM         = "\033[22m";
+const char* FMT_RESET_ITALIC      = "\033[23m";
 const char* FMT_RESET_UNDERLINE   = "\033[24m";
 const char* FMT_RESET_BLINK       = "\033[25m";
 const char* FMT_RESET_REVERSE     = "\033[27m";
@@ -51,11 +53,35 @@ const char* FMT_BG_LIGHT_MAGENTA  = "\033[105m";
 const char* FMT_BG_LIGHT_CYAN     = "\033[106m";
 const char* FMT_BG_WHITE          = "\033[107m";
 
-void printfmt(const char* FMT, const char* s)
+void sprintfmt( char* s, const char * FMT, ... )
 {
     int len = (strlen(FMT) + strlen(s) + strlen(FMT_RESET)) + 1;
     char* nstr = (char*)malloc(len);
+    nstr[0] = '\0';
     strcat( strcat( strcat(nstr, FMT), s), FMT_RESET);
+    //s = &nstr;
+    printf(nstr);
 }
+
+#define RESET_UNDELINE(s) sprintfmt(s, FMT_RESET_UNDELINE)
+#define RESET_ITALIC(s) sprintfmt(s, FMT_RESET_ITALIC)
+#define RESET_REVERSE(s) sprintfmt(s, FMT_RESET_REVERSE)
+#define RESET_BOLD(s) sprintfmt(s, FMT_RESET_BOLD)
+#define RESET_DIM(s) sprintfmt(s, FMT_RESET_DIM)
+#define RESET(s) sprintfmt(s, FMT_RESET)
+#define DEFAULT(s) sprintfmt(s, FMT_FG_DEFUALT)
+#define DIM(s) sprintfmt(s, FMT_DIM)
+#define BOLD(s) sprintfmt(s, FMT_BOLD)
+#define UNDELINE(s) sprintfmt(s, FMT_UNDELINE)
+#define REVERSE(s) sprintfmt(s, FMT_REVERSE)
+#define ITALIC(s) sprintfmt(s, FMT_ITALIC)
+#define WHITE(s) sprintfmt(s, FMT_FG_WHITE)
+#define GREY(s) sprintfmt(s, FMT_FG_GREY)
+#define MAGENTA(s) sprintfmt(s, FMT_FG_MAGENTA)
+#define BLUE(s) sprintfmt(s, FMT_FG_BLUE)
+#define CYAN(s) sprintfmt(s, FMT_FG_CYAN)
+#define YELLOW(s) sprintfmt(s, FMT_FG_YELLOW)
+#define RED(s) sprintfmt(s, FMT_FG_RED)
+#define GREEN(s) sprintfmt(s, FMT_FG_GREEN)
 
 #endif
