@@ -49,7 +49,7 @@ endif
 all: $(BLD)/parser $(BLD)/lex++ $(BLD)/TEST_lex $(BLD)/lex # $(BLD)/parser++
 
 # parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
-$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o
+$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o | copy_headers
 	@echo -e "\nBuilding \"lexer & parser\" ...\n"
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
@@ -103,6 +103,14 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
+
+
+$(BLD)/parsercxx.cc $(BLD)/parsercxx.hh: $(SRC)/parsercxx.yy
+	$(YACC) -o $(BLD)/parsercxx.cc $(SRC)/parsercxx.yy
+
+$(BLD)/parsercxx: $(BLD)/parsercxx.cc
+	$(CXX) -std=c++14 -I./build -o $@ $<
+
 
 # TEST
 $(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
