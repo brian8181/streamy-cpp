@@ -104,8 +104,8 @@
 
 %token END 0 _("end of input")
 %type files file block blocks
-%type<int> attribute built_in
-%type<int> attributes
+%type<std::string> attribute built_in
+%type<std::string> attributes
 %token<int> NUMBER
 %token <std::string> TEXT
 %token<std::string> DOLLAR_SIGN DOT INDIRECT_MEMBER COMMA EQUAL
@@ -121,17 +121,18 @@
 
 complier:
     files                                                       {
-                                                                    std::cout <<  FMT_FG_GREEN << "PARSER complier: | files%s" << FMT_RESET << endl;
+                                                                    std::cout <<  FMT_FG_GREEN << "PARSER complier: | files" << FMT_RESET << endl;
                                                                     cout << FMT_FG_YELLOW << "*********************** STOPPING **********************" << FMT_REVERSE << FMT_RESET << endl;
                                                                     cout << FMT_FG_YELLOW << "*                     Terminating.                    *" << FMT_REVERSE << FMT_RESET << endl;
                                                                     cout << FMT_FG_YELLOW << "************************* Done ************************" << FMT_REVERSE << FMT_RESET << endl;
                                                                     //exit(0);
                                                                 }
-    | NUMBER                                                    { cout << FMT_FG_RED  << "complier: NUMBER" << FMT_RESET << endl;   }
+    ;
 
 files:
     file                                                        { cout << FMT_FG_YELLOW << "PARSER files: | file" << FMT_RESET << endl; }
     | files file                                                { cout << FMT_FG_YELLOW << "PARSER files: | files file" << FMT_RESET << endl; }
+                                                                ;
 
 file:
     blocks END                                                  {
@@ -141,7 +142,7 @@ file:
                                                                     cout << FMT_FG_YELLOW << "*******************************************************" << FMT_REVERSE << FMT_RESET << endl;
                                                                     //exit(0);
                                                                 }
-        ;
+                                                                ;
 
 blocks:
     block                                                       {
@@ -170,7 +171,9 @@ block:
 
                                                                     //free_all_nvalues();
                                                                 }
+    | NUMBER                                                    { cout << FMT_FG_RED  << "block: NUMBER" << FMT_RESET << endl;   }
                                                                 ;
+
 qualafied_id:
     symbol DOT ID                                               { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | symbol DOT ID" << FMT_RESET << endl; }
     | symbol INDIRECT_MEMBER ID                                 { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | symbol INDIRECT_MEMBER ID" << FMT_RESET << endl; }
@@ -196,7 +199,7 @@ params:
     /*empty*/
     | symbol                                                    { cout << FMT_FG_YELLOW << "PARSER params: | symbol" << FMT_RESET << endl; }
     | params COMMA symbol                                       { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | params COMMA symbol" << FMT_RESET << endl; }
-
+                                                                ;
 
 symbol:
     DOLLAR_SIGN ID                                              {
@@ -240,11 +243,10 @@ built_in:
 
 attributes:
     attribute                                                  {
-                                                                    //cout << FMT_FG_YELLOW << "PARSER attributes: | attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, $1->name, $1->value, FMT_RESET);
+                                                                    cout << FMT_FG_YELLOW << "PARSER attribute: | attribute={name=\"\"; value=\"\"\n" << FMT_RESET << endl;
                                                                }
     | attributes attribute                                     {
-                                                                   //cout << FMT_FG_YELLOW
-                                                                        // << "PARSER attributes: | attributes attribute={name=\"" $2 "\"; value=\"%s\"}%s\n", FMT_FG_GREEN, $2->name, $2->value, FMT_RESET);
+                                                                    cout << FMT_FG_YELLOW << "PARSER attributes: | attribute={name=\"\"; value=\"\"\n" << FMT_RESET << endl;
                                                                     // put attribute @ head position
                                                                     // $2->next = pnv_head;
                                                                     // pnv_head = $2;
