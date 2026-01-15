@@ -91,8 +91,8 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-$(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/parsercxx.yy
-	$(YACC) -o $(BLD)/pcxx.cc $(SRC)/parsercxx.yy
+$(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/pcxx.yy
+	$(YACC) -o $(BLD)/pcxx.cc $(SRC)/pcxx.yy
 
 $(BLD)/pcxx: $(BLD)/pcxx.cc
 	$(CXX) -g -std=c++14 -I$(ROOT)/src -o $@ $<
