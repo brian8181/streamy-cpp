@@ -12,8 +12,6 @@
     #include <stdlib.h>
     #include <string.h>
     #include "bash_color.h"
-    #include "bash_color.h"
-    #include "pcxx.hh"
     #include "symtab.h"
 
     using std::string;

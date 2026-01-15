@@ -33,7 +33,7 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: $(BLD)/parser $(BLD)/lex++ $(BLD)/TEST_lex $(BLD)/lex # $(BLD)/parser++
+all: $(BLD)/parser $(BLD)/lex++ $(BLD)/TEST_lex $(BLD)/lex $(BLD)/pcxx # $(BLD)/parser++
 
 # parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
 $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o | copy_headers
@@ -92,7 +92,7 @@ $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 $(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/pcxx.yy
-	$(YACC) -o $(BLD)/pcxx.cc $(SRC)/pcxx.yy
+	$(YACC) --header $^ -o $(BLD)/pcxx.cc
 
 $(BLD)/pcxx: $(BLD)/pcxx.cc
 	$(CXX) -g -std=c++14 -I$(ROOT)/src -o $@ $<

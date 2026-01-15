@@ -22,7 +22,7 @@ token<str> SEMI_COLON NEWLINE;
 %%
 
 program:
-            | program statement NEWLINE { printf("%d\n", $2); }
+            | program statement NEWLINE { printf("%d\n", $2cd); }
             ;
 statement:
             expr SEMI_COLON { printf("%d\n", $1); $$=$1; }
