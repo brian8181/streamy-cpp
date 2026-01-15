@@ -1,9 +1,6 @@
 #ifndef _BASH_COLOR_HPP
 #define _BASH_COLOR_HPP
 
- #include <string.h>
- #include <stdio.h>
-
 // shell color constants
 const char* FMT_RESET             = "\033[0m";
 const char* FMT_RESET_BOLD        = "\033[21m";
