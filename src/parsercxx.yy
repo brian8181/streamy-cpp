@@ -11,8 +11,9 @@
     #include <stdlib.h>
     #include <string.h>
     #include "bash_color.h"
-    #include "parsercxx.hh"
-    #include "symtab.h"
+    #include "bash_color.h"
+    #include "pcxx.hh"
+    #include "/home/brian/src/streamyv2/src/symtab.h"
 
     using std::string;
     using std::cout;
@@ -63,6 +64,7 @@
             case 1:
                 return parser::make_END();
             }
+            return 0;
         }
     }
 }
@@ -105,7 +107,6 @@
 %type<int> attribute built_in
 %type<int> attributes
 %token<int> NUMBER
-%nterm <std::string> item
 %token <std::string> TEXT
 %token<std::string> DOLLAR_SIGN DOT INDIRECT_MEMBER COMMA EQUAL
 %token<std::string> STRING_LITERAL NUMERIC_LITERAL
@@ -281,8 +282,6 @@ attribute:
 
 %%
 
-#include "bash_color.h"
-
 char* STRDUP(char* s)
 {
     char* dup = (char*)malloc(strlen(s) + 1);
@@ -355,7 +354,8 @@ int main(int argc, char** argv)
     }
     RED("testing\n");
     exit(0);
-} */
+}
+*/
 
 namespace yy
 {

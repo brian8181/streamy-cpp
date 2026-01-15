@@ -1,24 +1,11 @@
 # File Name:  makefile
 # Build Date: Thu, Dec 18, 2025  9:16:12 PM
 # Version:    0.1.0
-WARNINGS=-Wc++11-compat -Wc++14-compat -Wc++17compat -Wc++20compat
-UNUSED=-Wunused-function
 
-CXXWARN=-Waddress -Waligned-new -Warray-compare -Warray-parameter=2 -Wbool-compare -Wbool-operation\
--Wcatch-value -Wchar-subscripts -Wclass-memaccess -Wcomment -Wdangling-else -Wdangling-pointer=2\
--Wdelete-non-virtual-dtor -Wformat=1 -Wformat-contains-nul -Wformat-diag -Wformat-extra-args\
--Wformat-overflow=1 -Wformat-truncation=1 -Wzero-length-bounds -Wsign-compare\
--Wformat-zero-length -Wframe-address -Winfinite-recursion -Winit-self -Wint-in-bool-context\
--Wlogical-not-parentheses -Wmaybe-uninitialized -Wmemset-elt-size -Wmemset-transposed-args\
--Wmisleading-indentation -Wmismatched-dealloc -Wmismatched-new-delete -Wmissing-attributes\
--Wmultistatement-macros -Wnarrowing -Wnonnull -Wnonnull-compare -Wopenmp-simd\
--Woverloaded-virtual=1 -Wpacked-not-aligned -Wparentheses -Wpessimizing-move\
--Wrange-loop-construct -Wreorder -Wrestrict -Wreturn-type -Wself-move -Wsequence-point\
--Wsizeof-array-div -Wsizeof-pointer-div -Wsizeof-pointer-memaccess -Wstrict-aliasing\
--Wstrict-overflow=1 -Wswitch -Wtautological-compare -Wtrigraphs -Wuninitialized -Wunknown-pragmas\
--Wunused -Wunused-but-set-variable -Wunused-label -Wunused-local-typedefs\
--Wunused-value -Wunused-variable -Wuse-after-free=2 -Wvla-parameter -Wvolatile-register-var
 
+# ifndef ROOT
+# 	ROOT=/home/brian/src/streamyv2
+# endif
 
 CXX=g++
 CXXFLAGS=-ggdb -DDEBUG -std=c++20 -Wall # $(CXXWARN)
@@ -104,12 +91,11 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
+$(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/parsercxx.yy
+	$(YACC) -o $(BLD)/pcxx.cc $(SRC)/parsercxx.yy
 
-$(BLD)/parsercxx.cc $(BLD)/parsercxx.hh: $(SRC)/parsercxx.yy
-	$(YACC) -o $(BLD)/parsercxx.cc $(SRC)/parsercxx.yy
-
-$(BLD)/parsercxx: $(BLD)/parsercxx.cc
-	$(CXX) -g -std=c++14 -I./build -o $@ $<
+$(BLD)/pcxx: $(BLD)/pcxx.cc
+	$(CXX) -g -std=c++14 -I$(ROOT)/src -o $@ $<
 
 # TEST
 $(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
