@@ -14,7 +14,7 @@
     #include "bash_color.h"
     #include "bash_color.h"
     #include "pcxx.hh"
-    #include "/home/brian/src/streamyv2/src/symtab.h"
+    #include "symtab.h"
 
     using std::string;
     using std::cout;
@@ -61,12 +61,9 @@
 
 %code
 {
-
     int yylex(void);
     int yyerror(char * s);
-
     char* STRDUP(char* s);
-
     /* string literal buffer */
     char buf[100];
     char *s;
