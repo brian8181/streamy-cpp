@@ -7,6 +7,7 @@
     #include <iostream>
     #include <string>
     #include <iomanip>
+    #include <list>
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -18,6 +19,9 @@
     using std::string;
     using std::cout;
     using std::endl;
+    using std::pair;
+
+    typedef std::pair< std::string, std::string > attribute;
 
     // print a list of strings
     auto operator<<(std::ostream& o, const std::vector<std::string>& ss) -> std::ostream&
@@ -60,6 +64,7 @@
 
     int yylex(void);
     int yyerror(char * s);
+
     char* STRDUP(char* s);
 
     /* string literal buffer */
@@ -77,11 +82,13 @@
     nvalue* alloc_nvalue(char* name, char* value);
     void free_nvalue(nvalue* nv);
     void free_all_nvalues();
+    typedef std::pair< std::string, std::string > attribute;
 }
 
 %token END 0 _("end of input")
 %type files file block blocks
-%type<std::string> attribute built_in
+%type<std::pair< std::string, std::string >*> attrib
+%type<std::string> built_in
 %type<std::string> attributes
 %token<int> NUMBER
 %token<std::string> DOLLAR_SIGN DOT INDIRECT_MEMBER COMMA EQUAL
@@ -228,27 +235,34 @@ built_in:
                                                                 ;
 
 attributes:
-    attribute                                                  {
+    attrib                                                     {
                                                                     cout << FMT_FG_YELLOW << "PARSER attribute: | attribute={name=\"\"; value=\"\"\n" << FMT_RESET << endl;
                                                                }
-    | attributes attribute                                     {
+    | attributes attrib                                        {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER attributes: | attribute={name=\"\"; value=\"\"\n"
                                                                          << FMT_RESET << endl;
                                                                }
                                                                ;
 
-attribute:
+attrib:
     VALUE_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW << "PARSER name_value: | VALUE_ATTRIB=\""
-                                                                            << $1 << "\" EQUAL STRING_LITERAL=\""
-                                                                         << buf << "\"" << FMT_RESET << endl;
+                                                                        << $1 << "\" EQUAL STRING_LITERAL=\""
+                                                                        << buf << "\"" << FMT_RESET << endl;
+
+                                                                    // std::pair<std::string, std::string>*  p($1, $2);
+                                                                    // $$ = p;
+                                                                    std::pair<std::string, std::string>*  ppair = new std::pair<std::string, std::string>($1, $2);
+                                                                    $$ = ppair;
                                                                }
     | VAR_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER name_value: | VAR_ATTRIB=\"\" EQUAL STRING_LITERAL=\"\""
                                                                          << FMT_FG_GREEN << FMT_RESET << endl;
 
+                                                                    std::pair<std::string, std::string>*  ppair = new std::pair<std::string, std::string>($1, $2);
+                                                                    $$ = ppair;
                                                                 }
     | FILE_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW
@@ -257,6 +271,8 @@ attribute:
                                                                             << $2 << "\""
                                                                          << FMT_RESET << endl;
 
+                                                                    std::pair<std::string, std::string>*  ppair = new std::pair<std::string, std::string>($1, $2);
+                                                                    $$ = ppair;
                                                                }
                                                                ;
 

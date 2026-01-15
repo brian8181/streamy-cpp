@@ -37,7 +37,7 @@
 };
 
 %token END 0 _("end of input")
-    %type files file block blocks
+%type files file block blocks
 %type<nval> attribute built_in
 %type<nval> attributes
 %token<sval> NUMBER
