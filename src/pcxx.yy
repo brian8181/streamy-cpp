@@ -81,6 +81,7 @@
 }
 
 %token END 0 _("end of input")
+%token END_OF_FILES
 %type files file block blocks
 %type<std::pair< std::string, std::string >*> attrib
 %type<std::string> built_in
@@ -93,16 +94,21 @@
 %token<std::string> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN
 %token<std::string> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
 %type<std::string> symbol sub_proc array qualafied_id
-%start complier
+%start exe
 
 %%
 
-complier:
+exe:
     files                                                       {
-                                                                    std::cout <<  FMT_FG_GREEN << "PARSER complier: | files" << FMT_RESET << endl;
+                                                                    std::cout <<  FMT_FG_GREEN << "PARSER exe: | files" << FMT_RESET << endl;
                                                                     cout << FMT_FG_YELLOW << "*********************** STOPPING **********************" << FMT_REVERSE << FMT_RESET << endl;
                                                                     cout << FMT_FG_YELLOW << "*                     Terminating.                    *" << FMT_REVERSE << FMT_RESET << endl;
                                                                     cout << FMT_FG_YELLOW << "************************* Done ************************" << FMT_REVERSE << FMT_RESET << endl;
+                                                                }
+    | files END_OF_FILES                                        {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER exe: | files END_OF_FILES"
+                                                                         << FMT_RESET << endl;
                                                                 }
     ;
 
@@ -122,28 +128,42 @@ file:
 
 blocks:
     block                                                       {
-                                                                    cout << FMT_FG_YELLOW << "PARSER blocks: | block" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER blocks: | block"
+                                                                         << FMT_RESET << endl;
                                                                 }
     | blocks block                                              {
-                                                                    cout << FMT_FG_YELLOW << "PARSER blocks: | blocks block" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER blocks: | blocks block"
+                                                                         << FMT_RESET << endl;
                                                                 }
                                                                 ;
 
 block:
     LBRACE sub_proc RBRACE                                      {
-                                                                    cout << FMT_FG_YELLOW << "PARSER block: | LBRACE sub_porc RBRACE" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE sub_porc RBRACE"
+                                                                         << FMT_RESET << endl;
                                                                 }
     | LBRACE array RBRACE                                       {
-                                                                    cout << FMT_FG_YELLOW << "PARSER block: | LBRACE array RBRACE" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE array RBRACE"
+                                                                         << FMT_RESET << endl;
                                                                 }
     | LBRACE symbol RBRACE                                      {
-                                                                    cout << FMT_FG_YELLOW << "PARSER block: | LBRACE symbol RBRACE" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE symbol RBRACE"
+                                                                         << FMT_RESET << endl;
                                                                 }
     | LBRACE qualafied_id RBRACE                                {
-                                                                    cout << FMT_FG_YELLOW << "PARSER block: | LBRACE qualafied_id RBRACE" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE qualafied_id RBRACE"
+                                                                         << FMT_RESET << endl;
                                                                 }
      | LBRACE built_in RBRACE                                   {
-                                                                    cout << FMT_FG_YELLOW << "PARSER block: | LBRACE built_in RBRACE" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE built_in RBRACE"
+                                                                         << FMT_RESET << endl;
 
                                                                     //free_all_nvalues();
                                                                 }
@@ -168,7 +188,7 @@ sub_proc:
     symbol LPAREN params RPAREN                                 {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER sub_proc: | symbol LPAREN params RPAREN"
-                                                                        << FMT_RESET << endl;
+                                                                         << FMT_RESET << endl;
                                                                     $$=$1;
                                                                 }
                                                                 ;
@@ -177,7 +197,7 @@ array:
     symbol LBRACKET NUMERIC_LITERAL RBRACKET                    {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER array: | symbol=\"" << $1 << "\" LBRACKET NUMERIC_LITERAL=\"" << $3 << "\" RBRACKET"
-                                                                        << FMT_RESET << endl;;
+                                                                         << FMT_RESET << endl;;
                                                                     $$=$1;
                                                                 }
                                                                 ;
@@ -190,11 +210,15 @@ params:
 
 symbol:
     DOLLAR_SIGN ID                                              {
-                                                                    cout << FMT_FG_YELLOW << "PARSER symbol: | ID=\"" << $1 << "\"" << FMT_RESET << endl;;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER symbol: | ID=\"" << $1 << "\""
+                                                                         << FMT_RESET << endl;;
                                                                     $$=$2;
                                                                 }
     | CONST_ID                                                  {
-                                                                    cout << FMT_FG_YELLOW << "PARSER symbol: | CONST_ID=\"" << $1 << "\"" << FMT_RESET << endl;;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER symbol: | CONST_ID=\"" << $1 << "\""
+                                                                         << FMT_RESET << endl;;
                                                                     $$=$1;
                                                                 }
                                                                 ;
@@ -231,7 +255,9 @@ built_in:
 
 attributes:
     attrib                                                     {
-                                                                    cout << FMT_FG_YELLOW << "PARSER attribute: | attribute={name=\"\"; value=\"\"\n" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER attribute: | attribute={name=\"\"; value=\"\"\n"
+                                                                         << FMT_RESET << endl;
                                                                }
     | attributes attrib                                        {
                                                                     cout << FMT_FG_YELLOW
@@ -243,8 +269,9 @@ attributes:
 attrib:
     VALUE_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW << "PARSER name_value: | VALUE_ATTRIB=\""
-                                                                        << $1 << "\" EQUAL STRING_LITERAL=\""
-                                                                        << buf << "\"" << FMT_RESET << endl;
+                                                                            << $1 << "\" EQUAL STRING_LITERAL=\""
+                                                                            << buf << "\""
+                                                                         << FMT_RESET << endl;
 
                                                                     // std::pair<std::string, std::string>*  p($1, $2);
                                                                     // $$ = p;
@@ -310,7 +337,8 @@ void free_all_nvalues()
         next = cur->next;
     }
 }
-/*
+
+#ifdef CC_LEXER
 int yyerror(char * s)
 {
     fprintf(stderr, "%s\n", s);
@@ -341,17 +369,19 @@ int main(int argc, char** argv)
         yyin = 0;
 
     }
-s    exit(0);
+    exit(0);
 }
-*/
+#endif
 
+#define CUSTOM_CPP_LEXER TRUE
+#ifdef CUSTOM_CPP_LEXER
 namespace yy
 {
     // report an error to the user
     auto parser::error(const std::string& msg) -> void
     {
         std::cerr << msg << '\n';
-    }
+    }git
 }
 
 int main()
@@ -359,3 +389,4 @@ int main()
     yy::parser parse;
     return parse();
 }
+#endif
