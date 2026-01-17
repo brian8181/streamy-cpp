@@ -16,4 +16,6 @@ Start ...
 {$xxx.test}
 {$yyy->test}
 {$subproc($x, $y)}
+{$abc.xyz}
+{$abc.$xyz}
 ... End

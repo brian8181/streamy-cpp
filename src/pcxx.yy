@@ -179,6 +179,11 @@ qualafied_id:
                                                                             << "PARSER qualafied_id: | symbol DOT ID"
                                                                          << FMT_RESET << endl;
                                                                 }
+    | symbol DOT symbol                                         {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER qualafied_id: | symbol DOT symbol"
+                                                                         << FMT_RESET << endl;
+                                                                }
     | symbol INDIRECT_MEMBER ID                                 { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | symbol INDIRECT_MEMBER ID" << FMT_RESET << endl; }
     | qualafied_id DOT ID                                       { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | qualafied_id DOT ID" << FMT_RESET << endl; }
     | qualafied_id INDIRECT_MEMBER ID                           { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID" << FMT_RESET << endl; }
@@ -204,8 +209,8 @@ array:
 
 params:
     /*empty*/
-    | symbol                                                    { cout << FMT_FG_YELLOW << "PARSER params: | symbol" << FMT_RESET << endl; }
-    | params COMMA symbol                                       { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | params COMMA symbol" << FMT_RESET << endl; }
+    | symbol COMMA                                              { cout << FMT_FG_YELLOW << "PARSER params: | symbol" << FMT_RESET << endl; }
+    | params symbol                                             { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | params COMMA symbol" << FMT_RESET << endl; }
                                                                 ;
 
 symbol:

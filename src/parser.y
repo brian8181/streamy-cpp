@@ -110,13 +110,18 @@ block:
                                                                 ;
 qualafied_id:
     symbol DOT ID                                               { YELLOW("PARSER qualafied_id: | symbol DOT ID\n"); }
+    | symbol DOT symbol                                         { RED("PARSER qualafied_id: | symbol DOT symbol\n"); }
     | symbol INDIRECT_MEMBER ID                                 { YELLOW("PARSER qualafied_id: | symbol INDIRECT_MEMBER ID\n"); }
     | qualafied_id DOT ID                                       { YELLOW("PARSER qualafied_id: | qualafied_id DOT ID\n"); }
     | qualafied_id INDIRECT_MEMBER ID                           { YELLOW("PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID\n"); }
                                                                 ;
 
 sub_proc:
-    symbol LPAREN params RPAREN                                 {
+    symbol LPAREN RPAREN                                        {
+                                                                    GREEN("PARSER sub_proc: | symbol LPAREN RPAREN\n");
+                                                                    $$=$1;
+                                                                }
+    | symbol LPAREN params RPAREN                                 {
                                                                     GREEN("PARSER sub_proc: | symbol LPAREN params RPAREN\n");
                                                                     $$=$1;
                                                                 }
@@ -130,10 +135,11 @@ array:
                                                                 ;
 
 params:
-    /*empty*/
-    | symbol                                                    { GREEN("PARSER params: | symbol\n"); }
-    | params COMMA symbol                                       { GREEN("PARSER qualafied_id: | params COMMA symbol\n"); }
+    param                                                     { GREEN("PARSER params: | param\n"); }
+    | params symbol                                             { GREEN("PARSER qualafied_id: | params COMMA symbol\n"); }
 
+param:
+    symbol COMMA                                                { GREEN("PARSER param: | symbol COMMA\n"); }
 
 symbol:
     DOLLAR_SIGN ID                                              {
