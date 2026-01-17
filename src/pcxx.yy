@@ -381,7 +381,7 @@ namespace yy
     auto parser::error(const std::string& msg) -> void
     {
         std::cerr << msg << '\n';
-    }git
+    }
 }
 
 int main()

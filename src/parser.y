@@ -280,8 +280,6 @@ int yyerror(char * s)
 
 int main(int argc, char** argv)
 {
-    RED("testing\n");
-
     extern FILE *yyin;
     for(int i = 1; i < argc; ++i)
     {
@@ -304,6 +302,5 @@ int main(int argc, char** argv)
         yyin = 0;
 
     }
-    RED("testing\n");
     exit(0);
 };
