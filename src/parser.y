@@ -41,9 +41,9 @@
 %type<nval> attribute built_in
 %type<nval> attributes
 %token<sval> NUMBER
-%token<sval> DOLLAR_SIGN DOT INDIRECT_MEMBER
+%token<sval> DOLLAR_SIGN POUND_SIGN DOT INDIRECT_MEMBER
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
-%token<sval> ID CONST_ID
+%token<sval> ID CONST_SYMBOL SYMBOL
 %token<sval> IF END_IF ELSE END_ELSE ELSEIF END_ELSEIF
 %token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
 %token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
@@ -135,19 +135,19 @@ array:
                                                                 ;
 
 params:
-    param                                                     { GREEN("PARSER params: | param\n"); }
+    param                                                       { GREEN("PARSER params: | param\n"); }
     | params symbol                                             { GREEN("PARSER qualafied_id: | params COMMA symbol\n"); }
 
 param:
     symbol COMMA                                                { GREEN("PARSER param: | symbol COMMA\n"); }
 
 symbol:
-    DOLLAR_SIGN ID                                              {
-                                                                    printf("%sPARSER symbol: | ID=\"%s\"%s\n", FMT_FG_GREEN, $2, FMT_RESET);
-                                                                    $$=$2;
+    SYMBOL                                              {
+                                                                    printf("%sPARSER symbol: | ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
+                                                                    $$=$1;
                                                                 }
-    | CONST_ID                                                  {
-                                                                    printf("%sPARSER symbol: | CONST_ID=\"%s\"%s\n", FMT_FG_GREEN, $1, FMT_RESET);
+    | CONST_SYMBOL                                {
+                                                                    printf("%sPARSER symbol: | CONST_ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
                                                                     $$=$1;
                                                                 }
                                                                 ;

@@ -83,7 +83,7 @@
 %token END 0 _("end of input")
 %token END_OF_FILES
 %type files file block blocks
-%type<std::pair< std::string, std::string >*> attrib
+%type<std::pair< std::string, std::string >> attrib
 %type<std::string> built_in
 %type<std::string> attributes
 %token<int> NUMBER
@@ -278,18 +278,16 @@ attrib:
                                                                             << buf << "\""
                                                                          << FMT_RESET << endl;
 
-                                                                    // std::pair<std::string, std::string>*  p($1, $2);
-                                                                    // $$ = p;
-                                                                    std::pair<std::string, std::string>*  ppair = new std::pair<std::string, std::string>($1, $2);
-                                                                    $$ = ppair;
+                                                                    std::pair<std::string, std::string>  pair($1, $2);
+                                                                    $$ = pair;
                                                                }
     | VAR_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER name_value: | VAR_ATTRIB=\"\" EQUAL STRING_LITERAL=\"\""
                                                                          << FMT_FG_GREEN << FMT_RESET << endl;
 
-                                                                    std::pair<std::string, std::string>*  ppair = new std::pair<std::string, std::string>($1, $2);
-                                                                    $$ = ppair;
+                                                                    std::pair<std::string, std::string>  pair($1, $2);
+                                                                    $$ = pair;
                                                                 }
     | FILE_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW
@@ -298,8 +296,8 @@ attrib:
                                                                             << $2 << "\""
                                                                          << FMT_RESET << endl;
 
-                                                                    std::pair<std::string, std::string>*  ppair = new std::pair<std::string, std::string>($1, $2);
-                                                                    $$ = ppair;
+                                                                    std::pair<std::string, std::string>  pair($1, $2);
+                                                                    $$ = pair;
                                                                }
                                                                ;
 

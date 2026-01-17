@@ -20,9 +20,9 @@
 %}
 
 END_OF_FILE         \0
-VALID_CHARS         _*[A-Za-z][A-Za-z0-9_]*
-ID                  {VALID_CHARS}
-CONST_ID            #{VALID_CHARS}#
+VALID_CHARS         [A-Za-z0-9~.+-_]
+SYMBOL              "$"{ID}
+CONST_SYMBOL        "#"{ID"#""}
 ARRAY               {ID}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
 FILE_NAME           [A-Za-z0-9_.-~+#@]
@@ -67,7 +67,6 @@ LESS_THAN           "<"
 LESS_THAN_EQUAL     "<="
 GREATER_THAN        ">"
 GREATER_THAN_EQUAL  ">="
-DOLLAR_SIGN         "$"
 NUMERIC_LITERAL     [0-9]+
 INCLUDE             "include"
 REQUIRE             require
@@ -77,6 +76,7 @@ FILE_ATTRIB         file
 ASSIGN              assign
 VAR_ATTRIB          var
 VALUE_ATTRIB        value
+ID                  [A-Za-z]{VALID_CHARS}*
 
 %x DOUBLE_QUOTED
 %x SINGLE_QUOTED
@@ -157,7 +157,6 @@ VALUE_ATTRIB        value
 {BACK_SLASH}                            { printf("LEX:BACK_SLASH\n");                     } // return BACK_SLASH;               }
 {VBAR}                                  { printf("LEX:VBAR\n");                           return VBAR;                          }
 {AMPERSAND}                             { printf("LEX:AMPERSAND\n");                      return AMPERSAND;                     }
-{DOLLAR_SIGN}                           { printf("LEX:DOLLAR_SIGN\n", yytext);            return DOLLAR_SIGN;                   }
 {AT}                                    { printf("LEX:AT\n");                             } // return AT;                       }
 {PLUS}                                  { printf("LEX:PLUS\n");                           return PLUS;                          }
 {MINUS}                                 { printf("LEX:MINUS\n");                          return MINUS;                         }
@@ -184,7 +183,7 @@ VALUE_ATTRIB        value
 {END_ELSEIF}                            { printf("LEX:END_ELSEIF\n"); BEGIN(ESCAPED);      } // return ELSEIF;                  }
 {END_FOREACHELSE}                       { printf("LEX:FOREACHELSE\n"); BEGIN(ESCAPED);     } // return FOREACHELSE;             }
 {END_FOREACH}                           { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;                 }
-{CONST_ID}                              { printf("LEX:[CONST_ID:%s]\n", yytext); yylval.sval = strdup(yytext); return CONST_ID; }
+{SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext); return SYMBOL;             }
 {ID}                                    { printf("LEX:[ID:%s]\n", yytext); yylval.sval = strdup(yytext); return ID;             }
 [ \t]*                                  { /********************************** eat whitespace *********************************/ }
                                         }
