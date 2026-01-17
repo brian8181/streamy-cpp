@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../scanner"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"string": "cpp",
+			"string_view": "cpp",
+			"*.tcc": "cpp",
+			"sstream": "cpp",
+			"regex": "cpp",
+			"iostream": "cpp",
+			"deque": "cpp",
+			"unordered_map": "cpp",
+			"vector": "cpp",
+			"ostream": "cpp",
+			"xstring": "cpp",
+			"iterator": "cpp"
+		}
+	}
+}

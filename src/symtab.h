@@ -59,7 +59,6 @@ void insert_symbol(symbol_tab* stab, const char* dst_id, const char* src_id, con
 void remove_symbol(symbol_tab* stab, const char* id);
 void clear_symbols(symbol_tab* stab);
 symbol* find_symbol_by_addr(symbol_tab* stab, symbol* sym);
-symbol* find_symbol_by_value(symbol_tab* stab, const char* id);
 symbol* find_symbol(symbol_tab* stab, const char* id);
 node* find_node(symbol_tab* stab, const char* id);
 node* find_tail(symbol_tab* stab);

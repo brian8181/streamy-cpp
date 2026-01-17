@@ -59,23 +59,23 @@
 
 complier:
     files                                                       {
-                                                                    printf("%sPARSER complier: | files%s\n", FMT_FG_GREEN, FMT_RESET);
-                                                                    printf("%s*********************** STOPPING **********************%s\n", FMT_REVERSE, FMT_RESET);
-                                                                    printf("%s*                     Terminating.                    *%s\n", FMT_REVERSE, FMT_RESET);
-                                                                    printf("%s************************* Done ************************%s\n", FMT_REVERSE, FMT_RESET);
+                                                                    GREEN("PARSER complier: | files\n");
+                                                                    GREEN("*********************** STOPPING **********************\n");
+                                                                    GREEN("*                     Terminating.                    *\n");
+                                                                    GREEN("************************* Done ************************\n");
                                                                     //exit(0);
                                                                 }
 
 files:
-    file                                                        { printf("%sPARSER files: | file%s\n", FMT_FG_GREEN, FMT_RESET); }
-    | files file                                                { printf("%sPARSER files: | files file%s\n", FMT_FG_GREEN, FMT_RESET); }
+    file                                                        { GREEN("PARSER files: | file\n"); }
+    | files file                                                { GREEN("PARSER files: | files file\n"); }
 
 file:
     blocks END                                                  {
-                                                                    printf("%sPARSER file: | blocks END_OF_FILE%s\n", FMT_FG_GREEN, FMT_RESET);
-                                                                    printf("%s*******************************************************%s\n", FMT_REVERSE, FMT_RESET);
-                                                                    printf("%s*                      End Of File                    *%s\n", FMT_REVERSE, FMT_RESET);
-                                                                    printf("%s*******************************************************%s\n", FMT_REVERSE, FMT_RESET);
+                                                                    GREEN("PARSER file: | blocks END_OF_FILE\n");
+                                                                    GREEN("*******************************************************\n");
+                                                                    GREEN("*                      End Of File                    *\n");
+                                                                    GREEN("*******************************************************\n");
                                                                     //exit(0);
                                                                 }
         ;
@@ -117,7 +117,7 @@ qualafied_id:
 
 sub_proc:
     symbol LPAREN params RPAREN                                 {
-                                                                    printf("%sPARSER sub_proc: | symbol LPAREN params RPAREN%s\n", FMT_FG_GREEN, FMT_RESET);
+                                                                    GREEN("PARSER sub_proc: | symbol LPAREN params RPAREN\n");
                                                                     $$=$1;
                                                                 }
                                                                 ;
@@ -131,8 +131,8 @@ array:
 
 params:
     /*empty*/
-    | symbol                                                    { printf("%sPARSER params: | symbol%s\n", FMT_FG_GREEN, FMT_RESET); }
-    | params COMMA symbol                                       { printf("%sPARSER qualafied_id: | params COMMA symbol%s\n", FMT_FG_GREEN, FMT_RESET); }
+    | symbol                                                    { GREEN("PARSER params: | symbol\n"); }
+    | params COMMA symbol                                       { GREEN("PARSER qualafied_id: | params COMMA symbol\n"); }
 
 
 symbol:
@@ -290,11 +290,11 @@ int main(int argc, char** argv)
             printf("error opening file: %s ...", argv[i]);
 
 
-        printf("%s************************* RUN *************************%s\n", FMT_REVERSE, FMT_RESET);
-        printf("%s* Terminate listing with ; to see parsed AST          *%s\n", FMT_REVERSE, FMT_RESET);
-        printf("%s* Terminate parser with Ctrl-D ...                    *%s\n", FMT_REVERSE, FMT_RESET);
+        printf("************************* RUN *************************\n");
+        printf("* Terminate listing with ; to see parsed AST          *\n");
+        printf("* Terminate parser with Ctrl-D ...                    *\n");
         printf("%s%s* parsing file=\"%s\"                       *%s\n", FMT_REVERSE, FMT_ITALIC, argv[i], FMT_RESET);
-        printf("%s************************* Done ************************%s\n", FMT_REVERSE, FMT_RESET);
+        printf("************************* Done ************************\n");
 
         yyparse();
 

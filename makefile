@@ -92,10 +92,10 @@ $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 $(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/pcxx.yy
-	$(YACC) --header $^ -o $(BLD)/pcxx.cc
+	$(YACC) -header="$(BLD)/pcxx.hh" $(BLD)/pcxx.yy -o $(BLD)/pcxx.cc
 
-$(BLD)/pcxx: $(BLD)/pcxx.cc
-	$(CXX) -g -std=c++14 -I$(ROOT)/src -o $@ $<
+$(BLD)/pcxx: $(BLD)/bash_color.h $(BLD)/symtab.h $(BLD)/pcxx.cc
+	$(CXX) -g -std=c++14 -I$(ROOT)/src $^ -o $@
 
 # TEST
 $(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
