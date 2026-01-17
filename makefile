@@ -33,10 +33,10 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: $(BLD)/parser $(BLD)/lex++ $(BLD)/TEST_lex $(BLD)/lex $(BLD)/pcxx # $(BLD)/parser++
+all: $(BLD)/parser $(BLD)/pcxx # $(BLD)/parser++
 
 # parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
-$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o | copy_headers
+$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o
 	@echo -e "\nBuilding \"lexer & parser\" ...\n"
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
@@ -91,11 +91,12 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
+ROOT="/home/brian/streamyv2"
 $(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/pcxx.yy
-	$(YACC) -header="$(BLD)/pcxx.hh" $(BLD)/pcxx.yy -o $(BLD)/pcxx.cc
+	$(YACC) $(SRC)/pcxx.yy --header -o $(BLD)/pcxx.cc
 
-$(BLD)/pcxx: $(BLD)/bash_color.h $(BLD)/symtab.h $(BLD)/pcxx.cc
-	$(CXX) -g -std=c++14 -I$(ROOT)/src $^ -o $@
+$(BLD)/pcxx: $(BLD)/bash_color.hpp $(BLD)/symtab.h $(BLD)/pcxx.cc
+	$(CXX) -g -std=c++14 -I$(ROOT)/src $(BLD)/pcxx.cc -o $@
 
 # TEST
 $(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
@@ -104,6 +105,13 @@ $(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(
 # copy header files
 $(BLD)/fileio.h $(BLD)/streamy.hpp: $(SRC)/fileio.h $(SRC)/streamy.hpp
 	cp $^ $(BLD)/
+
+# copy header files
+$(BLD)/%.h : $(SRC)/%.h
+	cp $^ $@
+
+$(BLD)/%.hpp: $(SRC)/%.hpp
+	cp $< $@
 
 # MAKE UTILTY
 # copy all headers from src to build dir
