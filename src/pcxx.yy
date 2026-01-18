@@ -89,7 +89,7 @@
 %token<int> NUMBER
 %token<std::string> DOLLAR_SIGN DOT INDIRECT_MEMBER COMMA EQUAL
 %token<std::string> STRING_LITERAL NUMERIC_LITERAL
-%token<std::string> ID CONST_ID
+%token<std::string> ID SYMBOL CONST_SYMBOL
 %token<std::string> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
 %token<std::string> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN
 %token<std::string> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
@@ -209,18 +209,18 @@ array:
 
 params:
     /*empty*/
-    | symbol COMMA                                              { cout << FMT_FG_YELLOW << "PARSER params: | symbol" << FMT_RESET << endl; }
-    | params symbol                                             { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | params COMMA symbol" << FMT_RESET << endl; }
+    | symbol COMMA symbol                                            { cout << FMT_FG_YELLOW << "PARSER params: | symbol COMMA symbol" << FMT_RESET << endl; }
+    | params COMMA params                                             { cout << FMT_FG_YELLOW << "PARSER params: | params COMMA params" << FMT_RESET << endl; }
                                                                 ;
 
 symbol:
-    DOLLAR_SIGN ID                                              {
+    SYMBOL                                              {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER symbol: | ID=\"" << $1 << "\""
                                                                          << FMT_RESET << endl;;
-                                                                    $$=$2;
+                                                                    $$=$1;
                                                                 }
-    | CONST_ID                                                  {
+    | CONST_SYMBOL                                               {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER symbol: | CONST_ID=\"" << $1 << "\""
                                                                          << FMT_RESET << endl;;
@@ -278,16 +278,18 @@ attrib:
                                                                             << buf << "\""
                                                                          << FMT_RESET << endl;
 
-                                                                    std::pair<std::string, std::string>  pair($1, $2);
+                                                                    std::pair<std::string, std::string>  pair($1, buf);
                                                                     $$ = pair;
-                                                               }
+                                                                    s = 0;
+                                                                }
     | VAR_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER name_value: | VAR_ATTRIB=\"\" EQUAL STRING_LITERAL=\"\""
                                                                          << FMT_FG_GREEN << FMT_RESET << endl;
 
-                                                                    std::pair<std::string, std::string>  pair($1, $2);
+                                                                    std::pair<std::string, std::string>  pair($1, buf);
                                                                     $$ = pair;
+                                                                    s = 0;
                                                                 }
     | FILE_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW
@@ -296,8 +298,9 @@ attrib:
                                                                             << $2 << "\""
                                                                          << FMT_RESET << endl;
 
-                                                                    std::pair<std::string, std::string>  pair($1, $2);
+                                                                    std::pair<std::string, std::string>  pair($1, buf);
                                                                     $$ = pair;
+                                                                    s = 0;
                                                                }
                                                                ;
 
