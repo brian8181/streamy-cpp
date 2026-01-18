@@ -21,8 +21,9 @@
 
 END_OF_FILE         \0
 VALID_CHARS         [A-Za-z0-9~.+-_]
+ID                  [A-Za-z]{VALID_CHARS}*
 SYMBOL              "$"{ID}
-CONST_SYMBOL        "#"{ID"#""}
+CONST_SYMBOL        "#"[A-Za-z_]+"#"
 ARRAY               {ID}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
 FILE_NAME           [A-Za-z0-9_.-~+#@]
@@ -76,7 +77,7 @@ FILE_ATTRIB         file
 ASSIGN              assign
 VAR_ATTRIB          var
 VALUE_ATTRIB        value
-ID                  [A-Za-z]{VALID_CHARS}*
+
 
 %x DOUBLE_QUOTED
 %x SINGLE_QUOTED
@@ -86,6 +87,10 @@ ID                  [A-Za-z]{VALID_CHARS}*
 %x INCLUDING
 %x OFF
 %%
+
+%{
+    //BEGIN(INITIAL);
+%}
 
 <INITIAL>{
 {COMMENT}                               {  /* eat up comment */ printf("LEX:COMMENT=\"%s\"", yytext); }
@@ -184,7 +189,7 @@ ID                  [A-Za-z]{VALID_CHARS}*
 {END_FOREACHELSE}                       { printf("LEX:FOREACHELSE\n"); BEGIN(ESCAPED);     } // return FOREACHELSE;             }
 {END_FOREACH}                           { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;                 }
 {SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext); return SYMBOL;             }
-{ID}                                    { printf("LEX:[ID:%s]\n", yytext); yylval.sval = strdup(yytext); return ID;             }
+{CONST_SYMBOL}                          { printf("LEX:[CONST_SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext); return CONST_SYMBOL;             }
 [ \t]*                                  { /********************************** eat whitespace *********************************/ }
                                         }
 <IF_CONDITION>{

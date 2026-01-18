@@ -4,7 +4,7 @@ Start ...
 {insert file="test/t1.txt"}
 {include file="test/t1.txt"}
 {* testing comments *}
-{#test_var#}
+{#test_x#}
 {$abc}
 {$xyz}
 {$arry[0]}
