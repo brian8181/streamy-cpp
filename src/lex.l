@@ -20,10 +20,10 @@
 %}
 
 END_OF_FILE         \0
-VALID_CHARS         [A-Za-z0-9~.+-_]
+VALID_CHARS         [A-Za-z0-9*@$_.~+-]
 ID                  [A-Za-z]{VALID_CHARS}*
-SYMBOL              \$[A-Za-z][A-Za-z0-9_.~+-]*
-CONST_SYMBOL        #[A-Za-z_]+#
+SYMBOL              \$[A-Za-z_.~+-]{VALID_CHARS}*
+CONST_SYMBOL        #[A-Za-z_.~+-]{VALID_CHARS}*#
 ARRAY               {ID}\[[^\]]\]
 COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
 FILE_NAME           [A-Za-z0-9_.-~+#@]
