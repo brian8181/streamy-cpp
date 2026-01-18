@@ -33,7 +33,7 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: $(BLD)/parser $(BLD)/pcxx # $(BLD)/parser++
+all: $(BLD)/parser $(BLD)/pcxx #$(BLD)/parser++
 
 # parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
 $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o

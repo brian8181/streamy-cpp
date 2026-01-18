@@ -141,16 +141,16 @@ params:
 param:
     symbol COMMA                                                { GREEN("PARSER param: | symbol COMMA\n"); }
 
-symbol:
-    SYMBOL                                              {
-                                                                    printf("%sPARSER symbol: | ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
-                                                                    $$=$1;
-                                                                }
-    | CONST_SYMBOL                                {
-                                                                    printf("%sPARSER symbol: | CONST_ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
-                                                                    $$=$1;
-                                                                }
-                                                                ;
+    symbol:
+        SYMBOL                                              {
+                                                                        printf("%sPARSER symbol: | ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
+                                                                        $$=$1;
+                                                                    }
+        | CONST_SYMBOL                                {
+                                                                        printf("%sPARSER symbol: | CONST_ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
+                                                                        $$=$1;
+                                                                    }
+                                                                    ;
 
 built_in:
     CONFIG_LOAD attributes                                        {
