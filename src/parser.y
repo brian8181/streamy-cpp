@@ -50,6 +50,8 @@
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK COMMA EQUAL PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
+%token<std::string> CAPITALIZE CAT COUNT_CHARACTERS COUNT_SENTENCES COUNT_PARAGRAPHS DATE_FORMAT ESCAPE
+%token<std::string> INDENT LOWER UPPER STRIP REPLACE SPACIFY STRING_FORMAT STRIP_TAGS TRUNCATE WORDWARP
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
 %token END_OF_FILES
 %type<sval> symbol sub_proc array qualafied_id
@@ -141,16 +143,20 @@ params:
 param:
     symbol COMMA                                                { GREEN("PARSER param: | symbol COMMA\n"); }
 
-    symbol:
-        SYMBOL                                              {
-                                                                        printf("%sPARSER symbol: | ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
-                                                                        $$=$1;
-                                                                    }
-        | CONST_SYMBOL                                {
-                                                                        printf("%sPARSER symbol: | CONST_ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
-                                                                        $$=$1;
-                                                                    }
-                                                                    ;
+symbol:
+    SYMBOL                                              {
+                                                                    printf("%sPARSER symbol: | ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
+                                                                    $$=$1;
+                                                                }
+    | CONST_SYMBOL                                {
+                                                                    printf("%sPARSER symbol: | CONST_ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
+                                                                    $$=$1;
+                                                                }
+    | symbol VBAR CAPITALIZE                                     {
+                                                                    printf("PARSER symbol: | symbol VBAR CAPITALIZE\n");
+                                                                    $$=$1;
+                                                                }
+                                                                ;
 
 built_in:
     CONFIG_LOAD attributes                                        {

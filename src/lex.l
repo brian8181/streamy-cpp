@@ -14,7 +14,7 @@
 
     extern char buf[100];
     extern char *s;
-    char* strdup(char* str);
+    //char* strdup(char* str);
 
     #define YY_BUFFER YY_CURRENT_BUFFFER
 %}
@@ -78,6 +78,7 @@ FILE_ATTRIB         file
 ASSIGN              assign
 VAR_ATTRIB          var
 VALUE_ATTRIB        value
+CAPITALIZE          captialize
 
 
 %x DOUBLE_QUOTED
@@ -152,6 +153,7 @@ VALUE_ATTRIB        value
 {FILE_ATTRIB}                           { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;                   }
 {VAR_ATTRIB}                            { printf("LEX:VAR_ATTRIB\n");                     return VAR_ATTRIB;                    }
 {VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                  }
+{CAPITALIZE}                            { printf("LEX:CAPITALIZE\n");                     return CAPITALIZE;                    }
 {NOT}                                   { printf("LEX:NOT\n");                            return NOT;                           }
 {AND}                                   { printf("LEX:AND\n");                            return AND;                           }
 {OR}                                    { printf("LEX:OR\n");                             return OR;                            }
@@ -237,13 +239,6 @@ VALUE_ATTRIB        value
                                         }
 
 %%
-
-char* strdup(char* s)
-{
-    char* dup = (char*)malloc((strlen(s) * sizeof(char)) + 1);
-    strcpy(dup, s);
-    return dup;
-}
 
 #ifdef LEXER_EXE
 int yywrap(void)

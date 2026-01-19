@@ -95,7 +95,7 @@ ROOT="/home/brian/streamyv2"
 $(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/pcxx.yy
 	$(YACC) $(SRC)/pcxx.yy --header -o $(BLD)/pcxx.cc
 
-$(BLD)/pcxx: $(BLD)/bash_color.hpp $(BLD)/symtab.h $(BLD)/pcxx.cc
+$(BLD)/pcxx: $(BLD)/bash_color.hpp $(BLD)/bash_color.h $(BLD)/symtab.h $(BLD)/pcxx.cc
 	$(CXX) -g -std=c++14 -I$(ROOT)/src $(BLD)/pcxx.cc -o $@
 
 # TEST

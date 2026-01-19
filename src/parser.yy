@@ -89,13 +89,13 @@
 %token<int> NUMBER
 %token<std::string> DOLLAR_SIGN DOT INDIRECT_MEMBER COMMA EQUAL VBAR COLON
 %token<std::string> STRING_LITERAL NUMERIC_LITERAL
-%token<std::string> ID SYMBOL CONST_SYMBOL
+%token<std::string> SYMBOL CONST_SYMBOL
 %token<std::string> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
 %token<std::string> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN
-%token<std::string> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
 %token<std::string> CAPITALIZE CAT COUNT_CHARACTERS COUNT_SENTENCES COUNT_PARAGRAPHS DATE_FORMAT ESCAPE
 %token<std::string> INDENT LOWER UPPER STRIP REPLACE SPACIFY STRING_FORMAT STRIP_TAGS TRUNCATE WORDWARP
-%type<std::string> symbol sub_proc array qualafied_id format_symbol
+%token<std::string> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
+%type<std::string> symbol sub_proc array qualafied_id format_symbol modifier
 %start exe
 
 %%
@@ -174,6 +174,7 @@ block:
                                                                             << "block: NUMBER"
                                                                         << FMT_RESET << endl;   }
                                                                 ;
+
 format_symbol:
     symbol VBAR modifier                                         {
                                                                     cout << FMT_FG_YELLOW
@@ -186,7 +187,7 @@ format_symbol:
     ;
 
 modifier:
-    CAPITALIZE                                                   {
+    CAPITALIZE                                                  {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER modifier: | CAPITALIZE"
                                                                          << FMT_RESET << endl;
@@ -245,29 +246,28 @@ array:
 
 params:
     /*empty*/
-    | symbol COMMA symbol                                            { cout << FMT_FG_YELLOW << "PARSER params: | symbol COMMA symbol" << FMT_RESET << endl; }
-    | params COMMA params                                             { cout << FMT_FG_YELLOW << "PARSER params: | params COMMA params" << FMT_RESET << endl; }
+    | symbol COMMA                                              { cout << FMT_FG_YELLOW << "PARSER params: | symbol" << FMT_RESET << endl; }
+    | params symbol                                             { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | params COMMA symbol" << FMT_RESET << endl; }
                                                                 ;
 
 symbol:
-    SYMBOL                                              {
-                                                                    cout << FMT_FG_YELLOW
-                                                                            << "PARSER symbol: | ID=\"" << $1 << "\""
-                                                                         << FMT_RESET << endl;;
-                                                                    $$=$1;
-                                                                }
-    | CONST_SYMBOL                                               {
-                                                                    cout << FMT_FG_YELLOW
-                                                                            << "PARSER symbol: | CONST_ID=\"" << $1 << "\""
-                                                                         << FMT_RESET << endl;;
-                                                                    $$=$1;
-                                                                }
-                                                                ;
-
+        SYMBOL                                              {
+                                                                cout << FMT_FG_YELLOW
+                                                                     << "PARSER symbol: | SYMBOL"
+                                                                     << FMT_RESET << endl;
+                                                                $$=$1;
+                                                            }
+| CONST_SYMBOL                                              {
+                                                                cout << FMT_FG_YELLOW
+                                                                     << "PARSER symbol: | CONST_SYMBOL"
+                                                                     << FMT_RESET << endl;
+                                                                $$=$1;
+                                                            }
+                                                            ;
 built_in:
     CONFIG_LOAD attributes                                      {
                                                                     cout << FMT_FG_YELLOW << "PARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\""
-                                                                            << $1 << "\" EQUAL STRING_LITERAL=\"$2\""
+                                                                         << $1 << "\" EQUAL STRING_LITERAL=\"$2\""
                                                                          << FMT_RESET << endl;
                                                                 }
     | INCLUDE attributes                                        {
@@ -277,13 +277,13 @@ built_in:
                                                                 }
     | REQUIRE attributes                                        {
                                                                     cout << FMT_FG_YELLOW
-                                                                            << "PARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"\""
+                                                                         << "PARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"\""
                                                                          << FMT_RESET << endl;
 
                                                                 }
     | INSERT attributes                                         {
                                                                     cout << FMT_FG_YELLOW
-                                                                            << "PARSER built_in: | INSERT FILE_ATTRIB=\"\" EQUAL STRING_LITERAL=\"\""
+                                                                         << "PARSER built_in: | INSERT FILE_ATTRIB=\"\" EQUAL STRING_LITERAL=\"\""
                                                                          << FMT_RESET << endl;
 
                                                                 }
@@ -314,18 +314,16 @@ attrib:
                                                                             << buf << "\""
                                                                          << FMT_RESET << endl;
 
-                                                                    std::pair<std::string, std::string>  pair($1, buf);
+                                                                    std::pair<std::string, std::string>  pair($1, $2);
                                                                     $$ = pair;
-                                                                    s = 0;
-                                                                }
+                                                               }
     | VAR_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER name_value: | VAR_ATTRIB=\"\" EQUAL STRING_LITERAL=\"\""
                                                                          << FMT_FG_GREEN << FMT_RESET << endl;
 
-                                                                    std::pair<std::string, std::string>  pair($1, buf);
+                                                                    std::pair<std::string, std::string>  pair($1, $2);
                                                                     $$ = pair;
-                                                                    s = 0;
                                                                 }
     | FILE_ATTRIB EQUAL STRING_LITERAL                          {
                                                                     cout << FMT_FG_YELLOW
@@ -334,9 +332,8 @@ attrib:
                                                                             << $2 << "\""
                                                                          << FMT_RESET << endl;
 
-                                                                    std::pair<std::string, std::string>  pair($1, buf);
+                                                                    std::pair<std::string, std::string>  pair($1, $2);
                                                                     $$ = pair;
-                                                                    s = 0;
                                                                }
                                                                ;
 
