@@ -1,9 +1,14 @@
-# File Name:  streamy-cpp/makefile
-# Build Date: Wed Feb 14 03:28:42 PM CST 2024
+# File Name:  makefile
+# Build Date: Thu, Dec 18, 2025  9:16:12 PM
 # Version:    0.1.0
 
+
+# ifndef ROOT
+# 	ROOT=/home/brian/src/streamyv2
+# endif
+
 CXX=g++
-CXXFLAGS=-ggdb -Wall -DDEBUG -std=c++20
+CXXFLAGS=-ggdb -DDEBUG -std=c++20 -Wall # $(CXXWARN)
 CC=gcc
 CCFLAGS=-ggdb -std=c99 -DDEBUG
 LEX=flex
@@ -11,11 +16,10 @@ YACC=bison -d
 SRC=src
 BLD=build
 OBJ=build
-PREFIX=/usr/local
-#CXXEXTRA = -Wshadow -fstats -fno-rtti fmessage-length=100 -fverbose-asm
+TST=tests
 
 LIBS = -L/usr/local/lib/
-INCLUDES = -I/usr/local/include/cppunit/ -I/home/brian/src/inflex/makes/ -I/home/brian/src/inflex/src/
+INCLUDES = -I./build/ -I./src
 LDFLAGS = $(LIBS) $(INCLUDES)
 
 ifndef RELEASE
@@ -24,159 +28,108 @@ endif
 
 ifdef CYGWIN
 	CXXFLAGS +=-DCYGWIN
-	LDFLAGS += /usr/lib/libcppunit.dll.a
+	LDFLAGS += -lfmt -lcppunit.dll
+else
+	LDFLAGS += -lfmt -lcppunit
 endif
 
-ifdef REFLEX
-	FLEX=reflex
-	CXXFLAGS +=-DREFLEX
-	LDFLAGS += /usr/local/lib/libcppunit.a /usr/local/lib/libreflex.a
-	REFLEXFLAGS=-I/usr/local/include/reflex
-endif
+all: $(BLD)/parser $(BLD)/pcxx #$(BLD)/parser++
 
-all: $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/tokenizer $(BLD)/index.cgi $(BLD)/index2.cgi $(BLD)/index3.cgi $(BLD)/parse $(BLD)/lex $(BLD)/lex_esc
+# parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
+$(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o
+	@echo -e "\nBuilding \"lexer & parser\" ...\n"
+	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
-$(BLD)/streamy.o: $(BLD)/compiler.o $(SRC)/streamy.cpp
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -c $(OBJ)/compiler.o $(SRC)/streamy.cpp -o $(OBJ)/streamy.o
+$(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/bash_color.h: $(SRC)/parser.y #$(SRC)/bash_color.h
+	@echo -e "\nGererating \"parser\" ...\n"
+	$(YACC) -Wcounterexamples --header $^ -o $@
+	cp $(SRC)/*.h $(BLD)/
 
-$(BLD)/compiler.o: $(SRC)/compiler.cpp
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/compiler.cpp -o $(OBJ)/compiler.o
+# CC lexer
+$(BLD)/lex.yy.c $(BLD)/lex.yy.h: $(SRC)/lex.l
+	@echo -e "\nGenerating \"lexer\" ...\n"
+	$(LEX) -o build/lex.yy.c --header-file="build/lex.yy.h" src/lex.l
 
-$(BLD)/utility.o: $(SRC)/utility.cpp
-	$(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/utility.cpp -o $(OBJ)/utility.o
+$(BLD)/lex: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o
+	$(CC) $(CCFLAGS) $^ -lfl -o $@
 
-$(BLD)/scanner: $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/scanner.o $(BLD)/compiler.o $(BLD)/streamy.o
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $^ -o $@
+$(BLD)/parser_test: $(BLD)/parser_test.tab.h $(BLD)/parser_test.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c
+	@echo -e "\nBuilding \"lexer & parser\" ...\n"
+	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
-$(BLD)/index.cgi: $(BLD)/utility.omake clean $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index.o
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index_a.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index_so.cgi
+$(BLD)/parser_test.tab.c $(BLD)/parser_test.tab.h: $(SRC)/parser_test.y #$(SRC)/bash_color.h
+	@echo -e "\nGererating \"parser_test\" ...\n"
+	$(YACC) -Wcounterexamples --header $^ -o $@
+	cp $(SRC)/bash_color.h $(BLD)/
 
-$(BLD)/index2.cgi: $(BLD)/utility.o $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index2.o
-	$(CXX) $(CXXFLAGS) -fPIC $(OBJ)/index2.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index2.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include -L$(PREFIX)/lib $(OBJ)/index2.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index2_a.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index2.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/inde23_so.cgi
+$(BLD)/lex.bak.yy.c $(BLD)/lex.bak.yy.h: $(SRC)/lex.l
+	$(LEX) -o build/lex.bak.yy.c --header-file="build/lex.bak.yy.h" src/lex.l
 
-$(BLD)/index3.cgi: $(BLD)/utility.o $(BLD)/libstreamy.so $(BLD)/libstreamy.a $(BLD)/index3.o
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/streamy.o $(OBJ)/utility.o -o $(BLD)/index3.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/libstreamy.a $(OBJ)/utility.o -o $(BLD)/index3_a.cgi
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index3.o $(OBJ)/libstreamy.so $(OBJ)/utility.o -o $(BLD)/index3_so.cgi
+# CXX parser
+$(BLD)/parser++: $(BLD)/parser++.tab.hpp $(BLD)/parser++.tab.cpp $(BLD)/lex++.yy.hpp $(BLD)/lex++.yy.cpp $(SRC)/symtab.h $(SRC)/symtab.cpp
+	$(CXX) $(CXXFLAGS) -Ibuild $^ -lfl -o $@
 
-$(BLD)/index_soso.cgi: install
-	$(CXX) $(CXXFLAGS) -fPIC -I$(PREFIX)/include $(OBJ)/index.o $(OBJ)/utility.o -lstreamy -L$(PREFIX) -o $(BLD)/index_soso.cgi
-	cp $(SRC)/index.conf $(BLD)/index.conf
+$(BLD)/parser++.tab.cpp $(BLD)/parser++.tab.hpp: $(SRC)/parser.yy
+	$(YACC) -Wcounterexamples --header $^ -o $@
+	cp $(SRC)/bash_color.h $(BLD)/
 
-$(BLD)/index.o: $(SRC)/index.cpp
-	$(CXX) $(CXXFLAGS) -c $(SRC)/index.cpp -o $(OBJ)/index.o
+# CXX lexer # USING C COMPLIER ON CPP! BUT IT BUILDS?
+$(BLD)/lex++: $(BLD)/parser++.tab.hpp $(BLD)/lex++.yy.cpp
+	$(CC) -ggdb -DDEBUG -DMAIN_IMP -DLEXER_EXE $(BLD)/lex++.yy.cpp -o $(BLD)/lex++
 
-$(BLD)/index2.o: $(SRC)/index2.cpp
-	$(CXX) $(CXXFLAGS) -c $(SRC)/index2.cpp -o $(OBJ)/index2.o
+$(BLD)/lex++.yy.cpp: $(SRC)/lex.ll
+	$(LEX) -DLEXER_EXE -o $(BLD)/lex++.yy.cpp --header-file="$(BLD)/lex++.yy.hpp" src/lex.ll
 
-$(BLD)/index3.o: $(SRC)/index3.cpp
-	$(CXX) $(CXXFLAGS) -c $(SRC)/index3.cpp -o $(OBJ)/index3.o
-
-$(BLD)/libstreamy.so: $(OBJ)/fileio.o $(OBJ)/compiler.o $(BLD)/streamy.o
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -fPIC --shared $(OBJ)/fileio.o $(OBJ)/compiler.o $(OBJ)/streamy.o -o $(BLD)/libstreamy.so
-	chmod 755 $(BLD)/libstreamy.so
-
-$(BLD)/libstreamy.a: $(BLD)/streamy.o
-	ar rvs $(BLD)/libstreamy.a $(OBJ)/streamy.o
-	chmod 755 $(BLD)/libstreamy.a
-
-$(BLD)/streamy_lex: $(SRC)/fileio.o $(BLD)/libstreamy.a $(BLD)/libstreamy.so
-	# $(CXX) $(CXXFLAGS) -fPIC -c $(SRC)/streamy_lex.cpp -o $(OBJ)/streamy_lex.o
-	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(OBJ)/streamy.o -o $(BLD)/streamy_lex
-	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o $(BLD)/libstreamy.a -o $(BLD)/streamy_lex_a
-	# $(CXX) $(CXXFLAGS) -fPIC $(OBJ)/streamy_lex.o $(OBJ)/fileio.o -lstreamy -L$(PREFIX) -o $(BLD)/streamy_lex_so
-	# cp $(SRC)/streamy_lex.conf $(BLD)/streamy_lex.conf
-
+# UTILITY
 $(BLD)/fileio.o: $(SRC)/fileio.cpp
 	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o
 
-$(BLD)/tokenizer: $(BLD)/tokenizer.yy.c
-	$(CC) $(BLD)/tokenizer.yy.c -ll -o $(BLD)/tokenizer
-
-$(BLD)/tokenizer.yy.c: $(SRC)/tokenizer.l
-	$(LEX) -o $(BLD)/tokenizer.yy.c $(SRC)/tokenizer.l
-
-$(BLD)/parse: $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c
-	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c $(BLD)/streamy.tab.c -I./build -lfl -o $(BLD)/parse
-
-$(BLD)/lex: $(BLD)/streamy.yy.c
-	$(CC) $(CCFLAGS) $(BLD)/streamy.yy.c -I./build -lfl -o $(BLD)/lex
-
-$(BLD)/streamy.yy.c: $(SRC)/streamy.lex
-	$(LEX) --yylineno --header-file=$(BLD)/streamy.yy.h -o $(BLD)/streamy.yy.c $(SRC)/streamy.lex
-
-$(BLD)/streamy.bak.yy.c: $(SRC)/streamy.bak.l
-	$(LEX) -o $(BLD)/streamy.bak.yy.c $(SRC)/streamy.bak.l
-
-$(BLD)/streamy.tab.c: $(SRC)/streamy.y
-	$(YACC) -Wcounterexamples --header $(SRC)/streamy.y -o $(BLD)/streamy.tab.c
-
-## ESC
-
-esc: $(BLD)/parser_esc $(BLD)/lex_esc $(BLD)/lex_esc2
-
-$(BLD)/parser_esc.tab.c: $(SRC)/parser_esc.y
-	$(YACC) -Wcounterexamples --header $^ -o $@
-
-$(BLD)/parser_esc: $(BLD)/lex_esc.yy.c $(BLD)/parser_esc.tab.c
-	$(CC) -Ibuild $(CCFLAGS) $^ -lfl -o $@
-
-$(BLD)/lex_esc: $(BLD)/lex_esc.yy.c
-	$(CC) -DLEXER_EXE $(BLD)/lex_esc.yy.c -o $(BLD)/lex_esc
-
-$(BLD)/lex_esc.yy.c: $(BLD)/parser_esc.tab.c $(SRC)/lex_esc.l
-	flex -o build/lex_esc.yy.c --header-file="build/lex_esc.yy.h" src/lex_esc.l
-
-$(BLD)/lex_esc2: $(BLD)/lex_esc2.yy.c
-	$(CC) $(BLD)/lex_esc2.yy.c -o $(BLD)/lex_esc2
-
-$(BLD)/lex_esc2.yy.c: $(SRC)/lex_esc2.l
-	$(LEX) -o $(BLD)/lex_esc2.yy.c $(SRC)/lex_esc2.l
-
-$(BLD)/lex_esc3: $(BLD)/lex_esc3.yy.c
-	$(CC) $(BLD)/lex_esc3.yy.c -o $(BLD)/lex_esc3
-
-$(BLD)/lex_esc3.yy.c: $(SRC)/lex_esc3.l
-	$(LEX) -o $(BLD)/lex_esc3.yy.c $(SRC)/lex_esc3.l
-
-## ESC
-
-.PHONY: lex_yacc_ex
-lex_yacc_ex:
-	$(LEX) -o $(BLD)/ex1.yy.c $(SRC)/ex1.l
-	$(CC) $(BLD)/ex1.yy.c -o $(BLD)/ex1
-	$(LEX) -o $(BLD)/ex2.yy.c $(SRC)/ex2.l
-	$(CC) $(BLD)/ex2.yy.c -o $(BLD)/ex2
-
+# ABSTARCT
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
-.PHONY: install
-install:
-	mkdir -p $(PREFIX)/lib
-	mkdir -p $(PREFIX)/include
-	cp $(SRC)/streamy.hpp $(PREFIX)/include/streamy.hpp
-	cp -rf  $(BLD)/libstreamy.a $(PREFIX)/lib/libstreamy.a
-	cp -rf  $(BLD)/libstreamy.so $(PREFIX)/lib/libstreamy.so
-	chmod 755 $(PREFIX)/include/streamy.hpp $(PREFIX)/lib/libstreamy.a $(PREFIX)/lib/libstreamy.so
+$(OBJ)/%.o: $(SRC)/%.c
+	$(CC) $(CFLAGS) -c $^ -o $@
 
-.PHONY: uninstall
-uninstall:
-	rm $(PREFIX)/include/streamy.hpp
-	rm -rf $(PREFIX)/libstreamy.a $(PREFIX)/lib/libstreamy.so
+ROOT="/home/brian/streamyv2"
+$(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/pcxx.yy
+	$(YACC) $(SRC)/pcxx.yy --header -o $(BLD)/pcxx.cc
 
+$(BLD)/pcxx: $(BLD)/bash_color.hpp $(BLD)/bash_color.h $(BLD)/symtab.h $(BLD)/pcxx.cc
+	$(CXX) -g -std=c++14 -I$(ROOT)/src $(BLD)/pcxx.cc -o $@
+
+# TEST
+$(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
+	$(CXX) -DLEXER_EXE $(CXXFLAGS) $^ $(LDFLAGS) -o $@
+
+# copy header files
+$(BLD)/fileio.h $(BLD)/streamy.hpp: $(SRC)/fileio.h $(SRC)/streamy.hpp
+	cp $^ $(BLD)/
+
+# copy header files
+$(BLD)/%.h : $(SRC)/%.h
+	cp $^ $@
+
+$(BLD)/%.hpp: $(SRC)/%.hpp
+	cp $< $@
+
+# MAKE UTILTY
+# copy all headers from src to build dir
+.PHONY: copy_headers
+copy_headers:
+	-cp $(SRC)/*.h $(BLD)/
+
+# clean & make
 .PHONY: rebuild
 rebuild: clean all
 
+# remove all from build dir
 .PHONY: clean
 clean:
 	-rm -rf ./$(OBJ)/*
 	-rm -rf ./$(BLD)/*
 
+# remove any object files from src dir
 .PHONY: clean_src
 clean_src:
 	-rm .$(SRC)/*.o

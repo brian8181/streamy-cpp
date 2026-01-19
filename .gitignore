@@ -5,3 +5,5 @@
 **/cbuild/**
 **/.vs/**
 **/out/**
+src/lex_parse.l.bak
+src/lex_parse.bak

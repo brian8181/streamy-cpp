@@ -1,16 +1,30 @@
-#include <iostream>
+#include <cppunit/BriefTestProgressListener.h>
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/TestResult.h>
 #include <cppunit/TestResultCollector.h>
 #include <cppunit/TestRunner.h>
-#include <cppunit/BriefTestProgressListener.h>
+#include <iostream>
+#include <filesystem>
+#include <string>
 
 
+using std::string;
 using std::cout;
 using std::endl;
 
-int main() {
+int g_argc;
+char** g_argv;
+std::filesystem::path g_root;
+
+int main(int argc, char* argv[])
+{
+
+    g_argc = argc;
+    g_argv = argv;
+
+    //string str(argv);
+    //g_root = path;
 
     #ifdef __CYGWIN__
         std::cout << "Running on Cygwin." << std::endl;
@@ -19,7 +33,7 @@ int main() {
     #else
         std::cout << "Running on a non-Windows, non-Cygwin system." << std::endl;
     #endif
-    
+
     // Create the event manager and test controller
     CppUnit::TestResult controller;
 

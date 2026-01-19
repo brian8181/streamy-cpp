@@ -5,19 +5,25 @@
 CC=gcc
 LEX=flex
 YACC=bison
+OBJ=build
 BLD=build
 SRC=.
 
 all: $(BLD)/calc
 
-$(BLD)/calc: $(BLD)/calc.tab.c lexer.c
-	$(CC) lexer.c $(BLD)/calc.tab.c -o $(BLD)/calc
+$(BLD)/calc: $(BLD)/lexer.h $(BLD)/calc.tab.c $(OBJ)/lexer.o
+	$(CC) $(OBJ)/lexer.o $(BLD)/calc.tab.c -o $(BLD)/calc
 
-# $(BLD)/calc.yy.c: $(SRC)/calc.l
-# 	$(LEX) -o $(BLD)/calc.yy.c $(SRC)/calc.l
+$(OBJ)/lexer.o: $(BLD)/calc.tab.h $(SRC)/lexer.h $(SRC)/lexer.c
+	$(CC) -c $(SRC)/lexer.c -o $@
 
 $(BLD)/calc.tab.c: $(SRC)/calc.y
-	$(YACC) -o $(BLD)/calc.tab.c -d calc.y
+	$(YACC) --header -o $(BLD)/calc.tab.c -d $(SRC)/calc.y
+
+# copy header files
+$(BLD)/lexer.h: $(SRC)/lexer.h
+	cp $^ $@
+
 
 .PHONY: clean
 clean:

@@ -1,0 +1,7 @@
+Start ...
+{$abc}
+{"testing"}
+{"testing2"}
+{$d}
+{ $foo }
+.. end

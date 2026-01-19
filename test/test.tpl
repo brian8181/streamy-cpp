@@ -1,4 +1,5 @@
 {config_load file}
+{"literal"}
 {include file='foo.conf'}
 {insert file='foo.tpl'}
 <html>

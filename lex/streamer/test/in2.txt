@@ -1,1 +1,3 @@
-bbb{$c}ccc
+{if}
+testing...
+{/if}

@@ -5,7 +5,7 @@
 %{
     #define MAX_INCLUDE_DEPTH 10
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
-    int include_stack_ptr = 0;
+    int pstack = 0;
 %}
 
 %%
@@ -14,27 +14,27 @@
 include             { BEGIN(incl); }
 [a-z]+              { ECHO; }
 [^a-z\n]*\n?        { ECHO; }
-<incl>[ \t]*        { /* eat the whitespace */ }
+<incl>[ \t]*        { /* eat whitespace */ }
 <incl>[^ \t\n]+     {
-                        /* got the include file name */
-                        if ( include_stack_ptr >= MAX_INCLUDE_DEPTH )
+                        /* include file name */
+                        if ( pstack >= MAX_INCLUDE_DEPTH )
                         {
-                            fprintf( stderr, "Includes nested too deeply" );
+                            fprintf( stderr, "error: includes nested too deeply" );
                             exit( 1 );
                         }
-                        include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+                        include_stack[pstack++] = YY_CURRENT_BUFFER;
 
                         yyin = fopen( yytext, "r" );
                         if ( ! yyin )
                         {
-                            printf( "could not open file, %s", yytext );
+                            printf( "error: could not open file, %s", yytext );
                         }
 
                         yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
                         BEGIN(INITIAL);
                     }
 <<EOF>>             {
-                        if ( --include_stack_ptr < 0 )
+                        if ( --pstack < 0 )
                         {
                             yyterminate();
                         }
@@ -42,7 +42,7 @@ include             { BEGIN(incl); }
                         {
                             yy_delete_buffer( YY_CURRENT_BUFFER );
                             yy_switch_to_buffer(
-                            include_stack[include_stack_ptr] );
+                            include_stack[pstack] );
                         }
                     }
 

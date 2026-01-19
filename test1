@@ -1,0 +1,251 @@
+************************* RUN *************************
+* Terminate listing with ; to see parsed AST          *
+* Terminate parser with Ctrl-D ...                    *
+************************* Done ************************
+Start ...
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:abc]
+[32mPARSER symbol: | ID="abc"[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE symbol RBRACE[0m
+[32mPARSER blocks: | block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:CONFIG_LOAD
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="config.txt"
+[32mPARSER built_in: | CONFIG_LOAD FILE_ATTRIB="config_load" EQUAL STRING_LITERAL="config.txt"[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE built_in RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:INSERT
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="filename2.txt"
+[32mPARSER built_in: | INSERT FILE_ATTRIB="insert" EQUAL STRING_LITERAL="filename2.txt"[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE built_in RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:INCLUDE
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="t1.txt"
+[32mPARSER built_in: | INCLUDE FILE_ATTRIB="include" EQUAL STRING_LITERAL="t1.txt"[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE built_in RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:COMMENT="{* testing comments *}"
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:[CONST_ID:#test_var#]
+[32mPARSER symbol: | CONST_ID="#test_var#"[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE symbol RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:abc]
+[32mPARSER symbol: | ID="abc"[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE symbol RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:xyz]
+[32mPARSER symbol: | ID="xyz"[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE symbol RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:arry]
+[32mPARSER symbol: | ID="arry"[0m
+LEX:LBRACKET
+LEX:NUMERIC_LITERAL=0
+LEX:RBRACKET
+[32mPARSER array: | symbol="xyz" LBRACKET NUMERIC_LITERAL="0" RBRACKET[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE array RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:subproc]
+[32mPARSER symbol: | ID="subproc"[0m
+LEX:LPAREN
+LEX:RPAREN
+[32mPARSER sub_proc: | symbol LPAREN params RPAREN[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE sub_porc RBRACE
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:ASSIGN
+LEX:VAR_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="test"
+[32mPARSER name_value: | VAR_ATTRIB="var" EQUAL STRING_LITERAL="test"[0m
+[32mPARSER attributes: | attribute={name="var"; value="test"}[0m
+LEX:VALUE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="42"
+[32mPARSER name_value: | VALUE_ATTRIB="value" EQUAL STRING_LITERAL="42"[0m
+[32mPARSER attributes: | attributes attribute={name="value"; value="42"}[0m
+attribute={name="[32m"; value="value"}42
+attribute={name="[32m"; value="var"}test
+LEX:VAR_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="test2"
+[32mPARSER name_value: | VAR_ATTRIB="var" EQUAL STRING_LITERAL="test2"[0m
+[32mPARSER attributes: | attributes attribute={name="var"; value="test2"}[0m
+attribute={name="[32m"; value="var"}test2
+attribute={name="[32m"; value="value"}42
+attribute={name="[32m"; value="var"}test
+LEX:VALUE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="21"
+[32mPARSER name_value: | VALUE_ATTRIB="value" EQUAL STRING_LITERAL="21"[0m
+[32mPARSER attributes: | attributes attribute={name="value"; value="21"}[0m
+attribute={name="[32m"; value="value"}21
+attribute={name="[32m"; value="var"}test2
+attribute={name="[32m"; value="value"}42
+attribute={name="[32m"; value="var"}test
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE ASSIGN attributes RBRACE { ATTRIB="var" EQUAL STRING_LITERAL="test" }[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:INSERT
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_DOUBLE_QUOTED
+LEX:DOUBLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="filename2.txt"
+[32mPARSER built_in: | INSERT FILE_ATTRIB="insert" EQUAL STRING_LITERAL="filename2.txt"[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE built_in RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:REQUIRE
+LEX:FILE_ATTRIB
+LEX:EQUAL
+LEX:BEGIN_SINGLE_QUOTED
+LEX:SINGLE_QUOTE
+LEX:BEGIN ESCAPED
+LEX:STRING_LITERAL="name.txt"
+[32mPARSER built_in: | REQUIRE FILE_ATTRIB="require" EQUAL STRING_LITERAL="name.txt"[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE built_in RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:COMMENT="{ * testing comments 2 * }"
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:xxx]
+[32mPARSER symbol: | ID="xxx"[0m
+LEX:DOT
+LEX:[ID:test]
+[32mPARSER qualafied_id: | symbol DOT ID[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE qualafied_id RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:yyy]
+[32mPARSER symbol: | ID="yyy"[0m
+LEX:INDIRECT_MEMBER
+LEX:[ID:test]
+[32mPARSER qualafied_id: | symbol INDIRECT_MEMBER ID[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE qualafied_id RBRACE[0m
+[32mPARSER blocks: | blocks block[0m
+
+LEX:LBRACE
+LEX:BEGIN ESCAPED
+LEX:DOLLAR_SIGN
+LEX:[ID:subproc]
+[32mPARSER symbol: | ID="subproc"[0m
+LEX:LPAREN
+LEX:DOLLAR_SIGN
+LEX:[ID:x]
+[32mPARSER symbol: | ID="x"[0m
+[32mPARSER params: | symbol[0m
+LEX:COMMA
+LEX:DOLLAR_SIGN
+LEX:[ID:y]
+[32mPARSER symbol: | ID="y"[0m
+[32mPARSER qualafied_id: | params COMMA symbol[0m
+LEX:RPAREN
+[32mPARSER sub_proc: | symbol LPAREN params RPAREN[0m
+LEX:RBRACE
+LEX:BEGIN INITIAL
+[32mPARSER block: | LBRACE sub_porc RBRACE
+[32mPARSER blocks: | blocks block[0m
+
+... End
+<<EOF>>
+[32mPARSER file: | blocks END_OF_FILE[0m
+*********************** STOPPING **********************
+* End of file, terminating.                           *
+************************* Done ************************

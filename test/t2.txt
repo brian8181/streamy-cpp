@@ -1,0 +1,7 @@
+Start ...
+{$x $y}
+{$d}
+{"double quotes" }
+{ $foo }
+{123}
+.. end
