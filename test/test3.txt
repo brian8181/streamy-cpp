@@ -5,3 +5,21 @@ Start ...
 {$d}
 { $foo }
 .. end
+
+
+cat
+count_characters
+count_sentences
+count_paragraphs
+date_format
+escape
+indent
+lower
+upper
+strip
+replace
+spacify
+string_format
+strip_tags
+truncate
+wordwarp
