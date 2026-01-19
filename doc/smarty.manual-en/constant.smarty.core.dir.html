@@ -1,0 +1,72 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SMARTY_CORE_DIR</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Smarty Manual">
+<link rel="up" href="smarty.constants.html" title="Chapter 11. Constants">
+<link rel="prev" href="smarty.constants.html" title="Chapter 11. Constants">
+<link rel="next" href="api.variables.html" title="Chapter 12. Smarty Class Variables">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">SMARTY_CORE_DIR</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="smarty.constants.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 11. Constants</th>
+<td width="20%" align="right"> <a accesskey="n" href="api.variables.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="sect1" title="SMARTY_CORE_DIR">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="constant.smarty.core.dir"></a>SMARTY_CORE_DIR</h2></div></div></div>
+<p>
+     This is the <span class="emphasis"><em>full system path</em></span> to the location of the Smarty core
+     files. If not defined, Smarty will default this constant to the
+     <code class="filename">internals/</code>  sub-directory below
+     <a class="link" href="smarty.constants.html#constant.smarty.dir" title="SMARTY_DIR"><code class="constant">SMARTY_DIR</code></a>.
+     If defined, the path must end with a slash/.
+     Use this constant when manually including any of the core.* files.
+    </p>
+<div class="example">
+<a name="id3085809"></a><p class="title"><b>Example 11.2. SMARTY_CORE_DIR</b></p>
+<div class="example-contents"><pre class="programlisting">
+
+&lt;?php
+
+// load core.get_microtime.php
+require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+
+?&gt;
+
+     </pre></div>
+</div>
+<br class="example-break"><p>
+    See also
+    <a class="link" href="language.variables.smarty.html#language.variables.smarty.const" title="{$smarty.const}"><em class="parameter"><code>$smarty.const</code></em></a>
+    </p>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="smarty.constants.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="smarty.constants.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="api.variables.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 11. Constants </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Chapter 12. Smarty Class Variables</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

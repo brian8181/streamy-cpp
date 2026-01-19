@@ -1,0 +1,123 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>register_block()</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Smarty Manual">
+<link rel="up" href="api.functions.html" title="Chapter 13. Smarty Class Methods()">
+<link rel="prev" href="api.load.filter.html" title="load_filter()">
+<link rel="next" href="api.register.compiler.function.html" title="register_compiler_function()">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">register_block()</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="api.load.filter.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 13. Smarty Class Methods()</th>
+<td width="20%" align="right"> <a accesskey="n" href="api.register.compiler.function.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="refentry" title="register_block()">
+<a name="api.register.block"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2>Name</h2>
+<p>register_block() — dynamically register block functions plugins</p>
+</div>
+<div class="refsect1" title="Description">
+<a name="id3102943"></a><h2>Description</h2>
+<code class="methodsynopsis"><span class="type">void </span><span class="methodname">register_block</span>(<span class="methodparam"><span class="type">string </span><span class="parameter">name</span></span>,<br>                    <span class="methodparam"><span class="type">mixed </span><span class="parameter">impl</span></span>,<br>                    <span class="methodparam"><span class="type">bool </span><span class="parameter">cacheable</span></span>,<br>                    <span class="methodparam"><span class="type">mixed </span><span class="parameter">cache_attrs</span></span>);</code><p>
+   Use this to dynamically register
+   <a class="link" href="plugins.block.functions.html" title="Block Functions">block function plugins</a>.
+   Pass in the block function <em class="parameter"><code>name</code></em>, followed by the PHP
+   function's name that implements it.
+  </p>
+<p>
+   The php-function callback <em class="parameter"><code>function</code></em> can be either:
+   </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>
+       A string containing the function <em class="parameter"><code>name</code></em>
+       </p></li>
+<li class="listitem"><p>
+       An array of the form <code class="literal">array(&amp;$object, $method)</code> with
+       <code class="literal">&amp;$object</code> being a reference to an
+       object and <code class="literal">$method</code> being a string
+       containing the method-name
+       </p></li>
+<li class="listitem"><p>
+       An array of the form
+       <code class="literal">array($class, $method)</code> with
+       <code class="literal">$class</code> being the class name and
+       <code class="literal">$method</code> being a method of the class.
+       </p></li>
+</ul></div>
+<p>
+  </p>
+<p>
+   <em class="parameter"><code>cacheable</code></em> and <em class="parameter"><code>cache_attrs</code></em>
+   can be omitted in most cases. See <a class="link" href="caching.cacheable.html" title="Controlling Cacheability of Plugins' Output">controlling cacheability of plugins' output</a>
+   section on how to implement them properly.
+  </p>
+<div class="example">
+<a name="id3103760"></a><p class="title"><b>Example 13.22. register_block()</b></p>
+<div class="example-contents">
+<pre class="programlisting">
+
+&lt;?php
+// function declaration
+function do_translation ($params, $content, &amp;$smarty, &amp;$repeat)
+{
+  if (isset($content)) {
+    $lang = $params['lang'];
+    // do some translation with $content
+    return $translation;
+  }
+}
+
+// register with smarty
+$smarty-&gt;register_block('translate', 'do_translation');
+?&gt;
+
+   </pre>
+<p>
+    Where the template is:
+   </p>
+<pre class="programlisting">
+
+{translate lang='br'}Hello, world!{/translate}
+
+   </pre>
+</div>
+</div>
+<br class="example-break"><p>
+    See also
+    <a class="link" href="api.unregister.block.html" title="unregister_block()"><code class="varname">unregister_block()</code></a>
+    and the
+    <a class="link" href="plugins.block.functions.html" title="Block Functions">plugin block functions</a> page.
+  </p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="api.load.filter.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="api.functions.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="api.register.compiler.function.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">load_filter() </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> register_compiler_function()</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

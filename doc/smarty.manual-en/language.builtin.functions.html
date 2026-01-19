@@ -1,0 +1,208 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Chapter 7. Built-in Functions</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<link rel="home" href="index.html" title="Smarty Manual">
+<link rel="up" href="smarty.for.designers.html" title="Part II. Smarty For Template Designers">
+<link rel="prev" href="language.combining.modifiers.html" title="Chapter 6. Combining Modifiers">
+<link rel="next" href="language.function.config.load.html" title="{config_load}">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Chapter 7. Built-in Functions</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="language.combining.modifiers.html">Prev</a> </td>
+<th width="60%" align="center">Part II. Smarty For Template Designers</th>
+<td width="20%" align="right"> <a accesskey="n" href="language.function.config.load.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" title="Chapter 7. Built-in Functions">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="language.builtin.functions"></a>Chapter 7. Built-in Functions</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="sect1"><a href="language.builtin.functions.html#language.function.capture">{capture}</a></span></dt>
+<dt><span class="sect1"><a href="language.function.config.load.html">{config_load}</a></span></dt>
+<dt><span class="sect1"><a href="language.function.foreach.html">{foreach},{foreachelse}</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="language.function.foreach.html#foreach.property.index">.index</a></span></dt>
+<dt><span class="sect2"><a href="language.function.foreach.html#foreach.property.iteration">.iteration</a></span></dt>
+<dt><span class="sect2"><a href="language.function.foreach.html#foreach.property.first">.first</a></span></dt>
+<dt><span class="sect2"><a href="language.function.foreach.html#foreach.property.last">.last</a></span></dt>
+<dt><span class="sect2"><a href="language.function.foreach.html#foreach.property.show">.show</a></span></dt>
+<dt><span class="sect2"><a href="language.function.foreach.html#foreach.property.total">.total</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="language.function.if.html">{if},{elseif},{else}</a></span></dt>
+<dt><span class="sect1"><a href="language.function.include.html">{include}</a></span></dt>
+<dt><span class="sect1"><a href="language.function.include.php.html">{include_php}</a></span></dt>
+<dt><span class="sect1"><a href="language.function.insert.html">{insert}</a></span></dt>
+<dt><span class="sect1"><a href="language.function.ldelim.html">{ldelim},{rdelim}</a></span></dt>
+<dt><span class="sect1"><a href="language.function.literal.html">{literal}</a></span></dt>
+<dt><span class="sect1"><a href="language.function.php.html">{php}</a></span></dt>
+<dt><span class="sect1"><a href="language.function.section.html">{section},{sectionelse}</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.index">.index</a></span></dt>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.index.prev">.index_prev</a></span></dt>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.index.next">.index_next</a></span></dt>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.iteration">.iteration</a></span></dt>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.first">.first</a></span></dt>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.last">.last</a></span></dt>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.rownum">.rownum</a></span></dt>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.loop">.loop</a></span></dt>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.show">.show</a></span></dt>
+<dt><span class="sect2"><a href="language.function.section.html#section.property.total">.total</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="language.function.strip.html">{strip}</a></span></dt>
+</dl>
+</div>
+<p>
+  Smarty comes with several built-in functions. These built-in functions
+  are the integral part of the smarty template engine. You cannot create your own
+  <a class="link" href="language.custom.functions.html" title="Chapter 8. Custom Functions">custom functions</a>
+  with the same name; and you  should  not need to
+  modify the built-in functions.</p>
+<p>
+ A few of these functions have an <em class="parameter"><code>assign</code></em>
+ attribute which collects the result the function to a named template
+ variable instead of being output;
+ much like the <a class="link" href="language.custom.functions.html#language.function.assign" title="{assign}">
+ <code class="varname">{assign}</code></a> function.
+ </p>
+<div class="sect1" title="{capture}">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="language.function.capture"></a>{capture}</h2></div></div></div>
+<p>
+   <code class="varname">{capture}</code> is used to collect the output of the template between the
+   tags into a  variable instead of displaying it. Any content between
+   <code class="varname">{capture name='foo'}</code> and <code class="varname">{/capture}</code> is collected
+   into the variable specified  in the <em class="parameter"><code>name</code></em> attribute.
+   </p>
+<p>The captured content can be used in the
+   template from the variable <a class="link" href="language.variables.smarty.html#language.variables.smarty.capture" title="{$smarty.capture}"><em class="parameter"><code>$smarty.capture.foo</code></em></a>
+   where <span class="quote">“<span class="quote">foo</span>”</span> is the value passed in the <em class="parameter"><code>name</code></em> attribute.
+   If you do not supply the <em class="parameter"><code>name</code></em> attribute, then <span class="quote">“<span class="quote">default</span>”</span> will
+   be used as the name ie <em class="parameter"><code>$smarty.capture.default</code></em>.
+   </p>
+<p><code class="varname">{capture}'s</code> can be nested.
+   </p>
+<div class="informaltable"><table border="1">
+<colgroup>
+<col align="center">
+<col align="center">
+<col align="center">
+<col align="center">
+<col>
+</colgroup>
+<thead><tr>
+<th align="center">Attribute Name</th>
+<th align="center">Type</th>
+<th align="center">Required</th>
+<th align="center">Default</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="center">name</td>
+<td align="center">string</td>
+<td align="center">no</td>
+<td align="center"><span class="emphasis"><em>default</em></span></td>
+<td>The name of the captured block</td>
+</tr>
+<tr>
+<td align="center">assign</td>
+<td align="center">string</td>
+<td align="center">No</td>
+<td align="center"><span class="emphasis"><em>n/a</em></span></td>
+<td>The variable name where to assign the captured output to</td>
+</tr>
+</tbody>
+</table></div>
+<div class="note" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Caution</h3>
+<p>
+   Be careful when capturing <a class="link" href="language.function.insert.html" title="{insert}"><code class="varname">{insert}</code></a>
+   output. If you have
+   <a class="link" href="caching.html" title="Chapter 14. Caching"><em class="parameter"><code>$caching</code></em></a>
+   enabled and you have
+   <a class="link" href="language.function.insert.html" title="{insert}"><code class="varname">{insert}</code></a>
+   commands that you expect to run
+   within cached content, do not capture this content.
+  </p>
+</div>
+<p>
+  </p>
+<div class="example">
+<a name="id3046452"></a><p class="title"><b>Example 7.1. {capture} with the name attribute</b></p>
+<div class="example-contents"><pre class="programlisting">
+
+{* we don't want to print a div tag unless content is displayed *}
+{capture name=banner}
+  {include file='get_banner.tpl'}
+{/capture}
+
+{if $smarty.capture.banner ne ''}
+&lt;div id="banner"&gt;{$smarty.capture.banner}&lt;/div&gt;
+{/if}
+
+   </pre></div>
+</div>
+<p><br class="example-break">
+
+    </p>
+<div class="example">
+<a name="id3046465"></a><p class="title"><b>Example 7.2. {capture} into a template variable</b></p>
+<div class="example-contents">
+<p>This example also demonstrates the
+     <a class="link" href="language.modifier.upper.html" title="upper"><code class="varname">upper</code></a>
+     modifier</p>
+<pre class="programlisting">
+
+{capture name=some_content assign=addrText}
+The server is {$smarty.server.SERVER_NAME|upper} at {$smarty.server.SERVER_ADDR}&lt;br&gt;
+Your ip is {$smarty.server.REMOTE_ADDR}.
+{/capture}
+{$addrText}
+
+     </pre>
+</div>
+</div>
+<p><br class="example-break">
+
+
+ </p>
+<p>
+  See also
+  <a class="link" href="language.variables.smarty.html#language.variables.smarty.capture" title="{$smarty.capture}"><em class="parameter"><code>$smarty.capture</code></em></a>,
+   <a class="link" href="language.function.eval.html" title="{eval}"><code class="varname">{eval}</code></a>,
+  <a class="link" href="language.function.fetch.html" title="{fetch}"><code class="varname">{fetch}</code></a>,
+  <a class="link" href="api.fetch.html" title="fetch()"><code class="varname">fetch()</code></a>
+  and <a class="link" href="language.custom.functions.html#language.function.assign" title="{assign}"><code class="varname">{assign}</code></a>.
+ </p>
+</div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="language.combining.modifiers.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="smarty.for.designers.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="language.function.config.load.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 6. Combining Modifiers </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> {config_load}</td>
+</tr>
+</table>
+</div>
+</body>
+</html>

@@ -1,1 +1,1 @@
-{$ab | captialize}
+{$abc|captialize:42}
