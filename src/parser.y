@@ -50,7 +50,7 @@
 %token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK COMMA EQUAL PERCENT NOT_EQUAL
-%token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
+%token<sval> CAPTURE CONFIG_LOAD INCLUDE REQUIRE REQUIRE_ONCE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
 %token<sval> CAPITALIZE CAT COUNT_CHARACTERS COUNT_SENTENCES COUNT_PARAGRAPHS COUNT_WORDS DATE_FORMAT DEFAULT ESCAPE
 %token<sval> INDENT LOWER UPPER STRIP NL2BR REGEX_REPLACE REPLACE SPACIFY STRING_FORMAT STRIP_TAGS TRUNCATE WORDWARP
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
@@ -184,24 +184,96 @@ modifier:
                                                                     GREEN("PARSER modifier: | COUNT_CHARACTERS\n");
                                                                     #endif
                                                                }
-    | COUNT_SENTENCES                                          //{ #ifdef VERBOSE GREEN("PARSER modifier: | COUNT_SENTENCES\n");  #endif }
-    | COUNT_PARAGRAPHS                                         //{ #ifdef VERBOSE GREEN("PARSER modifier: | COUNT_PARAGRAPHS\n"); #endif }
-    | COUNT_WORDS                                              //{ #ifdef VERBOSE GREEN("PARSER modifier: | COUNT_WORS\n"); #endif }
-    | DATE_FORMAT                                              //{ #ifdef VERBOSE GREEN("PARSER modifier: | DATE_FORMAT\n");      #endif }
-    | DEFAULT                                                  //{ #ifdef VERBOSE GREEN("PARSER modifier: | DEFAULT\n");      #endif }
-    | ESCAPE                                                   //{ #ifdef VERBOSE GREEN("PARSER modifier: | ESCAPE\n");           #endif }
-    | INDENT                                                   //{ #ifdef VERBOSE GREEN("PARSER modifier: | INDENT\n");           #endif }
-    | LOWER                                                    //{ #ifdef VERBOSE GREEN("PARSER modifier: | LOWER\n");            #endif }
-    | STRIP                                                    //{ #ifdef VERBOSE GREEN("PARSER modifier: | STIRP\n");       #endif }
-    | NL2BR                                                    //{ #ifdef VERBOSE GREEN("PARSER modifier: | NL2BR\n");       #endif }
-    | REGEX_REPLACE                                            //{ #ifdef VERBOSE GREEN("PARSER modifier: | REGEX_REPLACE\n");       #endif }
-    | REPLACE                                                  //{ #ifdef VERBOSE GREEN("PARSER modifier: | REPLACE\n");       #endif }
-    | SPACIFY                                                  //{ #ifdef VERBOSE GREEN("PARSER modifier: | SPACIFY\n");       #endif }
-    | STRING_FORMAT                                            //{ #ifdef VERBOSE GREEN("PARSER modifier: | STRING_FROMAT\n");       #endif }
-    | STRIP_TAGS                                               //{ #ifdef VERBOSE GREEN("PARSER modifier: | STRP_TAGS\n");       #endif }
-    | TRUNCATE                                                 //{ #ifdef VERBOSE GREEN("PARSER modifier: | TRUNCATE\n");       #endif }
-    | UPPER                                                    //{ #ifdef VERBOSE GREEN("PARSER modifier: | UPPER\n");            #endif }
-    | WORDWARP                                                 //{ #ifdef VERBOSE GREEN("PARSER modifier: | WORDWRAP\n");       #endif }
+    | COUNT_SENTENCES                                          {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER modifier: | COUNT_SENTENCES\n");
+                                                                    #endif
+                                                               }
+    | COUNT_PARAGRAPHS                                         {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER modifier: | COUNT_PARAGRAPHS\n");
+                                                                    #endif
+                                                               }
+    | COUNT_WORDS                                              {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER modifier: | COUNT_WORDS\n");
+                                                                    #endif
+                                                               }
+    | DATE_FORMAT                                              {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER modifier: | DATE_FORMAT\n");
+                                                                    #endif
+                                                               }
+    | DEFAULT                                                  {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER modifier: | DEFAULT\n");
+                                                                    #endif
+                                                               }
+    | ESCAPE                                                   {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER modifier: | ESCAPE\n");
+                                                                    #endif
+                                                               }
+    | INDENT                                                    {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER modifier: | INDENT\n");
+                                                                    #endif
+                                                                }
+    | STRIP                                                     {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER modifier: | STRIPS\n");
+                                                                    #endif
+                                                               }
+    | NL2BR                                                     {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER modifier: | NL2BR\n");
+                                                                    #endif
+                                                                }
+    | REPLACE                                                {
+                                                                     #ifdef VERBOSE
+                                                                     GREEN("PARSER modifier: | REPLACE\n");
+                                                                     #endif
+                                                                }
+    | REGEX_REPLACE                                                {
+                                                                     #ifdef VERBOSE
+                                                                     GREEN("PARSER modifier: | REGEX_REPLACE\n");
+                                                                     #endif
+                                                                }
+    | SPACIFY                                                   {
+                                                                     #ifdef VERBOSE
+                                                                     GREEN("PARSER modifier: | SPACIFY\n");
+                                                                     #endif
+                                                                }
+    | STRING_FORMAT                                             {
+                                                                     #ifdef VERBOSE
+                                                                     GREEN("PARSER modifier: | STRING_FORMAT\n");
+                                                                     #endif
+                                                                }
+    | STRIP_TAGS                                                {
+                                                                     #ifdef VERBOSE
+                                                                     GREEN("PARSER modifier: | STIP_TAGS\n");
+                                                                     #endif
+                                                                }
+    | TRUNCATE                                                  {
+                                                                     #ifdef VERBOSE
+                                                                     GREEN("PARSER modifier: | TRUNCATE\n");
+                                                                     #endif
+                                                                }
+    | UPPER                                                     {
+                                                                     #ifdef VERBOSE
+                                                                     GREEN("PARSER modifier: | UPPER\n");
+                                                                     #endif
+                                                                }
+    | LOWER                                                     {
+                                                                     #ifdef VERBOSE
+                                                                     GREEN("PARSER modifier: | LOWER\n");
+                                                                     #endif
+                                                                }
+    | WORDWARP                                                  {
+                                                                     #ifdef VERBOSE
+                                                                     GREEN("PARSER modifier: | WORDWRAP\n");
+                                                                     #endif
+                                                                }
     ;
 
 built_in:
@@ -213,7 +285,7 @@ built_in:
                                                                     $$=nv;
                                                                     s = 0;
                                                                 }
-    | INCLUDE attributes                  {
+    | INCLUDE attributes                                       {
                                                                     printf("%sPARSER built_in: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
                                                                     nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
                                                                     nv->name = STRDUP($1);
@@ -221,7 +293,7 @@ built_in:
                                                                     $$=nv;
                                                                     s = 0;
                                                                 }
-    | REQUIRE attributes                  {
+    | REQUIRE attributes                                        {
                                                                     printf("%sPARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
                                                                     nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
                                                                     nv->name = STRDUP($1);
@@ -229,7 +301,15 @@ built_in:
                                                                     $$=nv;
                                                                     s = 0;
                                                                 }
-    | INSERT attributes                   {
+    | REQUIRE_ONCE attributes                                   {
+                                                                    printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    // nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
+                                                                    // nv->name = STRDUP($1);
+                                                                    // nv->value = STRDUP(s);
+                                                                    // $$=nv;
+                                                                    // s = 0;
+                                                                }
+    | INSERT attributes                                         {
                                                                     printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
                                                                     // nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
                                                                     // nv->name = STRDUP($1);
