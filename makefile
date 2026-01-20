@@ -91,7 +91,7 @@ $(OBJ)/%.o: $(SRC)/%.cpp
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-ROOT="/home/brian/streamyv2"
+ROOT="/home/brian/src/streamy-cpp"
 $(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/pcxx.yy
 	$(YACC) $(SRC)/pcxx.yy --header -o $(BLD)/pcxx.cc
 

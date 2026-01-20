@@ -27,7 +27,6 @@
     nvalue* alloc_nvalue(char* name, char* value);
     void free_nvalue(nvalue* nv);
     void free_all_nvalues();
-    #define VEBOSE
 %}
 
 %union
@@ -38,7 +37,7 @@
 };
 
 %token END 0 _("end of input")
-%type files file tag blocks
+%type files file block blocks
 %type<nval> attribute built_in
 %type<nval> attributes
 %token<sval> NUMBER
@@ -51,8 +50,8 @@
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK COMMA EQUAL PERCENT NOT_EQUAL
 %token<sval> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
-%token<sval> CAPITALIZE CAT COUNT_CHARACTERS COUNT_SENTENCES COUNT_PARAGRAPHS COUNT_WORDS DATE_FORMAT DEFAULT ESCAPE
-%token<sval> INDENT LOWER UPPER STRIP NL2BR REGEX_REPLACE REPLACE SPACIFY STRING_FORMAT STRIP_TAGS TRUNCATE WORDWARP
+%token<sval> CAPITALIZE CAT COUNT_CHARACTERS COUNT_SENTENCES COUNT_PARAGRAPHS DATE_FORMAT ESCAPE
+%token<sval> INDENT LOWER UPPER STRIP REPLACE SPACIFY STRING_FORMAT STRIP_TAGS TRUNCATE WORDWARP
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
 %token END_OF_FILES
 %type<sval> symbol sub_proc array qualafied_id modifier
@@ -62,12 +61,10 @@
 
 complier:
     files                                                       {
-                                                                    #ifdef VEBOSE
                                                                     GREEN("PARSER complier: | files\n");
                                                                     GREEN("*********************** STOPPING **********************\n");
                                                                     GREEN("*                     Terminating.                    *\n");
                                                                     GREEN("************************* Done ************************\n");
-                                                                    #endif
                                                                     //exit(0);
                                                                 }
 
@@ -77,47 +74,44 @@ files:
 
 file:
     blocks END                                                  {
-                                                                    #ifdef VEBOSE
                                                                     GREEN("PARSER file: | blocks END_OF_FILE\n");
                                                                     GREEN("*******************************************************\n");
                                                                     GREEN("*                      End Of File                    *\n");
                                                                     GREEN("*******************************************************\n");
-                                                                    #endif
                                                                     //exit(0);
-
                                                                 }
         ;
 
 blocks:
-    tag                                                         {
-                                                                    RED("PARSER blocks: | tag\n");
+    block                                                       {
+                                                                    YELLOW("PARSER blocks: | block\n");
                                                                 }
-    | blocks tag                                                {
-                                                                    RED("PARSER blocks: | blocks tag\n");
+    | blocks block                                              {
+                                                                    YELLOW("PARSER blocks: | blocks block\n");
                                                                 }
                                                                 ;
 
-tag:
+block:
     LBRACE sub_proc RBRACE                                      {
-                                                                    RED("PARSER tag: | LBRACE sub_porc RBRACE\n");
+                                                                    YELLOW("PARSER block: | LBRACE sub_porc RBRACE\n");
                                                                 }
     | LBRACE array RBRACE                                       {
-                                                                    YELLOW("PARSER tag: | LBRACE array RBRACE\n");
+                                                                    YELLOW("PARSER block: | LBRACE array RBRACE\n");
                                                                 }
     | LBRACE symbol VBAR modifier RBRACE                        {
-                                                                    printf("PARSER tag: | LBRACE symbol VBAR modifier RBRACE\n");
+                                                                    printf("PARSER block: | LBRACE symbol VBAR modifier RBRACE\n");
                                                                 }
     | LBRACE symbol VBAR modifier COLON NUMERIC_LITERAL RBRACE  {
-                                                                    printf("PARSER tag: | LBRACE symbol VBAR modifier COLON NUMERIC_LITERAL RBRACE\n");
+                                                                    printf("PARSER block: | LBRACE symbol VBAR modifier COLON NUMERIC_LITERAL RBRACE\n");
                                                                 }
     | LBRACE symbol RBRACE                                      {
-                                                                    YELLOW("PARSER tag: | LBRACE symbol RBRACE\n");
+                                                                    YELLOW("PARSER block: | LBRACE symbol RBRACE\n");
                                                                 }
     | LBRACE qualafied_id RBRACE                                {
-                                                                    YELLOW("PARSER tag: | LBRACE qualafied_id RBRACE\n");
+                                                                    YELLOW("PARSER block: | LBRACE qualafied_id RBRACE\n");
                                                                 }
      | LBRACE built_in RBRACE                                   {
-                                                                    YELLOW("PARSER tag: | LBRACE built_in RBRACE\n");
+                                                                    YELLOW("PARSER block: | LBRACE built_in RBRACE\n");
 
                                                                     //free_all_nvalues();
                                                                 }
@@ -159,50 +153,37 @@ param:
 
 symbol:
     SYMBOL                                                      {
-                                                                    printf("%sPARSER symbol: | ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
+                                                                    printf("%sPARSER symbol: | ID=\"%s\"%s\n", FMT_FG_GREEN, $1, FMT_RESET);
                                                                     $$=$1;
                                                                 }
-    | CONST_SYMBOL                                              {
+    | CONST_SYMBOL                                             {
                                                                     printf("%sPARSER symbol: | CONST_ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
                                                                     $$=$1;
                                                                 }
                                                                 ;
 
 modifier:
-    CAPITALIZE                                                 {
-                                                                    #ifdef VERBOSE
-                                                                    printf("PARSER modifier: | CAPITALIZE\n");
-                                                                    #endif
-                                                               }
-    | CAT                                                      {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER modifier: | CAT\n");
-                                                                    #endif
-                                                               }
-    | COUNT_CHARACTERS                                         {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER modifier: | COUNT_CHARACTERS\n");
-                                                                    #endif
-                                                               }
-    | COUNT_SENTENCES                                          //{ #ifdef VERBOSE GREEN("PARSER modifier: | COUNT_SENTENCES\n");  #endif }
-    | COUNT_PARAGRAPHS                                         //{ #ifdef VERBOSE GREEN("PARSER modifier: | COUNT_PARAGRAPHS\n"); #endif }
-    | COUNT_WORDS                                              //{ #ifdef VERBOSE GREEN("PARSER modifier: | COUNT_WORS\n"); #endif }
-    | DATE_FORMAT                                              //{ #ifdef VERBOSE GREEN("PARSER modifier: | DATE_FORMAT\n");      #endif }
-    | DEFAULT                                                  //{ #ifdef VERBOSE GREEN("PARSER modifier: | DEFAULT\n");      #endif }
-    | ESCAPE                                                   //{ #ifdef VERBOSE GREEN("PARSER modifier: | ESCAPE\n");           #endif }
-    | INDENT                                                   //{ #ifdef VERBOSE GREEN("PARSER modifier: | INDENT\n");           #endif }
-    | LOWER                                                    //{ #ifdef VERBOSE GREEN("PARSER modifier: | LOWER\n");            #endif }
-    | STRIP                                                    //{ #ifdef VERBOSE GREEN("PARSER modifier: | STIRP\n");       #endif }
-    | NL2BR                                                    //{ #ifdef VERBOSE GREEN("PARSER modifier: | NL2BR\n");       #endif }
-    | REGEX_REPLACE                                            //{ #ifdef VERBOSE GREEN("PARSER modifier: | REGEX_REPLACE\n");       #endif }
-    | REPLACE                                                  //{ #ifdef VERBOSE GREEN("PARSER modifier: | REPLACE\n");       #endif }
-    | SPACIFY                                                  //{ #ifdef VERBOSE GREEN("PARSER modifier: | SPACIFY\n");       #endif }
-    | STRING_FORMAT                                            //{ #ifdef VERBOSE GREEN("PARSER modifier: | STRING_FROMAT\n");       #endif }
-    | STRIP_TAGS                                               //{ #ifdef VERBOSE GREEN("PARSER modifier: | STRP_TAGS\n");       #endif }
-    | TRUNCATE                                                 //{ #ifdef VERBOSE GREEN("PARSER modifier: | TRUNCATE\n");       #endif }
-    | UPPER                                                    //{ #ifdef VERBOSE GREEN("PARSER modifier: | UPPER\n");            #endif }
-    | WORDWARP                                                 //{ #ifdef VERBOSE GREEN("PARSER modifier: | WORDWRAP\n");       #endif }
+    CAPITALIZE                                                  {
+                                                                      printf("PARSER modifier: | CAPITALIZE\n");
+                                                                }
+    | CAT
+    | COUNT_CHARACTERS
+    | COUNT_SENTENCES
+    | COUNT_PARAGRAPHS
+    | DATE_FORMAT
+    | ESCAPE
+    | INDENT
+    | LOWER
+    | UPPER
+    | STRIP
+    | REPLACE
+    | SPACIFY
+    | STRING_FORMAT
+    | STRIP_TAGS
+    | TRUNCATE
+    | WORDWARP
     ;
+
 
 built_in:
     CONFIG_LOAD attributes                                        {
@@ -349,13 +330,12 @@ int main(int argc, char** argv)
         printf("************************* RUN *************************\n");
         printf("* Terminate listing with ; to see parsed AST          *\n");
         printf("* Terminate parser with Ctrl-D ...                    *\n");
+        printf("%s%s* parsing file=\"%s\"                       *%s\n", FMT_REVERSE, FMT_ITALIC, argv[i], FMT_RESET);
         printf("************************* Done ************************\n");
-
-        printf("%s%s\nparsing file=\"%s\"*%s\n\n", FMT_ITALIC, FMT_FG_RED, argv[i], FMT_RESET);
 
         yyparse();
 
-        printf("%s%s\nclosing file=\"%s\"%s\n\n", FMT_ITALIC, FMT_FG_RED, argv[i], FMT_RESET);
+        printf("%s%sclosing file=\"%s\"%s\n", FMT_ITALIC, FMT_FG_CYAN, argv[i], FMT_RESET);
         fclose(yyin);
         free(yyin);
         yyin = 0;
