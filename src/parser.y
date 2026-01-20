@@ -214,66 +214,66 @@ modifier:
                                                                     GREEN("PARSER modifier: | ESCAPE\n");
                                                                     #endif
                                                                }
-    | INDENT                                                    {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER modifier: | INDENT\n");
-                                                                    #endif
-                                                                }
+    | INDENT                                                {
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | INDENT\n");
+                                                                #endif
+                                                            }
     | STRIP                                                     {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER modifier: | STRIPS\n");
-                                                                    #endif
-                                                               }
-    | NL2BR                                                     {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER modifier: | NL2BR\n");
-                                                                    #endif
-                                                                }
-    | REPLACE                                                {
-                                                                     #ifdef VERBOSE
-                                                                     GREEN("PARSER modifier: | REPLACE\n");
-                                                                     #endif
-                                                                }
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | STRIPS\n");
+                                                                #endif
+                                                            }
+    | NL2BR                                                    {
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | NL2BR\n");
+                                                                #endif
+                                                            }
+    | REPLACE                                                  {
+                                                                 #ifdef VERBOSE
+                                                                 GREEN("PARSER modifier: | REPLACE\n");
+                                                                 #endif
+                                                            }
     | REGEX_REPLACE                                                {
-                                                                     #ifdef VERBOSE
-                                                                     GREEN("PARSER modifier: | REGEX_REPLACE\n");
-                                                                     #endif
-                                                                }
-    | SPACIFY                                                   {
-                                                                     #ifdef VERBOSE
-                                                                     GREEN("PARSER modifier: | SPACIFY\n");
-                                                                     #endif
-                                                                }
-    | STRING_FORMAT                                             {
-                                                                     #ifdef VERBOSE
-                                                                     GREEN("PARSER modifier: | STRING_FORMAT\n");
-                                                                     #endif
-                                                                }
-    | STRIP_TAGS                                                {
-                                                                     #ifdef VERBOSE
-                                                                     GREEN("PARSER modifier: | STIP_TAGS\n");
-                                                                     #endif
-                                                                }
-    | TRUNCATE                                                  {
-                                                                     #ifdef VERBOSE
-                                                                     GREEN("PARSER modifier: | TRUNCATE\n");
-                                                                     #endif
-                                                                }
-    | UPPER                                                     {
-                                                                     #ifdef VERBOSE
-                                                                     GREEN("PARSER modifier: | UPPER\n");
-                                                                     #endif
-                                                                }
-    | LOWER                                                     {
-                                                                     #ifdef VERBOSE
-                                                                     GREEN("PARSER modifier: | LOWER\n");
-                                                                     #endif
-                                                                }
-    | WORDWARP                                                  {
-                                                                     #ifdef VERBOSE
-                                                                     GREEN("PARSER modifier: | WORDWRAP\n");
-                                                                     #endif
-                                                                }
+                                                                 #ifdef VERBOSE
+                                                                 GREEN("PARSER modifier: | REGEX_REPLACE\n");
+                                                                 #endif
+                                                            }
+    | SPACIFY                                                  {
+                                                                 #ifdef VERBOSE
+                                                                 GREEN("PARSER modifier: | SPACIFY\n");
+                                                                 #endif
+                                                            }
+    | STRING_FORMAT                                            {
+                                                                 #ifdef VERBOSE
+                                                                 GREEN("PARSER modifier: | STRING_FORMAT\n");
+                                                                 #endif
+                                                            }
+    | STRIP_TAGS                                               {
+                                                                 #ifdef VERBOSE
+                                                                 GREEN("PARSER modifier: | STIP_TAGS\n");
+                                                                 #endif
+                                                            }
+    | TRUNCATE                                                 {
+                                                                 #ifdef VERBOSE
+                                                                 GREEN("PARSER modifier: | TRUNCATE\n");
+                                                                 #endif
+                                                            }
+    | UPPER                                                    {
+                                                                 #ifdef VERBOSE
+                                                                 GREEN("PARSER modifier: | UPPER\n");
+                                                                 #endif
+                                                            }
+    | LOWER                                                    {
+                                                                 #ifdef VERBOSE
+                                                                 GREEN("PARSER modifier: | LOWER\n");
+                                                                 #endif
+                                                            }
+    | WORDWARP                                                 {
+                                                                 #ifdef VERBOSE
+                                                                 GREEN("PARSER modifier: | WORDWRAP\n");
+                                                                 #endif
+                                                            }
     ;
 
 built_in:
