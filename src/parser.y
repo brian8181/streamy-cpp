@@ -8,10 +8,7 @@
 
     int yylex(void);
     int yyerror(char * s);
-
-
     char* STRDUP(char* s);
-
     /* string literal buffer */
     char buf[100];
     char *s;
@@ -59,7 +56,6 @@
 %start complier
 
 %%
-
 complier:
     files                                                       {
                                                                     #ifdef VERBOSE
@@ -261,22 +257,22 @@ modifier:
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER modifier: | COUNT_PARAGRAPHS\n");
                                                                     #endif
-                                                               }
+                                                                }
     | COUNT_WORDS                                              {
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER modifier: | COUNT_WORDS\n");
                                                                     #endif
-                                                               }
+                                                                }
     | DATE_FORMAT                                              {
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER modifier: | DATE_FORMAT\n");
                                                                     #endif
-                                                               }
+                                                                }
     | DEFAULT                                                  {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER modifier: | DEFAULT\n");
-                                                                    #endif
-                                                               }
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | DEFAULT\n");
+                                                                #endif
+                                                            }
     | ESCAPE                                                {
                                                                 #ifdef VERBOSE
                                                                 GREEN("PARSER modifier: | ESCAPE\n");
@@ -298,24 +294,24 @@ modifier:
                                                                 #endif
                                                             }
     | REPLACE                                               {
-                                                                 #ifdef VERBOSE
-                                                                 GREEN("PARSER modifier: | REPLACE\n");
-                                                                 #endif
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | REPLACE\n");
+                                                                #endif
                                                             }
     | REGEX_REPLACE                                         {
-                                                                 #ifdef VERBOSE
-                                                                 GREEN("PARSER modifier: | REGEX_REPLACE\n");
-                                                                 #endif
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | REGEX_REPLACE\n");
+                                                                #endif
                                                             }
     | SPACIFY                                               {
-                                                                 #ifdef VERBOSE
-                                                                 GREEN("PARSER modifier: | SPACIFY\n");
-                                                                 #endif
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | SPACIFY\n");
+                                                                #endif
                                                             }
     | STRING_FORMAT                                         {
-                                                                 #ifdef VERBOSE
-                                                                 GREEN("PARSER modifier: | STRING_FORMAT\n");
-                                                                 #endif
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | STRING_FORMAT\n");
+                                                                #endif
                                                             }
     | STRIP_TAGS                                            {
                                                                 #ifdef VERBOSE
@@ -435,6 +431,7 @@ attribute:
                                                                     $$ = yyval.nval;
                                                                }
                                                                ;
+
 
 %%
 
