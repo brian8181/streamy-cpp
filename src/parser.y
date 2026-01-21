@@ -117,9 +117,9 @@ tag:
                                                                     GREEN("PARSER tag: | LBRACE symbol VBAR modifier RBRACE\n");
                                                                     #endif
                                                                 }
-    | LBRACE symbol VBAR modifier COLON NUMERIC_LITERAL RBRACE  {
+    | LBRACE symbol VBAR modifier colon_sep_param RBRACE  {
                                                                     #ifdef VERBOSE
-                                                                    GREEN("PARSER tag: | LBRACE symbol VBAR modifier COLON NUMERIC_LITERAL RBRACE\n");
+                                                                    GREEN("PARSER tag: | LBRACE symbol VBAR modifier colon_sep_param RBRACE\n");
                                                                     #endif
                                                                 }
     | LBRACE symbol RBRACE                                      {
@@ -139,6 +139,21 @@ tag:
                                                                     //free_all_nvalues();
                                                                 }
                                                                 ;
+
+colon_sep_params:
+    | colon_sep_param                                           {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("colon_sep_params: | colon_sep_param\n");
+                                                                    #endif
+                                                                }
+    | colon_sep_params colon_sep_params
+
+colon_sep_param:
+    COLON NUMERIC_LITERAL                                       {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("colon_sep_param: | COLON NUMERIC_LITERAL\n");
+                                                                    #endif
+                                                                }
 
 qualafied_id:
     symbol DOT ID                                               {
