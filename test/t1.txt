@@ -1,1 +1,4 @@
-{$abc|captialize}
+{$aaa|captialize}
+{$bbb|cat:3}
+{$ccc|upper:3}
+{$ddd|cat}

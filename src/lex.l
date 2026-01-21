@@ -146,7 +146,7 @@ COUNT_SENTENCES      count_sentences
 {DOUBLE_QUOTE}                          { printf("LEX:BEGIN_DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf;                           }
 {NUMERIC_LITERAL}                       {
                                             printf("LEX:NUMERIC_LITERAL=%s\n", yytext);
-                                            yylval.sval = strdup(yytext);
+                                            yylval.sval = atoi(yytext);
                                             return NUMERIC_LITERAL;
                                         }
 {ASSIGN}                                { printf("LEX:ASSIGN\n");                         return ASSIGN;                                }
@@ -171,11 +171,11 @@ COUNT_SENTENCES      count_sentences
 {LESS_THAN_EQUAL}                       { printf("LEX:LESS_THAN_EQUAL\n");                return LESS_THAN_EQUAL;                       }
 {GREATER_THAN}                          { printf("LEX:GREATER_THAN\n");                   return GREATER_THAN;                          }
 {GREATER_THAN_EQUAL}                    { printf("LEX:GREATER_THAN_EQUAL\n");             return GREATER_THAN_EQUAL;                    }
-{SLASH}                                 { printf("LEX:SLASH\n");                          } // return SLASH;                            }
-{BACK_SLASH}                            { printf("LEX:BACK_SLASH\n");                     } // return BACK_SLASH;                       }
+{SLASH}                                 { printf("LEX:SLASH\n");                          return SLASH;                                 }
+{BACK_SLASH}                            { printf("LEX:BACK_SLASH\n");                     return BACK_SLASH;                            }
 {VBAR}                                  { printf("LEX:VBAR\n");                           return VBAR;                                  }
 {AMPERSAND}                             { printf("LEX:AMPERSAND\n");                      return AMPERSAND;                             }
-{AT}                                    { printf("LEX:AT\n");                             } // return AT;                               }
+{AT}                                    { printf("LEX:AT\n");                             return AT;                                    }
 {PLUS}                                  { printf("LEX:PLUS\n");                           return PLUS;                                  }
 {MINUS}                                 { printf("LEX:MINUS\n");                          return MINUS;                                 }
 {ASTERIK}                               { printf("LEX:ASTERIK\n");                        return ASTERIK;                               }
@@ -202,7 +202,7 @@ COUNT_SENTENCES      count_sentences
 {END_FOREACHELSE}                       { printf("LEX:FOREACHELSE\n"); BEGIN(ESCAPED);     } // return FOREACHELSE;                     }
 {END_FOREACH}                           { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;                         }
 {SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext); return SYMBOL;             }
-{CONST_SYMBOL}                          { printf("LEX:[CONST_SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext); return CONST_SYMBOL; }
+{CONST_SYMBOL}                          { printf("LEX:[CONST_SYMBOL:%s]\n", yytext); yylval.sval = atoi(yytext); return CONST_SYMBOL; }
 [ \t]*                                  { /********************************** eat whitespace *********************************/         }
                                         }
 <IF_CONDITION>{

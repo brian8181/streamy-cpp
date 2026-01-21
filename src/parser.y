@@ -90,54 +90,91 @@ file:
 
 blocks:
     tag                                                         {
+                                                                    #ifdef VERBOSE
                                                                     RED("PARSER blocks: | tag\n");
+                                                                    #endif
                                                                 }
     | blocks tag                                                {
+                                                                    #ifdef VERBOSE
                                                                     RED("PARSER blocks: | blocks tag\n");
+                                                                    #endif
                                                                 }
                                                                 ;
 
 tag:
     LBRACE sub_proc RBRACE                                      {
+                                                                    #ifdef VERBOSE
                                                                     RED("PARSER tag: | LBRACE sub_porc RBRACE\n");
+                                                                    #endif
                                                                 }
     | LBRACE array RBRACE                                       {
-                                                                    YELLOW("PARSER tag: | LBRACE array RBRACE\n");
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER tag: | LBRACE array RBRACE\n");
+                                                                    #endif
                                                                 }
     | LBRACE symbol VBAR modifier RBRACE                        {
-                                                                    printf("PARSER tag: | LBRACE symbol VBAR modifier RBRACE\n");
+                                                                     #ifdef VERBOSE
+                                                                    GREEN("PARSER tag: | LBRACE symbol VBAR modifier RBRACE\n");
+                                                                    #endif
                                                                 }
     | LBRACE symbol VBAR modifier COLON NUMERIC_LITERAL RBRACE  {
-                                                                    printf("PARSER tag: | LBRACE symbol VBAR modifier COLON NUMERIC_LITERAL RBRACE\n");
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER tag: | LBRACE symbol VBAR modifier COLON NUMERIC_LITERAL RBRACE\n");
+                                                                    #endif
                                                                 }
     | LBRACE symbol RBRACE                                      {
-                                                                    YELLOW("PARSER tag: | LBRACE symbol RBRACE\n");
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER tag: | LBRACE symbol RBRACE\n");
+                                                                    #endif
                                                                 }
     | LBRACE qualafied_id RBRACE                                {
-                                                                    YELLOW("PARSER tag: | LBRACE qualafied_id RBRACE\n");
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER tag: | LBRACE qualafied_id RBRACE\n");
+                                                                    #endif
                                                                 }
      | LBRACE built_in RBRACE                                   {
-                                                                    YELLOW("PARSER tag: | LBRACE built_in RBRACE\n");
-
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER tag: | LBRACE built_in RBRACE\n");
+                                                                    #endif
                                                                     //free_all_nvalues();
                                                                 }
                                                                 ;
 
 qualafied_id:
-    symbol DOT ID                                               { YELLOW("PARSER qualafied_id: | symbol DOT ID\n"); }
+    symbol DOT ID                                               {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER qualafied_id: | symbol DOT ID\n");
+                                                                    #endif
+                                                                }
     | symbol DOT symbol                                         { RED("PARSER qualafied_id: | symbol DOT symbol\n"); }
-    | symbol INDIRECT_MEMBER ID                                 { YELLOW("PARSER qualafied_id: | symbol INDIRECT_MEMBER ID\n"); }
-    | qualafied_id DOT ID                                       { YELLOW("PARSER qualafied_id: | qualafied_id DOT ID\n"); }
-    | qualafied_id INDIRECT_MEMBER ID                           { YELLOW("PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID\n"); }
+    | symbol INDIRECT_MEMBER ID                                 {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER qualafied_id: | symbol INDIRECT_MEMBER ID\n");
+                                                                    #endif
+                                                                }
+    | qualafied_id DOT ID                                       {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER qualafied_id: | qualafied_id DOT ID\n");
+                                                                    #endif
+                                                                }
+    | qualafied_id INDIRECT_MEMBER ID                           {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID\n");
+                                                                    #endif
+                                                                }
                                                                 ;
 
 sub_proc:
     symbol LPAREN RPAREN                                        {
+                                                                    #ifdef VERBOSE
                                                                     GREEN("PARSER sub_proc: | symbol LPAREN RPAREN\n");
+                                                                    #endif
                                                                     $$=$1;
                                                                 }
-    | symbol LPAREN params RPAREN                                 {
+    | symbol LPAREN params RPAREN                               {
+                                                                    #ifdef VERBOSE
                                                                     GREEN("PARSER sub_proc: | symbol LPAREN params RPAREN\n");
+                                                                    #endif
                                                                     $$=$1;
                                                                 }
                                                                 ;
@@ -150,20 +187,36 @@ array:
                                                                 ;
 
 params:
-    param                                                       { GREEN("PARSER params: | param\n"); }
-    | params symbol                                             { GREEN("PARSER qualafied_id: | params COMMA symbol\n"); }
+    param                                                       {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER params: | param\n");
+                                                                    #endif
+                                                                }
+    | params symbol                                             {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER qualafied_id: | params COMMA symbol\n");
+                                                                    #endif
+                                                                }
 
 param:
-    symbol COMMA                                                { GREEN("PARSER param: | symbol COMMA\n"); }
+    symbol COMMA                                                {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("PARSER param: | symbol COMMA\n");
+                                                                    #endif
+                                                                }
 
 
 symbol:
     SYMBOL                                                      {
+                                                                    #ifdef VERBOSE
                                                                     printf("%sPARSER symbol: | ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
+                                                                    #endif
                                                                     $$=$1;
                                                                 }
     | CONST_SYMBOL                                              {
+                                                                    #ifdef VERBOSE
                                                                     printf("%sPARSER symbol: | CONST_ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
+                                                                    #endif
                                                                     $$=$1;
                                                                 }
                                                                 ;
@@ -209,75 +262,75 @@ modifier:
                                                                     GREEN("PARSER modifier: | DEFAULT\n");
                                                                     #endif
                                                                }
-    | ESCAPE                                                   {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER modifier: | ESCAPE\n");
-                                                                    #endif
-                                                               }
+    | ESCAPE                                                {
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | ESCAPE\n");
+                                                                #endif
+                                                            }
     | INDENT                                                {
                                                                 #ifdef VERBOSE
                                                                 GREEN("PARSER modifier: | INDENT\n");
                                                                 #endif
                                                             }
-    | STRIP                                                     {
+    | STRIP                                                 {
                                                                 #ifdef VERBOSE
                                                                 GREEN("PARSER modifier: | STRIPS\n");
                                                                 #endif
                                                             }
-    | NL2BR                                                    {
+    | NL2BR                                                 {
                                                                 #ifdef VERBOSE
                                                                 GREEN("PARSER modifier: | NL2BR\n");
                                                                 #endif
                                                             }
-    | REPLACE                                                  {
+    | REPLACE                                               {
                                                                  #ifdef VERBOSE
                                                                  GREEN("PARSER modifier: | REPLACE\n");
                                                                  #endif
                                                             }
-    | REGEX_REPLACE                                                {
+    | REGEX_REPLACE                                         {
                                                                  #ifdef VERBOSE
                                                                  GREEN("PARSER modifier: | REGEX_REPLACE\n");
                                                                  #endif
                                                             }
-    | SPACIFY                                                  {
+    | SPACIFY                                               {
                                                                  #ifdef VERBOSE
                                                                  GREEN("PARSER modifier: | SPACIFY\n");
                                                                  #endif
                                                             }
-    | STRING_FORMAT                                            {
+    | STRING_FORMAT                                         {
                                                                  #ifdef VERBOSE
                                                                  GREEN("PARSER modifier: | STRING_FORMAT\n");
                                                                  #endif
                                                             }
-    | STRIP_TAGS                                               {
-                                                                 #ifdef VERBOSE
-                                                                 GREEN("PARSER modifier: | STIP_TAGS\n");
-                                                                 #endif
+    | STRIP_TAGS                                            {
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | STIP_TAGS\n");
+                                                                #endif
                                                             }
-    | TRUNCATE                                                 {
-                                                                 #ifdef VERBOSE
-                                                                 GREEN("PARSER modifier: | TRUNCATE\n");
-                                                                 #endif
+    | TRUNCATE                                              {
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | TRUNCATE\n");
+                                                                #endif
                                                             }
-    | UPPER                                                    {
-                                                                 #ifdef VERBOSE
-                                                                 GREEN("PARSER modifier: | UPPER\n");
-                                                                 #endif
+    | UPPER                                                 {
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | UPPER\n");
+                                                                #endif
                                                             }
-    | LOWER                                                    {
-                                                                 #ifdef VERBOSE
-                                                                 GREEN("PARSER modifier: | LOWER\n");
-                                                                 #endif
+    | LOWER                                                 {
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | LOWER\n");
+                                                                #endif
                                                             }
-    | WORDWARP                                                 {
-                                                                 #ifdef VERBOSE
-                                                                 GREEN("PARSER modifier: | WORDWRAP\n");
-                                                                 #endif
+    | WORDWARP                                              {
+                                                                #ifdef VERBOSE
+                                                                GREEN("PARSER modifier: | WORDWRAP\n");
+                                                                #endif
                                                             }
     ;
 
 built_in:
-    CONFIG_LOAD attributes                                        {
+    CONFIG_LOAD attributes                                      {
                                                                     printf("%sPARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
                                                                     nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
                                                                     nv->name = STRDUP($1);
