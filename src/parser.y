@@ -109,13 +109,13 @@ tag:
                                                                     #endif
                                                                 }
     | LBRACE symbol VBAR modifier RBRACE                        {
-                                                                     #ifdef VERBOSE
-                                                                    GREEN("PARSER tag: | LBRACE symbol VBAR modifier RBRACE\n");
+                                                                    #ifdef VERBOSE
+                                                                    printf("%sPARSER tag: | LBRACE symbol=%s VBAR modifier=%s RBRACE%s\n", FMT_FG_BLUE,  $2, $4, FMT_RESET);
                                                                     #endif
                                                                 }
-    | LBRACE symbol VBAR modifier colon_sep_params RBRACE  {
+    | LBRACE symbol VBAR modifier colon_sep_params RBRACE       {
                                                                     #ifdef VERBOSE
-                                                                    GREEN("PARSER tag: | LBRACE symbol VBAR modifier colon_sep_param RBRACE\n");
+                                                                    printf("%sPARSER tag: | LBRACE symbol=%s VBAR modifier=%s colon_sep_param RBRACE%s\n", FMT_FG_BLUE, $2, $4, FMT_RESET);
                                                                     #endif
                                                                 }
     | LBRACE symbol RBRACE                                      {
@@ -148,7 +148,7 @@ colon_sep_param:
     COLON NUMERIC_LITERAL                                       {
                                                                     #ifdef VERBOSE
                                                                     GREEN("colon_sep_param: | COLON NUMERIC_LITERAL\n");
-                                                           #endif
+                                                                    #endif
                                                                 }
 
 qualafied_id:
