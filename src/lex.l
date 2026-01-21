@@ -78,11 +78,26 @@ ASSIGN              assign
 VAR_ATTRIB          var
 VALUE_ATTRIB        value
 CAPITALIZE          captialize
-UPPER               upper
-LOWER               LOWER
 CAT                 cat
 COUNT_CHARACTERS    count_chacters
-COUNT_SENTENCES      count_sentences
+COUNT_PARAGRAPHS    count_paragraphs
+COUNT_SENTENCES     count_sentences
+COUNT_WORDS         count_words
+DATE_FORMAT         date_format
+DEFAULT             default
+ESCAPE              escape
+INDENT              indent
+LOWER               lower
+UPPER               upper
+STRIP               strip
+NL2BR               nl2br
+REGX_REPLACE        regx_replace
+REPLACE             replace
+SPACIFY             spacify
+STRING_FORMAT       string_format
+STRIP_TAGS          strip_tags
+TRUNCATE            truncate
+WORDWRAP            wordwrap
 
 
 %x DOUBLE_QUOTED
@@ -159,11 +174,23 @@ COUNT_SENTENCES      count_sentences
 {VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                          }
 {CAPITALIZE}                            { printf("LEX:CAPITALIZE\n");                     return CAPITALIZE;                            }
 {CAT}                                   { printf("LEX:CAT\n");                            return CAT;                                   }
-{UPPER}                                 { printf("LEX:UPPER\n");                          return UPPER;                                 }
-{LOWER}                                 { printf("LEX:LOWER\n");                          return LOWER;                                 }
-{UPPER}                                 { printf("LEX:UPPER\n");                          return UPPER;                                 }
 {COUNT_CHARACTERS}                      { printf("LEX:COUNT_CHARACTERS\n");               return COUNT_CHARACTERS;                      }
 {COUNT_SENTENCES}                       { printf("LEX:COUNT_SENTENCES\n");                return COUNT_SENTENCES;                       }
+{COUNT_PARAGRAPHS}                      { printf("LEX:COUNT_PARAGRAPHS\n");               return COUNT_PARAGRAPHS;                      }
+{COUNT_WORDS}                           { printf("LEX:COUNT_WORDS\n");                    return COUNT_WORDS;                           }
+{DATE_FORMAT}                           { printf("LEX:DATE_FORMAT\n");                    return DATE_FORMAT;                           }
+{DEFAULT}                               { printf("LEX:DEFAULT\n");                        return DEFAULT;                               }
+{ESCAPE}                                { printf("LEX:ESCAPE\n");                         return ESCAPE;                                }
+{INDENT}                                { printf("LEX:INDENT\n");                         return INDENT;                                }
+{STRIP}                                 { printf("LEX:STRIP\n");                          return STRIP;                                 }
+{NL2BR}                                 { printf("LEX:NL2BR\n");                          return NL2BR;                                 }
+{REPLACE}                               { printf("LEX:REPLACE\n");                        return REPLACE;                               }
+{SPACIFY}                               { printf("LEX:SPACIFY\n");                        return SPACIFY;                               }
+{STRING_FORMAT}                         { printf("LEX:STRING_FORMAT\n");                  return STRING_FORMAT;                         }
+{STRIP_TAGS}                            { printf("LEX:STRIP_TAGS\n");                     return STRIP_TAGS;                            }
+{TRUNCATE}                              { printf("LEX:TRUNCATE\n");                       return TRUNCATE;                              }
+{UPPER}                                 { printf("LEX:UPPER\n");                          return UPPER;                                 }
+{LOWER}                                 { printf("LEX:LOWER\n");                          return LOWER;                                 }
 {NOT}                                   { printf("LEX:NOT\n");                            return NOT;                                   }
 {AND}                                   { printf("LEX:AND\n");                            return AND;                                   }
 {OR}                                    { printf("LEX:OR\n");                             return OR;                                    }

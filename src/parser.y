@@ -141,12 +141,12 @@ tag:
                                                                 ;
 
 colon_sep_params:
-    | colon_sep_param                                           {
+    colon_sep_param                                             {
                                                                     #ifdef VERBOSE
                                                                     GREEN("colon_sep_params: | colon_sep_param\n");
                                                                     #endif
                                                                 }
-    | colon_sep_params colon_sep_params
+    | colon_sep_params colon_sep_param
 
 colon_sep_param:
     COLON NUMERIC_LITERAL                                       {

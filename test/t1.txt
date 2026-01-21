@@ -1,4 +1,6 @@
 {$aaa|captialize}
 {$bbb|cat:3}
-{$ccc|upper:3}
+{$ccc|cat:42}
 {$ddd|cat}
+{$ddd|truncate}
+{$ddd|upper}
