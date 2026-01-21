@@ -113,7 +113,7 @@ tag:
                                                                     GREEN("PARSER tag: | LBRACE symbol VBAR modifier RBRACE\n");
                                                                     #endif
                                                                 }
-    | LBRACE symbol VBAR modifier colon_sep_param RBRACE  {
+    | LBRACE symbol VBAR modifier colon_sep_params RBRACE  {
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER tag: | LBRACE symbol VBAR modifier colon_sep_param RBRACE\n");
                                                                     #endif
@@ -148,7 +148,7 @@ colon_sep_param:
     COLON NUMERIC_LITERAL                                       {
                                                                     #ifdef VERBOSE
                                                                     GREEN("colon_sep_param: | COLON NUMERIC_LITERAL\n");
-                                                                    #endif
+                                                           #endif
                                                                 }
 
 qualafied_id:

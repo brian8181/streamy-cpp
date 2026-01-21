@@ -1,6 +1,6 @@
 {$aaa|captialize}
 {$bbb|cat:3}
-{$ccc|cat:42}
+{$ccc|cat:42:2}
 {$ddd|cat}
 {$ddd|truncate}
-{$ddd|upper}
+{$ddd|upper:22:33}
