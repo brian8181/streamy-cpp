@@ -29,14 +29,12 @@ COMMENT             \{[ \t]*\*[^*}]*\*[ \t]*\}
 FILE_NAME           [A-Za-z0-9_.-~+#@]
 IF                  if
 END_IF              "\{/if\}"
+ELSE                "else"
+ELSEIF              "elseif"
 FOREACH             foreach
 END_FOREACH         "/foreach"
 FOREACHELSE         foreachelse
 END_FOREACHELSE     "/foreachelse"
-ELSE                "else"
-END_ELSE            "/else"
-ELSEIF              "elseif"
-END_ELSEIF          "/elseif"
 VBAR                "|"
 COLON               ":"
 LBRACKET            "["
@@ -218,16 +216,14 @@ WORDWRAP            wordwrap
 {LPAREN}                                { printf("LEX:LPAREN\n");                         return LPAREN;                                }
 {RPAREN}                                { printf("LEX:RPAREN\n");                         return RPAREN;                                }
 {SEMI_COLON}                            { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;                            }
-{END_IF}                                { printf("LEX:END_IF\n"); BEGIN(ESCAPED);          } // return IF;                              }
-{IF}                                    { printf("LEX:IF_BLOCK\n"); BEGIN(IF_BLOCK);       } // return IF;                              }
-{ELSE}                                  { printf("LEX:ELSE_BLOCK\n"); BEGIN(IF_BLOCK);     } // return ELSE;                            }
-{ELSEIF}                                { printf("LEX:ELSEIF\n"); BEGIN(IF_BLOCK);         } // return ELSEIF;                          }
-{FOREACHELSE}                           { printf("LEX:FOREACHELSE\n"); BEGIN(IF_BLOCK);    } // return FOREACHELSE;                     }
-{FOREACH}                               { printf("LEX:FOREACH\n"); BEGIN (IF_BLOCK);       } // return FOREACH;                         }
-{END_ELSE}                              { printf("LEX:ELSE_BLOCK\n"); BEGIN(ESCAPED);      } // return ELSE;                            }
-{END_ELSEIF}                            { printf("LEX:END_ELSEIF\n"); BEGIN(ESCAPED);      } // return ELSEIF;                          }
-{END_FOREACHELSE}                       { printf("LEX:FOREACHELSE\n"); BEGIN(ESCAPED);     } // return FOREACHELSE;                     }
-{END_FOREACH}                           { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;                         }
+{IF}                                    { printf("LEX:IF\n"); BEGIN(ESCAPED);         return IF;                              }
+{END_IF}                                { printf("LEX:END_IF\n"); BEGIN(ESCAPED);         return END_IF;                          }
+{ELSE}                                  { printf("LEX:ELSE_BLOCK\n"); BEGIN(IF_BLOCK);    return ELSE;                            }
+{ELSEIF}                                { printf("LEX:ELSEIF\n"); BEGIN(IF_BLOCK);        return ELSEIF;                          }
+{FOREACHELSE}                           { printf("LEX:FOREACHELSE\n"); BEGIN(IF_BLOCK);   return FOREACHELSE;                     }
+{END_FOREACHELSE}                       { printf("LEX:END_FOREACHELSE\n"); BEGIN(IF_BLOCK);   return END_FOREACHELSE;                     }
+{FOREACH}                               { printf("LEX:FOREACH\n"); BEGIN (IF_BLOCK);      return FOREACH;                         }
+{END_FOREACH}                           { printf("LEX:END_FOREACH\n"); BEGIN(ESCAPED);        return END_FOREACH;                         }
 {SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext); return SYMBOL;             }
 {CONST_SYMBOL}                          { printf("LEX:[CONST_SYMBOL:%s]\n", yytext); yylval.sval = atoi(yytext); return CONST_SYMBOL; }
 [ \t]*                                  { /********************************** eat whitespace *********************************/         }
