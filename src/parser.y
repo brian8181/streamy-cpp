@@ -27,7 +27,7 @@
     nvalue* alloc_nvalue(char* name, char* value);
     void free_nvalue(nvalue* nv);
     void free_all_nvalues();
-    #define VEBOSE
+    #define VERBOSE
 %}
 
 %union
@@ -62,11 +62,11 @@
 
 complier:
     files                                                       {
-                                                                    #ifdef VEBOSE
-                                                                    GREEN("PARSER complier: | files\n");
-                                                                    GREEN("*********************** STOPPING **********************\n");
-                                                                    GREEN("*                     Terminating.                    *\n");
-                                                                    GREEN("************************* Done ************************\n");
+                                                                    #ifdef VERBOSE
+                                                                    WHITE("PARSER complier: | files\n");
+                                                                    WHITE("*********************** STOPPING **********************\n");
+                                                                    WHITE("*                     Terminating.                    *\n");
+                                                                    WHITE("************************* Done ************************\n");
                                                                     #endif
                                                                     //exit(0);
                                                                 }
@@ -77,11 +77,11 @@ files:
 
 file:
     blocks END                                                  {
-                                                                    #ifdef VEBOSE
-                                                                    GREEN("PARSER file: | blocks END_OF_FILE\n");
-                                                                    GREEN("*******************************************************\n");
-                                                                    GREEN("*                      End Of File                    *\n");
-                                                                    GREEN("*******************************************************\n");
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER file: | blocks END_OF_FILE\n");
+                                                                    RED("*******************************************************\n");
+                                                                    RED("*                      End Of File                    *\n");
+                                                                    RED("*******************************************************\n");
                                                                     #endif
                                                                     //exit(0);
 
@@ -484,11 +484,11 @@ int main(int argc, char** argv)
         printf("* Terminate parser with Ctrl-D ...                    *\n");
         printf("************************* Done ************************\n");
 
-        printf("%s%s\nparsing file=\"%s\"*%s\n\n", FMT_ITALIC, FMT_FG_RED, argv[i], FMT_RESET);
+        printf("%s%s\nparsing file=\"%s\"*%s\n\n", FMT_ITALIC, FMT_FG_BLUE, argv[i], FMT_RESET);
 
         yyparse();
 
-        printf("%s%s\nclosing file=\"%s\"%s\n\n", FMT_ITALIC, FMT_FG_RED, argv[i], FMT_RESET);
+        printf("%s%s\nclosing file=\"%s\"%s\n\n", FMT_ITALIC, FMT_FG_BLUE, argv[i], FMT_RESET);
         fclose(yyin);
         free(yyin);
         yyin = 0;
