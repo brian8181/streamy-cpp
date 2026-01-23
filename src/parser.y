@@ -572,7 +572,8 @@ void free_all_nvalues()
 
 int yyerror(char * s)
 {
-    fprintf(stderr, "line %d: %s\n", yylineno, s);
+    //fprintf(stderr, "line %d: %s\n", yylineno, s);
+    fprintf(stderr, "line %d: %s\n", 0, s);
     return 0;
 };
 
