@@ -1,0 +1,1243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:bison="https://www.gnu.org/software/bison/">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <title>parser2.yy - GNU Bison XML Automaton Report</title>
+    <style type="text/css">
+      body {
+        font-family: "Nimbus Sans L", Arial, sans-serif;
+        font-size: 9pt;
+      }
+      a:link {
+        color: #1f00ff;
+        text-decoration: none;
+      }
+      a:visited {
+        color: #1f00ff;
+        text-decoration: none;
+      }
+      a:hover {
+        color: red;
+      }
+      #menu a {
+        text-decoration: underline;
+      }
+      .i {
+        font-style: italic;
+      }
+      .pre {
+        font-family: monospace;
+        white-space: pre;
+      }
+      ol.decimal {
+        list-style-type: decimal;
+      }
+      ol.lower-alpha {
+        list-style-type: lower-alpha;
+      }
+      .dot {
+        color: #cc0000;
+      }
+      #footer {
+        margin-top: 3.5em;
+        font-size: 7pt;
+      }
+      </style>
+  </head>
+  <body><h1>GNU Bison XML Automaton Report</h1><p>
+    input grammar: <span class="i">parser2.yy</span></p>
+
+<h3>Table of Contents</h3><ul id="menu"><li><a href="#reductions">Reductions</a><ul class="lower-alpha"><li><a href="#nonterminals_useless_in_grammar">Nonterminals useless in grammar</a></li><li><a href="#terminals_unused_in_grammar">Terminals unused in grammar</a></li><li><a href="#rules_useless_in_grammar">Rules useless in grammar</a></li></ul></li><li><a href="#conflicts">Conflicts</a></li><li><a href="#grammar">Grammar</a><ul class="lower-alpha"><li><a href="#grammar">Itemset</a></li><li><a href="#terminals">Terminal symbols</a></li><li><a href="#nonterminals">Nonterminal symbols</a></li></ul></li><li><a href="#automaton">Automaton</a></li></ul><h2><a name="reductions" id="reductions"></a> Reductions</h2><h3><a name="nonterminals_useless_in_grammar" id="nonterminals_useless_in_grammar"></a> Nonterminals useless in grammar</h3>
+
+<p class="pre">   item
+
+
+</p><h3><a name="terminals_unused_in_grammar" id="terminals_unused_in_grammar"></a> Terminals unused in grammar</h3>
+
+<p class="pre">   TEXT
+   DOLLAR_SIGN
+   FILE_NAME
+
+
+</p><h3><a name="rules_useless_in_grammar" id="rules_useless_in_grammar"></a> Rules useless in grammar</h3>
+<h2><a name="conflicts" id="conflicts"></a> Conflicts</h2>
+
+<h2><a name="grammar" id="grammar"></a> Grammar</h2>
+<p class="pre">
+  <a name="rule_0" id="rule_0">  0</a> <span class="i">$accept</span> → <span class="i">exe</span> <b>"end of input"</b>
+
+  <a name="rule_1" id="rule_1">  1</a> <span class="i">exe</span> → <span class="i">files</span>
+  <a name="rule_2" id="rule_2">  2</a>     | <span class="i">files</span> <b>END_OF_FILES</b>
+
+  <a name="rule_3" id="rule_3">  3</a> <span class="i">files</span> → <span class="i">file</span>
+  <a name="rule_4" id="rule_4">  4</a>       | <span class="i">files</span> <span class="i">file</span>
+
+  <a name="rule_5" id="rule_5">  5</a> <span class="i">file</span> → <span class="i">blocks</span> <b>"end of input"</b>
+
+  <a name="rule_6" id="rule_6">  6</a> <span class="i">blocks</span> → <span class="i">tag</span>
+  <a name="rule_7" id="rule_7">  7</a>        | <span class="i">blocks</span> <span class="i">tag</span>
+
+  <a name="rule_8" id="rule_8">  8</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">sub_proc</span> <b>RBRACE</b>
+  <a name="rule_9" id="rule_9">  9</a>     | <b>LBRACE</b> <span class="i">array</span> <b>RBRACE</b>
+  <a name="rule_10" id="rule_10"> 10</a>     | <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <b>RBRACE</b>
+  <a name="rule_11" id="rule_11"> 11</a>     | <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <span class="i">colon_sep_params</span> <b>RBRACE</b>
+  <a name="rule_12" id="rule_12"> 12</a>     | <b>LBRACE</b> <span class="i">symbol</span> <b>RBRACE</b>
+  <a name="rule_13" id="rule_13"> 13</a>     | <b>LBRACE</b> <span class="i">qualafied_id</span> <b>RBRACE</b>
+  <a name="rule_14" id="rule_14"> 14</a>     | <b>LBRACE</b> <span class="i">built_in</span> <b>RBRACE</b>
+  <a name="rule_15" id="rule_15"> 15</a>     | <b>NUMBER</b>
+
+  <a name="rule_16" id="rule_16"> 16</a> <span class="i">colon_sep_params</span> → <span class="i">colon_sep_param</span>
+  <a name="rule_17" id="rule_17"> 17</a>                  | <span class="i">colon_sep_params</span> <span class="i">colon_sep_param</span>
+
+  <a name="rule_18" id="rule_18"> 18</a> <span class="i">colon_sep_param</span> → <b>COLON</b> <b>NUMERIC_LITERAL</b>
+
+  <a name="rule_19" id="rule_19"> 19</a> <span class="i">params</span> → <span class="i">param</span>
+  <a name="rule_20" id="rule_20"> 20</a>        | <span class="i">params</span> <span class="i">symbol</span>
+
+  <a name="rule_21" id="rule_21"> 21</a> <span class="i">param</span> → <span class="i">symbol</span> <b>COMMA</b>
+
+  <a name="rule_22" id="rule_22"> 22</a> <span class="i">qualafied_id</span> → <span class="i">symbol</span> <b>DOT</b> <b>ID</b>
+  <a name="rule_23" id="rule_23"> 23</a>              | <span class="i">symbol</span> <b>DOT</b> <span class="i">symbol</span>
+  <a name="rule_24" id="rule_24"> 24</a>              | <span class="i">symbol</span> <b>INDIRECT_MEMBER</b> <b>ID</b>
+  <a name="rule_25" id="rule_25"> 25</a>              | <span class="i">qualafied_id</span> <b>DOT</b> <b>ID</b>
+  <a name="rule_26" id="rule_26"> 26</a>              | <span class="i">qualafied_id</span> <b>INDIRECT_MEMBER</b> <b>ID</b>
+
+  <a name="rule_27" id="rule_27"> 27</a> <span class="i">sub_proc</span> → <span class="i">symbol</span> <b>LPAREN</b> <b>RPAREN</b>
+  <a name="rule_28" id="rule_28"> 28</a>          | <span class="i">symbol</span> <b>LPAREN</b> <span class="i">params</span> <b>RPAREN</b>
+
+  <a name="rule_29" id="rule_29"> 29</a> <span class="i">array</span> → <span class="i">symbol</span> <b>LBRACKET</b> <b>NUMERIC_LITERAL</b> <b>RBRACKET</b>
+
+  <a name="rule_30" id="rule_30"> 30</a> <span class="i">symbol</span> → <b>SYMBOL</b>
+  <a name="rule_31" id="rule_31"> 31</a>        | <b>CONST_SYMBOL</b>
+
+  <a name="rule_32" id="rule_32"> 32</a> <span class="i">modifier</span> → <b>CAPITALIZE</b>
+  <a name="rule_33" id="rule_33"> 33</a>          | <b>CAT</b>
+  <a name="rule_34" id="rule_34"> 34</a>          | <b>COUNT_CHARACTERS</b>
+  <a name="rule_35" id="rule_35"> 35</a>          | <b>COUNT_SENTENCES</b>
+  <a name="rule_36" id="rule_36"> 36</a>          | <b>COUNT_PARAGRAPHS</b>
+  <a name="rule_37" id="rule_37"> 37</a>          | <b>DATE_FORMAT</b>
+  <a name="rule_38" id="rule_38"> 38</a>          | <b>ESCAPE</b>
+  <a name="rule_39" id="rule_39"> 39</a>          | <b>INDENT</b>
+  <a name="rule_40" id="rule_40"> 40</a>          | <b>LOWER</b>
+  <a name="rule_41" id="rule_41"> 41</a>          | <b>UPPER</b>
+  <a name="rule_42" id="rule_42"> 42</a>          | <b>STRIP</b>
+  <a name="rule_43" id="rule_43"> 43</a>          | <b>REPLACE</b>
+  <a name="rule_44" id="rule_44"> 44</a>          | <b>SPACIFY</b>
+  <a name="rule_45" id="rule_45"> 45</a>          | <b>STRING_FORMAT</b>
+  <a name="rule_46" id="rule_46"> 46</a>          | <b>STRIP_TAGS</b>
+  <a name="rule_47" id="rule_47"> 47</a>          | <b>TRUNCATE</b>
+  <a name="rule_48" id="rule_48"> 48</a>          | <b>WORDWARP</b>
+
+  <a name="rule_49" id="rule_49"> 49</a> <span class="i">built_in</span> → <b>CONFIG_LOAD</b> <span class="i">attributes</span>
+  <a name="rule_50" id="rule_50"> 50</a>          | <b>INCLUDE</b> <span class="i">attributes</span>
+  <a name="rule_51" id="rule_51"> 51</a>          | <b>REQUIRE</b> <span class="i">attributes</span>
+  <a name="rule_52" id="rule_52"> 52</a>          | <b>INSERT</b> <span class="i">attributes</span>
+  <a name="rule_53" id="rule_53"> 53</a>          | <b>ASSIGN</b> <span class="i">attributes</span>
+
+  <a name="rule_54" id="rule_54"> 54</a> <span class="i">attributes</span> → <span class="i">attrib</span>
+  <a name="rule_55" id="rule_55"> 55</a>            | <span class="i">attributes</span> <span class="i">attrib</span>
+
+  <a name="rule_56" id="rule_56"> 56</a> <span class="i">attrib</span> → <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a name="rule_57" id="rule_57"> 57</a>        | <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a name="rule_58" id="rule_58"> 58</a>        | <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+</p>
+
+<h3><a name="terminals" id="terminals"></a> Terminals, with rules where they appear</h3>
+
+<ul>
+  <li><b>"end of input"</b> (0) <a href="#rule_0">0</a> <a href="#rule_5">5</a></li>
+  <li><b>error</b> (256)</li>
+  <li><b>TEXT</b> &lt;std::string&gt; (258)</li>
+  <li><b>END_OF_FILES</b> (259) <a href="#rule_2">2</a></li>
+  <li><b>NUMBER</b> &lt;int&gt; (260) <a href="#rule_15">15</a></li>
+  <li><b>DOLLAR_SIGN</b> &lt;std::string&gt; (261)</li>
+  <li><b>DOT</b> &lt;std::string&gt; (262) <a href="#rule_22">22</a> <a href="#rule_23">23</a> <a href="#rule_25">25</a></li>
+  <li><b>INDIRECT_MEMBER</b> &lt;std::string&gt; (263) <a href="#rule_24">24</a> <a href="#rule_26">26</a></li>
+  <li><b>COMMA</b> &lt;std::string&gt; (264) <a href="#rule_21">21</a></li>
+  <li><b>EQUAL</b> &lt;std::string&gt; (265) <a href="#rule_56">56</a> <a href="#rule_57">57</a> <a href="#rule_58">58</a></li>
+  <li><b>VBAR</b> &lt;std::string&gt; (266) <a href="#rule_10">10</a> <a href="#rule_11">11</a></li>
+  <li><b>COLON</b> &lt;std::string&gt; (267) <a href="#rule_18">18</a></li>
+  <li><b>STRING_LITERAL</b> &lt;std::string&gt; (268) <a href="#rule_56">56</a> <a href="#rule_57">57</a> <a href="#rule_58">58</a></li>
+  <li><b>NUMERIC_LITERAL</b> &lt;std::string&gt; (269) <a href="#rule_18">18</a> <a href="#rule_29">29</a></li>
+  <li><b>ID</b> &lt;std::string&gt; (270) <a href="#rule_22">22</a> <a href="#rule_24">24</a> <a href="#rule_25">25</a> <a href="#rule_26">26</a></li>
+  <li><b>SYMBOL</b> &lt;std::string&gt; (271) <a href="#rule_30">30</a></li>
+  <li><b>CONST_SYMBOL</b> &lt;std::string&gt; (272) <a href="#rule_31">31</a></li>
+  <li><b>LBRACE</b> &lt;std::string&gt; (273) <a href="#rule_8">8</a> <a href="#rule_9">9</a> <a href="#rule_10">10</a> <a href="#rule_11">11</a> <a href="#rule_12">12</a> <a href="#rule_13">13</a> <a href="#rule_14">14</a></li>
+  <li><b>RBRACE</b> &lt;std::string&gt; (274) <a href="#rule_8">8</a> <a href="#rule_9">9</a> <a href="#rule_10">10</a> <a href="#rule_11">11</a> <a href="#rule_12">12</a> <a href="#rule_13">13</a> <a href="#rule_14">14</a></li>
+  <li><b>LBRACKET</b> &lt;std::string&gt; (275) <a href="#rule_29">29</a></li>
+  <li><b>RBRACKET</b> &lt;std::string&gt; (276) <a href="#rule_29">29</a></li>
+  <li><b>LPAREN</b> &lt;std::string&gt; (277) <a href="#rule_27">27</a> <a href="#rule_28">28</a></li>
+  <li><b>RPAREN</b> &lt;std::string&gt; (278) <a href="#rule_27">27</a> <a href="#rule_28">28</a></li>
+  <li><b>CONFIG_LOAD</b> &lt;std::string&gt; (279) <a href="#rule_49">49</a></li>
+  <li><b>INCLUDE</b> &lt;std::string&gt; (280) <a href="#rule_50">50</a></li>
+  <li><b>REQUIRE</b> &lt;std::string&gt; (281) <a href="#rule_51">51</a></li>
+  <li><b>INSERT</b> &lt;std::string&gt; (282) <a href="#rule_52">52</a></li>
+  <li><b>ASSIGN</b> &lt;std::string&gt; (283) <a href="#rule_53">53</a></li>
+  <li><b>CAPITALIZE</b> &lt;std::string&gt; (284) <a href="#rule_32">32</a></li>
+  <li><b>CAT</b> &lt;std::string&gt; (285) <a href="#rule_33">33</a></li>
+  <li><b>COUNT_CHARACTERS</b> &lt;std::string&gt; (286) <a href="#rule_34">34</a></li>
+  <li><b>COUNT_SENTENCES</b> &lt;std::string&gt; (287) <a href="#rule_35">35</a></li>
+  <li><b>COUNT_PARAGRAPHS</b> &lt;std::string&gt; (288) <a href="#rule_36">36</a></li>
+  <li><b>DATE_FORMAT</b> &lt;std::string&gt; (289) <a href="#rule_37">37</a></li>
+  <li><b>ESCAPE</b> &lt;std::string&gt; (290) <a href="#rule_38">38</a></li>
+  <li><b>INDENT</b> &lt;std::string&gt; (291) <a href="#rule_39">39</a></li>
+  <li><b>LOWER</b> &lt;std::string&gt; (292) <a href="#rule_40">40</a></li>
+  <li><b>UPPER</b> &lt;std::string&gt; (293) <a href="#rule_41">41</a></li>
+  <li><b>STRIP</b> &lt;std::string&gt; (294) <a href="#rule_42">42</a></li>
+  <li><b>REPLACE</b> &lt;std::string&gt; (295) <a href="#rule_43">43</a></li>
+  <li><b>SPACIFY</b> &lt;std::string&gt; (296) <a href="#rule_44">44</a></li>
+  <li><b>STRING_FORMAT</b> &lt;std::string&gt; (297) <a href="#rule_45">45</a></li>
+  <li><b>STRIP_TAGS</b> &lt;std::string&gt; (298) <a href="#rule_46">46</a></li>
+  <li><b>TRUNCATE</b> &lt;std::string&gt; (299) <a href="#rule_47">47</a></li>
+  <li><b>WORDWARP</b> &lt;std::string&gt; (300) <a href="#rule_48">48</a></li>
+  <li><b>VAR_ATTRIB</b> &lt;std::string&gt; (301) <a href="#rule_57">57</a></li>
+  <li><b>VALUE_ATTRIB</b> &lt;std::string&gt; (302) <a href="#rule_56">56</a></li>
+  <li><b>FILE_ATTRIB</b> &lt;std::string&gt; (303) <a href="#rule_58">58</a></li>
+  <li><b>FILE_NAME</b> &lt;std::string&gt; (304)</li>
+</ul>
+
+<h3><a name="nonterminals" id="nonterminals"></a> Nonterminals, with rules where they appear</h3>
+
+<ul>
+  <li><b>$accept</b> (50)
+    <ul>
+      <li>on left: <a href="#rule_0">0</a></li>
+    </ul>
+  </li>
+  <li><b>exe</b> (51)
+    <ul>
+      <li>on left: <a href="#rule_1">1</a> <a href="#rule_2">2</a></li>
+      <li>on right: <a href="#rule_0">0</a></li>
+    </ul>
+  </li>
+  <li><b>files</b> (52)
+    <ul>
+      <li>on left: <a href="#rule_3">3</a> <a href="#rule_4">4</a></li>
+      <li>on right: <a href="#rule_1">1</a> <a href="#rule_2">2</a> <a href="#rule_4">4</a></li>
+    </ul>
+  </li>
+  <li><b>file</b> (53)
+    <ul>
+      <li>on left: <a href="#rule_5">5</a></li>
+      <li>on right: <a href="#rule_3">3</a> <a href="#rule_4">4</a></li>
+    </ul>
+  </li>
+  <li><b>blocks</b> (54)
+    <ul>
+      <li>on left: <a href="#rule_6">6</a> <a href="#rule_7">7</a></li>
+      <li>on right: <a href="#rule_5">5</a> <a href="#rule_7">7</a></li>
+    </ul>
+  </li>
+  <li><b>tag</b> (55)
+    <ul>
+      <li>on left: <a href="#rule_8">8</a> <a href="#rule_9">9</a> <a href="#rule_10">10</a> <a href="#rule_11">11</a> <a href="#rule_12">12</a> <a href="#rule_13">13</a> <a href="#rule_14">14</a> <a href="#rule_15">15</a></li>
+      <li>on right: <a href="#rule_6">6</a> <a href="#rule_7">7</a></li>
+    </ul>
+  </li>
+  <li><b>colon_sep_params</b> &lt;std::string&gt; (56)
+    <ul>
+      <li>on left: <a href="#rule_16">16</a> <a href="#rule_17">17</a></li>
+      <li>on right: <a href="#rule_11">11</a> <a href="#rule_17">17</a></li>
+    </ul>
+  </li>
+  <li><b>colon_sep_param</b> &lt;std::string&gt; (57)
+    <ul>
+      <li>on left: <a href="#rule_18">18</a></li>
+      <li>on right: <a href="#rule_16">16</a> <a href="#rule_17">17</a></li>
+    </ul>
+  </li>
+  <li><b>params</b> (58)
+    <ul>
+      <li>on left: <a href="#rule_19">19</a> <a href="#rule_20">20</a></li>
+      <li>on right: <a href="#rule_20">20</a> <a href="#rule_28">28</a></li>
+    </ul>
+  </li>
+  <li><b>param</b> (59)
+    <ul>
+      <li>on left: <a href="#rule_21">21</a></li>
+      <li>on right: <a href="#rule_19">19</a></li>
+    </ul>
+  </li>
+  <li><b>qualafied_id</b> &lt;std::string&gt; (60)
+    <ul>
+      <li>on left: <a href="#rule_22">22</a> <a href="#rule_23">23</a> <a href="#rule_24">24</a> <a href="#rule_25">25</a> <a href="#rule_26">26</a></li>
+      <li>on right: <a href="#rule_13">13</a> <a href="#rule_25">25</a> <a href="#rule_26">26</a></li>
+    </ul>
+  </li>
+  <li><b>sub_proc</b> &lt;std::string&gt; (61)
+    <ul>
+      <li>on left: <a href="#rule_27">27</a> <a href="#rule_28">28</a></li>
+      <li>on right: <a href="#rule_8">8</a></li>
+    </ul>
+  </li>
+  <li><b>array</b> &lt;std::string&gt; (62)
+    <ul>
+      <li>on left: <a href="#rule_29">29</a></li>
+      <li>on right: <a href="#rule_9">9</a></li>
+    </ul>
+  </li>
+  <li><b>symbol</b> &lt;std::string&gt; (63)
+    <ul>
+      <li>on left: <a href="#rule_30">30</a> <a href="#rule_31">31</a></li>
+      <li>on right: <a href="#rule_10">10</a> <a href="#rule_11">11</a> <a href="#rule_12">12</a> <a href="#rule_20">20</a> <a href="#rule_21">21</a> <a href="#rule_22">22</a> <a href="#rule_23">23</a> <a href="#rule_24">24</a> <a href="#rule_27">27</a> <a href="#rule_28">28</a> <a href="#rule_29">29</a></li>
+    </ul>
+  </li>
+  <li><b>modifier</b> &lt;std::string&gt; (64)
+    <ul>
+      <li>on left: <a href="#rule_32">32</a> <a href="#rule_33">33</a> <a href="#rule_34">34</a> <a href="#rule_35">35</a> <a href="#rule_36">36</a> <a href="#rule_37">37</a> <a href="#rule_38">38</a> <a href="#rule_39">39</a> <a href="#rule_40">40</a> <a href="#rule_41">41</a> <a href="#rule_42">42</a> <a href="#rule_43">43</a> <a href="#rule_44">44</a> <a href="#rule_45">45</a> <a href="#rule_46">46</a> <a href="#rule_47">47</a> <a href="#rule_48">48</a></li>
+      <li>on right: <a href="#rule_10">10</a> <a href="#rule_11">11</a></li>
+    </ul>
+  </li>
+  <li><b>built_in</b> &lt;std::string&gt; (65)
+    <ul>
+      <li>on left: <a href="#rule_49">49</a> <a href="#rule_50">50</a> <a href="#rule_51">51</a> <a href="#rule_52">52</a> <a href="#rule_53">53</a></li>
+      <li>on right: <a href="#rule_14">14</a></li>
+    </ul>
+  </li>
+  <li><b>attributes</b> &lt;std::string&gt; (66)
+    <ul>
+      <li>on left: <a href="#rule_54">54</a> <a href="#rule_55">55</a></li>
+      <li>on right: <a href="#rule_49">49</a> <a href="#rule_50">50</a> <a href="#rule_51">51</a> <a href="#rule_52">52</a> <a href="#rule_53">53</a> <a href="#rule_55">55</a></li>
+    </ul>
+  </li>
+  <li><b>attrib</b> &lt;std::pair&lt; std::string, std::string &gt;&gt; (67)
+    <ul>
+      <li>on left: <a href="#rule_56">56</a> <a href="#rule_57">57</a> <a href="#rule_58">58</a></li>
+      <li>on right: <a href="#rule_54">54</a> <a href="#rule_55">55</a></li>
+    </ul>
+  </li>
+</ul><h2><a name="automaton" id="automaton"></a> Automaton</h2>
+
+<h3><a name="state_0" id="state_0"></a>State 0</h3>
+
+<p class="pre">  <a href="#rule_0">  0</a> <span class="i">$accept</span> → <span class="dot">•</span> <span class="i">exe</span> <b>"end of input"</b>
+  <a href="#rule_1">  1</a> <span class="i">exe</span> → <span class="dot">•</span> <span class="i">files</span>
+  <a href="#rule_2">  2</a>     | <span class="dot">•</span> <span class="i">files</span> <b>END_OF_FILES</b>
+  <a href="#rule_3">  3</a> <span class="i">files</span> → <span class="dot">•</span> <span class="i">file</span>
+  <a href="#rule_4">  4</a>       | <span class="dot">•</span> <span class="i">files</span> <span class="i">file</span>
+  <a href="#rule_5">  5</a> <span class="i">file</span> → <span class="dot">•</span> <span class="i">blocks</span> <b>"end of input"</b>
+  <a href="#rule_6">  6</a> <span class="i">blocks</span> → <span class="dot">•</span> <span class="i">tag</span>
+  <a href="#rule_7">  7</a>        | <span class="dot">•</span> <span class="i">blocks</span> <span class="i">tag</span>
+  <a href="#rule_8">  8</a> <span class="i">tag</span> → <span class="dot">•</span> <b>LBRACE</b> <span class="i">sub_proc</span> <b>RBRACE</b>
+  <a href="#rule_9">  9</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">array</span> <b>RBRACE</b>
+  <a href="#rule_10"> 10</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <b>RBRACE</b>
+  <a href="#rule_11"> 11</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <span class="i">colon_sep_params</span> <b>RBRACE</b>
+  <a href="#rule_12"> 12</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">symbol</span> <b>RBRACE</b>
+  <a href="#rule_13"> 13</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">qualafied_id</span> <b>RBRACE</b>
+  <a href="#rule_14"> 14</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">built_in</span> <b>RBRACE</b>
+  <a href="#rule_15"> 15</a>     | <span class="dot">•</span> <b>NUMBER</b>
+
+    NUMBER  <a href="#state_1">shift, and go to state 1</a>
+    LBRACE  <a href="#state_2">shift, and go to state 2</a>
+
+    exe     <a href="#state_3">go to state 3</a>
+    files   <a href="#state_4">go to state 4</a>
+    file    <a href="#state_5">go to state 5</a>
+    blocks  <a href="#state_6">go to state 6</a>
+    tag     <a href="#state_7">go to state 7</a>
+</p>
+
+<h3><a name="state_1" id="state_1"></a>State 1</h3>
+
+<p class="pre">  <a href="#rule_15"> 15</a> <span class="i">tag</span> → <b>NUMBER</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_15">reduce using rule 15</a> (tag)
+</p>
+
+<h3><a name="state_2" id="state_2"></a>State 2</h3>
+
+<p class="pre">  <a href="#rule_8">  8</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="dot">•</span> <span class="i">sub_proc</span> <b>RBRACE</b>
+  <a href="#rule_9">  9</a>     | <b>LBRACE</b> <span class="dot">•</span> <span class="i">array</span> <b>RBRACE</b>
+  <a href="#rule_10"> 10</a>     | <b>LBRACE</b> <span class="dot">•</span> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <b>RBRACE</b>
+  <a href="#rule_11"> 11</a>     | <b>LBRACE</b> <span class="dot">•</span> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <span class="i">colon_sep_params</span> <b>RBRACE</b>
+  <a href="#rule_12"> 12</a>     | <b>LBRACE</b> <span class="dot">•</span> <span class="i">symbol</span> <b>RBRACE</b>
+  <a href="#rule_13"> 13</a>     | <b>LBRACE</b> <span class="dot">•</span> <span class="i">qualafied_id</span> <b>RBRACE</b>
+  <a href="#rule_14"> 14</a>     | <b>LBRACE</b> <span class="dot">•</span> <span class="i">built_in</span> <b>RBRACE</b>
+  <a href="#rule_22"> 22</a> <span class="i">qualafied_id</span> → <span class="dot">•</span> <span class="i">symbol</span> <b>DOT</b> <b>ID</b>
+  <a href="#rule_23"> 23</a>              | <span class="dot">•</span> <span class="i">symbol</span> <b>DOT</b> <span class="i">symbol</span>
+  <a href="#rule_24"> 24</a>              | <span class="dot">•</span> <span class="i">symbol</span> <b>INDIRECT_MEMBER</b> <b>ID</b>
+  <a href="#rule_25"> 25</a>              | <span class="dot">•</span> <span class="i">qualafied_id</span> <b>DOT</b> <b>ID</b>
+  <a href="#rule_26"> 26</a>              | <span class="dot">•</span> <span class="i">qualafied_id</span> <b>INDIRECT_MEMBER</b> <b>ID</b>
+  <a href="#rule_27"> 27</a> <span class="i">sub_proc</span> → <span class="dot">•</span> <span class="i">symbol</span> <b>LPAREN</b> <b>RPAREN</b>
+  <a href="#rule_28"> 28</a>          | <span class="dot">•</span> <span class="i">symbol</span> <b>LPAREN</b> <span class="i">params</span> <b>RPAREN</b>
+  <a href="#rule_29"> 29</a> <span class="i">array</span> → <span class="dot">•</span> <span class="i">symbol</span> <b>LBRACKET</b> <b>NUMERIC_LITERAL</b> <b>RBRACKET</b>
+  <a href="#rule_30"> 30</a> <span class="i">symbol</span> → <span class="dot">•</span> <b>SYMBOL</b>
+  <a href="#rule_31"> 31</a>        | <span class="dot">•</span> <b>CONST_SYMBOL</b>
+  <a href="#rule_49"> 49</a> <span class="i">built_in</span> → <span class="dot">•</span> <b>CONFIG_LOAD</b> <span class="i">attributes</span>
+  <a href="#rule_50"> 50</a>          | <span class="dot">•</span> <b>INCLUDE</b> <span class="i">attributes</span>
+  <a href="#rule_51"> 51</a>          | <span class="dot">•</span> <b>REQUIRE</b> <span class="i">attributes</span>
+  <a href="#rule_52"> 52</a>          | <span class="dot">•</span> <b>INSERT</b> <span class="i">attributes</span>
+  <a href="#rule_53"> 53</a>          | <span class="dot">•</span> <b>ASSIGN</b> <span class="i">attributes</span>
+
+    SYMBOL        <a href="#state_8">shift, and go to state 8</a>
+    CONST_SYMBOL  <a href="#state_9">shift, and go to state 9</a>
+    CONFIG_LOAD   <a href="#state_10">shift, and go to state 10</a>
+    INCLUDE       <a href="#state_11">shift, and go to state 11</a>
+    REQUIRE       <a href="#state_12">shift, and go to state 12</a>
+    INSERT        <a href="#state_13">shift, and go to state 13</a>
+    ASSIGN        <a href="#state_14">shift, and go to state 14</a>
+
+    qualafied_id  <a href="#state_15">go to state 15</a>
+    sub_proc      <a href="#state_16">go to state 16</a>
+    array         <a href="#state_17">go to state 17</a>
+    symbol        <a href="#state_18">go to state 18</a>
+    built_in      <a href="#state_19">go to state 19</a>
+</p>
+
+<h3><a name="state_3" id="state_3"></a>State 3</h3>
+
+<p class="pre">  <a href="#rule_0">  0</a> <span class="i">$accept</span> → <span class="i">exe</span> <span class="dot">•</span> <b>"end of input"</b>
+
+    "end of input"  <a href="#state_20">shift, and go to state 20</a>
+</p>
+
+<h3><a name="state_4" id="state_4"></a>State 4</h3>
+
+<p class="pre">  <a href="#rule_1">  1</a> <span class="i">exe</span> → <span class="i">files</span> <span class="dot">•</span>  ["end of input"]
+  <a href="#rule_2">  2</a>     | <span class="i">files</span> <span class="dot">•</span> <b>END_OF_FILES</b>
+  <a href="#rule_4">  4</a> <span class="i">files</span> → <span class="i">files</span> <span class="dot">•</span> <span class="i">file</span>
+  <a href="#rule_5">  5</a> <span class="i">file</span> → <span class="dot">•</span> <span class="i">blocks</span> <b>"end of input"</b>
+  <a href="#rule_6">  6</a> <span class="i">blocks</span> → <span class="dot">•</span> <span class="i">tag</span>
+  <a href="#rule_7">  7</a>        | <span class="dot">•</span> <span class="i">blocks</span> <span class="i">tag</span>
+  <a href="#rule_8">  8</a> <span class="i">tag</span> → <span class="dot">•</span> <b>LBRACE</b> <span class="i">sub_proc</span> <b>RBRACE</b>
+  <a href="#rule_9">  9</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">array</span> <b>RBRACE</b>
+  <a href="#rule_10"> 10</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <b>RBRACE</b>
+  <a href="#rule_11"> 11</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <span class="i">colon_sep_params</span> <b>RBRACE</b>
+  <a href="#rule_12"> 12</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">symbol</span> <b>RBRACE</b>
+  <a href="#rule_13"> 13</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">qualafied_id</span> <b>RBRACE</b>
+  <a href="#rule_14"> 14</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">built_in</span> <b>RBRACE</b>
+  <a href="#rule_15"> 15</a>     | <span class="dot">•</span> <b>NUMBER</b>
+
+    END_OF_FILES  <a href="#state_21">shift, and go to state 21</a>
+    NUMBER        <a href="#state_1">shift, and go to state 1</a>
+    LBRACE        <a href="#state_2">shift, and go to state 2</a>
+
+    $default  <a href="#rule_1">reduce using rule 1</a> (exe)
+
+    file    <a href="#state_22">go to state 22</a>
+    blocks  <a href="#state_6">go to state 6</a>
+    tag     <a href="#state_7">go to state 7</a>
+</p>
+
+<h3><a name="state_5" id="state_5"></a>State 5</h3>
+
+<p class="pre">  <a href="#rule_3">  3</a> <span class="i">files</span> → <span class="i">file</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_3">reduce using rule 3</a> (files)
+</p>
+
+<h3><a name="state_6" id="state_6"></a>State 6</h3>
+
+<p class="pre">  <a href="#rule_5">  5</a> <span class="i">file</span> → <span class="i">blocks</span> <span class="dot">•</span> <b>"end of input"</b>
+  <a href="#rule_7">  7</a> <span class="i">blocks</span> → <span class="i">blocks</span> <span class="dot">•</span> <span class="i">tag</span>
+  <a href="#rule_8">  8</a> <span class="i">tag</span> → <span class="dot">•</span> <b>LBRACE</b> <span class="i">sub_proc</span> <b>RBRACE</b>
+  <a href="#rule_9">  9</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">array</span> <b>RBRACE</b>
+  <a href="#rule_10"> 10</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <b>RBRACE</b>
+  <a href="#rule_11"> 11</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <span class="i">colon_sep_params</span> <b>RBRACE</b>
+  <a href="#rule_12"> 12</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">symbol</span> <b>RBRACE</b>
+  <a href="#rule_13"> 13</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">qualafied_id</span> <b>RBRACE</b>
+  <a href="#rule_14"> 14</a>     | <span class="dot">•</span> <b>LBRACE</b> <span class="i">built_in</span> <b>RBRACE</b>
+  <a href="#rule_15"> 15</a>     | <span class="dot">•</span> <b>NUMBER</b>
+
+    "end of input"  <a href="#state_23">shift, and go to state 23</a>
+    NUMBER          <a href="#state_1">shift, and go to state 1</a>
+    LBRACE          <a href="#state_2">shift, and go to state 2</a>
+
+    tag  <a href="#state_24">go to state 24</a>
+</p>
+
+<h3><a name="state_7" id="state_7"></a>State 7</h3>
+
+<p class="pre">  <a href="#rule_6">  6</a> <span class="i">blocks</span> → <span class="i">tag</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_6">reduce using rule 6</a> (blocks)
+</p>
+
+<h3><a name="state_8" id="state_8"></a>State 8</h3>
+
+<p class="pre">  <a href="#rule_30"> 30</a> <span class="i">symbol</span> → <b>SYMBOL</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_30">reduce using rule 30</a> (symbol)
+</p>
+
+<h3><a name="state_9" id="state_9"></a>State 9</h3>
+
+<p class="pre">  <a href="#rule_31"> 31</a> <span class="i">symbol</span> → <b>CONST_SYMBOL</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_31">reduce using rule 31</a> (symbol)
+</p>
+
+<h3><a name="state_10" id="state_10"></a>State 10</h3>
+
+<p class="pre">  <a href="#rule_49"> 49</a> <span class="i">built_in</span> → <b>CONFIG_LOAD</b> <span class="dot">•</span> <span class="i">attributes</span>
+  <a href="#rule_54"> 54</a> <span class="i">attributes</span> → <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_55"> 55</a>            | <span class="dot">•</span> <span class="i">attributes</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    attributes  <a href="#state_28">go to state 28</a>
+    attrib      <a href="#state_29">go to state 29</a>
+</p>
+
+<h3><a name="state_11" id="state_11"></a>State 11</h3>
+
+<p class="pre">  <a href="#rule_50"> 50</a> <span class="i">built_in</span> → <b>INCLUDE</b> <span class="dot">•</span> <span class="i">attributes</span>
+  <a href="#rule_54"> 54</a> <span class="i">attributes</span> → <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_55"> 55</a>            | <span class="dot">•</span> <span class="i">attributes</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    attributes  <a href="#state_30">go to state 30</a>
+    attrib      <a href="#state_29">go to state 29</a>
+</p>
+
+<h3><a name="state_12" id="state_12"></a>State 12</h3>
+
+<p class="pre">  <a href="#rule_51"> 51</a> <span class="i">built_in</span> → <b>REQUIRE</b> <span class="dot">•</span> <span class="i">attributes</span>
+  <a href="#rule_54"> 54</a> <span class="i">attributes</span> → <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_55"> 55</a>            | <span class="dot">•</span> <span class="i">attributes</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    attributes  <a href="#state_31">go to state 31</a>
+    attrib      <a href="#state_29">go to state 29</a>
+</p>
+
+<h3><a name="state_13" id="state_13"></a>State 13</h3>
+
+<p class="pre">  <a href="#rule_52"> 52</a> <span class="i">built_in</span> → <b>INSERT</b> <span class="dot">•</span> <span class="i">attributes</span>
+  <a href="#rule_54"> 54</a> <span class="i">attributes</span> → <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_55"> 55</a>            | <span class="dot">•</span> <span class="i">attributes</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    attributes  <a href="#state_32">go to state 32</a>
+    attrib      <a href="#state_29">go to state 29</a>
+</p>
+
+<h3><a name="state_14" id="state_14"></a>State 14</h3>
+
+<p class="pre">  <a href="#rule_53"> 53</a> <span class="i">built_in</span> → <b>ASSIGN</b> <span class="dot">•</span> <span class="i">attributes</span>
+  <a href="#rule_54"> 54</a> <span class="i">attributes</span> → <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_55"> 55</a>            | <span class="dot">•</span> <span class="i">attributes</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    attributes  <a href="#state_33">go to state 33</a>
+    attrib      <a href="#state_29">go to state 29</a>
+</p>
+
+<h3><a name="state_15" id="state_15"></a>State 15</h3>
+
+<p class="pre">  <a href="#rule_13"> 13</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">qualafied_id</span> <span class="dot">•</span> <b>RBRACE</b>
+  <a href="#rule_25"> 25</a> <span class="i">qualafied_id</span> → <span class="i">qualafied_id</span> <span class="dot">•</span> <b>DOT</b> <b>ID</b>
+  <a href="#rule_26"> 26</a>              | <span class="i">qualafied_id</span> <span class="dot">•</span> <b>INDIRECT_MEMBER</b> <b>ID</b>
+
+    DOT              <a href="#state_34">shift, and go to state 34</a>
+    INDIRECT_MEMBER  <a href="#state_35">shift, and go to state 35</a>
+    RBRACE           <a href="#state_36">shift, and go to state 36</a>
+</p>
+
+<h3><a name="state_16" id="state_16"></a>State 16</h3>
+
+<p class="pre">  <a href="#rule_8">  8</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">sub_proc</span> <span class="dot">•</span> <b>RBRACE</b>
+
+    RBRACE  <a href="#state_37">shift, and go to state 37</a>
+</p>
+
+<h3><a name="state_17" id="state_17"></a>State 17</h3>
+
+<p class="pre">  <a href="#rule_9">  9</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">array</span> <span class="dot">•</span> <b>RBRACE</b>
+
+    RBRACE  <a href="#state_38">shift, and go to state 38</a>
+</p>
+
+<h3><a name="state_18" id="state_18"></a>State 18</h3>
+
+<p class="pre">  <a href="#rule_10"> 10</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">symbol</span> <span class="dot">•</span> <b>VBAR</b> <span class="i">modifier</span> <b>RBRACE</b>
+  <a href="#rule_11"> 11</a>     | <b>LBRACE</b> <span class="i">symbol</span> <span class="dot">•</span> <b>VBAR</b> <span class="i">modifier</span> <span class="i">colon_sep_params</span> <b>RBRACE</b>
+  <a href="#rule_12"> 12</a>     | <b>LBRACE</b> <span class="i">symbol</span> <span class="dot">•</span> <b>RBRACE</b>
+  <a href="#rule_22"> 22</a> <span class="i">qualafied_id</span> → <span class="i">symbol</span> <span class="dot">•</span> <b>DOT</b> <b>ID</b>
+  <a href="#rule_23"> 23</a>              | <span class="i">symbol</span> <span class="dot">•</span> <b>DOT</b> <span class="i">symbol</span>
+  <a href="#rule_24"> 24</a>              | <span class="i">symbol</span> <span class="dot">•</span> <b>INDIRECT_MEMBER</b> <b>ID</b>
+  <a href="#rule_27"> 27</a> <span class="i">sub_proc</span> → <span class="i">symbol</span> <span class="dot">•</span> <b>LPAREN</b> <b>RPAREN</b>
+  <a href="#rule_28"> 28</a>          | <span class="i">symbol</span> <span class="dot">•</span> <b>LPAREN</b> <span class="i">params</span> <b>RPAREN</b>
+  <a href="#rule_29"> 29</a> <span class="i">array</span> → <span class="i">symbol</span> <span class="dot">•</span> <b>LBRACKET</b> <b>NUMERIC_LITERAL</b> <b>RBRACKET</b>
+
+    DOT              <a href="#state_39">shift, and go to state 39</a>
+    INDIRECT_MEMBER  <a href="#state_40">shift, and go to state 40</a>
+    VBAR             <a href="#state_41">shift, and go to state 41</a>
+    RBRACE           <a href="#state_42">shift, and go to state 42</a>
+    LBRACKET         <a href="#state_43">shift, and go to state 43</a>
+    LPAREN           <a href="#state_44">shift, and go to state 44</a>
+</p>
+
+<h3><a name="state_19" id="state_19"></a>State 19</h3>
+
+<p class="pre">  <a href="#rule_14"> 14</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">built_in</span> <span class="dot">•</span> <b>RBRACE</b>
+
+    RBRACE  <a href="#state_45">shift, and go to state 45</a>
+</p>
+
+<h3><a name="state_20" id="state_20"></a>State 20</h3>
+
+<p class="pre">  <a href="#rule_0">  0</a> <span class="i">$accept</span> → <span class="i">exe</span> <b>"end of input"</b> <span class="dot">•</span>
+
+    $default  accept
+</p>
+
+<h3><a name="state_21" id="state_21"></a>State 21</h3>
+
+<p class="pre">  <a href="#rule_2">  2</a> <span class="i">exe</span> → <span class="i">files</span> <b>END_OF_FILES</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_2">reduce using rule 2</a> (exe)
+</p>
+
+<h3><a name="state_22" id="state_22"></a>State 22</h3>
+
+<p class="pre">  <a href="#rule_4">  4</a> <span class="i">files</span> → <span class="i">files</span> <span class="i">file</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_4">reduce using rule 4</a> (files)
+</p>
+
+<h3><a name="state_23" id="state_23"></a>State 23</h3>
+
+<p class="pre">  <a href="#rule_5">  5</a> <span class="i">file</span> → <span class="i">blocks</span> <b>"end of input"</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_5">reduce using rule 5</a> (file)
+</p>
+
+<h3><a name="state_24" id="state_24"></a>State 24</h3>
+
+<p class="pre">  <a href="#rule_7">  7</a> <span class="i">blocks</span> → <span class="i">blocks</span> <span class="i">tag</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_7">reduce using rule 7</a> (blocks)
+</p>
+
+<h3><a name="state_25" id="state_25"></a>State 25</h3>
+
+<p class="pre">  <a href="#rule_57"> 57</a> <span class="i">attrib</span> → <b>VAR_ATTRIB</b> <span class="dot">•</span> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    EQUAL  <a href="#state_46">shift, and go to state 46</a>
+</p>
+
+<h3><a name="state_26" id="state_26"></a>State 26</h3>
+
+<p class="pre">  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <b>VALUE_ATTRIB</b> <span class="dot">•</span> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    EQUAL  <a href="#state_47">shift, and go to state 47</a>
+</p>
+
+<h3><a name="state_27" id="state_27"></a>State 27</h3>
+
+<p class="pre">  <a href="#rule_58"> 58</a> <span class="i">attrib</span> → <b>FILE_ATTRIB</b> <span class="dot">•</span> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    EQUAL  <a href="#state_48">shift, and go to state 48</a>
+</p>
+
+<h3><a name="state_28" id="state_28"></a>State 28</h3>
+
+<p class="pre">  <a href="#rule_49"> 49</a> <span class="i">built_in</span> → <b>CONFIG_LOAD</b> <span class="i">attributes</span> <span class="dot">•</span>  [RBRACE]
+  <a href="#rule_55"> 55</a> <span class="i">attributes</span> → <span class="i">attributes</span> <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    $default  <a href="#rule_49">reduce using rule 49</a> (built_in)
+
+    attrib  <a href="#state_49">go to state 49</a>
+</p>
+
+<h3><a name="state_29" id="state_29"></a>State 29</h3>
+
+<p class="pre">  <a href="#rule_54"> 54</a> <span class="i">attributes</span> → <span class="i">attrib</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_54">reduce using rule 54</a> (attributes)
+</p>
+
+<h3><a name="state_30" id="state_30"></a>State 30</h3>
+
+<p class="pre">  <a href="#rule_50"> 50</a> <span class="i">built_in</span> → <b>INCLUDE</b> <span class="i">attributes</span> <span class="dot">•</span>  [RBRACE]
+  <a href="#rule_55"> 55</a> <span class="i">attributes</span> → <span class="i">attributes</span> <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    $default  <a href="#rule_50">reduce using rule 50</a> (built_in)
+
+    attrib  <a href="#state_49">go to state 49</a>
+</p>
+
+<h3><a name="state_31" id="state_31"></a>State 31</h3>
+
+<p class="pre">  <a href="#rule_51"> 51</a> <span class="i">built_in</span> → <b>REQUIRE</b> <span class="i">attributes</span> <span class="dot">•</span>  [RBRACE]
+  <a href="#rule_55"> 55</a> <span class="i">attributes</span> → <span class="i">attributes</span> <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    $default  <a href="#rule_51">reduce using rule 51</a> (built_in)
+
+    attrib  <a href="#state_49">go to state 49</a>
+</p>
+
+<h3><a name="state_32" id="state_32"></a>State 32</h3>
+
+<p class="pre">  <a href="#rule_52"> 52</a> <span class="i">built_in</span> → <b>INSERT</b> <span class="i">attributes</span> <span class="dot">•</span>  [RBRACE]
+  <a href="#rule_55"> 55</a> <span class="i">attributes</span> → <span class="i">attributes</span> <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    $default  <a href="#rule_52">reduce using rule 52</a> (built_in)
+
+    attrib  <a href="#state_49">go to state 49</a>
+</p>
+
+<h3><a name="state_33" id="state_33"></a>State 33</h3>
+
+<p class="pre">  <a href="#rule_53"> 53</a> <span class="i">built_in</span> → <b>ASSIGN</b> <span class="i">attributes</span> <span class="dot">•</span>  [RBRACE]
+  <a href="#rule_55"> 55</a> <span class="i">attributes</span> → <span class="i">attributes</span> <span class="dot">•</span> <span class="i">attrib</span>
+  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <span class="dot">•</span> <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_57"> 57</a>        | <span class="dot">•</span> <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+  <a href="#rule_58"> 58</a>        | <span class="dot">•</span> <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b>
+
+    VAR_ATTRIB    <a href="#state_25">shift, and go to state 25</a>
+    VALUE_ATTRIB  <a href="#state_26">shift, and go to state 26</a>
+    FILE_ATTRIB   <a href="#state_27">shift, and go to state 27</a>
+
+    $default  <a href="#rule_53">reduce using rule 53</a> (built_in)
+
+    attrib  <a href="#state_49">go to state 49</a>
+</p>
+
+<h3><a name="state_34" id="state_34"></a>State 34</h3>
+
+<p class="pre">  <a href="#rule_25"> 25</a> <span class="i">qualafied_id</span> → <span class="i">qualafied_id</span> <b>DOT</b> <span class="dot">•</span> <b>ID</b>
+
+    ID  <a href="#state_50">shift, and go to state 50</a>
+</p>
+
+<h3><a name="state_35" id="state_35"></a>State 35</h3>
+
+<p class="pre">  <a href="#rule_26"> 26</a> <span class="i">qualafied_id</span> → <span class="i">qualafied_id</span> <b>INDIRECT_MEMBER</b> <span class="dot">•</span> <b>ID</b>
+
+    ID  <a href="#state_51">shift, and go to state 51</a>
+</p>
+
+<h3><a name="state_36" id="state_36"></a>State 36</h3>
+
+<p class="pre">  <a href="#rule_13"> 13</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">qualafied_id</span> <b>RBRACE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_13">reduce using rule 13</a> (tag)
+</p>
+
+<h3><a name="state_37" id="state_37"></a>State 37</h3>
+
+<p class="pre">  <a href="#rule_8">  8</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">sub_proc</span> <b>RBRACE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_8">reduce using rule 8</a> (tag)
+</p>
+
+<h3><a name="state_38" id="state_38"></a>State 38</h3>
+
+<p class="pre">  <a href="#rule_9">  9</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">array</span> <b>RBRACE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_9">reduce using rule 9</a> (tag)
+</p>
+
+<h3><a name="state_39" id="state_39"></a>State 39</h3>
+
+<p class="pre">  <a href="#rule_22"> 22</a> <span class="i">qualafied_id</span> → <span class="i">symbol</span> <b>DOT</b> <span class="dot">•</span> <b>ID</b>
+  <a href="#rule_23"> 23</a>              | <span class="i">symbol</span> <b>DOT</b> <span class="dot">•</span> <span class="i">symbol</span>
+  <a href="#rule_30"> 30</a> <span class="i">symbol</span> → <span class="dot">•</span> <b>SYMBOL</b>
+  <a href="#rule_31"> 31</a>        | <span class="dot">•</span> <b>CONST_SYMBOL</b>
+
+    ID            <a href="#state_52">shift, and go to state 52</a>
+    SYMBOL        <a href="#state_8">shift, and go to state 8</a>
+    CONST_SYMBOL  <a href="#state_9">shift, and go to state 9</a>
+
+    symbol  <a href="#state_53">go to state 53</a>
+</p>
+
+<h3><a name="state_40" id="state_40"></a>State 40</h3>
+
+<p class="pre">  <a href="#rule_24"> 24</a> <span class="i">qualafied_id</span> → <span class="i">symbol</span> <b>INDIRECT_MEMBER</b> <span class="dot">•</span> <b>ID</b>
+
+    ID  <a href="#state_54">shift, and go to state 54</a>
+</p>
+
+<h3><a name="state_41" id="state_41"></a>State 41</h3>
+
+<p class="pre">  <a href="#rule_10"> 10</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="dot">•</span> <span class="i">modifier</span> <b>RBRACE</b>
+  <a href="#rule_11"> 11</a>     | <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="dot">•</span> <span class="i">modifier</span> <span class="i">colon_sep_params</span> <b>RBRACE</b>
+  <a href="#rule_32"> 32</a> <span class="i">modifier</span> → <span class="dot">•</span> <b>CAPITALIZE</b>
+  <a href="#rule_33"> 33</a>          | <span class="dot">•</span> <b>CAT</b>
+  <a href="#rule_34"> 34</a>          | <span class="dot">•</span> <b>COUNT_CHARACTERS</b>
+  <a href="#rule_35"> 35</a>          | <span class="dot">•</span> <b>COUNT_SENTENCES</b>
+  <a href="#rule_36"> 36</a>          | <span class="dot">•</span> <b>COUNT_PARAGRAPHS</b>
+  <a href="#rule_37"> 37</a>          | <span class="dot">•</span> <b>DATE_FORMAT</b>
+  <a href="#rule_38"> 38</a>          | <span class="dot">•</span> <b>ESCAPE</b>
+  <a href="#rule_39"> 39</a>          | <span class="dot">•</span> <b>INDENT</b>
+  <a href="#rule_40"> 40</a>          | <span class="dot">•</span> <b>LOWER</b>
+  <a href="#rule_41"> 41</a>          | <span class="dot">•</span> <b>UPPER</b>
+  <a href="#rule_42"> 42</a>          | <span class="dot">•</span> <b>STRIP</b>
+  <a href="#rule_43"> 43</a>          | <span class="dot">•</span> <b>REPLACE</b>
+  <a href="#rule_44"> 44</a>          | <span class="dot">•</span> <b>SPACIFY</b>
+  <a href="#rule_45"> 45</a>          | <span class="dot">•</span> <b>STRING_FORMAT</b>
+  <a href="#rule_46"> 46</a>          | <span class="dot">•</span> <b>STRIP_TAGS</b>
+  <a href="#rule_47"> 47</a>          | <span class="dot">•</span> <b>TRUNCATE</b>
+  <a href="#rule_48"> 48</a>          | <span class="dot">•</span> <b>WORDWARP</b>
+
+    CAPITALIZE        <a href="#state_55">shift, and go to state 55</a>
+    CAT               <a href="#state_56">shift, and go to state 56</a>
+    COUNT_CHARACTERS  <a href="#state_57">shift, and go to state 57</a>
+    COUNT_SENTENCES   <a href="#state_58">shift, and go to state 58</a>
+    COUNT_PARAGRAPHS  <a href="#state_59">shift, and go to state 59</a>
+    DATE_FORMAT       <a href="#state_60">shift, and go to state 60</a>
+    ESCAPE            <a href="#state_61">shift, and go to state 61</a>
+    INDENT            <a href="#state_62">shift, and go to state 62</a>
+    LOWER             <a href="#state_63">shift, and go to state 63</a>
+    UPPER             <a href="#state_64">shift, and go to state 64</a>
+    STRIP             <a href="#state_65">shift, and go to state 65</a>
+    REPLACE           <a href="#state_66">shift, and go to state 66</a>
+    SPACIFY           <a href="#state_67">shift, and go to state 67</a>
+    STRING_FORMAT     <a href="#state_68">shift, and go to state 68</a>
+    STRIP_TAGS        <a href="#state_69">shift, and go to state 69</a>
+    TRUNCATE          <a href="#state_70">shift, and go to state 70</a>
+    WORDWARP          <a href="#state_71">shift, and go to state 71</a>
+
+    modifier  <a href="#state_72">go to state 72</a>
+</p>
+
+<h3><a name="state_42" id="state_42"></a>State 42</h3>
+
+<p class="pre">  <a href="#rule_12"> 12</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">symbol</span> <b>RBRACE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_12">reduce using rule 12</a> (tag)
+</p>
+
+<h3><a name="state_43" id="state_43"></a>State 43</h3>
+
+<p class="pre">  <a href="#rule_29"> 29</a> <span class="i">array</span> → <span class="i">symbol</span> <b>LBRACKET</b> <span class="dot">•</span> <b>NUMERIC_LITERAL</b> <b>RBRACKET</b>
+
+    NUMERIC_LITERAL  <a href="#state_73">shift, and go to state 73</a>
+</p>
+
+<h3><a name="state_44" id="state_44"></a>State 44</h3>
+
+<p class="pre">  <a href="#rule_19"> 19</a> <span class="i">params</span> → <span class="dot">•</span> <span class="i">param</span>
+  <a href="#rule_20"> 20</a>        | <span class="dot">•</span> <span class="i">params</span> <span class="i">symbol</span>
+  <a href="#rule_21"> 21</a> <span class="i">param</span> → <span class="dot">•</span> <span class="i">symbol</span> <b>COMMA</b>
+  <a href="#rule_27"> 27</a> <span class="i">sub_proc</span> → <span class="i">symbol</span> <b>LPAREN</b> <span class="dot">•</span> <b>RPAREN</b>
+  <a href="#rule_28"> 28</a>          | <span class="i">symbol</span> <b>LPAREN</b> <span class="dot">•</span> <span class="i">params</span> <b>RPAREN</b>
+  <a href="#rule_30"> 30</a> <span class="i">symbol</span> → <span class="dot">•</span> <b>SYMBOL</b>
+  <a href="#rule_31"> 31</a>        | <span class="dot">•</span> <b>CONST_SYMBOL</b>
+
+    SYMBOL        <a href="#state_8">shift, and go to state 8</a>
+    CONST_SYMBOL  <a href="#state_9">shift, and go to state 9</a>
+    RPAREN        <a href="#state_74">shift, and go to state 74</a>
+
+    params  <a href="#state_75">go to state 75</a>
+    param   <a href="#state_76">go to state 76</a>
+    symbol  <a href="#state_77">go to state 77</a>
+</p>
+
+<h3><a name="state_45" id="state_45"></a>State 45</h3>
+
+<p class="pre">  <a href="#rule_14"> 14</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">built_in</span> <b>RBRACE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_14">reduce using rule 14</a> (tag)
+</p>
+
+<h3><a name="state_46" id="state_46"></a>State 46</h3>
+
+<p class="pre">  <a href="#rule_57"> 57</a> <span class="i">attrib</span> → <b>VAR_ATTRIB</b> <b>EQUAL</b> <span class="dot">•</span> <b>STRING_LITERAL</b>
+
+    STRING_LITERAL  <a href="#state_78">shift, and go to state 78</a>
+</p>
+
+<h3><a name="state_47" id="state_47"></a>State 47</h3>
+
+<p class="pre">  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <b>VALUE_ATTRIB</b> <b>EQUAL</b> <span class="dot">•</span> <b>STRING_LITERAL</b>
+
+    STRING_LITERAL  <a href="#state_79">shift, and go to state 79</a>
+</p>
+
+<h3><a name="state_48" id="state_48"></a>State 48</h3>
+
+<p class="pre">  <a href="#rule_58"> 58</a> <span class="i">attrib</span> → <b>FILE_ATTRIB</b> <b>EQUAL</b> <span class="dot">•</span> <b>STRING_LITERAL</b>
+
+    STRING_LITERAL  <a href="#state_80">shift, and go to state 80</a>
+</p>
+
+<h3><a name="state_49" id="state_49"></a>State 49</h3>
+
+<p class="pre">  <a href="#rule_55"> 55</a> <span class="i">attributes</span> → <span class="i">attributes</span> <span class="i">attrib</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_55">reduce using rule 55</a> (attributes)
+</p>
+
+<h3><a name="state_50" id="state_50"></a>State 50</h3>
+
+<p class="pre">  <a href="#rule_25"> 25</a> <span class="i">qualafied_id</span> → <span class="i">qualafied_id</span> <b>DOT</b> <b>ID</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_25">reduce using rule 25</a> (qualafied_id)
+</p>
+
+<h3><a name="state_51" id="state_51"></a>State 51</h3>
+
+<p class="pre">  <a href="#rule_26"> 26</a> <span class="i">qualafied_id</span> → <span class="i">qualafied_id</span> <b>INDIRECT_MEMBER</b> <b>ID</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_26">reduce using rule 26</a> (qualafied_id)
+</p>
+
+<h3><a name="state_52" id="state_52"></a>State 52</h3>
+
+<p class="pre">  <a href="#rule_22"> 22</a> <span class="i">qualafied_id</span> → <span class="i">symbol</span> <b>DOT</b> <b>ID</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_22">reduce using rule 22</a> (qualafied_id)
+</p>
+
+<h3><a name="state_53" id="state_53"></a>State 53</h3>
+
+<p class="pre">  <a href="#rule_23"> 23</a> <span class="i">qualafied_id</span> → <span class="i">symbol</span> <b>DOT</b> <span class="i">symbol</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_23">reduce using rule 23</a> (qualafied_id)
+</p>
+
+<h3><a name="state_54" id="state_54"></a>State 54</h3>
+
+<p class="pre">  <a href="#rule_24"> 24</a> <span class="i">qualafied_id</span> → <span class="i">symbol</span> <b>INDIRECT_MEMBER</b> <b>ID</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_24">reduce using rule 24</a> (qualafied_id)
+</p>
+
+<h3><a name="state_55" id="state_55"></a>State 55</h3>
+
+<p class="pre">  <a href="#rule_32"> 32</a> <span class="i">modifier</span> → <b>CAPITALIZE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_32">reduce using rule 32</a> (modifier)
+</p>
+
+<h3><a name="state_56" id="state_56"></a>State 56</h3>
+
+<p class="pre">  <a href="#rule_33"> 33</a> <span class="i">modifier</span> → <b>CAT</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_33">reduce using rule 33</a> (modifier)
+</p>
+
+<h3><a name="state_57" id="state_57"></a>State 57</h3>
+
+<p class="pre">  <a href="#rule_34"> 34</a> <span class="i">modifier</span> → <b>COUNT_CHARACTERS</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_34">reduce using rule 34</a> (modifier)
+</p>
+
+<h3><a name="state_58" id="state_58"></a>State 58</h3>
+
+<p class="pre">  <a href="#rule_35"> 35</a> <span class="i">modifier</span> → <b>COUNT_SENTENCES</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_35">reduce using rule 35</a> (modifier)
+</p>
+
+<h3><a name="state_59" id="state_59"></a>State 59</h3>
+
+<p class="pre">  <a href="#rule_36"> 36</a> <span class="i">modifier</span> → <b>COUNT_PARAGRAPHS</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_36">reduce using rule 36</a> (modifier)
+</p>
+
+<h3><a name="state_60" id="state_60"></a>State 60</h3>
+
+<p class="pre">  <a href="#rule_37"> 37</a> <span class="i">modifier</span> → <b>DATE_FORMAT</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_37">reduce using rule 37</a> (modifier)
+</p>
+
+<h3><a name="state_61" id="state_61"></a>State 61</h3>
+
+<p class="pre">  <a href="#rule_38"> 38</a> <span class="i">modifier</span> → <b>ESCAPE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_38">reduce using rule 38</a> (modifier)
+</p>
+
+<h3><a name="state_62" id="state_62"></a>State 62</h3>
+
+<p class="pre">  <a href="#rule_39"> 39</a> <span class="i">modifier</span> → <b>INDENT</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_39">reduce using rule 39</a> (modifier)
+</p>
+
+<h3><a name="state_63" id="state_63"></a>State 63</h3>
+
+<p class="pre">  <a href="#rule_40"> 40</a> <span class="i">modifier</span> → <b>LOWER</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_40">reduce using rule 40</a> (modifier)
+</p>
+
+<h3><a name="state_64" id="state_64"></a>State 64</h3>
+
+<p class="pre">  <a href="#rule_41"> 41</a> <span class="i">modifier</span> → <b>UPPER</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_41">reduce using rule 41</a> (modifier)
+</p>
+
+<h3><a name="state_65" id="state_65"></a>State 65</h3>
+
+<p class="pre">  <a href="#rule_42"> 42</a> <span class="i">modifier</span> → <b>STRIP</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_42">reduce using rule 42</a> (modifier)
+</p>
+
+<h3><a name="state_66" id="state_66"></a>State 66</h3>
+
+<p class="pre">  <a href="#rule_43"> 43</a> <span class="i">modifier</span> → <b>REPLACE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_43">reduce using rule 43</a> (modifier)
+</p>
+
+<h3><a name="state_67" id="state_67"></a>State 67</h3>
+
+<p class="pre">  <a href="#rule_44"> 44</a> <span class="i">modifier</span> → <b>SPACIFY</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_44">reduce using rule 44</a> (modifier)
+</p>
+
+<h3><a name="state_68" id="state_68"></a>State 68</h3>
+
+<p class="pre">  <a href="#rule_45"> 45</a> <span class="i">modifier</span> → <b>STRING_FORMAT</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_45">reduce using rule 45</a> (modifier)
+</p>
+
+<h3><a name="state_69" id="state_69"></a>State 69</h3>
+
+<p class="pre">  <a href="#rule_46"> 46</a> <span class="i">modifier</span> → <b>STRIP_TAGS</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_46">reduce using rule 46</a> (modifier)
+</p>
+
+<h3><a name="state_70" id="state_70"></a>State 70</h3>
+
+<p class="pre">  <a href="#rule_47"> 47</a> <span class="i">modifier</span> → <b>TRUNCATE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_47">reduce using rule 47</a> (modifier)
+</p>
+
+<h3><a name="state_71" id="state_71"></a>State 71</h3>
+
+<p class="pre">  <a href="#rule_48"> 48</a> <span class="i">modifier</span> → <b>WORDWARP</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_48">reduce using rule 48</a> (modifier)
+</p>
+
+<h3><a name="state_72" id="state_72"></a>State 72</h3>
+
+<p class="pre">  <a href="#rule_10"> 10</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <span class="dot">•</span> <b>RBRACE</b>
+  <a href="#rule_11"> 11</a>     | <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <span class="dot">•</span> <span class="i">colon_sep_params</span> <b>RBRACE</b>
+  <a href="#rule_16"> 16</a> <span class="i">colon_sep_params</span> → <span class="dot">•</span> <span class="i">colon_sep_param</span>
+  <a href="#rule_17"> 17</a>                  | <span class="dot">•</span> <span class="i">colon_sep_params</span> <span class="i">colon_sep_param</span>
+  <a href="#rule_18"> 18</a> <span class="i">colon_sep_param</span> → <span class="dot">•</span> <b>COLON</b> <b>NUMERIC_LITERAL</b>
+
+    COLON   <a href="#state_81">shift, and go to state 81</a>
+    RBRACE  <a href="#state_82">shift, and go to state 82</a>
+
+    colon_sep_params  <a href="#state_83">go to state 83</a>
+    colon_sep_param   <a href="#state_84">go to state 84</a>
+</p>
+
+<h3><a name="state_73" id="state_73"></a>State 73</h3>
+
+<p class="pre">  <a href="#rule_29"> 29</a> <span class="i">array</span> → <span class="i">symbol</span> <b>LBRACKET</b> <b>NUMERIC_LITERAL</b> <span class="dot">•</span> <b>RBRACKET</b>
+
+    RBRACKET  <a href="#state_85">shift, and go to state 85</a>
+</p>
+
+<h3><a name="state_74" id="state_74"></a>State 74</h3>
+
+<p class="pre">  <a href="#rule_27"> 27</a> <span class="i">sub_proc</span> → <span class="i">symbol</span> <b>LPAREN</b> <b>RPAREN</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_27">reduce using rule 27</a> (sub_proc)
+</p>
+
+<h3><a name="state_75" id="state_75"></a>State 75</h3>
+
+<p class="pre">  <a href="#rule_20"> 20</a> <span class="i">params</span> → <span class="i">params</span> <span class="dot">•</span> <span class="i">symbol</span>
+  <a href="#rule_28"> 28</a> <span class="i">sub_proc</span> → <span class="i">symbol</span> <b>LPAREN</b> <span class="i">params</span> <span class="dot">•</span> <b>RPAREN</b>
+  <a href="#rule_30"> 30</a> <span class="i">symbol</span> → <span class="dot">•</span> <b>SYMBOL</b>
+  <a href="#rule_31"> 31</a>        | <span class="dot">•</span> <b>CONST_SYMBOL</b>
+
+    SYMBOL        <a href="#state_8">shift, and go to state 8</a>
+    CONST_SYMBOL  <a href="#state_9">shift, and go to state 9</a>
+    RPAREN        <a href="#state_86">shift, and go to state 86</a>
+
+    symbol  <a href="#state_87">go to state 87</a>
+</p>
+
+<h3><a name="state_76" id="state_76"></a>State 76</h3>
+
+<p class="pre">  <a href="#rule_19"> 19</a> <span class="i">params</span> → <span class="i">param</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_19">reduce using rule 19</a> (params)
+</p>
+
+<h3><a name="state_77" id="state_77"></a>State 77</h3>
+
+<p class="pre">  <a href="#rule_21"> 21</a> <span class="i">param</span> → <span class="i">symbol</span> <span class="dot">•</span> <b>COMMA</b>
+
+    COMMA  <a href="#state_88">shift, and go to state 88</a>
+</p>
+
+<h3><a name="state_78" id="state_78"></a>State 78</h3>
+
+<p class="pre">  <a href="#rule_57"> 57</a> <span class="i">attrib</span> → <b>VAR_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_57">reduce using rule 57</a> (attrib)
+</p>
+
+<h3><a name="state_79" id="state_79"></a>State 79</h3>
+
+<p class="pre">  <a href="#rule_56"> 56</a> <span class="i">attrib</span> → <b>VALUE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_56">reduce using rule 56</a> (attrib)
+</p>
+
+<h3><a name="state_80" id="state_80"></a>State 80</h3>
+
+<p class="pre">  <a href="#rule_58"> 58</a> <span class="i">attrib</span> → <b>FILE_ATTRIB</b> <b>EQUAL</b> <b>STRING_LITERAL</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_58">reduce using rule 58</a> (attrib)
+</p>
+
+<h3><a name="state_81" id="state_81"></a>State 81</h3>
+
+<p class="pre">  <a href="#rule_18"> 18</a> <span class="i">colon_sep_param</span> → <b>COLON</b> <span class="dot">•</span> <b>NUMERIC_LITERAL</b>
+
+    NUMERIC_LITERAL  <a href="#state_89">shift, and go to state 89</a>
+</p>
+
+<h3><a name="state_82" id="state_82"></a>State 82</h3>
+
+<p class="pre">  <a href="#rule_10"> 10</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <b>RBRACE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_10">reduce using rule 10</a> (tag)
+</p>
+
+<h3><a name="state_83" id="state_83"></a>State 83</h3>
+
+<p class="pre">  <a href="#rule_11"> 11</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <span class="i">colon_sep_params</span> <span class="dot">•</span> <b>RBRACE</b>
+  <a href="#rule_17"> 17</a> <span class="i">colon_sep_params</span> → <span class="i">colon_sep_params</span> <span class="dot">•</span> <span class="i">colon_sep_param</span>
+  <a href="#rule_18"> 18</a> <span class="i">colon_sep_param</span> → <span class="dot">•</span> <b>COLON</b> <b>NUMERIC_LITERAL</b>
+
+    COLON   <a href="#state_81">shift, and go to state 81</a>
+    RBRACE  <a href="#state_90">shift, and go to state 90</a>
+
+    colon_sep_param  <a href="#state_91">go to state 91</a>
+</p>
+
+<h3><a name="state_84" id="state_84"></a>State 84</h3>
+
+<p class="pre">  <a href="#rule_16"> 16</a> <span class="i">colon_sep_params</span> → <span class="i">colon_sep_param</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_16">reduce using rule 16</a> (colon_sep_params)
+</p>
+
+<h3><a name="state_85" id="state_85"></a>State 85</h3>
+
+<p class="pre">  <a href="#rule_29"> 29</a> <span class="i">array</span> → <span class="i">symbol</span> <b>LBRACKET</b> <b>NUMERIC_LITERAL</b> <b>RBRACKET</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_29">reduce using rule 29</a> (array)
+</p>
+
+<h3><a name="state_86" id="state_86"></a>State 86</h3>
+
+<p class="pre">  <a href="#rule_28"> 28</a> <span class="i">sub_proc</span> → <span class="i">symbol</span> <b>LPAREN</b> <span class="i">params</span> <b>RPAREN</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_28">reduce using rule 28</a> (sub_proc)
+</p>
+
+<h3><a name="state_87" id="state_87"></a>State 87</h3>
+
+<p class="pre">  <a href="#rule_20"> 20</a> <span class="i">params</span> → <span class="i">params</span> <span class="i">symbol</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_20">reduce using rule 20</a> (params)
+</p>
+
+<h3><a name="state_88" id="state_88"></a>State 88</h3>
+
+<p class="pre">  <a href="#rule_21"> 21</a> <span class="i">param</span> → <span class="i">symbol</span> <b>COMMA</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_21">reduce using rule 21</a> (param)
+</p>
+
+<h3><a name="state_89" id="state_89"></a>State 89</h3>
+
+<p class="pre">  <a href="#rule_18"> 18</a> <span class="i">colon_sep_param</span> → <b>COLON</b> <b>NUMERIC_LITERAL</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_18">reduce using rule 18</a> (colon_sep_param)
+</p>
+
+<h3><a name="state_90" id="state_90"></a>State 90</h3>
+
+<p class="pre">  <a href="#rule_11"> 11</a> <span class="i">tag</span> → <b>LBRACE</b> <span class="i">symbol</span> <b>VBAR</b> <span class="i">modifier</span> <span class="i">colon_sep_params</span> <b>RBRACE</b> <span class="dot">•</span>
+
+    $default  <a href="#rule_11">reduce using rule 11</a> (tag)
+</p>
+
+<h3><a name="state_91" id="state_91"></a>State 91</h3>
+
+<p class="pre">  <a href="#rule_17"> 17</a> <span class="i">colon_sep_params</span> → <span class="i">colon_sep_params</span> <span class="i">colon_sep_param</span> <span class="dot">•</span>
+
+    $default  <a href="#rule_17">reduce using rule 17</a> (colon_sep_params)
+</p>
+
+<div id="footer"><hr />This document was generated using
+      <a href="https://www.gnu.org/software/bison/" title="GNU Bison">
+      GNU Bison 3.8.2</a>
+      XML Automaton Report.<br />
+      Verbatim copying and distribution of this entire page is
+      permitted in any medium, provided this notice is preserved.</div></body>
+</html>

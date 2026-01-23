@@ -371,12 +371,64 @@ namespace yy {
       // NUMBER
       char dummy1[sizeof (int)];
 
-      // TEXT
-      // item
-      char dummy2[sizeof (std::string)];
+      // attrib
+      char dummy2[sizeof (std::pair< std::string, std::string >)];
 
-      // list
-      char dummy3[sizeof (std::vector<std::string>)];
+      // TEXT
+      // DOLLAR_SIGN
+      // DOT
+      // INDIRECT_MEMBER
+      // COMMA
+      // EQUAL
+      // VBAR
+      // COLON
+      // STRING_LITERAL
+      // NUMERIC_LITERAL
+      // ID
+      // SYMBOL
+      // CONST_SYMBOL
+      // LBRACE
+      // RBRACE
+      // LBRACKET
+      // RBRACKET
+      // LPAREN
+      // RPAREN
+      // CONFIG_LOAD
+      // INCLUDE
+      // REQUIRE
+      // INSERT
+      // ASSIGN
+      // CAPITALIZE
+      // CAT
+      // COUNT_CHARACTERS
+      // COUNT_SENTENCES
+      // COUNT_PARAGRAPHS
+      // DATE_FORMAT
+      // ESCAPE
+      // INDENT
+      // LOWER
+      // UPPER
+      // STRIP
+      // REPLACE
+      // SPACIFY
+      // STRING_FORMAT
+      // STRIP_TAGS
+      // TRUNCATE
+      // WORDWARP
+      // VAR_ATTRIB
+      // VALUE_ATTRIB
+      // FILE_ATTRIB
+      // FILE_NAME
+      // colon_sep_params
+      // colon_sep_param
+      // qualafied_id
+      // sub_proc
+      // array
+      // symbol
+      // modifier
+      // built_in
+      // attributes
+      char dummy3[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -417,11 +469,56 @@ namespace yy {
       enum token_kind_type
       {
         YYEMPTY = -2,
-    YYEOF = 0,                     // "end of file"
+    END = 0,                       // "end of input"
     YYerror = 256,                 // error
     YYUNDEF = 257,                 // "invalid token"
     TEXT = 258,                    // TEXT
-    NUMBER = 259                   // NUMBER
+    END_OF_FILES = 259,            // END_OF_FILES
+    NUMBER = 260,                  // NUMBER
+    DOLLAR_SIGN = 261,             // DOLLAR_SIGN
+    DOT = 262,                     // DOT
+    INDIRECT_MEMBER = 263,         // INDIRECT_MEMBER
+    COMMA = 264,                   // COMMA
+    EQUAL = 265,                   // EQUAL
+    VBAR = 266,                    // VBAR
+    COLON = 267,                   // COLON
+    STRING_LITERAL = 268,          // STRING_LITERAL
+    NUMERIC_LITERAL = 269,         // NUMERIC_LITERAL
+    ID = 270,                      // ID
+    SYMBOL = 271,                  // SYMBOL
+    CONST_SYMBOL = 272,            // CONST_SYMBOL
+    LBRACE = 273,                  // LBRACE
+    RBRACE = 274,                  // RBRACE
+    LBRACKET = 275,                // LBRACKET
+    RBRACKET = 276,                // RBRACKET
+    LPAREN = 277,                  // LPAREN
+    RPAREN = 278,                  // RPAREN
+    CONFIG_LOAD = 279,             // CONFIG_LOAD
+    INCLUDE = 280,                 // INCLUDE
+    REQUIRE = 281,                 // REQUIRE
+    INSERT = 282,                  // INSERT
+    ASSIGN = 283,                  // ASSIGN
+    CAPITALIZE = 284,              // CAPITALIZE
+    CAT = 285,                     // CAT
+    COUNT_CHARACTERS = 286,        // COUNT_CHARACTERS
+    COUNT_SENTENCES = 287,         // COUNT_SENTENCES
+    COUNT_PARAGRAPHS = 288,        // COUNT_PARAGRAPHS
+    DATE_FORMAT = 289,             // DATE_FORMAT
+    ESCAPE = 290,                  // ESCAPE
+    INDENT = 291,                  // INDENT
+    LOWER = 292,                   // LOWER
+    UPPER = 293,                   // UPPER
+    STRIP = 294,                   // STRIP
+    REPLACE = 295,                 // REPLACE
+    SPACIFY = 296,                 // SPACIFY
+    STRING_FORMAT = 297,           // STRING_FORMAT
+    STRIP_TAGS = 298,              // STRIP_TAGS
+    TRUNCATE = 299,                // TRUNCATE
+    WORDWARP = 300,                // WORDWARP
+    VAR_ATTRIB = 301,              // VAR_ATTRIB
+    VALUE_ATTRIB = 302,            // VALUE_ATTRIB
+    FILE_ATTRIB = 303,             // FILE_ATTRIB
+    FILE_NAME = 304                // FILE_NAME
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -438,17 +535,76 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 5, ///< Number of tokens.
+        YYNTOKENS = 50, ///< Number of tokens.
         S_YYEMPTY = -2,
-        S_YYEOF = 0,                             // "end of file"
+        S_YYEOF = 0,                             // "end of input"
         S_YYerror = 1,                           // error
         S_YYUNDEF = 2,                           // "invalid token"
         S_TEXT = 3,                              // TEXT
-        S_NUMBER = 4,                            // NUMBER
-        S_YYACCEPT = 5,                          // $accept
-        S_result = 6,                            // result
-        S_list = 7,                              // list
-        S_item = 8                               // item
+        S_END_OF_FILES = 4,                      // END_OF_FILES
+        S_NUMBER = 5,                            // NUMBER
+        S_DOLLAR_SIGN = 6,                       // DOLLAR_SIGN
+        S_DOT = 7,                               // DOT
+        S_INDIRECT_MEMBER = 8,                   // INDIRECT_MEMBER
+        S_COMMA = 9,                             // COMMA
+        S_EQUAL = 10,                            // EQUAL
+        S_VBAR = 11,                             // VBAR
+        S_COLON = 12,                            // COLON
+        S_STRING_LITERAL = 13,                   // STRING_LITERAL
+        S_NUMERIC_LITERAL = 14,                  // NUMERIC_LITERAL
+        S_ID = 15,                               // ID
+        S_SYMBOL = 16,                           // SYMBOL
+        S_CONST_SYMBOL = 17,                     // CONST_SYMBOL
+        S_LBRACE = 18,                           // LBRACE
+        S_RBRACE = 19,                           // RBRACE
+        S_LBRACKET = 20,                         // LBRACKET
+        S_RBRACKET = 21,                         // RBRACKET
+        S_LPAREN = 22,                           // LPAREN
+        S_RPAREN = 23,                           // RPAREN
+        S_CONFIG_LOAD = 24,                      // CONFIG_LOAD
+        S_INCLUDE = 25,                          // INCLUDE
+        S_REQUIRE = 26,                          // REQUIRE
+        S_INSERT = 27,                           // INSERT
+        S_ASSIGN = 28,                           // ASSIGN
+        S_CAPITALIZE = 29,                       // CAPITALIZE
+        S_CAT = 30,                              // CAT
+        S_COUNT_CHARACTERS = 31,                 // COUNT_CHARACTERS
+        S_COUNT_SENTENCES = 32,                  // COUNT_SENTENCES
+        S_COUNT_PARAGRAPHS = 33,                 // COUNT_PARAGRAPHS
+        S_DATE_FORMAT = 34,                      // DATE_FORMAT
+        S_ESCAPE = 35,                           // ESCAPE
+        S_INDENT = 36,                           // INDENT
+        S_LOWER = 37,                            // LOWER
+        S_UPPER = 38,                            // UPPER
+        S_STRIP = 39,                            // STRIP
+        S_REPLACE = 40,                          // REPLACE
+        S_SPACIFY = 41,                          // SPACIFY
+        S_STRING_FORMAT = 42,                    // STRING_FORMAT
+        S_STRIP_TAGS = 43,                       // STRIP_TAGS
+        S_TRUNCATE = 44,                         // TRUNCATE
+        S_WORDWARP = 45,                         // WORDWARP
+        S_VAR_ATTRIB = 46,                       // VAR_ATTRIB
+        S_VALUE_ATTRIB = 47,                     // VALUE_ATTRIB
+        S_FILE_ATTRIB = 48,                      // FILE_ATTRIB
+        S_FILE_NAME = 49,                        // FILE_NAME
+        S_YYACCEPT = 50,                         // $accept
+        S_exe = 51,                              // exe
+        S_files = 52,                            // files
+        S_file = 53,                             // file
+        S_blocks = 54,                           // blocks
+        S_tag = 55,                              // tag
+        S_colon_sep_params = 56,                 // colon_sep_params
+        S_colon_sep_param = 57,                  // colon_sep_param
+        S_params = 58,                           // params
+        S_param = 59,                            // param
+        S_qualafied_id = 60,                     // qualafied_id
+        S_sub_proc = 61,                         // sub_proc
+        S_array = 62,                            // array
+        S_symbol = 63,                           // symbol
+        S_modifier = 64,                         // modifier
+        S_built_in = 65,                         // built_in
+        S_attributes = 66,                       // attributes
+        S_attrib = 67                            // attrib
       };
     };
 
@@ -487,13 +643,65 @@ namespace yy {
         value.move< int > (std::move (that.value));
         break;
 
-      case symbol_kind::S_TEXT: // TEXT
-      case symbol_kind::S_item: // item
-        value.move< std::string > (std::move (that.value));
+      case symbol_kind::S_attrib: // attrib
+        value.move< std::pair< std::string, std::string > > (std::move (that.value));
         break;
 
-      case symbol_kind::S_list: // list
-        value.move< std::vector<std::string> > (std::move (that.value));
+      case symbol_kind::S_TEXT: // TEXT
+      case symbol_kind::S_DOLLAR_SIGN: // DOLLAR_SIGN
+      case symbol_kind::S_DOT: // DOT
+      case symbol_kind::S_INDIRECT_MEMBER: // INDIRECT_MEMBER
+      case symbol_kind::S_COMMA: // COMMA
+      case symbol_kind::S_EQUAL: // EQUAL
+      case symbol_kind::S_VBAR: // VBAR
+      case symbol_kind::S_COLON: // COLON
+      case symbol_kind::S_STRING_LITERAL: // STRING_LITERAL
+      case symbol_kind::S_NUMERIC_LITERAL: // NUMERIC_LITERAL
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_SYMBOL: // SYMBOL
+      case symbol_kind::S_CONST_SYMBOL: // CONST_SYMBOL
+      case symbol_kind::S_LBRACE: // LBRACE
+      case symbol_kind::S_RBRACE: // RBRACE
+      case symbol_kind::S_LBRACKET: // LBRACKET
+      case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_LPAREN: // LPAREN
+      case symbol_kind::S_RPAREN: // RPAREN
+      case symbol_kind::S_CONFIG_LOAD: // CONFIG_LOAD
+      case symbol_kind::S_INCLUDE: // INCLUDE
+      case symbol_kind::S_REQUIRE: // REQUIRE
+      case symbol_kind::S_INSERT: // INSERT
+      case symbol_kind::S_ASSIGN: // ASSIGN
+      case symbol_kind::S_CAPITALIZE: // CAPITALIZE
+      case symbol_kind::S_CAT: // CAT
+      case symbol_kind::S_COUNT_CHARACTERS: // COUNT_CHARACTERS
+      case symbol_kind::S_COUNT_SENTENCES: // COUNT_SENTENCES
+      case symbol_kind::S_COUNT_PARAGRAPHS: // COUNT_PARAGRAPHS
+      case symbol_kind::S_DATE_FORMAT: // DATE_FORMAT
+      case symbol_kind::S_ESCAPE: // ESCAPE
+      case symbol_kind::S_INDENT: // INDENT
+      case symbol_kind::S_LOWER: // LOWER
+      case symbol_kind::S_UPPER: // UPPER
+      case symbol_kind::S_STRIP: // STRIP
+      case symbol_kind::S_REPLACE: // REPLACE
+      case symbol_kind::S_SPACIFY: // SPACIFY
+      case symbol_kind::S_STRING_FORMAT: // STRING_FORMAT
+      case symbol_kind::S_STRIP_TAGS: // STRIP_TAGS
+      case symbol_kind::S_TRUNCATE: // TRUNCATE
+      case symbol_kind::S_WORDWARP: // WORDWARP
+      case symbol_kind::S_VAR_ATTRIB: // VAR_ATTRIB
+      case symbol_kind::S_VALUE_ATTRIB: // VALUE_ATTRIB
+      case symbol_kind::S_FILE_ATTRIB: // FILE_ATTRIB
+      case symbol_kind::S_FILE_NAME: // FILE_NAME
+      case symbol_kind::S_colon_sep_params: // colon_sep_params
+      case symbol_kind::S_colon_sep_param: // colon_sep_param
+      case symbol_kind::S_qualafied_id: // qualafied_id
+      case symbol_kind::S_sub_proc: // sub_proc
+      case symbol_kind::S_array: // array
+      case symbol_kind::S_symbol: // symbol
+      case symbol_kind::S_modifier: // modifier
+      case symbol_kind::S_built_in: // built_in
+      case symbol_kind::S_attributes: // attributes
+        value.move< std::string > (std::move (that.value));
         break;
 
       default:
@@ -530,24 +738,24 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::string&& v)
+      basic_symbol (typename Base::kind_type t, std::pair< std::string, std::string >&& v)
         : Base (t)
         , value (std::move (v))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const std::string& v)
+      basic_symbol (typename Base::kind_type t, const std::pair< std::string, std::string >& v)
         : Base (t)
         , value (v)
       {}
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::vector<std::string>&& v)
+      basic_symbol (typename Base::kind_type t, std::string&& v)
         : Base (t)
         , value (std::move (v))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const std::vector<std::string>& v)
+      basic_symbol (typename Base::kind_type t, const std::string& v)
         : Base (t)
         , value (v)
       {}
@@ -581,13 +789,65 @@ switch (yykind)
         value.template destroy< int > ();
         break;
 
-      case symbol_kind::S_TEXT: // TEXT
-      case symbol_kind::S_item: // item
-        value.template destroy< std::string > ();
+      case symbol_kind::S_attrib: // attrib
+        value.template destroy< std::pair< std::string, std::string > > ();
         break;
 
-      case symbol_kind::S_list: // list
-        value.template destroy< std::vector<std::string> > ();
+      case symbol_kind::S_TEXT: // TEXT
+      case symbol_kind::S_DOLLAR_SIGN: // DOLLAR_SIGN
+      case symbol_kind::S_DOT: // DOT
+      case symbol_kind::S_INDIRECT_MEMBER: // INDIRECT_MEMBER
+      case symbol_kind::S_COMMA: // COMMA
+      case symbol_kind::S_EQUAL: // EQUAL
+      case symbol_kind::S_VBAR: // VBAR
+      case symbol_kind::S_COLON: // COLON
+      case symbol_kind::S_STRING_LITERAL: // STRING_LITERAL
+      case symbol_kind::S_NUMERIC_LITERAL: // NUMERIC_LITERAL
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_SYMBOL: // SYMBOL
+      case symbol_kind::S_CONST_SYMBOL: // CONST_SYMBOL
+      case symbol_kind::S_LBRACE: // LBRACE
+      case symbol_kind::S_RBRACE: // RBRACE
+      case symbol_kind::S_LBRACKET: // LBRACKET
+      case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_LPAREN: // LPAREN
+      case symbol_kind::S_RPAREN: // RPAREN
+      case symbol_kind::S_CONFIG_LOAD: // CONFIG_LOAD
+      case symbol_kind::S_INCLUDE: // INCLUDE
+      case symbol_kind::S_REQUIRE: // REQUIRE
+      case symbol_kind::S_INSERT: // INSERT
+      case symbol_kind::S_ASSIGN: // ASSIGN
+      case symbol_kind::S_CAPITALIZE: // CAPITALIZE
+      case symbol_kind::S_CAT: // CAT
+      case symbol_kind::S_COUNT_CHARACTERS: // COUNT_CHARACTERS
+      case symbol_kind::S_COUNT_SENTENCES: // COUNT_SENTENCES
+      case symbol_kind::S_COUNT_PARAGRAPHS: // COUNT_PARAGRAPHS
+      case symbol_kind::S_DATE_FORMAT: // DATE_FORMAT
+      case symbol_kind::S_ESCAPE: // ESCAPE
+      case symbol_kind::S_INDENT: // INDENT
+      case symbol_kind::S_LOWER: // LOWER
+      case symbol_kind::S_UPPER: // UPPER
+      case symbol_kind::S_STRIP: // STRIP
+      case symbol_kind::S_REPLACE: // REPLACE
+      case symbol_kind::S_SPACIFY: // SPACIFY
+      case symbol_kind::S_STRING_FORMAT: // STRING_FORMAT
+      case symbol_kind::S_STRIP_TAGS: // STRIP_TAGS
+      case symbol_kind::S_TRUNCATE: // TRUNCATE
+      case symbol_kind::S_WORDWARP: // WORDWARP
+      case symbol_kind::S_VAR_ATTRIB: // VAR_ATTRIB
+      case symbol_kind::S_VALUE_ATTRIB: // VALUE_ATTRIB
+      case symbol_kind::S_FILE_ATTRIB: // FILE_ATTRIB
+      case symbol_kind::S_FILE_NAME: // FILE_NAME
+      case symbol_kind::S_colon_sep_params: // colon_sep_params
+      case symbol_kind::S_colon_sep_param: // colon_sep_param
+      case symbol_kind::S_qualafied_id: // qualafied_id
+      case symbol_kind::S_sub_proc: // sub_proc
+      case symbol_kind::S_array: // array
+      case symbol_kind::S_symbol: // symbol
+      case symbol_kind::S_modifier: // modifier
+      case symbol_kind::S_built_in: // built_in
+      case symbol_kind::S_attributes: // attributes
+        value.template destroy< std::string > ();
         break;
 
       default:
@@ -755,16 +1015,16 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_YYEOF ()
+      make_END ()
       {
-        return symbol_type (token::YYEOF);
+        return symbol_type (token::END);
       }
 #else
       static
       symbol_type
-      make_YYEOF ()
+      make_END ()
       {
-        return symbol_type (token::YYEOF);
+        return symbol_type (token::END);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -815,6 +1075,21 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_END_OF_FILES ()
+      {
+        return symbol_type (token::END_OF_FILES);
+      }
+#else
+      static
+      symbol_type
+      make_END_OF_FILES ()
+      {
+        return symbol_type (token::END_OF_FILES);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_NUMBER (int v)
       {
         return symbol_type (token::NUMBER, std::move (v));
@@ -825,6 +1100,666 @@ switch (yykind)
       make_NUMBER (const int& v)
       {
         return symbol_type (token::NUMBER, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DOLLAR_SIGN (std::string v)
+      {
+        return symbol_type (token::DOLLAR_SIGN, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_DOLLAR_SIGN (const std::string& v)
+      {
+        return symbol_type (token::DOLLAR_SIGN, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DOT (std::string v)
+      {
+        return symbol_type (token::DOT, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_DOT (const std::string& v)
+      {
+        return symbol_type (token::DOT, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_INDIRECT_MEMBER (std::string v)
+      {
+        return symbol_type (token::INDIRECT_MEMBER, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_INDIRECT_MEMBER (const std::string& v)
+      {
+        return symbol_type (token::INDIRECT_MEMBER, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_COMMA (std::string v)
+      {
+        return symbol_type (token::COMMA, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_COMMA (const std::string& v)
+      {
+        return symbol_type (token::COMMA, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_EQUAL (std::string v)
+      {
+        return symbol_type (token::EQUAL, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_EQUAL (const std::string& v)
+      {
+        return symbol_type (token::EQUAL, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_VBAR (std::string v)
+      {
+        return symbol_type (token::VBAR, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_VBAR (const std::string& v)
+      {
+        return symbol_type (token::VBAR, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_COLON (std::string v)
+      {
+        return symbol_type (token::COLON, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_COLON (const std::string& v)
+      {
+        return symbol_type (token::COLON, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STRING_LITERAL (std::string v)
+      {
+        return symbol_type (token::STRING_LITERAL, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_STRING_LITERAL (const std::string& v)
+      {
+        return symbol_type (token::STRING_LITERAL, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_NUMERIC_LITERAL (std::string v)
+      {
+        return symbol_type (token::NUMERIC_LITERAL, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_NUMERIC_LITERAL (const std::string& v)
+      {
+        return symbol_type (token::NUMERIC_LITERAL, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_ID (std::string v)
+      {
+        return symbol_type (token::ID, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_ID (const std::string& v)
+      {
+        return symbol_type (token::ID, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_SYMBOL (std::string v)
+      {
+        return symbol_type (token::SYMBOL, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_SYMBOL (const std::string& v)
+      {
+        return symbol_type (token::SYMBOL, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CONST_SYMBOL (std::string v)
+      {
+        return symbol_type (token::CONST_SYMBOL, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_CONST_SYMBOL (const std::string& v)
+      {
+        return symbol_type (token::CONST_SYMBOL, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LBRACE (std::string v)
+      {
+        return symbol_type (token::LBRACE, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_LBRACE (const std::string& v)
+      {
+        return symbol_type (token::LBRACE, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RBRACE (std::string v)
+      {
+        return symbol_type (token::RBRACE, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_RBRACE (const std::string& v)
+      {
+        return symbol_type (token::RBRACE, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LBRACKET (std::string v)
+      {
+        return symbol_type (token::LBRACKET, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_LBRACKET (const std::string& v)
+      {
+        return symbol_type (token::LBRACKET, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RBRACKET (std::string v)
+      {
+        return symbol_type (token::RBRACKET, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_RBRACKET (const std::string& v)
+      {
+        return symbol_type (token::RBRACKET, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LPAREN (std::string v)
+      {
+        return symbol_type (token::LPAREN, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_LPAREN (const std::string& v)
+      {
+        return symbol_type (token::LPAREN, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RPAREN (std::string v)
+      {
+        return symbol_type (token::RPAREN, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_RPAREN (const std::string& v)
+      {
+        return symbol_type (token::RPAREN, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CONFIG_LOAD (std::string v)
+      {
+        return symbol_type (token::CONFIG_LOAD, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_CONFIG_LOAD (const std::string& v)
+      {
+        return symbol_type (token::CONFIG_LOAD, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_INCLUDE (std::string v)
+      {
+        return symbol_type (token::INCLUDE, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_INCLUDE (const std::string& v)
+      {
+        return symbol_type (token::INCLUDE, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_REQUIRE (std::string v)
+      {
+        return symbol_type (token::REQUIRE, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_REQUIRE (const std::string& v)
+      {
+        return symbol_type (token::REQUIRE, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_INSERT (std::string v)
+      {
+        return symbol_type (token::INSERT, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_INSERT (const std::string& v)
+      {
+        return symbol_type (token::INSERT, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_ASSIGN (std::string v)
+      {
+        return symbol_type (token::ASSIGN, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_ASSIGN (const std::string& v)
+      {
+        return symbol_type (token::ASSIGN, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CAPITALIZE (std::string v)
+      {
+        return symbol_type (token::CAPITALIZE, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_CAPITALIZE (const std::string& v)
+      {
+        return symbol_type (token::CAPITALIZE, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CAT (std::string v)
+      {
+        return symbol_type (token::CAT, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_CAT (const std::string& v)
+      {
+        return symbol_type (token::CAT, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_COUNT_CHARACTERS (std::string v)
+      {
+        return symbol_type (token::COUNT_CHARACTERS, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_COUNT_CHARACTERS (const std::string& v)
+      {
+        return symbol_type (token::COUNT_CHARACTERS, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_COUNT_SENTENCES (std::string v)
+      {
+        return symbol_type (token::COUNT_SENTENCES, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_COUNT_SENTENCES (const std::string& v)
+      {
+        return symbol_type (token::COUNT_SENTENCES, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_COUNT_PARAGRAPHS (std::string v)
+      {
+        return symbol_type (token::COUNT_PARAGRAPHS, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_COUNT_PARAGRAPHS (const std::string& v)
+      {
+        return symbol_type (token::COUNT_PARAGRAPHS, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DATE_FORMAT (std::string v)
+      {
+        return symbol_type (token::DATE_FORMAT, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_DATE_FORMAT (const std::string& v)
+      {
+        return symbol_type (token::DATE_FORMAT, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_ESCAPE (std::string v)
+      {
+        return symbol_type (token::ESCAPE, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_ESCAPE (const std::string& v)
+      {
+        return symbol_type (token::ESCAPE, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_INDENT (std::string v)
+      {
+        return symbol_type (token::INDENT, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_INDENT (const std::string& v)
+      {
+        return symbol_type (token::INDENT, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LOWER (std::string v)
+      {
+        return symbol_type (token::LOWER, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_LOWER (const std::string& v)
+      {
+        return symbol_type (token::LOWER, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_UPPER (std::string v)
+      {
+        return symbol_type (token::UPPER, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_UPPER (const std::string& v)
+      {
+        return symbol_type (token::UPPER, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STRIP (std::string v)
+      {
+        return symbol_type (token::STRIP, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_STRIP (const std::string& v)
+      {
+        return symbol_type (token::STRIP, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_REPLACE (std::string v)
+      {
+        return symbol_type (token::REPLACE, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_REPLACE (const std::string& v)
+      {
+        return symbol_type (token::REPLACE, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_SPACIFY (std::string v)
+      {
+        return symbol_type (token::SPACIFY, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_SPACIFY (const std::string& v)
+      {
+        return symbol_type (token::SPACIFY, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STRING_FORMAT (std::string v)
+      {
+        return symbol_type (token::STRING_FORMAT, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_STRING_FORMAT (const std::string& v)
+      {
+        return symbol_type (token::STRING_FORMAT, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STRIP_TAGS (std::string v)
+      {
+        return symbol_type (token::STRIP_TAGS, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_STRIP_TAGS (const std::string& v)
+      {
+        return symbol_type (token::STRIP_TAGS, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_TRUNCATE (std::string v)
+      {
+        return symbol_type (token::TRUNCATE, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_TRUNCATE (const std::string& v)
+      {
+        return symbol_type (token::TRUNCATE, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_WORDWARP (std::string v)
+      {
+        return symbol_type (token::WORDWARP, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_WORDWARP (const std::string& v)
+      {
+        return symbol_type (token::WORDWARP, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_VAR_ATTRIB (std::string v)
+      {
+        return symbol_type (token::VAR_ATTRIB, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_VAR_ATTRIB (const std::string& v)
+      {
+        return symbol_type (token::VAR_ATTRIB, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_VALUE_ATTRIB (std::string v)
+      {
+        return symbol_type (token::VALUE_ATTRIB, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_VALUE_ATTRIB (const std::string& v)
+      {
+        return symbol_type (token::VALUE_ATTRIB, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_FILE_ATTRIB (std::string v)
+      {
+        return symbol_type (token::FILE_ATTRIB, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_FILE_ATTRIB (const std::string& v)
+      {
+        return symbol_type (token::FILE_ATTRIB, v);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_FILE_NAME (std::string v)
+      {
+        return symbol_type (token::FILE_NAME, std::move (v));
+      }
+#else
+      static
+      symbol_type
+      make_FILE_NAME (const std::string& v)
+      {
+        return symbol_type (token::FILE_NAME, v);
       }
 #endif
 
@@ -904,7 +1839,7 @@ switch (yykind)
 
 #if YYDEBUG
     // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-    static const signed char yyrline_[];
+    static const short yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r) const;
     /// Print the state stack on the debug stream.
@@ -1131,9 +2066,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 2,     ///< Last index in yytable_.
-      yynnts_ = 4,  ///< Number of nonterminal symbols.
-      yyfinal_ = 3 ///< Termination state number.
+      yylast_ = 92,     ///< Last index in yytable_.
+      yynnts_ = 18,  ///< Number of nonterminal symbols.
+      yyfinal_ = 20 ///< Termination state number.
     };
 
 
@@ -1174,10 +2109,15 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     2,     3,     4
+       2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
+       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45,    46,    47,    48,    49
     };
     // Last valid token kind.
-    const int code_max = 259;
+    const int code_max = 304;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1199,13 +2139,65 @@ switch (yykind)
         value.copy< int > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_TEXT: // TEXT
-      case symbol_kind::S_item: // item
-        value.copy< std::string > (YY_MOVE (that.value));
+      case symbol_kind::S_attrib: // attrib
+        value.copy< std::pair< std::string, std::string > > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_list: // list
-        value.copy< std::vector<std::string> > (YY_MOVE (that.value));
+      case symbol_kind::S_TEXT: // TEXT
+      case symbol_kind::S_DOLLAR_SIGN: // DOLLAR_SIGN
+      case symbol_kind::S_DOT: // DOT
+      case symbol_kind::S_INDIRECT_MEMBER: // INDIRECT_MEMBER
+      case symbol_kind::S_COMMA: // COMMA
+      case symbol_kind::S_EQUAL: // EQUAL
+      case symbol_kind::S_VBAR: // VBAR
+      case symbol_kind::S_COLON: // COLON
+      case symbol_kind::S_STRING_LITERAL: // STRING_LITERAL
+      case symbol_kind::S_NUMERIC_LITERAL: // NUMERIC_LITERAL
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_SYMBOL: // SYMBOL
+      case symbol_kind::S_CONST_SYMBOL: // CONST_SYMBOL
+      case symbol_kind::S_LBRACE: // LBRACE
+      case symbol_kind::S_RBRACE: // RBRACE
+      case symbol_kind::S_LBRACKET: // LBRACKET
+      case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_LPAREN: // LPAREN
+      case symbol_kind::S_RPAREN: // RPAREN
+      case symbol_kind::S_CONFIG_LOAD: // CONFIG_LOAD
+      case symbol_kind::S_INCLUDE: // INCLUDE
+      case symbol_kind::S_REQUIRE: // REQUIRE
+      case symbol_kind::S_INSERT: // INSERT
+      case symbol_kind::S_ASSIGN: // ASSIGN
+      case symbol_kind::S_CAPITALIZE: // CAPITALIZE
+      case symbol_kind::S_CAT: // CAT
+      case symbol_kind::S_COUNT_CHARACTERS: // COUNT_CHARACTERS
+      case symbol_kind::S_COUNT_SENTENCES: // COUNT_SENTENCES
+      case symbol_kind::S_COUNT_PARAGRAPHS: // COUNT_PARAGRAPHS
+      case symbol_kind::S_DATE_FORMAT: // DATE_FORMAT
+      case symbol_kind::S_ESCAPE: // ESCAPE
+      case symbol_kind::S_INDENT: // INDENT
+      case symbol_kind::S_LOWER: // LOWER
+      case symbol_kind::S_UPPER: // UPPER
+      case symbol_kind::S_STRIP: // STRIP
+      case symbol_kind::S_REPLACE: // REPLACE
+      case symbol_kind::S_SPACIFY: // SPACIFY
+      case symbol_kind::S_STRING_FORMAT: // STRING_FORMAT
+      case symbol_kind::S_STRIP_TAGS: // STRIP_TAGS
+      case symbol_kind::S_TRUNCATE: // TRUNCATE
+      case symbol_kind::S_WORDWARP: // WORDWARP
+      case symbol_kind::S_VAR_ATTRIB: // VAR_ATTRIB
+      case symbol_kind::S_VALUE_ATTRIB: // VALUE_ATTRIB
+      case symbol_kind::S_FILE_ATTRIB: // FILE_ATTRIB
+      case symbol_kind::S_FILE_NAME: // FILE_NAME
+      case symbol_kind::S_colon_sep_params: // colon_sep_params
+      case symbol_kind::S_colon_sep_param: // colon_sep_param
+      case symbol_kind::S_qualafied_id: // qualafied_id
+      case symbol_kind::S_sub_proc: // sub_proc
+      case symbol_kind::S_array: // array
+      case symbol_kind::S_symbol: // symbol
+      case symbol_kind::S_modifier: // modifier
+      case symbol_kind::S_built_in: // built_in
+      case symbol_kind::S_attributes: // attributes
+        value.copy< std::string > (YY_MOVE (that.value));
         break;
 
       default:
@@ -1243,13 +2235,65 @@ switch (yykind)
         value.move< int > (YY_MOVE (s.value));
         break;
 
-      case symbol_kind::S_TEXT: // TEXT
-      case symbol_kind::S_item: // item
-        value.move< std::string > (YY_MOVE (s.value));
+      case symbol_kind::S_attrib: // attrib
+        value.move< std::pair< std::string, std::string > > (YY_MOVE (s.value));
         break;
 
-      case symbol_kind::S_list: // list
-        value.move< std::vector<std::string> > (YY_MOVE (s.value));
+      case symbol_kind::S_TEXT: // TEXT
+      case symbol_kind::S_DOLLAR_SIGN: // DOLLAR_SIGN
+      case symbol_kind::S_DOT: // DOT
+      case symbol_kind::S_INDIRECT_MEMBER: // INDIRECT_MEMBER
+      case symbol_kind::S_COMMA: // COMMA
+      case symbol_kind::S_EQUAL: // EQUAL
+      case symbol_kind::S_VBAR: // VBAR
+      case symbol_kind::S_COLON: // COLON
+      case symbol_kind::S_STRING_LITERAL: // STRING_LITERAL
+      case symbol_kind::S_NUMERIC_LITERAL: // NUMERIC_LITERAL
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_SYMBOL: // SYMBOL
+      case symbol_kind::S_CONST_SYMBOL: // CONST_SYMBOL
+      case symbol_kind::S_LBRACE: // LBRACE
+      case symbol_kind::S_RBRACE: // RBRACE
+      case symbol_kind::S_LBRACKET: // LBRACKET
+      case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_LPAREN: // LPAREN
+      case symbol_kind::S_RPAREN: // RPAREN
+      case symbol_kind::S_CONFIG_LOAD: // CONFIG_LOAD
+      case symbol_kind::S_INCLUDE: // INCLUDE
+      case symbol_kind::S_REQUIRE: // REQUIRE
+      case symbol_kind::S_INSERT: // INSERT
+      case symbol_kind::S_ASSIGN: // ASSIGN
+      case symbol_kind::S_CAPITALIZE: // CAPITALIZE
+      case symbol_kind::S_CAT: // CAT
+      case symbol_kind::S_COUNT_CHARACTERS: // COUNT_CHARACTERS
+      case symbol_kind::S_COUNT_SENTENCES: // COUNT_SENTENCES
+      case symbol_kind::S_COUNT_PARAGRAPHS: // COUNT_PARAGRAPHS
+      case symbol_kind::S_DATE_FORMAT: // DATE_FORMAT
+      case symbol_kind::S_ESCAPE: // ESCAPE
+      case symbol_kind::S_INDENT: // INDENT
+      case symbol_kind::S_LOWER: // LOWER
+      case symbol_kind::S_UPPER: // UPPER
+      case symbol_kind::S_STRIP: // STRIP
+      case symbol_kind::S_REPLACE: // REPLACE
+      case symbol_kind::S_SPACIFY: // SPACIFY
+      case symbol_kind::S_STRING_FORMAT: // STRING_FORMAT
+      case symbol_kind::S_STRIP_TAGS: // STRIP_TAGS
+      case symbol_kind::S_TRUNCATE: // TRUNCATE
+      case symbol_kind::S_WORDWARP: // WORDWARP
+      case symbol_kind::S_VAR_ATTRIB: // VAR_ATTRIB
+      case symbol_kind::S_VALUE_ATTRIB: // VALUE_ATTRIB
+      case symbol_kind::S_FILE_ATTRIB: // FILE_ATTRIB
+      case symbol_kind::S_FILE_NAME: // FILE_NAME
+      case symbol_kind::S_colon_sep_params: // colon_sep_params
+      case symbol_kind::S_colon_sep_param: // colon_sep_param
+      case symbol_kind::S_qualafied_id: // qualafied_id
+      case symbol_kind::S_sub_proc: // sub_proc
+      case symbol_kind::S_array: // array
+      case symbol_kind::S_symbol: // symbol
+      case symbol_kind::S_modifier: // modifier
+      case symbol_kind::S_built_in: // built_in
+      case symbol_kind::S_attributes: // attributes
+        value.move< std::string > (YY_MOVE (s.value));
         break;
 
       default:
@@ -1309,7 +2353,7 @@ switch (yykind)
 
 
 } // yy
-#line 1313 "parser2.cc"
+#line 2357 "parser2.cc"
 
 
 
@@ -1318,6 +2362,26 @@ switch (yykind)
 
 // Unqualified %code blocks.
 #line 24 "parser2.yy"
+
+     #include <iostream>
+    #include <string>
+    #include <iomanip>
+    #include <list>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include "bash_color.h"
+    #include "symtab.h"
+
+    using std::string;
+    using std::cout;
+    using std::endl;
+    using std::pair;
+
+    #define VERBOSE
+
+    typedef std::pair< std::string, std::string > attribute;
+
 
     // print a list of strings
     auto operator<<(std::ostream& o, const std::vector<std::string>& ss) -> std::ostream&
@@ -1331,7 +2395,27 @@ switch (yykind)
         }
         return o << '}';
     }
-#line 41 "parser2.yy"
+#line 61 "parser2.yy"
+
+    int yylex(void);
+    int yyerror(char * s);
+    char* STRDUP(char* s);
+    /* string literal buffer */
+    char buf[100];
+    char *s;
+
+    typedef struct nvalue
+    {
+        char* name;
+        char* value;
+        struct nvalue* next;
+    } nvalue;
+
+    static nvalue* pnv_head = 0;
+    nvalue* alloc_nvalue(char* name, char* value);
+    void free_nvalue(nvalue* nv);
+    void free_all_nvalues();
+    typedef std::pair< std::string, std::string > attribute;
 
     namespace yy
     {
@@ -1353,7 +2437,7 @@ switch (yykind)
         }
     }
 
-#line 1357 "parser2.cc"
+#line 2441 "parser2.cc"
 
 
 #ifndef YY_
@@ -1366,6 +2450,10 @@ switch (yykind)
 # ifndef YY_
 #  define YY_(msgid) msgid
 # endif
+#endif
+
+#ifndef N_
+# define N_(Msgid) Msgid
 #endif
 
 
@@ -1426,7 +2514,7 @@ switch (yykind)
 #define YYRECOVERING()  (!!yyerrstatus_)
 
 namespace yy {
-#line 1430 "parser2.cc"
+#line 2518 "parser2.cc"
 
   /// Build a parser object.
   parser::parser ()
@@ -1497,13 +2585,65 @@ namespace yy {
         value.YY_MOVE_OR_COPY< int > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_TEXT: // TEXT
-      case symbol_kind::S_item: // item
-        value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
+      case symbol_kind::S_attrib: // attrib
+        value.YY_MOVE_OR_COPY< std::pair< std::string, std::string > > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_list: // list
-        value.YY_MOVE_OR_COPY< std::vector<std::string> > (YY_MOVE (that.value));
+      case symbol_kind::S_TEXT: // TEXT
+      case symbol_kind::S_DOLLAR_SIGN: // DOLLAR_SIGN
+      case symbol_kind::S_DOT: // DOT
+      case symbol_kind::S_INDIRECT_MEMBER: // INDIRECT_MEMBER
+      case symbol_kind::S_COMMA: // COMMA
+      case symbol_kind::S_EQUAL: // EQUAL
+      case symbol_kind::S_VBAR: // VBAR
+      case symbol_kind::S_COLON: // COLON
+      case symbol_kind::S_STRING_LITERAL: // STRING_LITERAL
+      case symbol_kind::S_NUMERIC_LITERAL: // NUMERIC_LITERAL
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_SYMBOL: // SYMBOL
+      case symbol_kind::S_CONST_SYMBOL: // CONST_SYMBOL
+      case symbol_kind::S_LBRACE: // LBRACE
+      case symbol_kind::S_RBRACE: // RBRACE
+      case symbol_kind::S_LBRACKET: // LBRACKET
+      case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_LPAREN: // LPAREN
+      case symbol_kind::S_RPAREN: // RPAREN
+      case symbol_kind::S_CONFIG_LOAD: // CONFIG_LOAD
+      case symbol_kind::S_INCLUDE: // INCLUDE
+      case symbol_kind::S_REQUIRE: // REQUIRE
+      case symbol_kind::S_INSERT: // INSERT
+      case symbol_kind::S_ASSIGN: // ASSIGN
+      case symbol_kind::S_CAPITALIZE: // CAPITALIZE
+      case symbol_kind::S_CAT: // CAT
+      case symbol_kind::S_COUNT_CHARACTERS: // COUNT_CHARACTERS
+      case symbol_kind::S_COUNT_SENTENCES: // COUNT_SENTENCES
+      case symbol_kind::S_COUNT_PARAGRAPHS: // COUNT_PARAGRAPHS
+      case symbol_kind::S_DATE_FORMAT: // DATE_FORMAT
+      case symbol_kind::S_ESCAPE: // ESCAPE
+      case symbol_kind::S_INDENT: // INDENT
+      case symbol_kind::S_LOWER: // LOWER
+      case symbol_kind::S_UPPER: // UPPER
+      case symbol_kind::S_STRIP: // STRIP
+      case symbol_kind::S_REPLACE: // REPLACE
+      case symbol_kind::S_SPACIFY: // SPACIFY
+      case symbol_kind::S_STRING_FORMAT: // STRING_FORMAT
+      case symbol_kind::S_STRIP_TAGS: // STRIP_TAGS
+      case symbol_kind::S_TRUNCATE: // TRUNCATE
+      case symbol_kind::S_WORDWARP: // WORDWARP
+      case symbol_kind::S_VAR_ATTRIB: // VAR_ATTRIB
+      case symbol_kind::S_VALUE_ATTRIB: // VALUE_ATTRIB
+      case symbol_kind::S_FILE_ATTRIB: // FILE_ATTRIB
+      case symbol_kind::S_FILE_NAME: // FILE_NAME
+      case symbol_kind::S_colon_sep_params: // colon_sep_params
+      case symbol_kind::S_colon_sep_param: // colon_sep_param
+      case symbol_kind::S_qualafied_id: // qualafied_id
+      case symbol_kind::S_sub_proc: // sub_proc
+      case symbol_kind::S_array: // array
+      case symbol_kind::S_symbol: // symbol
+      case symbol_kind::S_modifier: // modifier
+      case symbol_kind::S_built_in: // built_in
+      case symbol_kind::S_attributes: // attributes
+        value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
         break;
 
       default:
@@ -1525,13 +2665,65 @@ namespace yy {
         value.move< int > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_TEXT: // TEXT
-      case symbol_kind::S_item: // item
-        value.move< std::string > (YY_MOVE (that.value));
+      case symbol_kind::S_attrib: // attrib
+        value.move< std::pair< std::string, std::string > > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_list: // list
-        value.move< std::vector<std::string> > (YY_MOVE (that.value));
+      case symbol_kind::S_TEXT: // TEXT
+      case symbol_kind::S_DOLLAR_SIGN: // DOLLAR_SIGN
+      case symbol_kind::S_DOT: // DOT
+      case symbol_kind::S_INDIRECT_MEMBER: // INDIRECT_MEMBER
+      case symbol_kind::S_COMMA: // COMMA
+      case symbol_kind::S_EQUAL: // EQUAL
+      case symbol_kind::S_VBAR: // VBAR
+      case symbol_kind::S_COLON: // COLON
+      case symbol_kind::S_STRING_LITERAL: // STRING_LITERAL
+      case symbol_kind::S_NUMERIC_LITERAL: // NUMERIC_LITERAL
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_SYMBOL: // SYMBOL
+      case symbol_kind::S_CONST_SYMBOL: // CONST_SYMBOL
+      case symbol_kind::S_LBRACE: // LBRACE
+      case symbol_kind::S_RBRACE: // RBRACE
+      case symbol_kind::S_LBRACKET: // LBRACKET
+      case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_LPAREN: // LPAREN
+      case symbol_kind::S_RPAREN: // RPAREN
+      case symbol_kind::S_CONFIG_LOAD: // CONFIG_LOAD
+      case symbol_kind::S_INCLUDE: // INCLUDE
+      case symbol_kind::S_REQUIRE: // REQUIRE
+      case symbol_kind::S_INSERT: // INSERT
+      case symbol_kind::S_ASSIGN: // ASSIGN
+      case symbol_kind::S_CAPITALIZE: // CAPITALIZE
+      case symbol_kind::S_CAT: // CAT
+      case symbol_kind::S_COUNT_CHARACTERS: // COUNT_CHARACTERS
+      case symbol_kind::S_COUNT_SENTENCES: // COUNT_SENTENCES
+      case symbol_kind::S_COUNT_PARAGRAPHS: // COUNT_PARAGRAPHS
+      case symbol_kind::S_DATE_FORMAT: // DATE_FORMAT
+      case symbol_kind::S_ESCAPE: // ESCAPE
+      case symbol_kind::S_INDENT: // INDENT
+      case symbol_kind::S_LOWER: // LOWER
+      case symbol_kind::S_UPPER: // UPPER
+      case symbol_kind::S_STRIP: // STRIP
+      case symbol_kind::S_REPLACE: // REPLACE
+      case symbol_kind::S_SPACIFY: // SPACIFY
+      case symbol_kind::S_STRING_FORMAT: // STRING_FORMAT
+      case symbol_kind::S_STRIP_TAGS: // STRIP_TAGS
+      case symbol_kind::S_TRUNCATE: // TRUNCATE
+      case symbol_kind::S_WORDWARP: // WORDWARP
+      case symbol_kind::S_VAR_ATTRIB: // VAR_ATTRIB
+      case symbol_kind::S_VALUE_ATTRIB: // VALUE_ATTRIB
+      case symbol_kind::S_FILE_ATTRIB: // FILE_ATTRIB
+      case symbol_kind::S_FILE_NAME: // FILE_NAME
+      case symbol_kind::S_colon_sep_params: // colon_sep_params
+      case symbol_kind::S_colon_sep_param: // colon_sep_param
+      case symbol_kind::S_qualafied_id: // qualafied_id
+      case symbol_kind::S_sub_proc: // sub_proc
+      case symbol_kind::S_array: // array
+      case symbol_kind::S_symbol: // symbol
+      case symbol_kind::S_modifier: // modifier
+      case symbol_kind::S_built_in: // built_in
+      case symbol_kind::S_attributes: // attributes
+        value.move< std::string > (YY_MOVE (that.value));
         break;
 
       default:
@@ -1553,13 +2745,65 @@ namespace yy {
         value.copy< int > (that.value);
         break;
 
-      case symbol_kind::S_TEXT: // TEXT
-      case symbol_kind::S_item: // item
-        value.copy< std::string > (that.value);
+      case symbol_kind::S_attrib: // attrib
+        value.copy< std::pair< std::string, std::string > > (that.value);
         break;
 
-      case symbol_kind::S_list: // list
-        value.copy< std::vector<std::string> > (that.value);
+      case symbol_kind::S_TEXT: // TEXT
+      case symbol_kind::S_DOLLAR_SIGN: // DOLLAR_SIGN
+      case symbol_kind::S_DOT: // DOT
+      case symbol_kind::S_INDIRECT_MEMBER: // INDIRECT_MEMBER
+      case symbol_kind::S_COMMA: // COMMA
+      case symbol_kind::S_EQUAL: // EQUAL
+      case symbol_kind::S_VBAR: // VBAR
+      case symbol_kind::S_COLON: // COLON
+      case symbol_kind::S_STRING_LITERAL: // STRING_LITERAL
+      case symbol_kind::S_NUMERIC_LITERAL: // NUMERIC_LITERAL
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_SYMBOL: // SYMBOL
+      case symbol_kind::S_CONST_SYMBOL: // CONST_SYMBOL
+      case symbol_kind::S_LBRACE: // LBRACE
+      case symbol_kind::S_RBRACE: // RBRACE
+      case symbol_kind::S_LBRACKET: // LBRACKET
+      case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_LPAREN: // LPAREN
+      case symbol_kind::S_RPAREN: // RPAREN
+      case symbol_kind::S_CONFIG_LOAD: // CONFIG_LOAD
+      case symbol_kind::S_INCLUDE: // INCLUDE
+      case symbol_kind::S_REQUIRE: // REQUIRE
+      case symbol_kind::S_INSERT: // INSERT
+      case symbol_kind::S_ASSIGN: // ASSIGN
+      case symbol_kind::S_CAPITALIZE: // CAPITALIZE
+      case symbol_kind::S_CAT: // CAT
+      case symbol_kind::S_COUNT_CHARACTERS: // COUNT_CHARACTERS
+      case symbol_kind::S_COUNT_SENTENCES: // COUNT_SENTENCES
+      case symbol_kind::S_COUNT_PARAGRAPHS: // COUNT_PARAGRAPHS
+      case symbol_kind::S_DATE_FORMAT: // DATE_FORMAT
+      case symbol_kind::S_ESCAPE: // ESCAPE
+      case symbol_kind::S_INDENT: // INDENT
+      case symbol_kind::S_LOWER: // LOWER
+      case symbol_kind::S_UPPER: // UPPER
+      case symbol_kind::S_STRIP: // STRIP
+      case symbol_kind::S_REPLACE: // REPLACE
+      case symbol_kind::S_SPACIFY: // SPACIFY
+      case symbol_kind::S_STRING_FORMAT: // STRING_FORMAT
+      case symbol_kind::S_STRIP_TAGS: // STRIP_TAGS
+      case symbol_kind::S_TRUNCATE: // TRUNCATE
+      case symbol_kind::S_WORDWARP: // WORDWARP
+      case symbol_kind::S_VAR_ATTRIB: // VAR_ATTRIB
+      case symbol_kind::S_VALUE_ATTRIB: // VALUE_ATTRIB
+      case symbol_kind::S_FILE_ATTRIB: // FILE_ATTRIB
+      case symbol_kind::S_FILE_NAME: // FILE_NAME
+      case symbol_kind::S_colon_sep_params: // colon_sep_params
+      case symbol_kind::S_colon_sep_param: // colon_sep_param
+      case symbol_kind::S_qualafied_id: // qualafied_id
+      case symbol_kind::S_sub_proc: // sub_proc
+      case symbol_kind::S_array: // array
+      case symbol_kind::S_symbol: // symbol
+      case symbol_kind::S_modifier: // modifier
+      case symbol_kind::S_built_in: // built_in
+      case symbol_kind::S_attributes: // attributes
+        value.copy< std::string > (that.value);
         break;
 
       default:
@@ -1579,13 +2823,65 @@ namespace yy {
         value.move< int > (that.value);
         break;
 
-      case symbol_kind::S_TEXT: // TEXT
-      case symbol_kind::S_item: // item
-        value.move< std::string > (that.value);
+      case symbol_kind::S_attrib: // attrib
+        value.move< std::pair< std::string, std::string > > (that.value);
         break;
 
-      case symbol_kind::S_list: // list
-        value.move< std::vector<std::string> > (that.value);
+      case symbol_kind::S_TEXT: // TEXT
+      case symbol_kind::S_DOLLAR_SIGN: // DOLLAR_SIGN
+      case symbol_kind::S_DOT: // DOT
+      case symbol_kind::S_INDIRECT_MEMBER: // INDIRECT_MEMBER
+      case symbol_kind::S_COMMA: // COMMA
+      case symbol_kind::S_EQUAL: // EQUAL
+      case symbol_kind::S_VBAR: // VBAR
+      case symbol_kind::S_COLON: // COLON
+      case symbol_kind::S_STRING_LITERAL: // STRING_LITERAL
+      case symbol_kind::S_NUMERIC_LITERAL: // NUMERIC_LITERAL
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_SYMBOL: // SYMBOL
+      case symbol_kind::S_CONST_SYMBOL: // CONST_SYMBOL
+      case symbol_kind::S_LBRACE: // LBRACE
+      case symbol_kind::S_RBRACE: // RBRACE
+      case symbol_kind::S_LBRACKET: // LBRACKET
+      case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_LPAREN: // LPAREN
+      case symbol_kind::S_RPAREN: // RPAREN
+      case symbol_kind::S_CONFIG_LOAD: // CONFIG_LOAD
+      case symbol_kind::S_INCLUDE: // INCLUDE
+      case symbol_kind::S_REQUIRE: // REQUIRE
+      case symbol_kind::S_INSERT: // INSERT
+      case symbol_kind::S_ASSIGN: // ASSIGN
+      case symbol_kind::S_CAPITALIZE: // CAPITALIZE
+      case symbol_kind::S_CAT: // CAT
+      case symbol_kind::S_COUNT_CHARACTERS: // COUNT_CHARACTERS
+      case symbol_kind::S_COUNT_SENTENCES: // COUNT_SENTENCES
+      case symbol_kind::S_COUNT_PARAGRAPHS: // COUNT_PARAGRAPHS
+      case symbol_kind::S_DATE_FORMAT: // DATE_FORMAT
+      case symbol_kind::S_ESCAPE: // ESCAPE
+      case symbol_kind::S_INDENT: // INDENT
+      case symbol_kind::S_LOWER: // LOWER
+      case symbol_kind::S_UPPER: // UPPER
+      case symbol_kind::S_STRIP: // STRIP
+      case symbol_kind::S_REPLACE: // REPLACE
+      case symbol_kind::S_SPACIFY: // SPACIFY
+      case symbol_kind::S_STRING_FORMAT: // STRING_FORMAT
+      case symbol_kind::S_STRIP_TAGS: // STRIP_TAGS
+      case symbol_kind::S_TRUNCATE: // TRUNCATE
+      case symbol_kind::S_WORDWARP: // WORDWARP
+      case symbol_kind::S_VAR_ATTRIB: // VAR_ATTRIB
+      case symbol_kind::S_VALUE_ATTRIB: // VALUE_ATTRIB
+      case symbol_kind::S_FILE_ATTRIB: // FILE_ATTRIB
+      case symbol_kind::S_FILE_NAME: // FILE_NAME
+      case symbol_kind::S_colon_sep_params: // colon_sep_params
+      case symbol_kind::S_colon_sep_param: // colon_sep_param
+      case symbol_kind::S_qualafied_id: // qualafied_id
+      case symbol_kind::S_sub_proc: // sub_proc
+      case symbol_kind::S_array: // array
+      case symbol_kind::S_symbol: // symbol
+      case symbol_kind::S_modifier: // modifier
+      case symbol_kind::S_built_in: // built_in
+      case symbol_kind::S_attributes: // attributes
+        value.move< std::string > (that.value);
         break;
 
       default:
@@ -1846,13 +3142,65 @@ namespace yy {
         yylhs.value.emplace< int > ();
         break;
 
-      case symbol_kind::S_TEXT: // TEXT
-      case symbol_kind::S_item: // item
-        yylhs.value.emplace< std::string > ();
+      case symbol_kind::S_attrib: // attrib
+        yylhs.value.emplace< std::pair< std::string, std::string > > ();
         break;
 
-      case symbol_kind::S_list: // list
-        yylhs.value.emplace< std::vector<std::string> > ();
+      case symbol_kind::S_TEXT: // TEXT
+      case symbol_kind::S_DOLLAR_SIGN: // DOLLAR_SIGN
+      case symbol_kind::S_DOT: // DOT
+      case symbol_kind::S_INDIRECT_MEMBER: // INDIRECT_MEMBER
+      case symbol_kind::S_COMMA: // COMMA
+      case symbol_kind::S_EQUAL: // EQUAL
+      case symbol_kind::S_VBAR: // VBAR
+      case symbol_kind::S_COLON: // COLON
+      case symbol_kind::S_STRING_LITERAL: // STRING_LITERAL
+      case symbol_kind::S_NUMERIC_LITERAL: // NUMERIC_LITERAL
+      case symbol_kind::S_ID: // ID
+      case symbol_kind::S_SYMBOL: // SYMBOL
+      case symbol_kind::S_CONST_SYMBOL: // CONST_SYMBOL
+      case symbol_kind::S_LBRACE: // LBRACE
+      case symbol_kind::S_RBRACE: // RBRACE
+      case symbol_kind::S_LBRACKET: // LBRACKET
+      case symbol_kind::S_RBRACKET: // RBRACKET
+      case symbol_kind::S_LPAREN: // LPAREN
+      case symbol_kind::S_RPAREN: // RPAREN
+      case symbol_kind::S_CONFIG_LOAD: // CONFIG_LOAD
+      case symbol_kind::S_INCLUDE: // INCLUDE
+      case symbol_kind::S_REQUIRE: // REQUIRE
+      case symbol_kind::S_INSERT: // INSERT
+      case symbol_kind::S_ASSIGN: // ASSIGN
+      case symbol_kind::S_CAPITALIZE: // CAPITALIZE
+      case symbol_kind::S_CAT: // CAT
+      case symbol_kind::S_COUNT_CHARACTERS: // COUNT_CHARACTERS
+      case symbol_kind::S_COUNT_SENTENCES: // COUNT_SENTENCES
+      case symbol_kind::S_COUNT_PARAGRAPHS: // COUNT_PARAGRAPHS
+      case symbol_kind::S_DATE_FORMAT: // DATE_FORMAT
+      case symbol_kind::S_ESCAPE: // ESCAPE
+      case symbol_kind::S_INDENT: // INDENT
+      case symbol_kind::S_LOWER: // LOWER
+      case symbol_kind::S_UPPER: // UPPER
+      case symbol_kind::S_STRIP: // STRIP
+      case symbol_kind::S_REPLACE: // REPLACE
+      case symbol_kind::S_SPACIFY: // SPACIFY
+      case symbol_kind::S_STRING_FORMAT: // STRING_FORMAT
+      case symbol_kind::S_STRIP_TAGS: // STRIP_TAGS
+      case symbol_kind::S_TRUNCATE: // TRUNCATE
+      case symbol_kind::S_WORDWARP: // WORDWARP
+      case symbol_kind::S_VAR_ATTRIB: // VAR_ATTRIB
+      case symbol_kind::S_VALUE_ATTRIB: // VALUE_ATTRIB
+      case symbol_kind::S_FILE_ATTRIB: // FILE_ATTRIB
+      case symbol_kind::S_FILE_NAME: // FILE_NAME
+      case symbol_kind::S_colon_sep_params: // colon_sep_params
+      case symbol_kind::S_colon_sep_param: // colon_sep_param
+      case symbol_kind::S_qualafied_id: // qualafied_id
+      case symbol_kind::S_sub_proc: // sub_proc
+      case symbol_kind::S_array: // array
+      case symbol_kind::S_symbol: // symbol
+      case symbol_kind::S_modifier: // modifier
+      case symbol_kind::S_built_in: // built_in
+      case symbol_kind::S_attributes: // attributes
+        yylhs.value.emplace< std::string > ();
         break;
 
       default:
@@ -1869,38 +3217,505 @@ namespace yy {
         {
           switch (yyn)
             {
-  case 2: // result: list
-#line 66 "parser2.yy"
-                     { std::cout << yystack_[0].value.as < std::vector<std::string> > () << '\n'; }
-#line 1876 "parser2.cc"
+  case 2: // exe: files
+#line 128 "parser2.yy"
+                                                                {
+                                                                    std::cout <<  FMT_FG_GREEN << "PARSER exe: | files" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW << "*********************** STOPPING **********************" << FMT_REVERSE << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW << "*                     Terminating.                    *" << FMT_REVERSE << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW << "************************* Done ************************" << FMT_REVERSE << FMT_RESET << endl;
+                                                                }
+#line 3229 "parser2.cc"
     break;
 
-  case 3: // list: %empty
-#line 71 "parser2.yy"
-                     { /* Generates an empty string list */ }
-#line 1882 "parser2.cc"
+  case 3: // exe: files END_OF_FILES
+#line 134 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER exe: | files END_OF_FILES"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3239 "parser2.cc"
     break;
 
-  case 4: // list: list item
-#line 72 "parser2.yy"
-                     { yylhs.value.as < std::vector<std::string> > () = yystack_[1].value.as < std::vector<std::string> > (); yylhs.value.as < std::vector<std::string> > ().push_back(yystack_[0].value.as < std::string > ()); }
-#line 1888 "parser2.cc"
+  case 4: // files: file
+#line 142 "parser2.yy"
+                                                                { cout << FMT_FG_YELLOW << "PARSER files: | file" << FMT_RESET << endl; }
+#line 3245 "parser2.cc"
     break;
 
-  case 5: // item: TEXT
-#line 80 "parser2.yy"
-        { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
-#line 1894 "parser2.cc"
+  case 5: // files: files file
+#line 143 "parser2.yy"
+                                                                { cout << FMT_FG_YELLOW << "PARSER files: | files file" << FMT_RESET << endl; }
+#line 3251 "parser2.cc"
     break;
 
-  case 6: // item: NUMBER
-#line 81 "parser2.yy"
-                     { yylhs.value.as < std::string > () = std::to_string(yystack_[0].value.as < int > ()); }
-#line 1900 "parser2.cc"
+  case 6: // file: blocks "end of input"
+#line 147 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW << "PARSER file: | blocks END_OF_FILE" << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW << "*******************************************************" << FMT_REVERSE << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW << "*                      End Of File                    *" << FMT_REVERSE << FMT_RESET << endl;
+                                                                    cout << FMT_FG_YELLOW << "*******************************************************" << FMT_REVERSE << FMT_RESET << endl;
+                                                                }
+#line 3262 "parser2.cc"
+    break;
+
+  case 7: // blocks: tag
+#line 156 "parser2.yy"
+                                                              {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER blocks: | block"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3272 "parser2.cc"
+    break;
+
+  case 8: // blocks: blocks tag
+#line 161 "parser2.yy"
+                                                              {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER blocks: | blocks block"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3282 "parser2.cc"
+    break;
+
+  case 9: // tag: LBRACE sub_proc RBRACE
+#line 169 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE sub_porc RBRACE"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3292 "parser2.cc"
+    break;
+
+  case 10: // tag: LBRACE array RBRACE
+#line 174 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE array RBRACE"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3302 "parser2.cc"
+    break;
+
+  case 11: // tag: LBRACE symbol VBAR modifier RBRACE
+#line 179 "parser2.yy"
+                                                                {
+                                                                    #ifdef VERBOSE
+                                                                    cout << "PARSER tag: | LBRACE symbol=%s VBAR modifier=%s RBRACE%s, FMT_FG_BLUE,  $2, $4, FMT_RESET" << endl;;
+                                                                    #endif
+                                                                }
+#line 3312 "parser2.cc"
+    break;
+
+  case 12: // tag: LBRACE symbol VBAR modifier colon_sep_params RBRACE
+#line 184 "parser2.yy"
+                                                                {
+                                                                    #ifdef VERBOSE
+                                                                    couit "%sPARSER tag: | LBRACE symbol=%s VBAR modifier=%s colon_sep_param RBRACE%s\n" << "FMT_FG_BLUE, $2, $4, FMT_RESET" <<  endl;
+                                                                    #endif
+                                                                }
+#line 3322 "parser2.cc"
+    break;
+
+  case 13: // tag: LBRACE symbol RBRACE
+#line 189 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE symbol RBRACE"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3332 "parser2.cc"
+    break;
+
+  case 14: // tag: LBRACE qualafied_id RBRACE
+#line 194 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE qualafied_id RBRACE"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3342 "parser2.cc"
+    break;
+
+  case 15: // tag: LBRACE built_in RBRACE
+#line 199 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER block: | LBRACE built_in RBRACE"
+                                                                         << FMT_RESET << endl;
+
+                                                                    //free_all_nvalues();
+                                                                }
+#line 3354 "parser2.cc"
+    break;
+
+  case 16: // tag: NUMBER
+#line 206 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_RED
+                                                                            << "block: NUMBER"
+                                                                        << FMT_RESET << endl;   }
+#line 3363 "parser2.cc"
+    break;
+
+  case 17: // colon_sep_params: colon_sep_param
+#line 213 "parser2.yy"
+                                                                {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("colon_sep_params: | colon_sep_param\n");
+                                                                    #endif
+                                                                }
+#line 3373 "parser2.cc"
+    break;
+
+  case 18: // colon_sep_params: colon_sep_params colon_sep_param
+#line 218 "parser2.yy"
+                                                                {}
+#line 3379 "parser2.cc"
+    break;
+
+  case 19: // colon_sep_param: COLON NUMERIC_LITERAL
+#line 222 "parser2.yy"
+                                                                {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("colon_sep_param: | COLON NUMERIC_LITERAL\n");
+                                                                    #endif
+                                                                }
+#line 3389 "parser2.cc"
+    break;
+
+  case 20: // params: param
+#line 229 "parser2.yy"
+                                                            { cout << FMT_FG_YELLOW << "PARSER params: | param" << FMT_RESET << endl; }
+#line 3395 "parser2.cc"
+    break;
+
+  case 21: // params: params symbol
+#line 230 "parser2.yy"
+                                                            { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | params COMMA symbol" << FMT_RESET << endl; }
+#line 3401 "parser2.cc"
+    break;
+
+  case 22: // param: symbol COMMA
+#line 234 "parser2.yy"
+                                                            { cout << FMT_FG_YELLOW << "PARSER param: | symbol COMMA" << FMT_RESET << endl; }
+#line 3407 "parser2.cc"
+    break;
+
+  case 23: // qualafied_id: symbol DOT ID
+#line 239 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER qualafied_id: | symbol DOT ID"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3417 "parser2.cc"
+    break;
+
+  case 24: // qualafied_id: symbol DOT symbol
+#line 244 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER qualafied_id: | symbol DOT symbol"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3427 "parser2.cc"
+    break;
+
+  case 25: // qualafied_id: symbol INDIRECT_MEMBER ID
+#line 249 "parser2.yy"
+                                                                { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | symbol INDIRECT_MEMBER ID" << FMT_RESET << endl; }
+#line 3433 "parser2.cc"
+    break;
+
+  case 26: // qualafied_id: qualafied_id DOT ID
+#line 250 "parser2.yy"
+                                                                { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | qualafied_id DOT ID" << FMT_RESET << endl; }
+#line 3439 "parser2.cc"
+    break;
+
+  case 27: // qualafied_id: qualafied_id INDIRECT_MEMBER ID
+#line 251 "parser2.yy"
+                                                                { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID" << FMT_RESET << endl; }
+#line 3445 "parser2.cc"
+    break;
+
+  case 28: // sub_proc: symbol LPAREN RPAREN
+#line 255 "parser2.yy"
+                                                                { cout << endl; }
+#line 3451 "parser2.cc"
+    break;
+
+  case 29: // sub_proc: symbol LPAREN params RPAREN
+#line 256 "parser2.yy"
+                                                                  {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER sub_proc: | symbol LPAREN params RPAREN"
+                                                                         << FMT_RESET << endl;
+                                                                    yylhs.value.as < std::string > ()=yystack_[3].value.as < std::string > ();
+                                                                }
+#line 3462 "parser2.cc"
+    break;
+
+  case 30: // array: symbol LBRACKET NUMERIC_LITERAL RBRACKET
+#line 265 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER array: | symbol=\"" << yystack_[3].value.as < std::string > () << "\" LBRACKET NUMERIC_LITERAL=\"" << yystack_[1].value.as < std::string > () << "\" RBRACKET"
+                                                                         << FMT_RESET << endl;;
+                                                                    yylhs.value.as < std::string > ()=yystack_[3].value.as < std::string > ();
+                                                                }
+#line 3473 "parser2.cc"
+    break;
+
+  case 31: // symbol: SYMBOL
+#line 275 "parser2.yy"
+                                                            {
+                                                                cout << FMT_FG_YELLOW
+                                                                     << "PARSER symbol: | SYMBOL"
+                                                                     << FMT_RESET << endl;
+                                                                yylhs.value.as < std::string > ()=yystack_[0].value.as < std::string > ();
+                                                            }
+#line 3484 "parser2.cc"
+    break;
+
+  case 32: // symbol: CONST_SYMBOL
+#line 281 "parser2.yy"
+                                                            {
+                                                                cout << FMT_FG_YELLOW
+                                                                     << "PARSER symbol: | CONST_SYMBOL"
+                                                                     << FMT_RESET << endl;
+                                                                yylhs.value.as < std::string > ()=yystack_[0].value.as < std::string > ();
+                                                            }
+#line 3495 "parser2.cc"
+    break;
+
+  case 33: // modifier: CAPITALIZE
+#line 291 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER modifier: | CAPITALIZE"
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3505 "parser2.cc"
+    break;
+
+  case 34: // modifier: CAT
+#line 296 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3511 "parser2.cc"
+    break;
+
+  case 35: // modifier: COUNT_CHARACTERS
+#line 297 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3517 "parser2.cc"
+    break;
+
+  case 36: // modifier: COUNT_SENTENCES
+#line 298 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3523 "parser2.cc"
+    break;
+
+  case 37: // modifier: COUNT_PARAGRAPHS
+#line 299 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3529 "parser2.cc"
+    break;
+
+  case 38: // modifier: DATE_FORMAT
+#line 300 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3535 "parser2.cc"
+    break;
+
+  case 39: // modifier: ESCAPE
+#line 301 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3541 "parser2.cc"
+    break;
+
+  case 40: // modifier: INDENT
+#line 302 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3547 "parser2.cc"
+    break;
+
+  case 41: // modifier: LOWER
+#line 303 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3553 "parser2.cc"
+    break;
+
+  case 42: // modifier: UPPER
+#line 304 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3559 "parser2.cc"
+    break;
+
+  case 43: // modifier: STRIP
+#line 305 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3565 "parser2.cc"
+    break;
+
+  case 44: // modifier: REPLACE
+#line 306 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3571 "parser2.cc"
+    break;
+
+  case 45: // modifier: SPACIFY
+#line 307 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3577 "parser2.cc"
+    break;
+
+  case 46: // modifier: STRING_FORMAT
+#line 308 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3583 "parser2.cc"
+    break;
+
+  case 47: // modifier: STRIP_TAGS
+#line 309 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3589 "parser2.cc"
+    break;
+
+  case 48: // modifier: TRUNCATE
+#line 310 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3595 "parser2.cc"
+    break;
+
+  case 49: // modifier: WORDWARP
+#line 311 "parser2.yy"
+      { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
+#line 3601 "parser2.cc"
+    break;
+
+  case 50: // built_in: CONFIG_LOAD attributes
+#line 316 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW << "PARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\""
+                                                                         << yystack_[1].value.as < std::string > () << "\" EQUAL STRING_LITERAL=\"$2\""
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3611 "parser2.cc"
+    break;
+
+  case 51: // built_in: INCLUDE attributes
+#line 321 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER built_in: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"\""
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3621 "parser2.cc"
+    break;
+
+  case 52: // built_in: REQUIRE attributes
+#line 326 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                         << "PARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"\""
+                                                                         << FMT_RESET << endl;
+
+                                                                }
+#line 3632 "parser2.cc"
+    break;
+
+  case 53: // built_in: INSERT attributes
+#line 332 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                         << "PARSER built_in: | INSERT FILE_ATTRIB=\"\" EQUAL STRING_LITERAL=\"\""
+                                                                         << FMT_RESET << endl;
+
+                                                                }
+#line 3643 "parser2.cc"
+    break;
+
+  case 54: // built_in: ASSIGN attributes
+#line 338 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER built_in: | INSERT FILE_ATTRIB=\"\" EQUAL STRING_LITERAL=\"\""
+                                                                         << FMT_RESET << endl;
+                                                                }
+#line 3653 "parser2.cc"
+    break;
+
+  case 55: // attributes: attrib
+#line 345 "parser2.yy"
+                                                               {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER attribute: | attribute={name=\"\"; value=\"\"\n"
+                                                                         << FMT_RESET << endl;
+                                                               }
+#line 3663 "parser2.cc"
+    break;
+
+  case 56: // attributes: attributes attrib
+#line 350 "parser2.yy"
+                                                               {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER attributes: | attribute={name=\"\"; value=\"\"\n"
+                                                                         << FMT_RESET << endl;
+                                                               }
+#line 3673 "parser2.cc"
+    break;
+
+  case 57: // attrib: VALUE_ATTRIB EQUAL STRING_LITERAL
+#line 358 "parser2.yy"
+                                                               {
+                                                                    cout << FMT_FG_YELLOW << "PARSER name_value: | VALUE_ATTRIB=\""
+                                                                            << yystack_[2].value.as < std::string > () << "\" EQUAL STRING_LITERAL=\""
+                                                                            << buf << "\""
+                                                                         << FMT_RESET << endl;
+
+                                                                    std::pair<std::string, std::string>  pair(yystack_[2].value.as < std::string > (), yystack_[1].value.as < std::string > ());
+                                                                    yylhs.value.as < std::pair< std::string, std::string > > () = pair;
+                                                               }
+#line 3687 "parser2.cc"
+    break;
+
+  case 58: // attrib: VAR_ATTRIB EQUAL STRING_LITERAL
+#line 367 "parser2.yy"
+                                                               {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER name_value: | VAR_ATTRIB=\"\" EQUAL STRING_LITERAL=\"\""
+                                                                         << FMT_FG_GREEN << FMT_RESET << endl;
+
+                                                                    std::pair<std::string, std::string>  pair(yystack_[2].value.as < std::string > (), yystack_[1].value.as < std::string > ());
+                                                                    yylhs.value.as < std::pair< std::string, std::string > > () = pair;
+                                                                }
+#line 3700 "parser2.cc"
+    break;
+
+  case 59: // attrib: FILE_ATTRIB EQUAL STRING_LITERAL
+#line 375 "parser2.yy"
+                                                                {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER name_value: | FILE_ATTRIB=\""
+                                                                            << yystack_[2].value.as < std::string > () << "\" EQUAL STRING_LITERAL=\""
+                                                                            << yystack_[1].value.as < std::string > () << "\""
+                                                                         << FMT_RESET << endl;
+
+                                                                    std::pair<std::string, std::string>  pair(yystack_[2].value.as < std::string > (), yystack_[1].value.as < std::string > ());
+                                                                    yylhs.value.as < std::pair< std::string, std::string > > () = pair;
+                                                               }
+#line 3715 "parser2.cc"
     break;
 
 
-#line 1904 "parser2.cc"
+#line 3719 "parser2.cc"
 
             default:
               break;
@@ -2089,62 +3904,119 @@ namespace yy {
 
 
 
-  const signed char parser::yypact_ninf_ = -4;
+  const signed char parser::yypact_ninf_ = -40;
 
   const signed char parser::yytable_ninf_ = -1;
 
   const signed char
   parser::yypact_[] =
   {
-      -4,     2,    -3,    -4,    -4,    -4,    -4
+       5,   -40,    38,     2,     4,   -40,     1,   -40,   -40,   -40,
+     -16,   -16,   -16,   -16,   -16,     6,    -8,    -7,    -4,    -2,
+     -40,   -40,   -40,   -40,   -40,    11,    14,    24,   -16,   -40,
+     -16,   -16,   -16,   -16,    55,    63,   -40,   -40,   -40,    60,
+      64,     8,   -40,    66,    10,   -40,     7,    68,    69,   -40,
+     -40,   -40,   -40,   -40,   -40,   -40,   -40,   -40,   -40,   -40,
+     -40,   -40,   -40,   -40,   -40,   -40,   -40,   -40,   -40,   -40,
+     -40,   -40,    48,    62,   -40,    12,   -40,    75,   -40,   -40,
+     -40,    71,   -40,    49,   -40,   -40,   -40,   -40,   -40,   -40,
+     -40,   -40
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       3,     0,     2,     1,     5,     6,     4
+       0,    16,     0,     0,     2,     4,     0,     7,    31,    32,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       1,     3,     5,     6,     8,     0,     0,     0,    50,    55,
+      51,    52,    53,    54,     0,     0,    14,     9,    10,     0,
+       0,     0,    13,     0,     0,    15,     0,     0,     0,    56,
+      26,    27,    23,    24,    25,    33,    34,    35,    36,    37,
+      38,    39,    40,    41,    42,    43,    44,    45,    46,    47,
+      48,    49,     0,     0,    28,     0,    20,     0,    58,    57,
+      59,     0,    11,     0,    17,    30,    29,    21,    22,    19,
+      12,    18
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-      -4,    -4,    -4,    -4
+     -40,   -40,   -40,    82,   -40,    81,   -40,     9,   -40,   -40,
+     -40,   -40,   -40,   -39,   -40,   -40,    45,    41
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-       0,     1,     2,     6
+       0,     3,     4,     5,     6,     7,    83,    84,    75,    76,
+      15,    16,    17,    18,    72,    19,    28,    29
   };
 
   const signed char
   parser::yytable_[] =
   {
-       4,     5,     3
+      53,    23,    20,    39,    40,    77,     1,    41,    21,     1,
+       1,    37,    38,    34,    35,    42,    43,    45,    44,     2,
+      78,    46,     2,     2,    47,    36,     8,     9,     8,     9,
+      25,    26,    27,    74,    48,    86,    87,    55,    56,    57,
+      58,    59,    60,    61,    62,    63,    64,    65,    66,    67,
+      68,    69,    70,    71,     8,     9,    30,    31,    32,    33,
+      81,    81,    10,    11,    12,    13,    14,    82,    90,    49,
+      50,    49,    49,    49,    49,    52,     8,     9,    51,    54,
+      73,    79,    80,    85,    88,    89,    22,    24,     0,     0,
+       0,     0,    91
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       3,     4,     0
+      39,     0,     0,     7,     8,    44,     5,    11,     4,     5,
+       5,    19,    19,     7,     8,    19,    20,    19,    22,    18,
+      13,    10,    18,    18,    10,    19,    16,    17,    16,    17,
+      46,    47,    48,    23,    10,    23,    75,    29,    30,    31,
+      32,    33,    34,    35,    36,    37,    38,    39,    40,    41,
+      42,    43,    44,    45,    16,    17,    11,    12,    13,    14,
+      12,    12,    24,    25,    26,    27,    28,    19,    19,    28,
+      15,    30,    31,    32,    33,    15,    16,    17,    15,    15,
+      14,    13,    13,    21,     9,    14,     4,     6,    -1,    -1,
+      -1,    -1,    83
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,     6,     7,     0,     3,     4,     8
+       0,     5,    18,    51,    52,    53,    54,    55,    16,    17,
+      24,    25,    26,    27,    28,    60,    61,    62,    63,    65,
+       0,     4,    53,     0,    55,    46,    47,    48,    66,    67,
+      66,    66,    66,    66,     7,     8,    19,    19,    19,     7,
+       8,    11,    19,    20,    22,    19,    10,    10,    10,    67,
+      15,    15,    15,    63,    15,    29,    30,    31,    32,    33,
+      34,    35,    36,    37,    38,    39,    40,    41,    42,    43,
+      44,    45,    64,    14,    23,    58,    59,    63,    13,    13,
+      13,    12,    19,    56,    57,    21,    23,    63,     9,    14,
+      19,    57
   };
 
   const signed char
   parser::yyr1_[] =
   {
-       0,     5,     6,     7,     7,     8,     8
+       0,    50,    51,    51,    52,    52,    53,    54,    54,    55,
+      55,    55,    55,    55,    55,    55,    55,    56,    56,    57,
+      58,    58,    59,    60,    60,    60,    60,    60,    61,    61,
+      62,    63,    63,    64,    64,    64,    64,    64,    64,    64,
+      64,    64,    64,    64,    64,    64,    64,    64,    64,    64,
+      65,    65,    65,    65,    65,    66,    66,    67,    67,    67
   };
 
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     1,     0,     2,     1,     1
+       0,     2,     1,     2,     1,     2,     2,     1,     2,     3,
+       3,     5,     6,     3,     3,     3,     1,     1,     2,     2,
+       1,     2,     2,     3,     3,     3,     3,     3,     3,     4,
+       4,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       2,     2,     2,     2,     2,     1,     2,     3,     3,     3
   };
 
 
@@ -2154,17 +4026,33 @@ namespace yy {
   const char*
   const parser::yytname_[] =
   {
-  "\"end of file\"", "error", "\"invalid token\"", "TEXT", "NUMBER",
-  "$accept", "result", "list", "item", YY_NULLPTR
+  "\"end of input\"", "error", "\"invalid token\"", "TEXT",
+  "END_OF_FILES", "NUMBER", "DOLLAR_SIGN", "DOT", "INDIRECT_MEMBER",
+  "COMMA", "EQUAL", "VBAR", "COLON", "STRING_LITERAL", "NUMERIC_LITERAL",
+  "ID", "SYMBOL", "CONST_SYMBOL", "LBRACE", "RBRACE", "LBRACKET",
+  "RBRACKET", "LPAREN", "RPAREN", "CONFIG_LOAD", "INCLUDE", "REQUIRE",
+  "INSERT", "ASSIGN", "CAPITALIZE", "CAT", "COUNT_CHARACTERS",
+  "COUNT_SENTENCES", "COUNT_PARAGRAPHS", "DATE_FORMAT", "ESCAPE", "INDENT",
+  "LOWER", "UPPER", "STRIP", "REPLACE", "SPACIFY", "STRING_FORMAT",
+  "STRIP_TAGS", "TRUNCATE", "WORDWARP", "VAR_ATTRIB", "VALUE_ATTRIB",
+  "FILE_ATTRIB", "FILE_NAME", "$accept", "exe", "files", "file", "blocks",
+  "tag", "colon_sep_params", "colon_sep_param", "params", "param",
+  "qualafied_id", "sub_proc", "array", "symbol", "modifier", "built_in",
+  "attributes", "attrib", YY_NULLPTR
   };
 #endif
 
 
 #if YYDEBUG
-  const signed char
+  const short
   parser::yyrline_[] =
   {
-       0,    66,    66,    71,    72,    80,    81
+       0,   128,   128,   134,   142,   143,   147,   156,   161,   169,
+     174,   179,   184,   189,   194,   199,   206,   213,   218,   222,
+     229,   230,   234,   239,   244,   249,   250,   251,   255,   256,
+     265,   275,   281,   291,   296,   297,   298,   299,   300,   301,
+     302,   303,   304,   305,   306,   307,   308,   309,   310,   311,
+     316,   321,   326,   332,   338,   345,   350,   358,   367,   375
   };
 
   void
@@ -2196,9 +4084,9 @@ namespace yy {
 
 
 } // yy
-#line 2200 "parser2.cc"
+#line 4088 "parser2.cc"
 
-#line 84 "parser2.yy"
+#line 387 "parser2.yy"
 
 
 namespace yy

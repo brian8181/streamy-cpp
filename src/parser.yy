@@ -19,6 +19,8 @@
     using std::endl;
     using std::pair;
 
+    #define VERBOSE
+
     typedef std::pair< std::string, std::string > attribute;
 
     // print a list of strings
@@ -32,28 +34,6 @@
             sep = ", ";
         }
         return o << '}';
-    }
-}
-
-%define api.token.constructor
-%code
-{
-    namespace yy
-    {
-        // return the next token
-        auto yylex() -> parser::symbol_type
-        {
-            static int i = 0;
-            static int count = 0;
-            switch(int stage = count++)
-            {
-            case 0:
-                return parser::make_NUMBER(666);
-            case 1:
-                return parser::make_END();
-            }
-            return 0;
-        }
     }
 }
 
@@ -82,20 +62,20 @@
 
 %token END 0 _("end of input")
 %token END_OF_FILES
-%type files file block blocks
+%type files file tag blocks
 %type<std::pair< std::string, std::string >> attrib
 %type<std::string> built_in
 %type<std::string> attributes
 %token<int> NUMBER
 %token<std::string> DOLLAR_SIGN DOT INDIRECT_MEMBER COMMA EQUAL VBAR COLON
 %token<std::string> STRING_LITERAL NUMERIC_LITERAL
-%token<std::string> SYMBOL CONST_SYMBOL
+%token<std::string> ID SYMBOL CONST_SYMBOL
 %token<std::string> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
 %token<std::string> CONFIG_LOAD INCLUDE REQUIRE INSERT ASSIGN
 %token<std::string> CAPITALIZE CAT COUNT_CHARACTERS COUNT_SENTENCES COUNT_PARAGRAPHS DATE_FORMAT ESCAPE
 %token<std::string> INDENT LOWER UPPER STRIP REPLACE SPACIFY STRING_FORMAT STRIP_TAGS TRUNCATE WORDWARP
 %token<std::string> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
-%type<std::string> symbol sub_proc array qualafied_id format_symbol modifier
+%type<std::string> symbol sub_proc array qualafied_id modifier colon_sep_param colon_sep_params
 %start exe
 
 %%
@@ -129,19 +109,19 @@ file:
                                                                 ;
 
 blocks:
-    block                                                       {
+    tag                                                       {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER blocks: | block"
                                                                          << FMT_RESET << endl;
                                                                 }
-    | blocks block                                              {
+    | blocks tag                                              {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER blocks: | blocks block"
                                                                          << FMT_RESET << endl;
                                                                 }
                                                                 ;
 
-block:
+tag:
     LBRACE sub_proc RBRACE                                      {
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER block: | LBRACE sub_porc RBRACE"
@@ -151,6 +131,16 @@ block:
                                                                     cout << FMT_FG_YELLOW
                                                                             << "PARSER block: | LBRACE array RBRACE"
                                                                          << FMT_RESET << endl;
+                                                                }
+    | LBRACE symbol VBAR modifier RBRACE                        {
+                                                                    #ifdef VERBOSE
+                                                                    cout << "PARSER tag: | LBRACE symbol=%s VBAR modifier=%s RBRACE%s, FMT_FG_BLUE,  $2, $4, FMT_RESET" << endl;;
+                                                                    #endif
+                                                                }
+    | LBRACE symbol VBAR modifier colon_sep_params RBRACE       {
+                                                                    #ifdef VERBOSE
+                                                                    couit "%sPARSER tag: | LBRACE symbol=%s VBAR modifier=%s colon_sep_param RBRACE%s\n" << "FMT_FG_BLUE, $2, $4, FMT_RESET" <<  endl;
+                                                                    #endif
                                                                 }
     | LBRACE symbol RBRACE                                      {
                                                                     cout << FMT_FG_YELLOW
@@ -175,16 +165,83 @@ block:
                                                                         << FMT_RESET << endl;   }
                                                                 ;
 
-format_symbol:
-    symbol VBAR modifier                                         {
+colon_sep_params:
+    colon_sep_param                                             {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("colon_sep_params: | colon_sep_param\n");
+                                                                    #endif
+                                                                }
+    | colon_sep_params colon_sep_param                          {}
+                                                                ;
+
+colon_sep_param:
+    COLON NUMERIC_LITERAL                                       {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("colon_sep_param: | COLON NUMERIC_LITERAL\n");
+                                                                    #endif
+                                                                }
+                                                                ;
+params:
+param                                                       { cout << FMT_FG_YELLOW << "PARSER params: | param" << FMT_RESET << endl; }
+| params symbol                                             { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | params COMMA symbol" << FMT_RESET << endl; }
+                                                            ;
+
+param:
+symbol COMMA                                                { cout << FMT_FG_YELLOW << "PARSER param: | symbol COMMA" << FMT_RESET << endl; }
+                                                            ;
+
+
+qualafied_id:
+    symbol DOT ID                                               {
                                                                     cout << FMT_FG_YELLOW
-                                                                            << "PARSER format_symbol: | symbol VBAR modifierr"
+                                                                            << "PARSER qualafied_id: | symbol DOT ID"
                                                                          << FMT_RESET << endl;
                                                                 }
-    | symbol VBAR modifier COLON NUMERIC_LITERAL
-    | symbol VBAR modifier COLON STRING_LITERAL
-    | symbol VBAR modifier COLON SYMBOL
-    ;
+    | symbol DOT symbol                                         {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER qualafied_id: | symbol DOT symbol"
+                                                                         << FMT_RESET << endl;
+                                                                }
+    | symbol INDIRECT_MEMBER ID                                 { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | symbol INDIRECT_MEMBER ID" << FMT_RESET << endl; }
+    | qualafied_id DOT ID                                       { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | qualafied_id DOT ID" << FMT_RESET << endl; }
+    | qualafied_id INDIRECT_MEMBER ID                           { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID" << FMT_RESET << endl; }
+                                                                ;
+
+                                                                sub_proc:
+    symbol LPAREN RPAREN                                        { cout << endl; }
+    | symbol LPAREN params RPAREN                                 {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER sub_proc: | symbol LPAREN params RPAREN"
+                                                                         << FMT_RESET << endl;
+                                                                    $$=$1;
+                                                                }
+                                                                ;
+
+array:
+    symbol LBRACKET NUMERIC_LITERAL RBRACKET                    {
+                                                                    cout << FMT_FG_YELLOW
+                                                                            << "PARSER array: | symbol=\"" << $1 << "\" LBRACKET NUMERIC_LITERAL=\"" << $3 << "\" RBRACKET"
+                                                                         << FMT_RESET << endl;;
+                                                                    $$=$1;
+                                                                }
+                                                                ;
+
+
+symbol:
+        SYMBOL                                              {
+                                                                cout << FMT_FG_YELLOW
+                                                                     << "PARSER symbol: | SYMBOL"
+                                                                     << FMT_RESET << endl;
+                                                                $$=$1;
+                                                            }
+| CONST_SYMBOL                                              {
+                                                                cout << FMT_FG_YELLOW
+                                                                     << "PARSER symbol: | CONST_SYMBOL"
+                                                                     << FMT_RESET << endl;
+                                                                $$=$1;
+                                                            }
+                                                            ;
+
 
 modifier:
     CAPITALIZE                                                  {
@@ -210,60 +267,7 @@ modifier:
     | WORDWARP
     ;
 
-qualafied_id:
-    symbol DOT ID                                               {
-                                                                    cout << FMT_FG_YELLOW
-                                                                            << "PARSER qualafied_id: | symbol DOT ID"
-                                                                         << FMT_RESET << endl;
-                                                                }
-    | symbol DOT symbol                                         {
-                                                                    cout << FMT_FG_YELLOW
-                                                                            << "PARSER qualafied_id: | symbol DOT symbol"
-                                                                         << FMT_RESET << endl;
-                                                                }
-    | symbol INDIRECT_MEMBER ID                                 { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | symbol INDIRECT_MEMBER ID" << FMT_RESET << endl; }
-    | qualafied_id DOT ID                                       { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | qualafied_id DOT ID" << FMT_RESET << endl; }
-    | qualafied_id INDIRECT_MEMBER ID                           { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID" << FMT_RESET << endl; }
-                                                                ;
 
-sub_proc:
-    symbol LPAREN params RPAREN                                 {
-                                                                    cout << FMT_FG_YELLOW
-                                                                            << "PARSER sub_proc: | symbol LPAREN params RPAREN"
-                                                                         << FMT_RESET << endl;
-                                                                    $$=$1;
-                                                                }
-                                                                ;
-
-array:
-    symbol LBRACKET NUMERIC_LITERAL RBRACKET                    {
-                                                                    cout << FMT_FG_YELLOW
-                                                                            << "PARSER array: | symbol=\"" << $1 << "\" LBRACKET NUMERIC_LITERAL=\"" << $3 << "\" RBRACKET"
-                                                                         << FMT_RESET << endl;;
-                                                                    $$=$1;
-                                                                }
-                                                                ;
-
-params:
-    /*empty*/
-    | symbol COMMA                                              { cout << FMT_FG_YELLOW << "PARSER params: | symbol" << FMT_RESET << endl; }
-    | params symbol                                             { cout << FMT_FG_YELLOW << "PARSER qualafied_id: | params COMMA symbol" << FMT_RESET << endl; }
-                                                                ;
-
-symbol:
-        SYMBOL                                              {
-                                                                cout << FMT_FG_YELLOW
-                                                                     << "PARSER symbol: | SYMBOL"
-                                                                     << FMT_RESET << endl;
-                                                                $$=$1;
-                                                            }
-| CONST_SYMBOL                                              {
-                                                                cout << FMT_FG_YELLOW
-                                                                     << "PARSER symbol: | CONST_SYMBOL"
-                                                                     << FMT_RESET << endl;
-                                                                $$=$1;
-                                                            }
-                                                            ;
 built_in:
     CONFIG_LOAD attributes                                      {
                                                                     cout << FMT_FG_YELLOW << "PARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\""
@@ -293,7 +297,6 @@ built_in:
                                                                          << FMT_RESET << endl;
                                                                 }
                                                                 ;
-
 attributes:
     attrib                                                     {
                                                                     cout << FMT_FG_YELLOW
@@ -377,6 +380,7 @@ void free_all_nvalues()
     }
 }
 
+#define CC_LEXER TRUE
 #ifdef CC_LEXER
 int yyerror(char * s)
 {
@@ -412,7 +416,6 @@ int main(int argc, char** argv)
 }
 #endif
 
-#define CUSTOM_CPP_LEXER TRUE
 #ifdef CUSTOM_CPP_LEXER
 namespace yy
 {

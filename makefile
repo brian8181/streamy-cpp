@@ -66,8 +66,8 @@ $(BLD)/lex.bak.yy.c $(BLD)/lex.bak.yy.h: $(SRC)/lex.l
 	$(LEX) -o build/lex.bak.yy.c --header-file="build/lex.bak.yy.h" src/lex.l
 
 # CXX parser
-$(BLD)/parser++: $(BLD)/parser++.tab.hpp $(BLD)/parser++.tab.cpp $(BLD)/lex++.yy.hpp $(BLD)/lex++.yy.cpp $(SRC)/symtab.h $(SRC)/symtab.cpp
-	$(CXX) $(CXXFLAGS) -Ibuild $^ -lfl -o $@
+$(BLD)/parser++: $(BLD)/parser++.tab.hpp $(BLD)/parser++.tab.cpp $(BLD)/lex++.yy.hpp $(BLD)/lex++.yy.cpp $(SRC)/symtab.h $(SRC)/symtab.c
+	$(CXX) $(CXXFLAGS) -I./${BLD} $^ -lfl -o $@
 
 $(BLD)/parser++.tab.cpp $(BLD)/parser++.tab.hpp: $(SRC)/parser.yy
 	$(YACC) -Wcounterexamples --header $^ -o $@
@@ -77,8 +77,8 @@ $(BLD)/parser++.tab.cpp $(BLD)/parser++.tab.hpp: $(SRC)/parser.yy
 $(BLD)/lex++: $(BLD)/parser++.tab.hpp $(BLD)/lex++.yy.cpp
 	$(CC) -ggdb -DDEBUG -DMAIN_IMP -DLEXER_EXE $(BLD)/lex++.yy.cpp -o $(BLD)/lex++
 
-$(BLD)/lex++.yy.cpp: $(SRC)/lex.ll
-	$(LEX) -DLEXER_EXE -o $(BLD)/lex++.yy.cpp --header-file="$(BLD)/lex++.yy.hpp" src/lex.ll
+$(BLD)/lex++.yy.cpp $(BLD)/lex++.yy.hpp: $(SRC)/lex.ll
+	$(LEX) -o $(BLD)/lex++.yy.cpp --header-file="$(BLD)/lex++.yy.hpp" src/lex.ll
 
 # UTILITY
 $(BLD)/fileio.o: $(SRC)/fileio.cpp

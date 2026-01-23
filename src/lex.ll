@@ -1,9 +1,11 @@
 %{
-    #define MAX_INCLUDE_DEPTH 10
     #include <stdio.h>
-    #include <stdio.h>
+    #include <string.h>
     #include "parser++.tab.hpp"
 
+
+    #define MAX_INCLUDE_DEPTH 10
+    /* include defines */
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int pstack = 0;
 
@@ -17,6 +19,7 @@
 
     #define YY_BUFFER YY_CURRENT_BUFFFER
 %}
+
 
 END_OF_FILE         \0
 VALID_CHARS         [A-Za-z0-9*@$_.~+-]
@@ -69,14 +72,36 @@ LESS_THAN_EQUAL     "<="
 GREATER_THAN        ">"
 GREATER_THAN_EQUAL  ">="
 NUMERIC_LITERAL     [0-9]+
-INCLUDE             "include"
+STRING_LITERAL      [A-Za-z]+
 REQUIRE             require
 CONFIG_LOAD         config_load
 INSERT              insert
+INCLUDE             include
 FILE_ATTRIB         file
 ASSIGN              assign
 VAR_ATTRIB          var
 VALUE_ATTRIB        value
+CAPITALIZE          captialize
+CAT                 cat
+COUNT_CHARACTERS    count_chacters
+COUNT_PARAGRAPHS    count_paragraphs
+COUNT_SENTENCES     count_sentences
+COUNT_WORDS         count_words
+DATE_FORMAT         date_format
+DEFAULT             default
+ESCAPE              escape
+INDENT              indent
+LOWER               lower
+UPPER               upper
+STRIP               strip
+NL2BR               nl2br
+REGX_REPLACE        regx_replace
+REPLACE             replace
+SPACIFY             spacify
+STRING_FORMAT       string_format
+STRIP_TAGS          strip_tags
+TRUNCATE            truncate
+WORDWRAP            wordwrap
 
 
 %x DOUBLE_QUOTED
@@ -86,11 +111,10 @@ VALUE_ATTRIB        value
 %x IF_CONDITION
 %x INCLUDING
 %x OFF
+
 %%
 
-%{
-    //BEGIN(INITIAL);
-%}
+
 
 <INITIAL>{
 {COMMENT}                               {  /* eat up comment */ printf("LEX:COMMENT=\"%s\"", yytext); }
@@ -98,7 +122,8 @@ VALUE_ATTRIB        value
                                             printf("LEX:LBRACE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
-                                            return LBRACE;
+                                            //return LBRACE;
+                                            return parser::make_LBRACE();
                                         }
                                         }
 <SINGLE_QUOTED,DOUBLE_QUOTED>{
@@ -115,7 +140,7 @@ VALUE_ATTRIB        value
                                             BEGIN(ESCAPED);
                                             *s = 0;
                                             printf("LEX:STRING_LITERAL=\"%s\"\n", buf);
-                                            return STRING_LITERAL;
+                                            return token.STRING_LITERAL;
                                         }
                                         }
 <DOUBLE_QUOTED>{
@@ -136,67 +161,84 @@ VALUE_ATTRIB        value
                                             BEGIN(INITIAL);
                                             return RBRACE;
                                         }
-{SINGLE_QUOTE}                          { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf; }
-{DOUBLE_QUOTE}                          { printf("LEX:BEGIN_DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf; }
+{SINGLE_QUOTE}                          { printf("LEX:BEGIN_SINGLE_QUOTED\n"); BEGIN(SINGLE_QUOTED); s = buf;                           }
+{DOUBLE_QUOTE}                          { printf("LEX:BEGIN_DOUBLE_QUOTED\n"); BEGIN(DOUBLE_QUOTED); s = buf;                           }
 {NUMERIC_LITERAL}                       {
                                             printf("LEX:NUMERIC_LITERAL=%s\n", yytext);
-                                            yylval.sval = strdup(yytext);
+                                            yylval.sval = atoi(yytext);
                                             return NUMERIC_LITERAL;
                                         }
-{ASSIGN}                                { printf("LEX:ASSIGN\n");                         return ASSIGN;                        }
-{REQUIRE}                               { printf("LEX:REQUIRE\n");                        return REQUIRE;                       }
-{CONFIG_LOAD}                           { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;                   }
-{INSERT}                                { printf("LEX:INSERT\n");                         return INSERT;                        }
-{INCLUDE}                               { printf("LEX:INCLUDE\n"); /*BEGIN(INCLUDING);*/  return INCLUDE;                       }
-{FILE_ATTRIB}                           { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;                   }
-{VAR_ATTRIB}                            { printf("LEX:VAR_ATTRIB\n");                     return VAR_ATTRIB;                    }
-{VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                  }
-{NOT}                                   { printf("LEX:NOT\n");                            return NOT;                           }
-{AND}                                   { printf("LEX:AND\n");                            return AND;                           }
-{OR}                                    { printf("LEX:OR\n");                             return OR;                            }
-{LESS_THAN}                             { printf("LEX:LESS_THAN\n");                      return LESS_THAN;                     }
-{LESS_THAN_EQUAL}                       { printf("LEX:LESS_THAN_EQUAL\n");                return LESS_THAN_EQUAL;               }
-{GREATER_THAN}                          { printf("LEX:GREATER_THAN\n");                   return GREATER_THAN;                  }
-{GREATER_THAN_EQUAL}                    { printf("LEX:GREATER_THAN_EQUAL\n");             return GREATER_THAN_EQUAL;            }
-{SLASH}                                 { printf("LEX:SLASH\n");                          } // return SLASH;                    }
-{BACK_SLASH}                            { printf("LEX:BACK_SLASH\n");                     } // return BACK_SLASH;               }
-{VBAR}                                  { printf("LEX:VBAR\n");                           return VBAR;                          }
-{AMPERSAND}                             { printf("LEX:AMPERSAND\n");                      return AMPERSAND;                     }
-{AT}                                    { printf("LEX:AT\n");                             } // return AT;                       }
-{PLUS}                                  { printf("LEX:PLUS\n");                           return PLUS;                          }
-{MINUS}                                 { printf("LEX:MINUS\n");                          return MINUS;                         }
-{ASTERIK}                               { printf("LEX:ASTERIK\n");                        return ASTERIK;                       }
-{EQUAL}                                 { printf("LEX:EQUAL\n");                          return EQUAL;                         }
-{NOT_EQUAL}                             { printf("LEX:NOT_EQUAL\n");                      return NOT_EQUAL;                     }
-{DOT}                                   { printf("LEX:DOT\n");                            return DOT;                           }
-{INDIRECT_MEMBER}                       { printf("LEX:INDIRECT_MEMBER\n");                return INDIRECT_MEMBER;               }
-{PERCENT}                               { printf("LEX:PERCENT\n");                        return PERCENT;                       }
-{COLON}                                 { printf("LEX:COLON\n");                          return COLON;                         }
-{COMMA}                                 { printf("LEX:COMMA\n");                          return COMMA;                         }
-{LBRACKET}                              { printf("LEX:LBRACKET\n");                       return LBRACKET;                      }
-{RBRACKET}                              { printf("LEX:RBRACKET\n");                       return RBRACKET;                      }
-{LPAREN}                                { printf("LEX:LPAREN\n");                         return LPAREN;                        }
-{RPAREN}                                { printf("LEX:RPAREN\n");                         return RPAREN;                        }
-{SEMI_COLON}                            { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;                    }
-{END_IF}                                { printf("LEX:END_IF\n"); BEGIN(ESCAPED);          } // return IF;                      }
-{IF}                                    { printf("LEX:IF_BLOCK\n"); BEGIN(IF_BLOCK);       } // return IF;                      }
-{ELSE}                                  { printf("LEX:ELSE_BLOCK\n"); BEGIN(IF_BLOCK);     } // return ELSE;                    }
-{ELSEIF}                                { printf("LEX:ELSEIF\n"); BEGIN(IF_BLOCK);         } // return ELSEIF;                  }
-{FOREACHELSE}                           { printf("LEX:FOREACHELSE\n"); BEGIN(IF_BLOCK);    } // return FOREACHELSE;             }
-{FOREACH}                               { printf("LEX:FOREACH\n"); BEGIN (IF_BLOCK);       } // return FOREACH;                 }
-{END_ELSE}                              { printf("LEX:ELSE_BLOCK\n"); BEGIN(ESCAPED);      } // return ELSE;                    }
-{END_ELSEIF}                            { printf("LEX:END_ELSEIF\n"); BEGIN(ESCAPED);      } // return ELSEIF;                  }
-{END_FOREACHELSE}                       { printf("LEX:FOREACHELSE\n"); BEGIN(ESCAPED);     } // return FOREACHELSE;             }
-{END_FOREACH}                           { printf("LEX:FOREACH\n"); BEGIN(ESCAPED);         } // return FOREACH;                 }
-{SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext); return SYMBOL;             }
-{CONST_SYMBOL}                          { printf("LEX:[CONST_SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext); return CONST_SYMBOL;             }
-[ \t]*                                  { /********************************** eat whitespace *********************************/ }
+{ASSIGN}                                { printf("LEX:ASSIGN\n");                         return                             }
+{REQUIRE}                               { printf("LEX:REQUIRE\n");                        return REQUIRE;                               }
+{CONFIG_LOAD}                           { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;                           }
+{INSERT}                                { printf("LEX:INSERT\n");                         return INSERT;                                }
+{INCLUDE}                               { printf("LEX:INCLUDE\n"); /*BEGIN(INCLUDING);*/  return INCLUDE;                               }
+{FILE_ATTRIB}                           { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;                           }
+{VAR_ATTRIB}                            { printf("LEX:VAR_ATTRIB\n");                     return VAR_ATTRIB;                            }
+{VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                          }
+{CAPITALIZE}                            { printf("LEX:CAPITALIZE\n");                     return CAPITALIZE;                            }
+{CAT}                                   { printf("LEX:CAT\n");                            return CAT;                                   }
+{COUNT_CHARACTERS}                      { printf("LEX:COUNT_CHARACTERS\n");               return COUNT_CHARACTERS;                      }
+{COUNT_SENTENCES}                       { printf("LEX:COUNT_SENTENCES\n");                return COUNT_SENTENCES;                       }
+{COUNT_PARAGRAPHS}                      { printf("LEX:COUNT_PARAGRAPHS\n");               return COUNT_PARAGRAPHS;                      }
+{COUNT_WORDS}                           { printf("LEX:COUNT_WORDS\n");                    return COUNT_WORDS;                           }
+{DATE_FORMAT}                           { printf("LEX:DATE_FORMAT\n");                    return DATE_FORMAT;                           }
+{DEFAULT}                               { printf("LEX:DEFAULT\n");                        return DEFAULT;                               }
+{ESCAPE}                                { printf("LEX:ESCAPE\n");                         return ESCAPE;                                }
+{INDENT}                                { printf("LEX:INDENT\n");                         return INDENT;                                }
+{STRIP}                                 { printf("LEX:STRIP\n");                          return STRIP;                                 }
+{NL2BR}                                 { printf("LEX:NL2BR\n");                          return NL2BR;                                 }
+{REPLACE}                               { printf("LEX:REPLACE\n");                        return REPLACE;                               }
+{SPACIFY}                               { printf("LEX:SPACIFY\n");                        return SPACIFY;                               }
+{STRING_FORMAT}                         { printf("LEX:STRING_FORMAT\n");                  return STRING_FORMAT;                         }
+{STRIP_TAGS}                            { printf("LEX:STRIP_TAGS\n");                     return STRIP_TAGS;                            }
+{TRUNCATE}                              { printf("LEX:TRUNCATE\n");                       return TRUNCATE;                              }
+{UPPER}                                 { printf("LEX:UPPER\n");                          return UPPER;                                 }
+{LOWER}                                 { printf("LEX:LOWER\n");                          return LOWER;                                 }
+{NOT}                                   { printf("LEX:NOT\n");                            return NOT;                                   }
+{AND}                                   { printf("LEX:AND\n");                            return AND;                                   }
+{OR}                                    { printf("LEX:OR\n");                             return OR;                                    }
+{LESS_THAN}                             { printf("LEX:LESS_THAN\n");                      return LESS_THAN;                             }
+{LESS_THAN_EQUAL}                       { printf("LEX:LESS_THAN_EQUAL\n");                return LESS_THAN_EQUAL;                       }
+{GREATER_THAN}                          { printf("LEX:GREATER_THAN\n");                   return GREATER_THAN;                          }
+{GREATER_THAN_EQUAL}                    { printf("LEX:GREATER_THAN_EQUAL\n");             return GREATER_THAN_EQUAL;                    }
+{SLASH}                                 { printf("LEX:SLASH\n");                          return SLASH;                                 }
+{BACK_SLASH}                            { printf("LEX:BACK_SLASH\n");                     return BACK_SLASH;                            }
+{VBAR}                                  { printf("LEX:VBAR\n");                           return VBAR;                                  }
+{AMPERSAND}                             { printf("LEX:AMPERSAND\n");                      return AMPERSAND;                             }
+{AT}                                    { printf("LEX:AT\n");                             return AT;                                    }
+{PLUS}                                  { printf("LEX:PLUS\n");                           return PLUS;                                  }
+{MINUS}                                 { printf("LEX:MINUS\n");                          return MINUS;                                 }
+{ASTERIK}                               { printf("LEX:ASTERIK\n");                        return ASTERIK;                               }
+{EQUAL}                                 { printf("LEX:EQUAL\n");                          return EQUAL;                                 }
+{NOT_EQUAL}                             { printf("LEX:NOT_EQUAL\n");                      return NOT_EQUAL;                             }
+{DOT}                                   { printf("LEX:DOT\n");                            return DOT;                                   }
+{INDIRECT_MEMBER}                       { printf("LEX:INDIRECT_MEMBER\n");                return INDIRECT_MEMBER;                       }
+{PERCENT}                               { printf("LEX:PERCENT\n");                        return PERCENT;                               }
+{COLON}                                 { printf("LEX:COLON\n");                          return COLON;                                 }
+{COMMA}                                 { printf("LEX:COMMA\n");                          return COMMA;                                 }
+{LBRACKET}                              { printf("LEX:LBRACKET\n");                       return LBRACKET;                              }
+{RBRACKET}                              { printf("LEX:RBRACKET\n");                       return RBRACKET;                              }
+{LPAREN}                                { printf("LEX:LPAREN\n");                         return LPAREN;                                }
+{RPAREN}                                { printf("LEX:RPAREN\n");                         return RPAREN;                                }
+{SEMI_COLON}                            { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;                            }
+{IF}                                    { printf("LEX:IF\n"); BEGIN(ESCAPED);                                    return IF;                              }
+{END_IF}                                { printf("LEX:END_IF\n"); BEGIN(ESCAPED);                                return END_IF;                          }
+{ELSE}                                  { printf("LEX:ELSE_BLOCK\n"); BEGIN(IF_BLOCK);                           return ELSE;                            }
+{ELSEIF}                                { printf("LEX:ELSEIF\n"); BEGIN(IF_BLOCK);                               return ELSEIF;                          }
+{FOREACHELSE}                           { printf("LEX:FOREACHELSE\n"); BEGIN(IF_BLOCK);                          return FOREACHELSE;                     }
+{END_FOREACHELSE}                       { printf("LEX:END_FOREACHELSE\n"); BEGIN(IF_BLOCK);                      return END_FOREACHELSE;                     }
+{FOREACH}                               { printf("LEX:FOREACH\n"); BEGIN (IF_BLOCK);                             return FOREACH;                         }
+{END_FOREACH}                           { printf("LEX:END_FOREACH\n"); BEGIN(ESCAPED);                           return END_FOREACH;                         }
+{SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext);     return SYMBOL;             }
+{CONST_SYMBOL}                          { printf("LEX:[CONST_SYMBOL:%s]\n", yytext); yylval.sval = atoi(yytext); return CONST_SYMBOL; }
+[ \t]*                                  { /********************************** eat whitespace *********************************/         }
                                         }
 <IF_CONDITION>{
-{RBRACE}                                { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK); }
+{RBRACE}                                { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                                       }
 [^}]                                    { ECHO; }
-                                        }
-<IF_BLOCK>[^{]                          { ECHO; }
+}
+<IF_BLOCK>[^{LBRACE}]                   { ECHO; }
 <INCLUDING>[^ \t\n]+                    {
                                             printf("LEX:INCLUDING \"%s\"\n", buf);
                                             /* include file name */
@@ -217,8 +259,7 @@ VALUE_ATTRIB        value
                                             printf("LEX:BEGIN INITIAL\n");
                                             BEGIN(INITIAL);
                                         }
-<<EOF>>                                 {
-
+<INITIAL><<EOF>>                  {
                                             printf("LEX:<<EOF>>\n");
                                             //yyrestart( yyin );
                                             /* if ( --pstack < 0 )
@@ -235,6 +276,7 @@ VALUE_ATTRIB        value
                                             return END;
                                         }
 
+
 %%
 
 char* strdup(char* s)
@@ -244,7 +286,7 @@ char* strdup(char* s)
     return dup;
 }
 
-#ifdef LEXER_EXE
+
 int yywrap(void)
 {
     return 1;
@@ -254,10 +296,8 @@ int yyerror(char *s)
 {
     fprintf(stderr, "%s\n", s);
     return 0;
-};
-#endif
+}
 
-#ifdef MAIN_IMP
 int main(int argc, char** argv)
 {
     if(argc < 2)
@@ -280,4 +320,3 @@ int main(int argc, char** argv)
     }
     return 0;
 }
-#endif

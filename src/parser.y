@@ -25,6 +25,25 @@
     void free_nvalue(nvalue* nv);
     void free_all_nvalues();
     #define VERBOSE
+
+    typedef struct streamy
+    {
+        // _GET;
+        // _POST;
+        // _COOKIE;
+        // _SERVER;
+        // _ENV;
+        // _SESSION;
+
+        char* now;
+        char* _const;
+        char* capture;
+        char* config;
+        char* section;
+        char* version;
+        char* ldelim;
+        char* rdelim;
+    } streamy;
 %}
 
 %union
@@ -42,7 +61,7 @@
 %token<sval> DOLLAR_SIGN POUND_SIGN DOT INDIRECT_MEMBER
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
 %token<sval> ID CONST_SYMBOL SYMBOL
-%token<sval> IF END_IF ELSE END_ELSE ELSEIF END_ELSEIF
+%token<sval> END_IF ELSE END_ELSE ELSEIF END_ELSEIF
 %token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
 %token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
@@ -51,8 +70,21 @@
 %token<sval> CAPITALIZE CAT COUNT_CHARACTERS COUNT_SENTENCES COUNT_PARAGRAPHS COUNT_WORDS DATE_FORMAT DEFAULT ESCAPE
 %token<sval> INDENT LOWER UPPER STRIP NL2BR REGEX_REPLACE REPLACE SPACIFY STRING_FORMAT STRIP_TAGS TRUNCATE WORDWARP
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
+%token<sval> FROM_ATTRIB ITEM_ATTRIB KEY_ATTRIB NAME_ATTRIB
 %token END_OF_FILES
 %type<sval> symbol sub_proc array qualafied_id modifier
+
+%token <iValue> INTEGER
+%token <sIndex> VARIABLE
+%token WHILE IF PRINT
+%nonassoc IFX
+%nonassoc ELSE
+%left GE LE EQ NE '>' '<'
+%left '+' '-'
+%left '*' '/'
+%nonassoc UMINUS
+%type <nPtr> stmt expr stmt_list
+
 %start complier
 
 %%
@@ -136,6 +168,48 @@ tag:
                                                                 }
                                                                 ;
 
+program:
+    function                                                { exit(0); }
+    ;
+
+function:
+        function stmt                                       { ex($2); freeNode($2); }
+        | /* NULL */
+        ;
+
+stmt:
+        ';'                                                 { $$ = opr(';', 2, NULL, NULL); }
+        | expr ';'                                          { $$ = $1; }
+        | PRINT expr ';'                                    { $$ = opr(PRINT, 1, $2); }
+        | VARIABLE '=' expr ';'                             { $$ = opr('=', 2, id($1), $3); }
+        | WHILE '(' expr ')' stmt                           { $$ = opr(WHILE, 2, $3, $5); }
+        | IF '(' expr ')' stmt %prec IFX                    { $$ = opr(IF, 2, $3, $5); }
+        | IF '(' expr ')' stmt ELSE stmt                    { $$ = opr(IF, 3, $3, $5, $7); }
+        | '{' stmt_list '}'                                 { $$ = $2; }
+        ;
+
+stmt_list:
+        stmt                                                { $$ = $1; }
+        | stmt_list stmt                                    { $$ = opr(';', 2, $1, $2); }
+        ;
+
+expr:
+        INTEGER                                             { $$ = con($1); }
+        | VARIABLE                                          { $$ = id($1); }
+        | '-' expr %prec UMINUS                             { $$ = opr(UMINUS, 1, $2); }
+        | expr '+' expr                                     { $$ = opr('+', 2, $1, $3); }
+        | expr '-' expr                                     { $$ = opr('-', 2, $1, $3); }
+        | expr '*' expr                                     { $$ = opr('*', 2, $1, $3); }
+        | expr '/' expr                                     { $$ = opr('/', 2, $1, $3); }
+        | expr '<' expr                                     { $$ = opr('<', 2, $1, $3); }
+        | expr '>' expr                                     { $$ = opr('>', 2, $1, $3); }
+        | expr GE expr                                      { $$ = opr(GE, 2, $1, $3); }
+        | expr LE expr                                      { $$ = opr(LE, 2, $1, $3); }
+        | expr NE expr                                      { $$ = opr(NE, 2, $1, $3); }
+        | expr EQ expr                                      { $$ = opr(EQ, 2, $1, $3); }
+        | '(' expr ')'                                      { $$ = $2; }
+        ;
+
 colon_sep_params:
     colon_sep_param                                             {
                                                                     #ifdef VERBOSE
@@ -208,14 +282,14 @@ params:
                                                                     GREEN("PARSER qualafied_id: | params COMMA symbol\n");
                                                                     #endif
                                                                 }
-
+                                                                ;
 param:
     symbol COMMA                                                {
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER param: | symbol COMMA\n");
                                                                     #endif
                                                                 }
-
+                                                                ;
 
 symbol:
     SYMBOL                                                      {
@@ -430,7 +504,28 @@ attribute:
                                                                     yyval.nval = alloc_nvalue($1, buf);
                                                                     $$ = yyval.nval;
                                                                }
+    | ITEM_ATTRIB EQUAL STRING_LITERAL                          {
+                                                                    printf("%sPARSER name_value: | ITEM_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    $$ = yyval.nval;
+                                                               }
+    | FROM_ATTRIB EQUAL STRING_LITERAL                          {
+                                                                    printf("%sPARSER name_value: | FROM_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    $$ = yyval.nval;
+                                                               }
+    | KEY_ATTRIB EQUAL STRING_LITERAL                          {
+                                                                    printf("%sPARSER name_value: | KEY_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    $$ = yyval.nval;
+                                                               }
+    | NAME_ATTRIB EQUAL STRING_LITERAL                          {
+                                                                    printf("%sPARSER name_value: | NAME_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    $$ = yyval.nval;
+                                                               }
                                                                ;
+
 
 
 %%
@@ -477,7 +572,7 @@ void free_all_nvalues()
 
 int yyerror(char * s)
 {
-    fprintf(stderr, "%s\n", s);
+    fprintf(stderr, "line %d: %s\n", yylineno, s);
     return 0;
 };
 

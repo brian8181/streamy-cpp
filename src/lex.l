@@ -75,6 +75,10 @@ FILE_ATTRIB         file
 ASSIGN              assign
 VAR_ATTRIB          var
 VALUE_ATTRIB        value
+FROM_ATTRIB         from
+ITEM_ATTRIB         item
+KEY_ATTRIB          key
+NAME_ATTRIB         name
 CAPITALIZE          captialize
 CAT                 cat
 COUNT_CHARACTERS    count_chacters
@@ -170,6 +174,9 @@ WORDWRAP            wordwrap
 {FILE_ATTRIB}                           { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;                           }
 {VAR_ATTRIB}                            { printf("LEX:VAR_ATTRIB\n");                     return VAR_ATTRIB;                            }
 {VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                          }
+{VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                          }
+{VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                          }
+{VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                          }
 {CAPITALIZE}                            { printf("LEX:CAPITALIZE\n");                     return CAPITALIZE;                            }
 {CAT}                                   { printf("LEX:CAT\n");                            return CAT;                                   }
 {COUNT_CHARACTERS}                      { printf("LEX:COUNT_CHARACTERS\n");               return COUNT_CHARACTERS;                      }
@@ -216,15 +223,15 @@ WORDWRAP            wordwrap
 {LPAREN}                                { printf("LEX:LPAREN\n");                         return LPAREN;                                }
 {RPAREN}                                { printf("LEX:RPAREN\n");                         return RPAREN;                                }
 {SEMI_COLON}                            { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;                            }
-{IF}                                    { printf("LEX:IF\n"); BEGIN(ESCAPED);         return IF;                              }
-{END_IF}                                { printf("LEX:END_IF\n"); BEGIN(ESCAPED);         return END_IF;                          }
-{ELSE}                                  { printf("LEX:ELSE_BLOCK\n"); BEGIN(IF_BLOCK);    return ELSE;                            }
-{ELSEIF}                                { printf("LEX:ELSEIF\n"); BEGIN(IF_BLOCK);        return ELSEIF;                          }
-{FOREACHELSE}                           { printf("LEX:FOREACHELSE\n"); BEGIN(IF_BLOCK);   return FOREACHELSE;                     }
-{END_FOREACHELSE}                       { printf("LEX:END_FOREACHELSE\n"); BEGIN(IF_BLOCK);   return END_FOREACHELSE;                     }
-{FOREACH}                               { printf("LEX:FOREACH\n"); BEGIN (IF_BLOCK);      return FOREACH;                         }
-{END_FOREACH}                           { printf("LEX:END_FOREACH\n"); BEGIN(ESCAPED);        return END_FOREACH;                         }
-{SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext); return SYMBOL;             }
+{IF}                                    { printf("LEX:IF\n"); BEGIN(ESCAPED);                                    return IF;                              }
+{END_IF}                                { printf("LEX:END_IF\n"); BEGIN(ESCAPED);                                return END_IF;                          }
+{ELSE}                                  { printf("LEX:ELSE_BLOCK\n"); BEGIN(IF_BLOCK);                           return ELSE;                            }
+{ELSEIF}                                { printf("LEX:ELSEIF\n"); BEGIN(IF_BLOCK);                               return ELSEIF;                          }
+{FOREACHELSE}                           { printf("LEX:FOREACHELSE\n"); BEGIN(IF_BLOCK);                          return FOREACHELSE;                     }
+{END_FOREACHELSE}                       { printf("LEX:END_FOREACHELSE\n"); BEGIN(IF_BLOCK);                      return END_FOREACHELSE;                     }
+{FOREACH}                               { printf("LEX:FOREACH\n"); BEGIN (IF_BLOCK);                             return FOREACH;                         }
+{END_FOREACH}                           { printf("LEX:END_FOREACH\n"); BEGIN(ESCAPED);                           return END_FOREACH;                         }
+{SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = strdup(yytext);     return SYMBOL;             }
 {CONST_SYMBOL}                          { printf("LEX:[CONST_SYMBOL:%s]\n", yytext); yylval.sval = atoi(yytext); return CONST_SYMBOL; }
 [ \t]*                                  { /********************************** eat whitespace *********************************/         }
                                         }

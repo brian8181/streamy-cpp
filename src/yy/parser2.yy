@@ -60,6 +60,9 @@
     }
 }
 
+
+
+
 %%
 
 result:
@@ -72,9 +75,6 @@ list:
         | list item  { $$ = $1; $$.push_back($2); }
         ;
 
-%nterm <std::string> item;
-%token <std::string> TEXT;
-%token <int> NUMBER;
 
 item:
         TEXT
