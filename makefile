@@ -26,6 +26,7 @@ ifndef RELEASE
 	CXXFLAGS +=-ggdb -DDEBUG
 endif
 
+CYGWIN=TRUE
 ifdef CYGWIN
 	CXXFLAGS +=-DCYGWIN
 	LDFLAGS += -lfmt -lcppunit.dll
@@ -40,9 +41,9 @@ $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/le
 	@echo -e "\nBuilding \"lexer & parser\" ...\n"
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
 
-$(BLD)/parser.tab.c $(BLD)/parser.tab.h $(BLD)/bash_color.h: $(SRC)/parser.y #$(SRC)/bash_color.h
+$(BLD)/parser.tab.c $(BLD)/parser.tab.h: $(SRC)/parser.y $(BLD)/bash_color.h
 	@echo -e "\nGererating \"parser\" ...\n"
-	$(YACC) -Wcounterexamples --header $^ -o $@
+	$(YACC) -Wcounterexamples --header $< -o $(BLD)/parser.tab.c
 	cp $(SRC)/*.h $(BLD)/
 
 # CC lexer
@@ -80,13 +81,8 @@ $(BLD)/lex++: $(BLD)/parser++.tab.hpp $(BLD)/lex++.yy.cpp
 $(BLD)/lex++.yy.cpp $(BLD)/lex++.yy.hpp: $(SRC)/lex.ll
 	$(LEX) -o $(BLD)/lex++.yy.cpp --header-file="$(BLD)/lex++.yy.hpp" src/lex.ll
 
-# UTILITY
-$(BLD)/fileio.o: $(SRC)/fileio.cpp
-	$(CXX) $(CXXFLAGS) -c $(SRC)/fileio.cpp -o $(BLD)/fileio.o
-
-# ABSTARCT
-$(OBJ)/%.o: $(SRC)/%.cpp
-	$(CXX) $(CXXFLAGS) -c $^ -o $@
+$(OBJ)/%.o: $(SRC)/%.cpp $(SRC)/%.hpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
@@ -102,13 +98,10 @@ $(BLD)/pcxx: $(BLD)/bash_color.hpp $(BLD)/bash_color.h $(BLD)/symtab.h $(BLD)/pc
 $(BLD)/TEST_lex: $(TST)/TEST_config.cpp $(TST)/TEST_lexer.cpp $(TST)/main.cpp $(BLD)/utility.o $(BLD)/fileio.o $(BLD)/streamy.o
 	$(CXX) -DLEXER_EXE $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
-# copy header files
-$(BLD)/fileio.h $(BLD)/streamy.hpp: $(SRC)/fileio.h $(SRC)/streamy.hpp
-	cp $^ $(BLD)/
 
 # copy header files
-$(BLD)/%.h : $(SRC)/%.h
-	cp $^ $@
+$(BLD)/%.h: $(SRC)/%.h
+	cp $< $@
 
 $(BLD)/%.hpp: $(SRC)/%.hpp
 	cp $< $@

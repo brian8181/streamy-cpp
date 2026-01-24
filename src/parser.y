@@ -61,8 +61,7 @@
 %token<sval> DOLLAR_SIGN POUND_SIGN DOT INDIRECT_MEMBER
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
 %token<sval> ID CONST_SYMBOL SYMBOL
-%token<sval> END_IF ELSE END_ELSE ELSEIF END_ELSEIF
-%token<sval> FOREACH END_FOREACH FOREACHELSE END_FOREACHELSE
+%token<sval> FOREACH FOREACHELSE
 %token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK COMMA EQUAL PERCENT NOT_EQUAL
@@ -73,17 +72,19 @@
 %token<sval> FROM_ATTRIB ITEM_ATTRIB KEY_ATTRIB NAME_ATTRIB
 %token END_OF_FILES
 %type<sval> symbol sub_proc array qualafied_id modifier
+%type end_if end_foreach
 
 %token <iValue> INTEGER
 %token <sIndex> VARIABLE
 %token WHILE IF PRINT
 %nonassoc IFX
-%nonassoc ELSE
+%nonassoc ELSE ELSEIF
 %left GE LE EQ NE '>' '<'
 %left '+' '-'
 %left '*' '/'
 %nonassoc UMINUS
-%type <nPtr> stmt expr stmt_list
+%type <nPtr> expr stmt_list
+%type<sval> stmt
 
 %start complier
 
@@ -169,45 +170,48 @@ tag:
                                                                 ;
 
 program:
-    function                                                { exit(0); }
+    function                                                    {  exit(0); }
     ;
 
 function:
-        function stmt                                       { ex($2); freeNode($2); }
+        function stmt                                           {  ex($2); freeNode($2); }
         | /* NULL */
         ;
 
-stmt:
-        ';'                                                 { $$ = opr(';', 2, NULL, NULL); }
-        | expr ';'                                          { $$ = $1; }
-        | PRINT expr ';'                                    { $$ = opr(PRINT, 1, $2); }
-        | VARIABLE '=' expr ';'                             { $$ = opr('=', 2, id($1), $3); }
-        | WHILE '(' expr ')' stmt                           { $$ = opr(WHILE, 2, $3, $5); }
-        | IF '(' expr ')' stmt %prec IFX                    { $$ = opr(IF, 2, $3, $5); }
-        | IF '(' expr ')' stmt ELSE stmt                    { $$ = opr(IF, 3, $3, $5, $7); }
-        | '{' stmt_list '}'                                 { $$ = $2; }
+stmt:                                                           {
+                                                                        /*bkp todo*/
+                                                                        /*{ <if ($x > 0)> ~todo: if block~ <else> ~todo: else block~ </if> }*/
+                                                                }
+        ';'                                                     { $$ = opr(';', 2, NULL, NULL); /*}*/ }
+        | LBRACE expr RBRACE                                    { $$ = $1; }
+        | LBRACE expr RBRACE                                    { $$ = opr(PRINT, 1, $2); }
+        | LBRACE EQUAL expr RBRACE                              { $$ = opr('=', 2, id($1), $3); }
+        | WHILE LPAREN expr RPAREN stmt                         { $$ = opr(WHILE, 2, $3, $5); }
+        | LBRACE IF LPAREN expr RPAREN stmt %prec IFX RBRACE    { /*$$ = opr(IF, 2, $3, $5);*/ }
+        | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE    { /*$$ = opr(IF, 3, $3, $5, $7);*/ }
+        | LBRACE stmt_list RBRACE                               { $$ = $2; }
         ;
 
 stmt_list:
-        stmt                                                { $$ = $1; }
-        | stmt_list stmt                                    { $$ = opr(';', 2, $1, $2); }
+        stmt                                                    { $$ = $1; }
+        | stmt_list stmt                                        { $$ = opr(';', 2, $1, $2); }
         ;
 
 expr:
-        INTEGER                                             { $$ = con($1); }
-        | VARIABLE                                          { $$ = id($1); }
-        | '-' expr %prec UMINUS                             { $$ = opr(UMINUS, 1, $2); }
-        | expr '+' expr                                     { $$ = opr('+', 2, $1, $3); }
-        | expr '-' expr                                     { $$ = opr('-', 2, $1, $3); }
-        | expr '*' expr                                     { $$ = opr('*', 2, $1, $3); }
-        | expr '/' expr                                     { $$ = opr('/', 2, $1, $3); }
-        | expr '<' expr                                     { $$ = opr('<', 2, $1, $3); }
-        | expr '>' expr                                     { $$ = opr('>', 2, $1, $3); }
-        | expr GE expr                                      { $$ = opr(GE, 2, $1, $3); }
-        | expr LE expr                                      { $$ = opr(LE, 2, $1, $3); }
-        | expr NE expr                                      { $$ = opr(NE, 2, $1, $3); }
-        | expr EQ expr                                      { $$ = opr(EQ, 2, $1, $3); }
-        | '(' expr ')'                                      { $$ = $2; }
+        INTEGER                                                 { $$ = con($1); }
+        | VARIABLE                                              { $$ = id($1); }
+        | MINUS expr %prec UMINUS                               { $$ = opr(UMINUS, 1, $2); }
+        | expr PLUS expr                                        { $$ = opr('+', 2, $1, $3); }
+        | expr MINUS expr                                       { $$ = opr('-', 2, $1, $3); }
+        | expr ASTERIK expr                                     { $$ = opr('*', 2, $1, $3); }
+        | expr SLASH expr                                       { $$ = opr('/', 2, $1, $3); }
+        | expr LESS_THAN expr                                   { $$ = opr('<', 2, $1, $3); }
+        | expr GREATER_THAN expr                                { $$ = opr('>', 2, $1, $3); }
+        | expr GREATER_THAN_EQUAL expr                          { $$ = opr(GE, 2, $1, $3); }
+        | expr LESS_THAN_EQUAL expr                             { $$ = opr(LE, 2, $1, $3); }
+        | expr NOT_EQUAL expr                                   { $$ = opr(NE, 2, $1, $3); }
+        | expr EQUAL expr                                       { $$ = opr(EQ, 2, $1, $3); }
+        | LPAREN expr RPAREN                                    { $$ = $2; }
         ;
 
 colon_sep_params:
@@ -217,7 +221,6 @@ colon_sep_params:
                                                                     #endif
                                                                 }
     | colon_sep_params colon_sep_param
-
 colon_sep_param:
     COLON NUMERIC_LITERAL                                       {
                                                                     #ifdef VERBOSE
@@ -424,7 +427,7 @@ built_in:
                                                                     s = 0;
                                                                 }
     | INCLUDE attributes                                       {
-                                                                    printf("%sPARSER built_in: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    printf("%sPARSER built_in: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
                                                                     nv->name = STRDUP($1);
                                                                     nv->value = STRDUP(s);
@@ -432,7 +435,7 @@ built_in:
                                                                     s = 0;
                                                                 }
     | REQUIRE attributes                                        {
-                                                                    printf("%sPARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    printf("%sPARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
                                                                     nv->name = STRDUP($1);
                                                                     nv->value = STRDUP(s);
@@ -440,7 +443,7 @@ built_in:
                                                                     s = 0;
                                                                 }
     | REQUIRE_ONCE attributes                                   {
-                                                                    printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     // nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
                                                                     // nv->name = STRDUP($1);
                                                                     // nv->value = STRDUP(s);
@@ -448,7 +451,7 @@ built_in:
                                                                     // s = 0;
                                                                 }
     | INSERT attributes                                         {
-                                                                    printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     // nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
                                                                     // nv->name = STRDUP($1);
                                                                     // nv->value = STRDUP(s);
@@ -456,7 +459,7 @@ built_in:
                                                                     // s = 0;
                                                                 }
     | ASSIGN attributes                                         {
-                                                                    printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    printf("%sPARSER built_in: | INSERT FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     // nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
                                                                     // nv->name = STRDUP($1);
                                                                     // nv->value = STRDUP(s);
@@ -490,38 +493,38 @@ attributes:
 
 attribute:
     VALUE_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("%sPARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-	                                                                yyval.nval = alloc_nvalue($1, buf);
+                                                                    printf("%sPARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
+	                                                                yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
     | VAR_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("%sPARSER name_value: | VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    printf("%sPARSER name_value: | VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
     | FILE_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("%sPARSER name_value: | FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    printf("%sPARSER name_value: | FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
     | ITEM_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("%sPARSER name_value: | ITEM_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    printf("%sPARSER name_value: | ITEM_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
     | FROM_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("%sPARSER name_value: | FROM_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    printf("%sPARSER name_value: | FROM_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
     | KEY_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("%sPARSER name_value: | KEY_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    printf("%sPARSER name_value: | KEY_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
     | NAME_ATTRIB EQUAL STRING_LITERAL                          {
-                                                                    printf("%sPARSER name_value: | NAME_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    yyval.nval = alloc_nvalue($1, buf);
+                                                                    printf("%sPARSER name_value: | NAME_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
+                                                                    yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
                                                                ;
@@ -572,8 +575,8 @@ void free_all_nvalues()
 
 int yyerror(char * s)
 {
+    //todo
     //fprintf(stderr, "line %d: %s\n", yylineno, s);
-    fprintf(stderr, "line %d: %s\n", 0, s);
     return 0;
 };
 

@@ -1,3 +1,0 @@
-xxx{$a
-$b}xxxxxx{$b}xxx
-aaa
