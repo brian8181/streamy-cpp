@@ -1,0 +1,3 @@
+abc
+{include file="inc_inc.txt"}
+efg

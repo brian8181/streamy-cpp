@@ -166,6 +166,8 @@ tag:
                                                                     GREEN("PARSER tag: | LBRACE built_in RBRACE\n");
                                                                     #endif
                                                                     //free_all_nvalues();
+
+                                                                    // do include !!
                                                                 }
                                                                 ;
 
@@ -433,6 +435,8 @@ built_in:
                                                                     nv->value = STRDUP(s);
                                                                     $$=nv;
                                                                     s = 0;
+
+
                                                                 }
     | REQUIRE attributes                                        {
                                                                     printf("%sPARSER built_in: | REQUIRE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);

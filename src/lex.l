@@ -237,8 +237,9 @@ WORDWRAP            wordwrap
                                         }
 <IF_BLOCK>[^{]                          { ECHO; }
 <INCLUDING>[^ \t\n]+                    {
-                                            printf("LEX:INCLUDING \"%s\"\n", buf);
-                                            /* include file name */
+                                            /* DO INCLUDE IN PARSER! */
+                                            /* printf("LEX:INCLUDING \"%s\"\n", buf);
+                                            // include file name
                                             if ( pstack >= MAX_INCLUDE_DEPTH )
                                             {
                                                 fprintf( stderr, "error: includes nested too deeply" );
@@ -254,13 +255,15 @@ WORDWRAP            wordwrap
 
                                             yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
                                             printf("LEX:BEGIN INITIAL\n");
-                                            BEGIN(INITIAL);
+                                            BEGIN(INITIAL); */
                                         }
 <<EOF>>                                 {
 
                                             printf("LEX:<<EOF>>\n");
-                                            //yyrestart( yyin );
-                                            /* if ( --pstack < 0 )
+                                            /* DO INCLUDE IN PARSER! */
+                                            /*
+                                            yyrestart( yyin );
+                                            if ( --pstack < 0 )
                                             {
                                                 yyterminate();
                                             }

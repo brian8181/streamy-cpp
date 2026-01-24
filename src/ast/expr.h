@@ -65,7 +65,8 @@ namespace ast
 		 */
 		urnary_expr(const T& val) : _val_t(0)
 		{
-			_val_t = new T(val);
+			expr::_val = new T(val);
+			_val_t = (T*)expr::_val;
 		}
 
 		~urnary_expr()
@@ -83,26 +84,26 @@ namespace ast
 	 };
 
 
+
 	/**
 	 * @class expr
 	 */
-	//template< class T >
-	// class literal_expr : urnary_expr<T>
-	// {
-	// public:
-	// 	/**
-	// 	 * @brief : default ctor
-	// 	 */
-	// 	literal_expr(T val) : urnary_expr<T>::_val_t(0)
-	// 	{
-	// 		urnary_expr<T>::_val_t = new T(val);
-	// 	}
+	template< class T >
+	class literal_expr : urnary_expr<T>
+	{
+	public:
+		/**
+		 * @brief : default ctor
+		 */
+		literal_expr(T val) : urnary_expr<T>(val)
+		{
+		}
 
-	// 	~literal_expr()
-	// 	{
-	// 		delete urnary_expr<T>::_val_t;
-	// 	}
-	//  };
+		~literal_expr()
+		{
+			delete urnary_expr<T>::_val_t;
+		}
+	 };
 
 
 	 /**
@@ -115,15 +116,33 @@ namespace ast
 		/**
 		 * @brief : default ctor
 		 */
-		binary_expr(const T& lhs, const T& rhs) : _lhs(&lhs), _rhs(&rhs)
+		binary_expr(const T& lhs, const T& rhs) //: _lhs(&lhs), _rhs(&rhs)
 		{
+			_lhs = new T(lhs);
+			_rhs = new T(rhs);
+		}
 
+		~binary_expr()
+		{
+			// let consumer free/release/delete
+			// delete _lhs;
+			// delete _rhs;
 		}
 
 	 public:
 		 void* _val;
 		 T* _lhs;
 		 T* _rhs;
+	 };
+
+	 template< class T >
+	 class add_expr : binary_expr<T>
+	 {
+	public:
+		add_expr(const T& lhs, const T& rhs) : binary_expr<T>(lhs, rhs)
+		{
+
+		}
 	 };
 
 

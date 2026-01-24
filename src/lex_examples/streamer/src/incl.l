@@ -6,6 +6,8 @@
     #define MAX_INCLUDE_DEPTH 10
     YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
     int pstack = 0;
+
+
 %}
 
 %%
@@ -24,7 +26,18 @@ include             { BEGIN(incl); }
                         }
                         include_stack[pstack++] = YY_CURRENT_BUFFER;
 
-                        yyin = fopen( yytext, "r" );
+                        // char* s = yytext;
+                        // int len = strlen(yytext);
+                        // int i = 0;
+                        // while( i < len )
+                        // {
+                        //     if(yytext[i] == '\n')
+                        //         yytext[i] = ' ';
+                        //     ++i;
+                        //     //printf("%s", yytext[i]);
+                        // }
+
+                        yyin = fopen( s, "r" );
                         if ( ! yyin )
                         {
                             printf( "error: could not open file, %s", yytext );
@@ -47,6 +60,13 @@ include             { BEGIN(incl); }
                     }
 
 %%
+
+void rm_newline(char* s)
+{
+    int len = strlen(s);
+    if( s[len-1] == '\n' )
+        s[len-1] = '\0';
+}
 
 int yywrap(void)
 {
