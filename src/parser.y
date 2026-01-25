@@ -60,12 +60,10 @@
 %type<nval> attributes
 %token<sval> NUMBER
 %token<sval> DOLLAR_SIGN POUND_SIGN DOT INDIRECT_MEMBER
-%token<sval> STRING_LITERAL NUMERIC_LITERAL
 %token<sval> ID CONST_SYMBOL SYMBOL
 %token<sval> FOREACH FOREACHELSE
 %token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
-%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE SLASH BACK_SLASH AT VBAR AMPERSAND AND OR NOT
-%token<sval> LESS_THAN LESS_THAN_EQUAL GREATER_THAN GREATER_THAN_EQUAL PLUS MINUS ASTERIK COMMA EQUAL PERCENT NOT_EQUAL
+%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE BACK_SLASH AT VBAR AMPERSAND AND OR NOT
 %token<sval> CAPTURE CONFIG_LOAD INCLUDE REQUIRE REQUIRE_ONCE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
 %token<sval> CAPITALIZE CAT COUNT_CHARACTERS COUNT_SENTENCES COUNT_PARAGRAPHS COUNT_WORDS DATE_FORMAT DEFAULT ESCAPE
 %token<sval> INDENT LOWER UPPER STRIP NL2BR REGEX_REPLACE REPLACE SPACIFY STRING_FORMAT STRIP_TAGS TRUNCATE WORDWARP
@@ -74,14 +72,14 @@
 %token END_OF_FILES
 %type<sval> symbol sub_proc array qualafied_id modifier
 
-%token <iValue> INTEGER
+%token<sval> STRING_LITERAL NUMERIC_LITERAL
 %token <sIndex> VARIABLE
 %token WHILE IF PRINT
 %nonassoc IFX
 %nonassoc ELSE ELSEIF
-%left GE LE EQ NE '>' '<'
-%left '+' '-'
-%left '*' '/'
+%left GREATER_THAN_EQUAL LESS_THAN_EQUAL EQUAL NOT_EQUAL LESS_THAN GREATER_THAN COMMA
+%left PLUS MINUS
+%left ASTERIK SLASH PERCENT
 %nonassoc UMINUS
 %type <nPtr> expr stmt_list
 %type<sval> stmt
@@ -132,7 +130,7 @@ blocks:
 
 tag:
 
-     LBRACE expr RBRACE                                         { /*$$ = $2;                         */}
+     '*' LBRACE expr RBRACE                                         { /*$$ = $2;                         */}
     | LBRACE expr RBRACE                                        { /*$$ = opr(PRINT, 1, $2);          */}
     | LBRACE EQUAL expr RBRACE                                  { /*$$ = opr('=', 2, id($1), $3);    */}
     | WHILE LPAREN expr RPAREN stmt                             { /*$$ = opr(WHILE, 2, $3, $5);      */}
@@ -204,13 +202,13 @@ stmt:                                                           {
 
 stmt_list:
         stmt                                                    {/* $$ = $1; */}
-        | stmt_list stmt                                        {/* $$ = opr(';', 2, $1, $2); */}
+        | stmt_list stmt_list                                        {/* $$ = opr(';', 2, $1, $2); */}
         ;
 
 
 expr:
-        INTEGER                                                 {/* $$ = con($1);             */}
-        | VARIABLE                                              {/* $$ = id($1);              */}
+        NUMERIC_LITERAL                                                 {/* $$ = con($1);             */}
+        | STRING_LITERAL                                              {/* $$ = id($1);              */}
         | MINUS expr %prec UMINUS                               {/* $$ = opr(UMINUS, 1, $2);  */}
         | expr PLUS expr                                        {/* $$ = opr('+', 2, $1, $3); */}
         | expr MINUS expr                                       {/* $$ = opr('-', 2, $1, $3); */}
