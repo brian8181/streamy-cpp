@@ -13,11 +13,20 @@ using std::endl;
 
 namespace ast
 {
+
 	/**
 	 * @class expr
 	 */
 	class expr
 	{
+	public:
+		struct expr_node
+		{
+			void* pval;
+			expr_node* next;
+			expr_node* nodes;
+		};
+
 	public:
 		/**
 		 * @brief : default ctor
@@ -144,6 +153,29 @@ namespace ast
 
 		}
 	 };
+
+
+
+
+template <typename T>
+class SinglyLinkedList
+{
+public:
+
+	struct Node
+	{
+		T data;
+		Node *next;
+	};
+
+public:
+    SinglyLinkedList() {};
+    SinglyLinkedList(const Node* _head) {};
+    ~SinglyLinkedList() {};
+private:
+    Node* mHead;
+};
+
 
 
 }

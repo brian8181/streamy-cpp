@@ -72,9 +72,11 @@ void streamy::load_config(const string& path)
         {
             // get name
             string symbol_name = match[ID_NAME].str();
+
             // get value
             string value = (match[ID_VALUE].matched) ?
                 match[ID_NUMERIC_LITERAL].str() : match[ID_STRING_LITERAL].str();
+
             // create pair
             pair<string, string> p(symbol_name, value);
             map_sections_config[section_name].insert(p);

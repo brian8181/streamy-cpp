@@ -54,7 +54,8 @@
 };
 
 %token END 0 _("end of input")
-%type files file tag blocks
+%type files file blocks
+%type<sval> tag
 %type<nval> attribute built_in
 %type<nval> attributes
 %token<sval> NUMBER
@@ -72,7 +73,6 @@
 %token<sval> FROM_ATTRIB ITEM_ATTRIB KEY_ATTRIB NAME_ATTRIB
 %token END_OF_FILES
 %type<sval> symbol sub_proc array qualafied_id modifier
-%type end_if end_foreach
 
 %token <iValue> INTEGER
 %token <sIndex> VARIABLE
@@ -131,7 +131,15 @@ blocks:
                                                                 ;
 
 tag:
-    LBRACE sub_proc RBRACE                                      {
+
+     LBRACE expr RBRACE                                         { /*$$ = $2;                         */}
+    | LBRACE expr RBRACE                                        { /*$$ = opr(PRINT, 1, $2);          */}
+    | LBRACE EQUAL expr RBRACE                                  { /*$$ = opr('=', 2, id($1), $3);    */}
+    | WHILE LPAREN expr RPAREN stmt                             { /*$$ = opr(WHILE, 2, $3, $5);      */}
+    | LBRACE IF LPAREN expr RPAREN stmt %prec IFX RBRACE        { /*$$ = opr(IF, 2, $3, $5);         */}
+    | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE        { /*$$ = opr(IF, 3, $3, $5, $7);     */}
+    | LBRACE stmt_list RBRACE                                   { /*$$ = $2;                         */}
+    | LBRACE sub_proc RBRACE                                    {
                                                                     #ifdef VERBOSE
                                                                     RED("PARSER tag: | LBRACE sub_porc RBRACE\n");
                                                                     #endif
@@ -183,38 +191,40 @@ function:
 stmt:                                                           {
                                                                         /*bkp todo*/
                                                                         /*{ <if ($x > 0)> ~todo: if block~ <else> ~todo: else block~ </if> }*/
-                                                                }
-        ';'                                                     { $$ = opr(';', 2, NULL, NULL); /*}*/ }
-        | LBRACE expr RBRACE                                    { $$ = $1; }
-        | LBRACE expr RBRACE                                    { $$ = opr(PRINT, 1, $2); }
-        | LBRACE EQUAL expr RBRACE                              { $$ = opr('=', 2, id($1), $3); }
-        | WHILE LPAREN expr RPAREN stmt                         { $$ = opr(WHILE, 2, $3, $5); }
-        | LBRACE IF LPAREN expr RPAREN stmt %prec IFX RBRACE    { /*$$ = opr(IF, 2, $3, $5);*/ }
-        | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE    { /*$$ = opr(IF, 3, $3, $5, $7);*/ }
-        | LBRACE stmt_list RBRACE                               { $$ = $2; }
+
+//      LBRACE expr RBRACE                                      { $$ = $2;                         }
+//      | LBRACE expr RBRACE                                    { $$ = opr(PRINT, 1, $2);          }
+//      | LBRACE EQUAL expr RBRACE                              { $$ = opr('=', 2, id($1), $3);    }
+//      | WHILE LPAREN expr RPAREN stmt                         { $$ = opr(WHILE, 2, $3, $5);      }
+//      | LBRACE IF LPAREN expr RPAREN stmt %prec IFX RBRACE    { /*$$ = opr(IF, 2, $3, $5);*/     }
+//      | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE    { /*$$ = opr(IF, 3, $3, $5, $7);*/ }
+//      | LBRACE stmt_list RBRACE                               { $$ = $2;                         }
         ;
+}
 
 stmt_list:
-        stmt                                                    { $$ = $1; }
-        | stmt_list stmt                                        { $$ = opr(';', 2, $1, $2); }
+        stmt                                                    {/* $$ = $1; */}
+        | stmt_list stmt                                        {/* $$ = opr(';', 2, $1, $2); */}
         ;
 
+
 expr:
-        INTEGER                                                 { $$ = con($1); }
-        | VARIABLE                                              { $$ = id($1); }
-        | MINUS expr %prec UMINUS                               { $$ = opr(UMINUS, 1, $2); }
-        | expr PLUS expr                                        { $$ = opr('+', 2, $1, $3); }
-        | expr MINUS expr                                       { $$ = opr('-', 2, $1, $3); }
-        | expr ASTERIK expr                                     { $$ = opr('*', 2, $1, $3); }
-        | expr SLASH expr                                       { $$ = opr('/', 2, $1, $3); }
-        | expr LESS_THAN expr                                   { $$ = opr('<', 2, $1, $3); }
-        | expr GREATER_THAN expr                                { $$ = opr('>', 2, $1, $3); }
-        | expr GREATER_THAN_EQUAL expr                          { $$ = opr(GE, 2, $1, $3); }
-        | expr LESS_THAN_EQUAL expr                             { $$ = opr(LE, 2, $1, $3); }
-        | expr NOT_EQUAL expr                                   { $$ = opr(NE, 2, $1, $3); }
-        | expr EQUAL expr                                       { $$ = opr(EQ, 2, $1, $3); }
-        | LPAREN expr RPAREN                                    { $$ = $2; }
+        INTEGER                                                 {/* $$ = con($1);             */}
+        | VARIABLE                                              {/* $$ = id($1);              */}
+        | MINUS expr %prec UMINUS                               {/* $$ = opr(UMINUS, 1, $2);  */}
+        | expr PLUS expr                                        {/* $$ = opr('+', 2, $1, $3); */}
+        | expr MINUS expr                                       {/* $$ = opr('-', 2, $1, $3); */}
+        | expr ASTERIK expr                                     {/* $$ = opr('*', 2, $1, $3); */}
+        | expr SLASH expr                                       {/* $$ = opr('/', 2, $1, $3); */}
+        | expr LESS_THAN expr                                   {/* $$ = opr('<', 2, $1, $3); */}
+        | expr GREATER_THAN expr                                {/* $$ = opr('>', 2, $1, $3); */}
+        | expr GREATER_THAN_EQUAL expr                          {/* $$ = opr(GE, 2, $1, $3);  */}
+        | expr LESS_THAN_EQUAL expr                             {/* $$ = opr(LE, 2, $1, $3);  */}
+        | expr NOT_EQUAL expr                                   {/* $$ = opr(NE, 2, $1, $3);  */}
+        | expr EQUAL expr                                       {/* $$ = opr(EQ, 2, $1, $3);  */}
+        | LPAREN expr RPAREN                                    {/* $$ = $2;                  */}
         ;
+
 
 colon_sep_params:
     colon_sep_param                                             {
