@@ -240,12 +240,10 @@ UNESCAPED_TEXT                [^{]+
 <ESCAPED>{INCLUDE}                      { printf("LEX:INCLUDE\n"); printf("LEX:BEGIN(INCLUDE)\n"); BEGIN(INCLUDING);  return INCLUDE;  }
 <INCLUDING>{
 [^{RBRACE}]+                            {
-
-                                            // {include file="name"}
-                                            /* DO INCLUDE IN PARSER! */
                                             printf("LEX:INCLUDING \"%s\"\n", buf);
 
                                             // bkp todo!
+                                            // {include file="name"}
                                             regmatch_t* pmatch;
                                             char* pattern = "\\{include file=\\\"(.*)\\\"\\}";
                                             regex_match(pattern, yytext, 2, pmatch);
@@ -268,9 +266,6 @@ UNESCAPED_TEXT                [^{]+
                                             printf("LEX:BEGIN INITIAL\n");
                                             BEGIN(INITIAL);
                                         }
-                           {
-
-                                        }
 {RBRACE}                                {
                                             printf("LEX:RBRACE\n");
                                             printf("LEX:BEGIN(INITIAL)\n");
@@ -280,8 +275,6 @@ UNESCAPED_TEXT                [^{]+
 <<EOF>>                                 {
 
                                             printf("LEX:<<EOF>>\n");
-                                            /* DO INCLUDE IN PARSER! */
-                                            /*
                                             yyrestart( yyin );
                                             if ( --pstack < 0 )
                                             {
@@ -292,9 +285,7 @@ UNESCAPED_TEXT                [^{]+
                                                 yy_delete_buffer( YY_CURRENT_BUFFER );
                                                 yy_switch_to_buffer(
                                                 include_stack[pstack] );
-                                            } */
-                                            //return 0;
-
+                                            }
                                         }
 } // end INCLUDING
 <<EOF>>                                 {
