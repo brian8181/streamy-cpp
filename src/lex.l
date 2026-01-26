@@ -1,20 +1,21 @@
 %{
-    #include "parser.tab.h"
     #include <stdio.h>
     #include <string.h>
+    #include "parser.tab.h"
+    #include "utility.h"
 
-    /* include defines */
-    #define MAX_INCLUDE_DEPTH 10
-    YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
-    int pstack = 0;
+    extern YYSTYPE yylval;
 
     int yylex(void);
     int yyerror(char* s);
     int fileno(FILE* f);
 
+    /* include defines */
+    #define MAX_INCLUDE_DEPTH 10
+    YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
+    int pstack = 0;
     extern char buf[100];
     extern char *s;
-    //char* strdup(char* str);
     #define YY_BUFFER YY_CURRENT_BUFFFER
 %}
 
@@ -170,7 +171,6 @@ UNESCAPED_TEXT                [^{]+
 {REQUIRE}                               { printf("LEX:REQUIRE\n");                        return REQUIRE;                               }
 {CONFIG_LOAD}                           { printf("LEX:CONFIG_LOAD\n");                    return CONFIG_LOAD;                           }
 {INSERT}                                { printf("LEX:INSERT\n");                         return INSERT;                                }
-{INCLUDE}                               { printf("LEX:INCLUDE\n"); /*BEGIN(INCLUDING);*/  return INCLUDE;                               }
 {FILE_ATTRIB}                           { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;                           }
 {VAR_ATTRIB}                            { printf("LEX:VAR_ATTRIB\n");                     return VAR_ATTRIB;                            }
 {VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                          }
@@ -237,9 +237,19 @@ UNESCAPED_TEXT                [^{]+
 [^}]                                    { ECHO; }
 } // END IF_CONDITION
 <IF_BLOCK>[^{]                          { ECHO; }
-<INCLUDING>[^ \t\n]+                    {
+<ESCAPED>{INCLUDE}                      { printf("LEX:INCLUDE\n"); printf("LEX:BEGIN(INCLUDE)\n"); BEGIN(INCLUDING);  return INCLUDE;  }
+<INCLUDING>{
+[^{RBRACE}]+                            {
+
+                                            // {include file="name"}
                                             /* DO INCLUDE IN PARSER! */
-                                            /* printf("LEX:INCLUDING \"%s\"\n", buf);
+                                            printf("LEX:INCLUDING \"%s\"\n", buf);
+
+                                            // bkp todo!
+                                            regmatch_t* pmatch;
+                                            char* pattern = "\\{include file=\\\"(.*)\\\"\\}";
+                                            regex_match(pattern, yytext, 2, pmatch);
+
                                             // include file name
                                             if ( pstack >= MAX_INCLUDE_DEPTH )
                                             {
@@ -256,7 +266,16 @@ UNESCAPED_TEXT                [^{]+
 
                                             yy_switch_to_buffer( yy_create_buffer( yyin, YY_BUF_SIZE ) );
                                             printf("LEX:BEGIN INITIAL\n");
-                                            BEGIN(INITIAL); */
+                                            BEGIN(INITIAL);
+                                        }
+                           {
+
+                                        }
+{RBRACE}                                {
+                                            printf("LEX:RBRACE\n");
+                                            printf("LEX:BEGIN(INITIAL)\n");
+                                            BEGIN(INITIAL);
+                                            return RBRACE;
                                         }
 <<EOF>>                                 {
 
@@ -275,6 +294,11 @@ UNESCAPED_TEXT                [^{]+
                                                 include_stack[pstack] );
                                             } */
                                             //return 0;
+
+                                        }
+} // end INCLUDING
+<<EOF>>                                 {
+                                            printf("LEX:<<EOF>>\n");
                                             return END;
                                         }
 
