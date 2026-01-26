@@ -11,8 +11,9 @@ CXX=g++
 CXXFLAGS=-ggdb -DDEBUG -std=c++20 -Wall # $(CXXWARN)
 CC=gcc
 CCFLAGS=-ggdb -std=c99 -DDEBUG
-LEX=flex
-YACC=bison -d
+LEX=flex -d
+YACC=bison
+YFLAGS=-d -Wcounterexamples --header
 SRC=src
 BLD=build
 OBJ=build
@@ -43,7 +44,7 @@ $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/le
 
 $(BLD)/parser.tab.c $(BLD)/parser.tab.h: $(SRC)/parser.y $(BLD)/bash_color.h
 	@echo -e "\nGererating \"parser\" ...\n"
-	$(YACC) -Wcounterexamples --header $< -o $(BLD)/parser.tab.c
+	$(YACC) $(YFLAGS) $< -o $(BLD)/parser.tab.c
 	cp $(SRC)/*.h $(BLD)/
 
 # CC lexer
@@ -60,7 +61,7 @@ $(BLD)/parser_test: $(BLD)/parser_test.tab.h $(BLD)/parser_test.tab.c $(BLD)/lex
 
 $(BLD)/parser_test.tab.c $(BLD)/parser_test.tab.h: $(SRC)/parser_test.y #$(SRC)/bash_color.h
 	@echo -e "\nGererating \"parser_test\" ...\n"
-	$(YACC) -Wcounterexamples --header $^ -o $@
+	$(YACC) $(YFLAGS) $^ -o $@
 	cp $(SRC)/bash_color.h $(BLD)/
 
 $(BLD)/lex.bak.yy.c $(BLD)/lex.bak.yy.h: $(SRC)/lex.l
@@ -71,7 +72,7 @@ $(BLD)/parser++: $(BLD)/parser++.tab.hpp $(BLD)/parser++.tab.cpp $(BLD)/lex++.yy
 	$(CXX) $(CXXFLAGS) -I./${BLD} $^ -lfl -o $@
 
 $(BLD)/parser++.tab.cpp $(BLD)/parser++.tab.hpp: $(SRC)/parser.yy
-	$(YACC) -Wcounterexamples --header $^ -o $@
+	$(YACC) $(YFLAGS) $^ -o $@
 	cp $(SRC)/bash_color.h $(BLD)/
 
 # CXX lexer # USING C COMPLIER ON CPP! BUT IT BUILDS?
@@ -89,7 +90,7 @@ $(OBJ)/%.o: $(SRC)/%.c
 
 ROOT="/home/brian/src/streamy-cpp"
 $(BLD)/pcxx.cc $(BLD)/pcxx.hh: $(SRC)/pcxx.yy
-	$(YACC) $(SRC)/pcxx.yy --header -o $(BLD)/pcxx.cc
+	$(YACC) $(YFLAGS) $(SRC)/pcxx.yy --header -o $(BLD)/pcxx.cc
 
 $(BLD)/pcxx: $(BLD)/bash_color.hpp $(BLD)/bash_color.h $(BLD)/symtab.h $(BLD)/pcxx.cc
 	$(CXX) -g -std=c++14 -I$(ROOT)/src $(BLD)/pcxx.cc -o $@

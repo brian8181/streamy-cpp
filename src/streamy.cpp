@@ -53,7 +53,7 @@ void streamy::load_config(const string& path)
 
     // get configuration file by lines
     vector<string> lines;
-    lines = get_lines(path, lines);
+    read_lines(path, lines);
     // create one only section (global)
     string section_name = "global";
     map<string, string> section_map;
@@ -121,7 +121,7 @@ void streamy::include_file(const string& file_name, /* out */ stringstream& ss)
 {
     const string full_path = this->template_dir + "/" + file_name;
     string file_src;
-    read_stream(file_name, file_src);
+    read_str(file_name, file_src);
     ss << file_src;
 }
 

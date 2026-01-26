@@ -53,7 +53,7 @@ int read_bits(const smatch& m)
     return bits;
 }
 
-bool file_exist(const string& path)
+bool file_exist2(const string& path)
 {
     std::fstream strm(path);
     strm.open(path, std::ios::in);

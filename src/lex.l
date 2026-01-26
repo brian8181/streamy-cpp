@@ -97,6 +97,7 @@ STRING_FORMAT       string_format
 STRIP_TAGS          strip_tags
 TRUNCATE            truncate
 WORDWRAP            wordwrap
+UNESCAPED_TEXT                [^{]+
 
 
 %x DOUBLE_QUOTED
@@ -108,10 +109,6 @@ WORDWRAP            wordwrap
 %x OFF
 %%
 
-%{
-    //BEGIN(INITIAL);
-%}
-
 <INITIAL>{
 {COMMENT}                               {  /* eat up comment */ printf("LEX:COMMENT=\"%s\"", yytext); }
 {LBRACE}                                {
@@ -120,15 +117,19 @@ WORDWRAP            wordwrap
                                             BEGIN(ESCAPED);
                                             return LBRACE;
                                         }
+{UNESCAPED_TEXT}                        {
+                                             printf("LEX:TEXT\n");
+                                             return UNESCAPED_TEXT;
                                         }
+} // END INITIAL
 <SINGLE_QUOTED,DOUBLE_QUOTED>{
 \\n                                     { *s++ = '\n'; }
 \\t                                     { *s++ = '\t'; }
 \\\"                                    { *s++ = '\"'; }
 [\n}]                                   { printf("LEX: missing closing quote"); exit(1); }
-                            }
+} // END SINGLE_QUOTED or DOUBLE_QUOTED
 <SINGLE_QUOTED>{
-{VALID_CHARS}                             { *s++ = *yytext; }
+{VALID_CHARS}                           { *s++ = *yytext; }
 {SINGLE_QUOTE}                          {
                                             printf("LEX:SINGLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
@@ -137,10 +138,10 @@ WORDWRAP            wordwrap
                                             s = &buf[0];
                                             printf("LEX:STRING_LITERAL=\"%s\"\n", buf);
                                             return STRING_LITERAL;
-                }
                                         }
+} // END SINGLE_QUOTE
 <DOUBLE_QUOTED>{
-{VALID_CHARS}                             { *s++ = *yytext; }
+{VALID_CHARS}                           { *s++ = *yytext; }
 {DOUBLE_QUOTE}                          {
                                             printf("LEX:DOUBLE_QUOTE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
@@ -150,7 +151,7 @@ WORDWRAP            wordwrap
                                             printf("LEX:STRING_LITERAL=\"%s\"\n", buf);
                                             return STRING_LITERAL;
                                         }
-                                        }
+} // END DOUBLE_QUOTE
 <ESCAPED>{
 {RBRACE}                                {
                                             printf("LEX:RBRACE\n");
@@ -173,9 +174,9 @@ WORDWRAP            wordwrap
 {FILE_ATTRIB}                           { printf("LEX:FILE_ATTRIB\n");                    return FILE_ATTRIB;                           }
 {VAR_ATTRIB}                            { printf("LEX:VAR_ATTRIB\n");                     return VAR_ATTRIB;                            }
 {VALUE_ATTRIB}                          { printf("LEX:VALUE_ATTRIB\n");                   return VALUE_ATTRIB;                          }
-{FROM_ATTRIB}                          { printf("LEX:FROM_ATTRIB\n");                   return FROM_ATTRIB;                          }
-{KEY_ATTRIB}                          { printf("LEX:KEY_ATTRIB\n");                   return KEY_ATTRIB;                          }
-{NAME_ATTRIB}                          { printf("LEX:NAME_ATTRIB\n");                   return NAME_ATTRIB;                          }
+{FROM_ATTRIB}                           { printf("LEX:FROM_ATTRIB\n");                    return FROM_ATTRIB;                           }
+{KEY_ATTRIB}                            { printf("LEX:KEY_ATTRIB\n");                     return KEY_ATTRIB;                            }
+{NAME_ATTRIB}                           { printf("LEX:NAME_ATTRIB\n");                    return NAME_ATTRIB;                           }
 {CAPITALIZE}                            { printf("LEX:CAPITALIZE\n");                     return CAPITALIZE;                            }
 {CAT}                                   { printf("LEX:CAT\n");                            return CAT;                                   }
 {COUNT_CHARACTERS}                      { printf("LEX:COUNT_CHARACTERS\n");               return COUNT_CHARACTERS;                      }
@@ -222,19 +223,19 @@ WORDWRAP            wordwrap
 {LPAREN}                                { printf("LEX:LPAREN\n");                         return LPAREN;                                }
 {RPAREN}                                { printf("LEX:RPAREN\n");                         return RPAREN;                                }
 {SEMI_COLON}                            { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;                            }
-{IF}                                    { printf("LEX:IF\n"); BEGIN(ESCAPED);                                    return IF;                              }
-{ELSE}                                  { printf("LEX:ELSE_BLOCK\n"); BEGIN(IF_BLOCK);                           return ELSE;                            }
-{ELSEIF}                                { printf("LEX:ELSEIF\n"); BEGIN(IF_BLOCK);                               return ELSEIF;                          }
-{FOREACHELSE}                           { printf("LEX:FOREACHELSE\n"); BEGIN(IF_BLOCK);                          return FOREACHELSE;                     }
-{FOREACH}                               { printf("LEX:FOREACH\n"); BEGIN (IF_BLOCK);                             return FOREACH;                         }
-{SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = yytext;     return SYMBOL;             }
-{CONST_SYMBOL}                          { printf("LEX:[CONST_SYMBOL:%s]\n", yytext); yylval.sval = yytext; return CONST_SYMBOL; }
+{IF}                                    { printf("LEX:IF\n"); BEGIN(ESCAPED);             return IF;                                    }
+{ELSE}                                  { printf("LEX:ELSE_BLOCK\n"); BEGIN(IF_BLOCK);    return ELSE;                                  }
+{ELSEIF}                                { printf("LEX:ELSEIF\n"); BEGIN(IF_BLOCK);        return ELSEIF;                                }
+{FOREACHELSE}                           { printf("LEX:FOREACHELSE\n"); BEGIN(IF_BLOCK);   return FOREACHELSE;                           }
+{FOREACH}                               { printf("LEX:FOREACH\n"); BEGIN (IF_BLOCK);      return FOREACH;                               }
+{SYMBOL}                                { printf("LEX:[SYMBOL:%s]\n", yytext); yylval.sval = yytext;       return SYMBOL;               }
+{CONST_SYMBOL}                          { printf("LEX:[CONST_SYMBOL:%s]\n", yytext); yylval.sval = yytext; return CONST_SYMBOL;         }
 [ \t]*                                  { /********************************** eat whitespace *********************************/         }
-                                        }
+} // END ESCAPED
 <IF_CONDITION>{
 {RBRACE}                                { printf("LEXIF_BLOCK"); BEGIN(IF_BLOCK);                                                       }
 [^}]                                    { ECHO; }
-                                        }
+} // END IF_CONDITION
 <IF_BLOCK>[^{]                          { ECHO; }
 <INCLUDING>[^ \t\n]+                    {
                                             /* DO INCLUDE IN PARSER! */

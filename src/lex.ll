@@ -123,7 +123,7 @@ WORDWRAP            wordwrap
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
                                             //return LBRACE;
-                                            return parser::make_LBRACE();
+                                            return yy::parser::make_LBRACE("{");
                                         }
                                         }
 <SINGLE_QUOTED,DOUBLE_QUOTED>{

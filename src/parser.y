@@ -46,6 +46,29 @@
     } streamy;
 %}
 
+%{
+
+#ifdef DEBUG
+int dbgToken(int tok, char *s)
+{
+    printf("token %s\n", s);
+    return tok;
+}
+int dbgTokenIvalue(int tok, char *s)
+{
+    printf("token %s (%d)\n", s, yylval.ival);
+    return tok;
+}
+
+#define RETURN(x) return dbgToken(x, #x)
+#define RETURN_ivalue(x) return dbgTokenIvalue(x, #x)
+#else
+#define RETURN(x) return(x)
+#define RETURN_ivalue(x) return(x)
+#endif
+
+%}
+
 %union
 {
     int ival;
@@ -53,41 +76,46 @@
     struct nvalue* nval;
 };
 
-%token END 0 _("end of input")
-%type files file blocks
-%type<sval> tag
-%type<nval> attribute built_in
-%type<nval> attributes
-%token<sval> NUMBER
-%token<sval> DOLLAR_SIGN POUND_SIGN DOT INDIRECT_MEMBER
-%token<sval> ID CONST_SYMBOL SYMBOL
-%token<sval> FOREACH FOREACHELSE
+
 %token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
-%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE BACK_SLASH AT VBAR AMPERSAND AND OR NOT
-%token<sval> CAPTURE CONFIG_LOAD INCLUDE REQUIRE REQUIRE_ONCE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER CONFIG FUNC
+%token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE BACK_SLASH
+%token<sval> AT VBAR AMPERSAND AND OR NOT DOLLAR_SIGN POUND_SIGN DOT
+
+%token<sval> CAPTURE CONFIG_LOAD INCLUDE REQUIRE REQUIRE_ONCE INSERT ASSIGN ISSET SECTION LDELIM RDELIM VERSION CYCLE COUNTER
 %token<sval> CAPITALIZE CAT COUNT_CHARACTERS COUNT_SENTENCES COUNT_PARAGRAPHS COUNT_WORDS DATE_FORMAT DEFAULT ESCAPE
 %token<sval> INDENT LOWER UPPER STRIP NL2BR REGEX_REPLACE REPLACE SPACIFY STRING_FORMAT STRIP_TAGS TRUNCATE WORDWARP
+
 %token<sval> VAR_ATTRIB VALUE_ATTRIB FILE_ATTRIB FILE_NAME
 %token<sval> FROM_ATTRIB ITEM_ATTRIB KEY_ATTRIB NAME_ATTRIB
-%token END_OF_FILES
-%type<sval> symbol sub_proc array qualafied_id modifier
-
+%token<sval> INDIRECT_MEMBER
+%token<sval> ID CONST_SYMBOL SYMBOL
 %token<sval> STRING_LITERAL NUMERIC_LITERAL
-%token <sIndex> VARIABLE
-%token WHILE IF PRINT
+%token<sval> UNESCAPED_TEXT
+
+%type<sval> symbol sub_proc array qualafied_id modifier
+%type<sval> expr stmt stmt_list
+%type files file blocks
+%type<sval> tag
+%type<nval> attributes attribute built_in
+
+%token WHILE IF PRINT FOREACH FOREACHELSE
 %nonassoc IFX
 %nonassoc ELSE ELSEIF
 %left GREATER_THAN_EQUAL LESS_THAN_EQUAL EQUAL NOT_EQUAL LESS_THAN GREATER_THAN COMMA
 %left PLUS MINUS
 %left ASTERIK SLASH PERCENT
 %nonassoc UMINUS
-%type <nPtr> expr stmt_list
-%type<sval> stmt
 
-%start complier
+%token END 0 _("end of input")
+%token END_OF_FILES
+%start interpreter
 
 %%
-complier:
+
+/*
+*   interpreter ( the one and only start object )
+*/
+interpreter:
     files                                                       {
                                                                     #ifdef VERBOSE
                                                                     WHITE("PARSER complier: | files\n");
@@ -97,11 +125,19 @@ complier:
                                                                     #endif
                                                                     //exit(0);
                                                                 }
+                                                                ;
 
+/*
+*   files ( all files )
+*/
 files:
     file                                                        { GREEN("PARSER files: | file\n"); }
     | files file                                                { GREEN("PARSER files: | files file\n"); }
+                                                                ;
 
+/*
+*   file ( a single file )
+*/
 file:
     blocks END                                                  {
                                                                     #ifdef VERBOSE
@@ -113,12 +149,19 @@ file:
                                                                     //exit(0);
 
                                                                 }
-        ;
-
+                                                                ;
+/*
+*   block ( between tags i.e. {if} block ... {/if}
+*/
 blocks:
-    tag                                                         {
+     tag                                                         {
                                                                     #ifdef VERBOSE
                                                                     RED("PARSER blocks: | tag\n");
+                                                                    #endif
+                                                                }
+      UNESCAPED_TEXT                                                       {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER blocks: | UNESCAPED_TEXT\n");
                                                                     #endif
                                                                 }
     | blocks tag                                                {
@@ -128,15 +171,47 @@ blocks:
                                                                 }
                                                                 ;
 
+/*
+*   tag ( '{if(%x < 1}' }
+*/
 tag:
+     LBRACE expr RBRACE                                          {
+                                                                    /*$$ = opr(PRINT, 1, $2);          */
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER tag: | LBRACE expr RBRACE\n");
+                                                                    #endif
+                                                                }
+    | LBRACE EQUAL expr RBRACE                                  {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER tag: | LBRACE EQUAL expr RBRACE\n");
+                                                                    #endif
+                                                                }
+    | WHILE LPAREN expr RPAREN stmt                             {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER tag: | WHILE LPAREN expr RPAREN stmt\n");
+                                                                    #endif
+                                                                }
+     | LBRACE IF LPAREN expr %prec IFX RPAREN                   {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER tag TEST: | LBRACE IF LPAREN expr prec IFX RPAREN\n");
+                                                                    #endif
+                                                                }
+    | LBRACE IF LPAREN expr RPAREN stmt %prec IFX SLASH IF RBRACE        {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER tag: | LBRACE IF LPAREN expr RPAREN stmt prec IFX RBRACE\n");
+                                                                    #endif
+                                                                }
+    | SLASH IF RBRACE                                           {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER tag: | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE\n");
+                                                                    #endif
+                                                                }
 
-     '*' LBRACE expr RBRACE                                         { /*$$ = $2;                         */}
-    | LBRACE expr RBRACE                                        { /*$$ = opr(PRINT, 1, $2);          */}
-    | LBRACE EQUAL expr RBRACE                                  { /*$$ = opr('=', 2, id($1), $3);    */}
-    | WHILE LPAREN expr RPAREN stmt                             { /*$$ = opr(WHILE, 2, $3, $5);      */}
-    | LBRACE IF LPAREN expr RPAREN stmt %prec IFX RBRACE        { /*$$ = opr(IF, 2, $3, $5);         */}
-    | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE        { /*$$ = opr(IF, 3, $3, $5, $7);     */}
-    | LBRACE stmt_list RBRACE                                   { /*$$ = $2;                         */}
+    | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE        {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER tag: | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE\n");
+                                                                    #endif
+                                                                }
     | LBRACE sub_proc RBRACE                                    {
                                                                     #ifdef VERBOSE
                                                                     RED("PARSER tag: | LBRACE sub_porc RBRACE\n");
@@ -171,147 +246,223 @@ tag:
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER tag: | LBRACE built_in RBRACE\n");
                                                                     #endif
-                                                                    //free_all_nvalues();
-
-                                                                    // do include !!
+                                                                    // bkp todo include !!
                                                                 }
                                                                 ;
 
-program:
-    function                                                    {  exit(0); }
-    ;
 
-function:
-        function stmt                                           {  ex($2); freeNode($2); }
-        | /* NULL */
-        ;
-
-stmt:                                                           {
-                                                                        /*bkp todo*/
-                                                                        /*{ <if ($x > 0)> ~todo: if block~ <else> ~todo: else block~ </if> }*/
-
-//      LBRACE expr RBRACE                                      { $$ = $2;                         }
-//      | LBRACE expr RBRACE                                    { $$ = opr(PRINT, 1, $2);          }
-//      | LBRACE EQUAL expr RBRACE                              { $$ = opr('=', 2, id($1), $3);    }
-//      | WHILE LPAREN expr RPAREN stmt                         { $$ = opr(WHILE, 2, $3, $5);      }
-//      | LBRACE IF LPAREN expr RPAREN stmt %prec IFX RBRACE    { /*$$ = opr(IF, 2, $3, $5);*/     }
-//      | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE    { /*$$ = opr(IF, 3, $3, $5, $7);*/ }
-//      | LBRACE stmt_list RBRACE                               { $$ = $2;                         }
-        ;
+stmt:{
+/*bkp todo*/
+/*{ <if ($x > 0)> ~todo: if block~ <else> ~todo: else block~ </if> }*/
 }
 
+/*
+*   Statement ( ends with brace '}' )
+*/
 stmt_list:
-        stmt                                                    {/* $$ = $1; */}
-        | stmt_list stmt_list                                        {/* $$ = opr(';', 2, $1, $2); */}
-        ;
+    stmt                                                    {/* $$ = $1; */}
+    | stmt_list stmt_list                                   {/* $$ = opr(';', 2, $1, $2); */}
+                                                            ;
 
-
+/*
+*   Numerical / logical exprssions
+*/
 expr:
-        NUMERIC_LITERAL                                                 {/* $$ = con($1);             */}
-        | STRING_LITERAL                                              {/* $$ = id($1);              */}
-        | MINUS expr %prec UMINUS                               {/* $$ = opr(UMINUS, 1, $2);  */}
-        | expr PLUS expr                                        {/* $$ = opr('+', 2, $1, $3); */}
-        | expr MINUS expr                                       {/* $$ = opr('-', 2, $1, $3); */}
-        | expr ASTERIK expr                                     {/* $$ = opr('*', 2, $1, $3); */}
-        | expr SLASH expr                                       {/* $$ = opr('/', 2, $1, $3); */}
-        | expr LESS_THAN expr                                   {/* $$ = opr('<', 2, $1, $3); */}
-        | expr GREATER_THAN expr                                {/* $$ = opr('>', 2, $1, $3); */}
-        | expr GREATER_THAN_EQUAL expr                          {/* $$ = opr(GE, 2, $1, $3);  */}
-        | expr LESS_THAN_EQUAL expr                             {/* $$ = opr(LE, 2, $1, $3);  */}
-        | expr NOT_EQUAL expr                                   {/* $$ = opr(NE, 2, $1, $3);  */}
-        | expr EQUAL expr                                       {/* $$ = opr(EQ, 2, $1, $3);  */}
-        | LPAREN expr RPAREN                                    {/* $$ = $2;                  */}
-        ;
+        NUMERIC_LITERAL                                         {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | NUMERIC_LITERAL\n");
+                                                                    #endif
+                                                                }
+        | STRING_LITERAL                                        {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | STRING_LITERAL\n");
+                                                                    #endif
+                                                                }
+        | symbol LESS_THAN NUMERIC_LITERAL                                        {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | symbol LESS_THAN NUMERIC_LITERAL\n");
+                                                                    #endif
+                                                                }
+        | MINUS expr %prec UMINUS                               {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr PLUS expr                                        {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr MINUS expr                                       {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr ASTERIK expr                                     {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr SLASH expr                                       {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr LESS_THAN expr                                   {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr GREATER_THAN expr                                {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr GREATER_THAN_EQUAL expr                          {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr LESS_THAN_EQUAL expr                             {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr NOT_EQUAL expr                                   {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | expr EQUAL expr                                       {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+        | LPAREN expr RPAREN                                    {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | expr\n");
+                                                                    #endif
+                                                                }
+                                                                ;
 
-
+/*
+*   ( $x:$y:$x ) | 1:2:"three"
+*/
 colon_sep_params:
-    colon_sep_param                                             {
+        colon_sep_param                                         {
                                                                     #ifdef VERBOSE
                                                                     GREEN("colon_sep_params: | colon_sep_param\n");
                                                                     #endif
                                                                 }
-    | colon_sep_params colon_sep_param
+        | colon_sep_params colon_sep_param                      {
+                                                                    #ifdef VERBOSE
+                                                                    GREEN("colon_sep_params: | colon_sep_params colon_sep_param\n");
+                                                                    #endif
+                                                                }
+                                                                ;
+
+
+/*
+*   colon seperated param {$x|trim:3:' '}
+*/
 colon_sep_param:
-    COLON NUMERIC_LITERAL                                       {
+        COLON NUMERIC_LITERAL                                         {
                                                                     #ifdef VERBOSE
                                                                     GREEN("colon_sep_param: | COLON NUMERIC_LITERAL\n");
                                                                     #endif
                                                                 }
 
+/*
+*   qualafied id ( $obj.x | $obj.point->x )
+*/
 qualafied_id:
-    symbol DOT ID                                               {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER qualafied_id: | symbol DOT ID\n");
-                                                                    #endif
-                                                                }
-    | symbol DOT symbol                                         { RED("PARSER qualafied_id: | symbol DOT symbol\n"); }
-    | symbol INDIRECT_MEMBER ID                                 {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER qualafied_id: | symbol INDIRECT_MEMBER ID\n");
-                                                                    #endif
-                                                                }
-    | qualafied_id DOT ID                                       {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER qualafied_id: | qualafied_id DOT ID\n");
-                                                                    #endif
-                                                                }
-    | qualafied_id INDIRECT_MEMBER ID                           {
-                                                                    #ifdef VERBOSE
-                                                                    GREEN("PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID\n");
-                                                                    #endif
-                                                                }
-                                                                ;
+        symbol DOT ID                                               {
+                                                                        #ifdef VERBOSE
+                                                                        GREEN("PARSER qualafied_id: | symbol DOT ID\n");
+                                                                        #endif
+                                                                    }
+        | symbol DOT symbol                                         { RED("PARSER qualafied_id: | symbol DOT symbol\n"); }
+        | symbol INDIRECT_MEMBER ID                                 {
+                                                                        #ifdef VERBOSE
+                                                                        GREEN("PARSER qualafied_id: | symbol INDIRECT_MEMBER ID\n");
+                                                                        #endif
+                                                                    }
+        | qualafied_id DOT ID                                       {
+                                                                        #ifdef VERBOSE
+                                                                        GREEN("PARSER qualafied_id: | qualafied_id DOT ID\n");
+                                                                        #endif
+                                                                    }
+        | qualafied_id INDIRECT_MEMBER ID                           {
+                                                                        #ifdef VERBOSE
+                                                                        GREEN("PARSER qualafied_id: | qualafied_id INDIRECT_MEMBER ID\n");
+                                                                        #endif
+                                                                    }
+                                                                    ;
 
+/*
+*   sub procedure / function
+*/
 sub_proc:
-    symbol LPAREN RPAREN                                        {
+        symbol LPAREN RPAREN                                    {
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER sub_proc: | symbol LPAREN RPAREN\n");
                                                                     #endif
-                                                                    $$=$1;
+                                                                    //$$=$1;
                                                                 }
-    | symbol LPAREN params RPAREN                               {
+        | symbol LPAREN params RPAREN                           {
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER sub_proc: | symbol LPAREN params RPAREN\n");
                                                                     #endif
-                                                                    $$=$1;
+                                                                    //$$=$1;
                                                                 }
                                                                 ;
-
+/*
+*   array
+*/
 array:
-    symbol LBRACKET NUMERIC_LITERAL RBRACKET                    {
+       symbol LBRACKET NUMERIC_LITERAL RBRACKET                 {
                                                                     printf("%sPARSER array: | symbol=\"%s\" LBRACKET NUMERIC_LITERAL=\"%s\" RBRACKET%s\n", FMT_FG_GREEN, $1, $3, FMT_RESET);
                                                                     $$=$1;
                                                                 }
                                                                 ;
 
+/*
+*   params (i.e. $x, $y, $x)
+*/
 params:
-    param                                                       {
+        param                                                   {
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER params: | param\n");
                                                                     #endif
                                                                 }
-    | params symbol                                             {
+        | params symbol                                         {
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER qualafied_id: | params COMMA symbol\n");
                                                                     #endif
                                                                 }
                                                                 ;
+/*
+*   param (i.e. $x, )
+*/
 param:
-    symbol COMMA                                                {
+        symbol COMMA                                            {
                                                                     #ifdef VERBOSE
                                                                     GREEN("PARSER param: | symbol COMMA\n");
                                                                     #endif
                                                                 }
                                                                 ;
 
+/*
+*   param $<name> ('$x')
+*/
 symbol:
-    SYMBOL                                                      {
+       SYMBOL                                                   {
                                                                     #ifdef VERBOSE
                                                                     printf("%sPARSER symbol: | ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
                                                                     #endif
                                                                     $$=$1;
                                                                 }
-    | CONST_SYMBOL                                              {
+        | CONST_SYMBOL                                          {
                                                                     #ifdef VERBOSE
                                                                     printf("%sPARSER symbol: | CONST_ID=\"%s\"\n", FMT_FG_GREEN, $1, FMT_RESET);
                                                                     #endif
@@ -319,8 +470,11 @@ symbol:
                                                                 }
                                                                 ;
 
+/*
+*   param modifier
+*/
 modifier:
-    CAPITALIZE                                                 {
+     CAPITALIZE                                                 {
                                                                     #ifdef VERBOSE
                                                                     printf("PARSER modifier: | CAPITALIZE\n");
                                                                     #endif
@@ -427,14 +581,17 @@ modifier:
                                                             }
     ;
 
+/*
+*   built_in functions
+*/
 built_in:
     CONFIG_LOAD attributes                                      {
-                                                                    printf("%sPARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
-                                                                    nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
-                                                                    nv->name = STRDUP($1);
-                                                                    nv->value = STRDUP(s);
-                                                                    $$=nv;
-                                                                    s = 0;
+                                                                    // printf("%sPARSER built_in: | CONFIG_LOAD FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, buf, FMT_RESET);
+                                                                    // nvalue* nv = (nvalue*)malloc(sizeof(nvalue));
+                                                                    // nv->name = STRDUP($1);
+                                                                    // nv->value = STRDUP(s);
+                                                                    // $$=nv;
+                                                                    // s = 0;
                                                                 }
     | INCLUDE attributes                                       {
                                                                     printf("%sPARSER built_in: | INCLUDE FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
@@ -480,8 +637,11 @@ built_in:
                                                                 }
                                                                 ;
 
+/*
+*   the attributes
+*/
 attributes:
-    attribute                                                  {
+      attribute                                                {
                                                                     printf("%sPARSER attributes: | attribute={name=\"%s\"; value=\"%s\"}%s\n", FMT_FG_GREEN, $1->name, $1->value, FMT_RESET);
                                                                     // put attribute @ head position
                                                                     pnv_head = $1;
@@ -503,38 +663,41 @@ attributes:
                                                                }
                                                                ;
 
+/*
+*   an attribute
+*/
 attribute:
-    VALUE_ATTRIB EQUAL STRING_LITERAL                          {
+       VALUE_ATTRIB EQUAL STRING_LITERAL                       {
                                                                     printf("%sPARSER name_value: | VALUE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
 	                                                                yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
-    | VAR_ATTRIB EQUAL STRING_LITERAL                          {
+        | VAR_ATTRIB EQUAL STRING_LITERAL                      {
                                                                     printf("%sPARSER name_value: | VAR_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
-    | FILE_ATTRIB EQUAL STRING_LITERAL                          {
+        | FILE_ATTRIB EQUAL STRING_LITERAL                     {
                                                                     printf("%sPARSER name_value: | FILE_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
-    | ITEM_ATTRIB EQUAL STRING_LITERAL                          {
+        | ITEM_ATTRIB EQUAL STRING_LITERAL                     {
                                                                     printf("%sPARSER name_value: | ITEM_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
-    | FROM_ATTRIB EQUAL STRING_LITERAL                          {
+        | FROM_ATTRIB EQUAL STRING_LITERAL                      {
                                                                     printf("%sPARSER name_value: | FROM_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
-    | KEY_ATTRIB EQUAL STRING_LITERAL                          {
+        | KEY_ATTRIB EQUAL STRING_LITERAL                       {
                                                                     printf("%sPARSER name_value: | KEY_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
                                                                }
-    | NAME_ATTRIB EQUAL STRING_LITERAL                          {
+        | NAME_ATTRIB EQUAL STRING_LITERAL                     {
                                                                     printf("%sPARSER name_value: | NAME_ATTRIB=\"%s\" EQUAL STRING_LITERAL=\"%s\"%s\n", FMT_FG_GREEN, $1, s, FMT_RESET);
                                                                     yyval.nval = alloc_nvalue($1, s);
                                                                     $$ = yyval.nval;
@@ -592,6 +755,7 @@ int yyerror(char * s)
     return 0;
 };
 
+extern int yy_flex_debug;
 int main(int argc, char** argv)
 {
     extern FILE *yyin;
@@ -609,6 +773,7 @@ int main(int argc, char** argv)
 
         printf("%s%s\nparsing file=\"%s\"*%s\n\n", FMT_ITALIC, FMT_FG_BLUE, argv[i], FMT_RESET);
 
+        yy_flex_debug = 1;
         yyparse();
 
         printf("%s%s\nclosing file=\"%s\"%s\n\n", FMT_ITALIC, FMT_FG_BLUE, argv[i], FMT_RESET);

@@ -29,7 +29,7 @@ int parse_options(int argc, char* argv[])
     string s_out;
 
     // steamy-cpp ...
-	streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
+    streamy sm(project_folder + "/test/templates", project_folder + "/test/compile", project_folder + "/test/config", project_folder + "/test/cache");
     sm.load_config(config_path);
     sm.assign("citys", citys);
     sm.get_map_config().insert(pair<string, string>("version", "2000"));
