@@ -2,7 +2,7 @@
 # Mon Oct  2 05:06:26 PM CDT 2023
 
 **/build/**
-**/cbuild/**
+**/cbuild*/**
 **/.vs/**
 **/out/**
 src/lex_parse.l.bak
