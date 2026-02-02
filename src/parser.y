@@ -6,7 +6,8 @@
     #include "parser.tab.h"
     #include "symtab.h"
 
-    int yylex(void);
+    extern int yylex();
+    extern void yywrap();
     int yyerror(char * s);
     char* STRDUP(char* s);
     /* string literal buffer */
@@ -77,7 +78,7 @@ int dbgTokenIvalue(int tok, char *s)
 };
 
 
-%token<sval> LBRACE RBRACE LBRACKET RBRACKET LPAREN RPAREN
+%token<sval> RBRACE LBRACKET RBRACKET LPAREN RPAREN
 %token<sval> COLON SEMI_COLON QUOTE SINGLE_QUOTE BACK_SLASH
 %token<sval> AT VBAR AMPERSAND AND OR NOT DOLLAR_SIGN POUND_SIGN DOT
 
@@ -93,9 +94,8 @@ int dbgTokenIvalue(int tok, char *s)
 %token<sval> UNESCAPED_TEXT
 
 %type<sval> symbol sub_proc array qualafied_id modifier
-%type<sval> expr stmt stmt_list
-%type files file blocks
-%type<sval> tag
+%type<sval> expr stmt
+%type<sval> file files block blocks
 %type<nval> attributes attribute built_in
 
 %token WHILE IF PRINT FOREACH FOREACHELSE
@@ -116,13 +116,14 @@ int dbgTokenIvalue(int tok, char *s)
 *   interpreter ( the one and only start object )
 */
 interpreter:
-    files                                                       {
-                                                                    #ifdef VERBOSE
+    files RBRACE
+    | END_OF_FILES                                          {
+                                                                    //#ifdef VERBOSE
                                                                     WHITE("PARSER complier: | files\n");
                                                                     WHITE("*********************** STOPPING **********************\n");
                                                                     WHITE("*                     Terminating.                    *\n");
                                                                     WHITE("************************* Done ************************\n");
-                                                                    #endif
+                                                                    //#endif
                                                                     //exit(0);
                                                                 }
                                                                 ;
@@ -131,8 +132,9 @@ interpreter:
 *   files ( all files )
 */
 files:
-    file                                                        { GREEN("PARSER files: | file\n"); }
-    | files file                                                { GREEN("PARSER files: | files file\n"); }
+    SYMBOL                                                        { GREEN("PARSER files: | SYMBOL\n"); }
+    | file                                                        { GREEN("PARSER files: | file\n"); }
+    | files files                                                { GREEN("PARSER files: | files files\n"); }
                                                                 ;
 
 /*
@@ -150,40 +152,45 @@ file:
 
                                                                 }
                                                                 ;
+
+/*
+*   blocks
+*/
+blocks:
+    blocks block                                                {}
+                                                                ;
+
 /*
 *   block ( between tags i.e. {if} block ... {/if}
 */
-blocks:
-     tag                                                         {
+block:
+     stmt                                                      {
                                                                     #ifdef VERBOSE
-                                                                    RED("PARSER blocks: | tag\n");
+                                                                    RED("PARSER blocks: | stmts\n");
                                                                     #endif
                                                                 }
-      UNESCAPED_TEXT                                                       {
+    | UNESCAPED_TEXT                                            {
                                                                     #ifdef VERBOSE
-                                                                    RED("PARSER blocks: | UNESCAPED_TEXT\n");
-                                                                    #endif
-                                                                }
-    | blocks tag                                                {
-                                                                    #ifdef VERBOSE
-                                                                    RED("PARSER blocks: | blocks tag\n");
+                                                                    RED("PARSER block: | UNESCAPED_TEXT\n");
                                                                     #endif
                                                                 }
                                                                 ;
 
 /*
-*   tag ( '{if(%x < 1}' }
+*  { <if ($x > 0)> ~todo: if block~ <else> ~todo: else block~ </if> }
+*   stmt ( 'if(%x < 1}' }
+*   stmt expr }
 */
-tag:
-     LBRACE expr RBRACE                                          {
+stmt:
+     expr RBRACE                                          {
                                                                     /*$$ = opr(PRINT, 1, $2);          */
                                                                     #ifdef VERBOSE
-                                                                    RED("PARSER tag: | LBRACE expr RBRACE\n");
+                                                                    RED("PARSER tag: | expr RBRACE\n");
                                                                     #endif
-                                                                }
-    | LBRACE EQUAL expr RBRACE                                  {
+                                                        }
+    | EQUAL expr RBRACE                                  {
                                                                     #ifdef VERBOSE
-                                                                    RED("PARSER tag: | LBRACE EQUAL expr RBRACE\n");
+                                                                    RED("PARSER tag: | EQUAL expr RBRACE\n");
                                                                     #endif
                                                                 }
     | WHILE LPAREN expr RPAREN stmt                             {
@@ -191,78 +198,65 @@ tag:
                                                                     RED("PARSER tag: | WHILE LPAREN expr RPAREN stmt\n");
                                                                     #endif
                                                                 }
-     | LBRACE IF LPAREN expr %prec IFX RPAREN                   {
+     | IF LPAREN expr %prec IFX RPAREN                   {
                                                                     #ifdef VERBOSE
-                                                                    RED("PARSER tag TEST: | LBRACE IF LPAREN expr prec IFX RPAREN\n");
+                                                                    RED("PARSER tag TEST: | IF LPAREN expr prec IFX RPAREN\n");
                                                                     #endif
                                                                 }
-    | LBRACE IF LPAREN expr RPAREN stmt %prec IFX SLASH IF RBRACE        {
+    | IF LPAREN expr RPAREN stmt %prec IFX SLASH IF RBRACE        {
                                                                     #ifdef VERBOSE
-                                                                    RED("PARSER tag: | LBRACE IF LPAREN expr RPAREN stmt prec IFX RBRACE\n");
+                                                                    RED("PARSER tag: | IF LPAREN expr RPAREN stmt prec IFX RBRACE\n");
                                                                     #endif
                                                                 }
     | SLASH IF RBRACE                                           {
                                                                     #ifdef VERBOSE
-                                                                    RED("PARSER tag: | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE\n");
+                                                                    RED("PARSER tag: | IF LPAREN expr RPAREN stmt ELSE stmt RBRACE\n");
                                                                     #endif
                                                                 }
 
-    | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE        {
+    | IF LPAREN expr RPAREN stmt ELSE stmt RBRACE        {
                                                                     #ifdef VERBOSE
-                                                                    RED("PARSER tag: | LBRACE IF LPAREN expr RPAREN stmt ELSE stmt RBRACE\n");
+                                                                    RED("PARSER tag: | IF LPAREN expr RPAREN stmt ELSE stmt RBRACE\n");
                                                                     #endif
                                                                 }
-    | LBRACE sub_proc RBRACE                                    {
+    | sub_proc RBRACE                                    {
                                                                     #ifdef VERBOSE
-                                                                    RED("PARSER tag: | LBRACE sub_porc RBRACE\n");
+                                                                    RED("PARSER tag: | sub_porc RBRACE\n");
                                                                     #endif
                                                                 }
-    | LBRACE array RBRACE                                       {
+    | array RBRACE                                       {
                                                                     #ifdef VERBOSE
-                                                                    GREEN("PARSER tag: | LBRACE array RBRACE\n");
+                                                                    GREEN("PARSER tag: | array RBRACE\n");
                                                                     #endif
                                                                 }
-    | LBRACE symbol VBAR modifier RBRACE                        {
+    | expr VBAR modifier RBRACE                        {
                                                                     #ifdef VERBOSE
-                                                                    printf("%sPARSER tag: | LBRACE symbol=%s VBAR modifier=%s RBRACE%s\n", FMT_FG_BLUE,  $2, $4, FMT_RESET);
+                                                                    printf("%sPARSER tag: | symbol=%s VBAR modifier=%s RBRACE%s\n", FMT_FG_BLUE,  $1, $3, FMT_RESET);
                                                                     #endif
                                                                 }
-    | LBRACE symbol VBAR modifier colon_sep_params RBRACE       {
+    | symbol VBAR modifier colon_sep_params RBRACE       {
                                                                     #ifdef VERBOSE
-                                                                    printf("%sPARSER tag: | LBRACE symbol=%s VBAR modifier=%s colon_sep_param RBRACE%s\n", FMT_FG_BLUE, $2, $4, FMT_RESET);
+                                                                    printf("%sPARSER tag: | symbol=%s VBAR modifier=%s colon_sep_param RBRACE%s\n", FMT_FG_BLUE, $1, $3, FMT_RESET);
                                                                     #endif
                                                                 }
-    | LBRACE symbol RBRACE                                      {
+    | symbol RBRACE                                             {
                                                                     #ifdef VERBOSE
-                                                                    GREEN("PARSER tag: | LBRACE symbol RBRACE\n");
+                                                                    GREEN("PARSER tag: | symbol RBRACE\n");
                                                                     #endif
                                                                 }
-    | LBRACE qualafied_id RBRACE                                {
+    | qualafied_id RBRACE                                       {
                                                                     #ifdef VERBOSE
-                                                                    GREEN("PARSER tag: | LBRACE qualafied_id RBRACE\n");
+                                                                    GREEN("PARSER tag: | qualafied_id RBRACE\n");
                                                                     #endif
                                                                 }
-     | LBRACE built_in RBRACE                                   {
+     | built_in RBRACE                                          {
                                                                     #ifdef VERBOSE
-                                                                    GREEN("PARSER tag: | LBRACE built_in RBRACE\n");
+                                                                    GREEN("PARSER tag: | built_in RBRACE\n");
                                                                     #endif
                                                                     // bkp todo include !!
                                                                 }
                                                                 ;
 
-
-stmt:{
-/*bkp todo*/
-/*{ <if ($x > 0)> ~todo: if block~ <else> ~todo: else block~ </if> }*/
-}
-
-/*
-*   Statement ( ends with brace '}' )
-*/
-stmt_list:
-    stmt                                                    {/* $$ = $1; */}
-    | stmt_list stmt_list                                   {/* $$ = opr(';', 2, $1, $2); */}
-                                                            ;
 
 /*
 *   Numerical / logical exprssions
@@ -276,6 +270,11 @@ expr:
         | STRING_LITERAL                                        {
                                                                     #ifdef VERBOSE
                                                                     RED("PARSER expr: | STRING_LITERAL\n");
+                                                                    #endif
+                                                                }
+        | symbol                                                {
+                                                                    #ifdef VERBOSE
+                                                                    RED("PARSER expr: | symbol\n");
                                                                     #endif
                                                                 }
         | symbol LESS_THAN NUMERIC_LITERAL                                        {
@@ -750,8 +749,9 @@ void free_all_nvalues()
 
 int yyerror(char * s)
 {
-    //todo
+    // bkp todo
     //fprintf(stderr, "line %d: %s\n", yylineno, s);
+    printf("%s\n", s);
     return 0;
 };
 
@@ -773,7 +773,7 @@ int main(int argc, char** argv)
 
         printf("%s%s\nparsing file=\"%s\"*%s\n\n", FMT_ITALIC, FMT_FG_BLUE, argv[i], FMT_RESET);
 
-        yy_flex_debug = 1;
+        //yy_flex_debug = 1;
         yyparse();
 
         printf("%s%s\nclosing file=\"%s\"%s\n\n", FMT_ITALIC, FMT_FG_BLUE, argv[i], FMT_RESET);

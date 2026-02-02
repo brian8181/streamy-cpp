@@ -8,12 +8,12 @@
 # endif
 
 CXX=g++
-CXXFLAGS=-ggdb -DDEBUG -std=c++20 -Wall # $(CXXWARN)
+CXXFLAGS=-ggdb -DDEBUG -std=c++20# $(CXXWARN)
 CC=gcc
 CCFLAGS=-ggdb -std=c99 -DDEBUG
 LEX=flex -d
 YACC=bison
-YFLAGS=-d -Wcounterexamples --header
+YFLAGS=--header
 SRC=src
 BLD=build
 OBJ=build
@@ -35,12 +35,29 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-all: $(BLD)/parser $(BLD)/pcxx #$(BLD)/parser++
+all: $(BLD)/parser $(BLD)/p # $(BLD)/parserxx $(BLD)/pcxx #$(BLD)/parser++
 
 # parser # USING C COMPLIER ON CPP! BUT IT BUILDS?
 $(BLD)/parser: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o
 	@echo -e "\nBuilding \"lexer & parser\" ...\n"
 	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
+
+$(BLD)/p: $(BLD)/p.tab.c $(BLD)/l.yy.h $(BLD)/l.yy.c $(OBJ)/symtab.o
+	@echo -e "\nBuilding \"lexer & p\" ...\n"
+	$(CC) $(CCFLAGS) -Ibuild $^ -lfl -o $@
+
+$(BLD)/p.tab.c: $(SRC)/p.y $(BLD)/bash_color.h
+	@echo -e "\nGererating \"p\" ...\n"
+	$(YACC) $(YFLAGS) $< -o $(BLD)/p.tab.c
+	cp $(SRC)/*.h $(BLD)/
+
+$(BLD)/l.yy.c $(BLD)/l.yy.h: $(SRC)/l.l
+	@echo -e "\nGenerating \"ler\" ...\n"
+	$(LEX) -o build/l.yy.c --header-file="build/l.yy.h" src/l.l
+
+$(BLD)/parserxx: $(BLD)/parser.tab.h $(BLD)/parser.tab.c $(BLD)/lex.yy.h $(BLD)/lex.yy.c $(OBJ)/symtab.o
+	@echo -e "\nBuilding with g++, \"lexer & parser\" ...\n"
+	$(CXX) $(CXXFLAGS) -Ibuild $^ -lfl -o $@
 
 $(BLD)/parser.tab.c $(BLD)/parser.tab.h: $(SRC)/parser.y $(BLD)/bash_color.h
 	@echo -e "\nGererating \"parser\" ...\n"

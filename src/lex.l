@@ -113,14 +113,14 @@ UNESCAPED_TEXT                [^{]+
 <INITIAL>{
 {COMMENT}                               {  /* eat up comment */ printf("LEX:COMMENT=\"%s\"", yytext); }
 {LBRACE}                                {
-                                            printf("LEX:LBRACE\n");
+                                            //printf("LEX:LBRACE\n");
                                             printf("LEX:BEGIN ESCAPED\n");
                                             BEGIN(ESCAPED);
-                                            return LBRACE;
+                                            //return LBRACE;
                                         }
 {UNESCAPED_TEXT}                        {
                                              printf("LEX:TEXT\n");
-                                             return UNESCAPED_TEXT;
+                                             //return UNESCAPED_TEXT;
                                         }
 } // END INITIAL
 <SINGLE_QUOTED,DOUBLE_QUOTED>{
@@ -220,8 +220,6 @@ UNESCAPED_TEXT                [^{]+
 {COMMA}                                 { printf("LEX:COMMA\n");                          return COMMA;                                 }
 {LBRACKET}                              { printf("LEX:LBRACKET\n");                       return LBRACKET;                              }
 {RBRACKET}                              { printf("LEX:RBRACKET\n");                       return RBRACKET;                              }
-{LPAREN}                                { printf("LEX:LPAREN\n");                         return LPAREN;                                }
-{RPAREN}                                { printf("LEX:RPAREN\n");                         return RPAREN;                                }
 {SEMI_COLON}                            { printf("LEX:SEMI_COLON\n");                     return SEMI_COLON;                            }
 {IF}                                    { printf("LEX:IF\n"); BEGIN(ESCAPED);             return IF;                                    }
 {ELSE}                                  { printf("LEX:ELSE_BLOCK\n"); BEGIN(IF_BLOCK);    return ELSE;                                  }

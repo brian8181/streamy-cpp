@@ -1,7 +1,6 @@
 %{
     #include "calc.tab.h"
     int yyerror(char *s);
-    char *yytext;
     int yylex();
 
 %}
@@ -12,9 +11,14 @@
            yylval.num = atoi(yytext);
            return INTEGER;
         }
+[a-z]+  {
+            printf("lex ID=%s\n", yytext);
+            yylval.sval = yytext;
+            return ID;
+        }
 [-+\n]  return *yytext;
 [ \t];  /* skip whitespace */
-.       yyerror("invalid character");
+
 
 %%
 

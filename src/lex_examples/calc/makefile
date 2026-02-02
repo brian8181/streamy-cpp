@@ -9,10 +9,10 @@ BLD=build
 SRC=.
 YYACFLAGS=-v -Wcounterexamples --color=always --html=$(BLD)/bison.out.html --report-file=$(BLD)/report.txt
 
-all: $(BLD)/calc $(BLD)/calc.yy.c $(BLD)/calc.tab.c
+all: $(BLD)/calc
 
 $(BLD)/calc: $(BLD)/calc.tab.c $(BLD)/calc.yy.c
-	$(CC) $(BLD)/calc.yy.c $(BLD)/calc.tab.c -o $(BLD)/calc
+	g++ $(BLD)/calc.yy.c $(BLD)/calc.tab.c -o $(BLD)/calc.exe
 
 $(BLD)/calc.yy.c: $(SRC)/calc.l
 	$(LEX) -o $(BLD)/calc.yy.c $(SRC)/calc.l

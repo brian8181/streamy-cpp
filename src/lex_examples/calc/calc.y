@@ -1,25 +1,39 @@
 %{
     #include <stdio.h>
+    #include <iostream>
     int yyerror(char *s);
     int yylex();
 
+    using std::cout;
+    using std::endl;
 
 %}
 
 %union
 {
+    char* sval;
     int num;
 }
-
+%token<sval> ID
+%type<sval> token tokens
 %token<num> INTEGER
 %type<num> expr
+%start program
 
 %%
 
 program:
-            program expr '\n' { printf("%d\n", $2); }
+            program token '\n' { cout << "program token= " << $2 << endl; }
             |
             ;
+
+tokens:
+    token          { std::cout << "test" << std::endl; }
+    | tokens token
+
+token:
+    ID {  cout << "ID" << endl; }
+
 expr:
             INTEGER { $$ = $1; }
             | expr '+' expr { $$ = $1 + $3; }
